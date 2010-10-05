@@ -96,7 +96,8 @@ tabGroup.open();
  // parameters.push(["callback", "back"]);
  parameters.push(["env", "http://datatables.org/alltables.env"]);
 
- // consume a service API - in this case the status update by Twitter
+
+ // consume a service API - Sending queries to YQL
  oAuthAdapter.send(BASE_URL, parameters,'Meme','Query works.','Query didnt work.');
 
  // if the client is not authorized, ask for authorization. the previous tweet will be sent automatically after authorization
