@@ -60,7 +60,8 @@ tabGroup.addTab(tab2);
 
 
 // open tab group
-tabGroup.open();
+tabGroup.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
+
 
 // =========
 // = Oauth =
