@@ -39,9 +39,9 @@ Ti.include('lib/secrets.js');
     var actionsQueue = [];
 
     // will hold UI components for the Authorization process
-    var window = null;
-    var view = null;
-    var webView = null;
+    var authWindow = null;
+    var authView = null;
+    var authWebView = null;
     var receivePinCallback = null;
 
 	// will check if access tokens are stored in the config file
@@ -144,15 +144,15 @@ Ti.include('lib/secrets.js');
     {
         Ti.API.debug('destroyAuthorizeUI');
         // if the window doesn't exist, exit
-        if (window == null) return;
+        if (authWindow == null) return;
 
         // remove the UI
         try
         {
 	        Ti.API.debug('destroyAuthorizeUI:webView.removeEventListener');
-            webView.removeEventListener('load', authorizeUICallback);
+            authWebView.removeEventListener('load', authorizeUICallback);
 	        Ti.API.debug('destroyAuthorizeUI:window.close()');
-            window.hide();
+            authWindow.hide();
 			// 	        Ti.API.debug('destroyAuthorizeUI:window.remove(view)');
 			// window.remove(view);
 			// 	        Ti.API.debug('destroyAuthorizeUI:view.remove(webView)');
@@ -201,21 +201,27 @@ Ti.include('lib/secrets.js');
     {
         receivePinCallback = pReceivePinCallback;
 
-        window = Ti.UI.createWindow({
+        authWindow = Ti.UI.createWindow({
             modal: true,
-            fullscreen: false
+            fullscreen: true,
+			navBarHidden: false
         });
+
+		// Force Landscape mode only
+		authWindow.orientationModes = [
+			Titanium.UI.LANDSCAPE_LEFT
+		];
 
         var transform = Ti.UI.create2DMatrix().scale(0);
 
-        view = Ti.UI.createView({
-            top: 5,
-            width: 500,
-            height: 500,
+        authView = Ti.UI.createView({
+            top: 50,
+            width: 550,
+            height: 550,
             border: 5,
             backgroundColor: 'white',
-            borderColor: 'blue',
-            borderRadius: 20,
+            borderColor: 'gray',
+            borderRadius: 10,
             borderWidth: 5,
             zIndex: -1,
             transform: transform
@@ -231,26 +237,27 @@ Ti.include('lib/secrets.js');
             right: 12,
             height: 14
         });
-        window.open();
+        authWindow.open();
 
-        webView = Ti.UI.createWebView({
+        authWebView = Ti.UI.createWebView({
             url: pUrl,
-			scalesPageToFit: 1,
+			top: 40,
+			scalesPageToFit: false,
 			autoDetect:[Ti.UI.AUTODETECT_NONE]
         });
 		Ti.API.debug('Setting:['+Ti.UI.AUTODETECT_NONE+']');
-        webView.addEventListener('load', authorizeUICallback);
-        view.add(webView);
+        authWebView.addEventListener('load', authorizeUICallback);
+        authView.add(authWebView);
 
         closeLabel.addEventListener('click', destroyAuthorizeUI);
-        view.add(closeLabel);
+        authView.add(closeLabel);
 
-        window.add(view);
+        authWindow.add(authView);
 
         var animation = Ti.UI.createAnimation();
         animation.transform = Ti.UI.create2DMatrix();
         animation.duration = 500;
-        view.animate(animation);
+        authView.animate(animation);
     };
 
 	// Requests the Access Tokens

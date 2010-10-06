@@ -1,9 +1,5 @@
 // this sets the background color of the master UIView (when there are no windows/tab groups on it)
 Titanium.UI.setBackgroundColor('#000');
-/* Titanium.UI.iPhone.statusBarStyle = Titanium.UI.iPhone.StatusBar.OPAQUE_BLACK; */
-
-// create tab group
-//var tabGroup = Titanium.UI.createTabGroup();
 
 //
 // create base UI tab and root window
@@ -13,11 +9,12 @@ var win1 = Titanium.UI.createWindow({
     backgroundColor:'#fff',
     backgroundImage: 'images/bg.jpg'
 });
-//var tab1 = Titanium.UI.createTab({  
-//    icon:'KS_nav_views.png',
-//    title:'Tab 1',
-//    window:win1
-//});
+
+// Force Landscape mode only
+win1.orientationModes = [
+	Titanium.UI.LANDSCAPE_LEFT
+];
+
 
 var label1 = Titanium.UI.createLabel({
 	color:'black',
