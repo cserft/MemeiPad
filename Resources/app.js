@@ -28,6 +28,14 @@ var label1 = Titanium.UI.createLabel({
 });
 win1.add(label1);
 
+var imageView = Titanium.UI.createImageView({
+	image:'http://www.appcelerator.com/wp-content/uploads/2009/06/titanium_desk.png',
+	top:20,
+	width:100,
+	height:100
+});
+win1.add(imageView);
+
 // // View with data from Users Meme (table: meme.info)
 // var usercardView = Ti.UI.createView({
 // 	color:'black',

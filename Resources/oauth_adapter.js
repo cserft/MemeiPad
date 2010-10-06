@@ -294,7 +294,7 @@ Ti.include('lib/secrets.js');
         Ti.API.debug('Processing queue: done.');
     };
 
-	// Pop translucent Window to display quick messages
+	// creates a translucent popup Window to display quick messages
 	var popMessage = function(pMessage)
 	{
 		// window container
