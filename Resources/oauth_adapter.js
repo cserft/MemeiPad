@@ -13,20 +13,12 @@ Ti.include('lib/oauth.js');
 Ti.include('lib/secrets.js');
 
 // create an OAuthAdapter instance
-// var OAuthAdapter = function(pConsumerSecret, pConsumerKey, pSignatureMethod)
  var OAuthAdapter = function()
  {
 	
 	Ti.API.info('*********************************************');
 	Ti.API.info('CREATING OAUTH ADAPTER INSTANCE');
 	Ti.API.info('*********************************************');	
-
-    // will hold the consumer secret and consumer key as provided by the caller
-    //var consumerSecret = pConsumerSecret;
-    //var consumerKey = pConsumerKey;
-
-    // will set the signature method as set by the caller
-    //var signatureMethod = pSignatureMethod;
 
     // the pin or oauth_verifier returned by the authorization process window
     var pin = null;
@@ -52,6 +44,7 @@ Ti.include('lib/secrets.js');
     var webView = null;
     var receivePinCallback = null;
 
+	// will check if access tokens are stored in the config file
     this.loadAccessToken = function(pService)
     {
         Ti.API.debug('Loading access token for service [' + pService + '].');
@@ -75,6 +68,8 @@ Ti.include('lib/secrets.js');
 
         Ti.API.debug('Loading access token: done [accessToken:' + accessToken + '][accessTokenSecret:' + accessTokenSecret + '].');
     };
+
+	// Saves the access tokens in the config File
     this.saveAccessToken = function(pService)
     {
         Ti.API.debug('Saving access token [' + pService + '].');
@@ -89,7 +84,7 @@ Ti.include('lib/secrets.js');
         Ti.API.debug('Saving access token: done.');
     };
 
-    // will tell if the consumer is authorized
+    // will tell if the consumer is authorized (i.e. has the access tokens)
     this.isAuthorized = function()
     {
         return ! (accessToken == null || accessTokenSecret == null);
@@ -108,11 +103,6 @@ Ti.include('lib/secrets.js');
         message.parameters.push(['oauth_consumer_key', consumerKey]);
         message.parameters.push(['oauth_signature_method', signatureMethod]);
         return message;
-    };
-
-    // returns the pin
-    this.getPin = function() {
-        return pin;
     };
 
     // requests a requet token with the given Url
@@ -171,21 +161,24 @@ Ti.include('lib/secrets.js');
     // currently works with YAHOO!
     var authorizeUICallback = function(e)
     {
-        Ti.API.debug('authorizeUILoaded');
+        Ti.API.debug('authorizeUILoaded, looking for oAuth Verifier Code');
 
+		// stores the page HTML source code
         var htmlSource = e.source.html;
+
+        // REGEXP looking for the oAuth Verifier code in the HTML page
 		var result = (/<span id="shortCode">(\w+)<\/span>/g).exec(htmlSource);
 	
 		if (result && result[1]) {
 		    pin = result[1];
 			
-			Ti.API.debug('ShortCode: ' + pin);
+			Ti.API.debug('Found oAuth Verifier Code: ' + pin);
 
             if (receivePinCallback) setTimeout(receivePinCallback, 100);
 
             destroyAuthorizeUI();
 
-            break;	
+            return;	
 		}
 
         htmlSource = null; 
@@ -248,15 +241,13 @@ Ti.include('lib/secrets.js');
         view.animate(animation);
     };
 
+	// Requests the Access Tokens
     this.getAccessToken = function(pUrl)
     {
         accessor.tokenSecret = requestTokenSecret;
 
         var message = createMessage(pUrl, 'POST');
         message.parameters.push(['oauth_token', requestToken]);
-
-		Ti.API.info('pin code: ' + pin);
-		
         message.parameters.push(['oauth_verifier', pin]);
 
         OAuth.setTimestampAndNonce(message);
@@ -282,6 +273,7 @@ Ti.include('lib/secrets.js');
 
     };
 
+	// execute the post queue
     var processQueue = function()
     {
         Ti.API.debug('Processing queue.');
@@ -291,7 +283,7 @@ Ti.include('lib/secrets.js');
         Ti.API.debug('Processing queue: done.');
     };
 
-    // TODO: remove this on a separate Twitter library
+    // Send YQL query
     var send = function(pUrl, pParameters, pYql_query, pTitle, pSuccessMessage, pErrorMessage)
     {
         Ti.API.debug('Sending a message to the service at [' + pUrl + '] with the following params: ' + JSON.stringify(pParameters));
@@ -300,7 +292,8 @@ Ti.include('lib/secrets.js');
         {
 
             Ti.API.debug('The send status cannot be processed as the client doesn\'t have an access token. The status update will be sent as soon as the client has an access token.');
-
+			
+			// if it doesn't have the access tokens, the queries are stored in a queue to later execution
             actionsQueue.push({
                 url: pUrl,
                 parameters: pParameters,
@@ -323,6 +316,7 @@ Ti.include('lib/secrets.js');
 
         var parameterMap = OAuth.getParameterMap(message.parameters);
         for (var p in parameterMap)
+
         Ti.API.debug(p + ': ' + parameterMap[p]);
 
         var client = Ti.Network.createHTTPClient();

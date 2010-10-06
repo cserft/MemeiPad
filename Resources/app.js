@@ -67,15 +67,7 @@ tabGroup.open();
 // = Oauth =
 // =========
 
-/*
- * This library currently works only with Yahoo! Meme, although I'd like to
- * spend some more time to make it generally compatible with other services
- * too.
- *
- * Sample use with Yahoo! Meme:
-*/
  // create a new OAuthAdapter instance by passing by your consumer data and signature method
-
  Ti.include('oauth_adapter.js');
 
  // Initialize oAuthAdapter  
@@ -84,7 +76,6 @@ tabGroup.open();
  // load the access token for the service (if previously saved)
  oAuthAdapter.loadAccessToken('meme');	
 
- // var BASE_URL = 'https://query.yahooapis.com/v1/public/yql';
  var yql_query = "SELECT * FROM meme.info where name='acarlos1000'";
 
  // consume a service API - Sending queries to YQL
@@ -107,7 +98,7 @@ tabGroup.open();
 	 var oauthToken = oAuthAdapter.getRequestToken(get_request_token_url)
 	
 	 // show the authorization UI and call back the receive PIN function
-     oAuthAdapter.showAuthorizeUI(request_auth_url + oauthToken, receivePin);
+     oAuthAdapter.showAuthorizeUI(request_auth_url + '?' + oauthToken, receivePin);
  }
 
 
