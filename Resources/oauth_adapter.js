@@ -1,28 +1,32 @@
 /*
- * The Adapter needs 2 external libraries (oauth.js, sha1.js) hosted at
+ * The Oauth Adapter needs 2 external libraries (oauth.js, sha1.js) hosted at
  *  http://oauth.googlecode.com/svn/code/javascript/
- *
  * Save them locally in a lib subfolder
+ * 
+ * Your Oauth secrets as well as you API end points must be in the *secrets.js* file inside the lib folder
+ *
+ * 
  */
 
 Ti.include('lib/sha1.js');
 Ti.include('lib/oauth.js');
+Ti.include('lib/secrets.js');
 
 // create an OAuthAdapter instance
-var OAuthAdapter = function(pConsumerSecret, pConsumerKey, pSignatureMethod)
+// var OAuthAdapter = function(pConsumerSecret, pConsumerKey, pSignatureMethod)
+ var OAuthAdapter = function()
  {
 	
 	Ti.API.info('*********************************************');
-	Ti.API.info('If you like the OAuth Adapter, consider donating at');
-	Ti.API.info('https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=T5HUU4J5EQTJU&lc=IT&item_name=OAuth%20Adapter&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted');
+	Ti.API.info('CREATING OAUTH ADAPTER INSTANCE');
 	Ti.API.info('*********************************************');	
 
     // will hold the consumer secret and consumer key as provided by the caller
-    var consumerSecret = pConsumerSecret;
-    var consumerKey = pConsumerKey;
+    //var consumerSecret = pConsumerSecret;
+    //var consumerKey = pConsumerKey;
 
     // will set the signature method as set by the caller
-    var signatureMethod = pSignatureMethod;
+    //var signatureMethod = pSignatureMethod;
 
     // the pin or oauth_verifier returned by the authorization process window
     var pin = null;
@@ -39,10 +43,10 @@ var OAuthAdapter = function(pConsumerSecret, pConsumerKey, pSignatureMethod)
         tokenSecret: ''
     };
 
-    // holds actions to perform
+    // holds actions to perform in the Queue
     var actionsQueue = [];
 
-    // will hold UI components
+    // will hold UI components for the Authorization process
     var window = null;
     var view = null;
     var webView = null;
@@ -92,12 +96,12 @@ var OAuthAdapter = function(pConsumerSecret, pConsumerKey, pSignatureMethod)
     };
 
     // creates a message to send to the service
-    var createMessage = function(pUrl)
+    var createMessage = function(pUrl, pMethod)
     {
         var message = {
             action: pUrl
             ,
-            method: 'POST'
+            method: pMethod || "POST"
             ,
             parameters: []
         };
@@ -116,7 +120,7 @@ var OAuthAdapter = function(pConsumerSecret, pConsumerKey, pSignatureMethod)
     {
         accessor.tokenSecret = '';
 
-        var message = createMessage(pUrl);
+        var message = createMessage(pUrl, 'POST');
 		message.parameters.push(['oauth_callback', 'oob']);
         OAuth.setTimestampAndNonce(message);
         OAuth.SignatureMethod.sign(message, accessor);
@@ -248,7 +252,7 @@ var OAuthAdapter = function(pConsumerSecret, pConsumerKey, pSignatureMethod)
     {
         accessor.tokenSecret = requestTokenSecret;
 
-        var message = createMessage(pUrl);
+        var message = createMessage(pUrl, 'POST');
         message.parameters.push(['oauth_token', requestToken]);
 
 		Ti.API.info('pin code: ' + pin);
@@ -309,7 +313,7 @@ var OAuthAdapter = function(pConsumerSecret, pConsumerKey, pSignatureMethod)
 
         accessor.tokenSecret = accessTokenSecret;
 
-        var message = createMessage(pUrl);
+        var message = createMessage(pUrl, 'POST');
         message.parameters.push(['oauth_token', accessToken]);
         for (p in pParameters) message.parameters.push(pParameters[p]);
         OAuth.setTimestampAndNonce(message);

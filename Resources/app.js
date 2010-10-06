@@ -78,10 +78,13 @@ tabGroup.open();
 
  Ti.include('oauth_adapter.js');
 
- var oAuthAdapter = new OAuthAdapter(
- '0013b3b080bbbf1d82be4ec970368162b7a904eb',
- 'dj0yJmk9NlNJWFR6OW9wUlRmJmQ9WVdrOVZqbEJVVUpRTTJVbWNHbzlORE15TWprMk1nLS0mcz1jb25zdW1lcnNlY3JldCZ4PTQw',
- 'HMAC-SHA1');
+ // var oAuthAdapter = new OAuthAdapter(
+ // '0013b3b080bbbf1d82be4ec970368162b7a904eb',
+ // 'dj0yJmk9NlNJWFR6OW9wUlRmJmQ9WVdrOVZqbEJVVUpRTTJVbWNHbzlORE15TWprMk1nLS0mcz1jb25zdW1lcnNlY3JldCZ4PTQw',
+ // 'HMAC-SHA1');
+
+ // Initialize oAuthAdapter  
+ var oAuthAdapter = new OAuthAdapter();
 
  // load the access token for the service (if previously saved)
  oAuthAdapter.loadAccessToken('meme');	
