@@ -89,7 +89,7 @@ win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
  // load the access token for the service (if previously saved)
  oAuthAdapter.loadAccessToken('meme');	
 
- var yql_query = "SELECT * FROM meme.info where name='acarlos1000'";
+ var yql_query = "SELECT * FROM meme.info where owner_guid=me";
 
  // consume a service API - Sending queries to YQL
  // yql_base_url, yql_params are configured on secrets.js
