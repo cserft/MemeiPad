@@ -203,7 +203,7 @@ Ti.include('lib/secrets.js');
 
         window = Ti.UI.createWindow({
             modal: true,
-            fullscreen: true
+            fullscreen: false
         });
 
         var transform = Ti.UI.create2DMatrix().scale(0);
