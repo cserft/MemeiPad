@@ -9,7 +9,8 @@ var tabGroup = Titanium.UI.createTabGroup();
 //
 var win1 = Titanium.UI.createWindow({  
     title:'Tab 1',
-    backgroundColor:'#fff'
+    backgroundColor:'#fff',
+    backgroundImage: 'images/bg.jpg'
 });
 var tab1 = Titanium.UI.createTab({  
     icon:'KS_nav_views.png',
@@ -18,14 +19,27 @@ var tab1 = Titanium.UI.createTab({
 });
 
 var label1 = Titanium.UI.createLabel({
-	color:'#999',
+	color:'black',
 	text:'I am Window 1',
 	font:{fontSize:20,fontFamily:'Helvetica Neue'},
 	textAlign:'center',
-	width:'auto'
+	width:'auto',
+	zIndex:3
 });
-
 win1.add(label1);
+
+// // View with data from Users Meme (table: meme.info)
+// var usercardView = Ti.UI.createView({
+// 	color:'black',
+// 	backgroundColor:'white',
+// 	borderWidth:3,
+// 	borderColor:'#777',
+// 	borderRadius:5,
+// 	width:200,
+// 	zIndex:2
+// });
+// win1.add(usercardView);
+// usercardView.add(label1);
 
 //
 // create controls tab and root window
@@ -49,7 +63,6 @@ var label2 = Titanium.UI.createLabel({
 });
 
 win2.add(label2);
-
 
 
 //
@@ -80,7 +93,7 @@ tabGroup.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
 
  // consume a service API - Sending queries to YQL
  // yql_base_url, yql_params are configured on secrets.js
- oAuthAdapter.send(yql_base_url, yql_params, yql_query, 'Meme','Query works.','Query didnt work.');
+ oAuthAdapter.send(yql_base_url, yql_params, yql_query, 'Meme','YQL Query is working properly.','Sorry, YQL query didn\'t work.');
 
  // if the client is not authorized, ask for authorization. the previous tweet will be sent automatically after authorization
  // get_token_url, get_request_token_url and request_auth_url are configured on secrets.js

@@ -294,6 +294,47 @@ Ti.include('lib/secrets.js');
         Ti.API.debug('Processing queue: done.');
     };
 
+	// Pop translucent Window to display quick messages
+	var popMessage = function(pMessage)
+	{
+		// window container
+		var welcomeWindow = Titanium.UI.createWindow({
+			height:80,
+			width:200,
+			touchEnabled:false
+		});
+
+		// black view
+		var indView = Titanium.UI.createView({
+			height:80,
+			width:200,
+			backgroundColor:'#000',
+			borderRadius:10,
+			opacity:0.8,
+			touchEnabled:false
+		});
+		welcomeWindow.add(indView);
+
+		// message
+		var message = Titanium.UI.createLabel({
+			text: pMessage,
+			color:'#fff',
+			textAlign:'center',
+			font:{fontSize:18,fontWeight:'bold'},
+			height:'auto',
+			width:'auto'
+		});
+		welcomeWindow.add(message);
+		welcomeWindow.open();
+
+		var t = Ti.UI.create2DMatrix().translate(0,0).scale(0);
+		welcomeWindow.animate({transform:t,delay:1500,duration:700,opacity:0.1},function()
+		{
+			welcomeWindow.close();
+		});
+	};
+
+
     // Send YQL query
     var send = function(pUrl, pParameters, pYql_query, pTitle, pSuccessMessage, pErrorMessage)
     {
@@ -335,15 +376,16 @@ Ti.include('lib/secrets.js');
         client.send(parameterMap);
 
         if (client.status == 200) {
-            Ti.UI.createAlertDialog({
-                title: pTitle,
-                message: pSuccessMessage
-            }).show();
+
+			popMessage(pSuccessMessage);
+
         } else {
-            Ti.UI.createAlertDialog({
-                title: pTitle,
-                message: pErrorMessage
-            }).show();
+            // Ti.UI.createAlertDialog({
+            //     title: pTitle,
+            //     message: pErrorMessage
+            // }).show();
+
+			popMessage(pErrorMessage);
         }
 
         Ti.API.debug('*** sendStatus, Response: [' + client.status + '] ' + client.responseText);
