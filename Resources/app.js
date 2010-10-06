@@ -78,30 +78,25 @@ tabGroup.open();
 
  Ti.include('oauth_adapter.js');
 
- // var oAuthAdapter = new OAuthAdapter(
- // '0013b3b080bbbf1d82be4ec970368162b7a904eb',
- // 'dj0yJmk9NlNJWFR6OW9wUlRmJmQ9WVdrOVZqbEJVVUpRTTJVbWNHbzlORE15TWprMk1nLS0mcz1jb25zdW1lcnNlY3JldCZ4PTQw',
- // 'HMAC-SHA1');
-
  // Initialize oAuthAdapter  
  var oAuthAdapter = new OAuthAdapter();
 
  // load the access token for the service (if previously saved)
  oAuthAdapter.loadAccessToken('meme');	
 
- var BASE_URL = 'https://query.yahooapis.com/v1/public/yql';
- var queryYQL = "SELECT * FROM meme.info where name='acarlos1000'";
+ // var BASE_URL = 'https://query.yahooapis.com/v1/public/yql';
+ var yql_query = "SELECT * FROM meme.info where name='acarlos1000'";
 
- var parameters = [];
- parameters.push(["q", queryYQL]);
- parameters.push(["format", "json"]);
- parameters.push(["diagnostics", "false"]);
- // parameters.push(["callback", "back"]);
- parameters.push(["env", "http://datatables.org/alltables.env"]);
+ // var parameters = [];
+ //  parameters.push(["q", queryYQL]);
+ //  parameters.push(["format", "json"]);
+ //  parameters.push(["diagnostics", "false"]);
+ //  // parameters.push(["callback", "back"]);
+ //  parameters.push(["env", "http://datatables.org/alltables.env"]);
 
 
  // consume a service API - Sending queries to YQL
- oAuthAdapter.send(BASE_URL, parameters,'Meme','Query works.','Query didnt work.');
+ oAuthAdapter.send(yql_base_url, yql_params, yql_query, 'Meme','Query works.','Query didnt work.');
 
  // if the client is not authorized, ask for authorization. the previous tweet will be sent automatically after authorization
  if (oAuthAdapter.isAuthorized() == false)

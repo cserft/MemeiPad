@@ -286,13 +286,13 @@ Ti.include('lib/secrets.js');
     {
         Ti.API.debug('Processing queue.');
         while ((q = actionsQueue.shift()) != null)
-        send(q.url, q.parameters, q.title, q.successMessage, q.errorMessage);
+        send(q.url, q.parameters, q.query, q.title, q.successMessage, q.errorMessage);
 
         Ti.API.debug('Processing queue: done.');
     };
 
     // TODO: remove this on a separate Twitter library
-    var send = function(pUrl, pParameters, pTitle, pSuccessMessage, pErrorMessage)
+    var send = function(pUrl, pParameters, pYql_query, pTitle, pSuccessMessage, pErrorMessage)
     {
         Ti.API.debug('Sending a message to the service at [' + pUrl + '] with the following params: ' + JSON.stringify(pParameters));
 
@@ -304,6 +304,7 @@ Ti.include('lib/secrets.js');
             actionsQueue.push({
                 url: pUrl,
                 parameters: pParameters,
+				query: pYql_query,
                 title: pTitle,
                 successMessage: pSuccessMessage,
                 errorMessage: pErrorMessage
@@ -315,6 +316,7 @@ Ti.include('lib/secrets.js');
 
         var message = createMessage(pUrl, 'POST');
         message.parameters.push(['oauth_token', accessToken]);
+        message.parameters.push(['q', pYql_query]);
         for (p in pParameters) message.parameters.push(pParameters[p]);
         OAuth.setTimestampAndNonce(message);
         OAuth.SignatureMethod.sign(message, accessor);
