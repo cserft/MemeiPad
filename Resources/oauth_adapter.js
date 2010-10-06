@@ -72,7 +72,7 @@ Ti.include('lib/secrets.js');
 	// Saves the access tokens in the config File
     this.saveAccessToken = function(pService)
     {
-        Ti.API.debug('Saving access token [' + pService + '].');
+        Ti.API.debug('Saving access token for [' + pService + '] on config file.');
         var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, pService + '.config');
         if (file == null) file = Ti.Filesystem.createFile(Ti.Filesystem.applicationDataDirectory, pService + '.config');
         file.write(JSON.stringify(
@@ -81,7 +81,7 @@ Ti.include('lib/secrets.js');
             accessTokenSecret: accessTokenSecret
         }
         ));
-        Ti.API.debug('Saving access token: done.');
+        Ti.API.debug('Saving access token on config file: done.');
     };
 
 	// Logs out from Yahoo! deleting the config file
