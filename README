@@ -1,12 +1,26 @@
-Welcome to your Appcelerator Titanium Mobile Project
+This is a project developed during a Yahoo! internal hackday.
 
-This is a blank project.  Start by editing your application's app.js to 
-make your first mobile project using Titanium.
+It is an iPad app for Yahoo! Meme, a light blogging platform from Yahoo! that is currently available in several languages including English, Portuguese, Spanish, Bahasa and Traditional Chinese
 
+This app has the objective to offer a native looking way to navigate and consume content from user's dashboard on Meme.
 
+Development powered by Titanium Mobile framework that allows development for iOS platform using Javascript instead of ObjC
+
+---------------------------------
+REQUIREMENT
+
+- iOS 4.1 SDK
+- Titanium Mobile SDK 1.4.1.1
+
+---------------------------------
+FEATURES
+
+- oAuth Authentication
+- Navigate on Meme's dashboard
+- Repost and Comment from within the App
 
 ----------------------------------
-Stuff our legal folk make us say:
+LEGAL
 
 Appcelerator, Appcelerator Titanium and associated marks and logos are 
 trademarks of Appcelerator, Inc. 
