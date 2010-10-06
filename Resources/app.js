@@ -1,5 +1,6 @@
 // this sets the background color of the master UIView (when there are no windows/tab groups on it)
 Titanium.UI.setBackgroundColor('#000');
+/* Titanium.UI.iPhone.statusBarStyle = Titanium.UI.iPhone.StatusBar.OPAQUE_BLACK; */
 
 // create tab group
 //var tabGroup = Titanium.UI.createTabGroup();
@@ -28,13 +29,48 @@ var label1 = Titanium.UI.createLabel({
 });
 win1.add(label1);
 
-var imageView = Titanium.UI.createImageView({
-	image:'http://www.appcelerator.com/wp-content/uploads/2009/06/titanium_desk.png',
-	top:20,
-	width:100,
-	height:100
+var logoHeader = Titanium.UI.createImageView({
+	image:'images/logo_header.png',
+	top:-5,
+	left:3,
+	width:236,
+	height:106
 });
-win1.add(imageView);
+win1.add(logoHeader);
+
+var hiYahooUser = Titanium.UI.createLabel({
+	color:'#999999',
+	text:'Hi, gneumann    |',
+	font:{fontSize:12,fontFamily:'Helvetica Neue'},
+	textAlign:'right',
+	top:27,
+	left:720,
+	height:30,
+	width:'auto'
+});
+win1.add(hiYahooUser);
+
+var memeUser = Titanium.UI.createLabel({
+	color:'#ffffff',
+	text:'New Musical Express',
+	font:{fontSize:14,fontFamily:'Helvetica Neue',fontWeight:'bold'},
+	textAlign:'left',
+	top:27,
+	left:840,
+	height:30,
+	width:150,
+});
+win1.add(memeUser);
+
+var dashboardShadow = Titanium.UI.createImageView({
+	image:'images/shadow.png',
+	top:742,
+	left:0,
+	width:1024,
+	height:26
+});
+win1.add(dashboardShadow);
+
 
 // // View with data from Users Meme (table: meme.info)
 // var usercardView = Ti.UI.createView({
