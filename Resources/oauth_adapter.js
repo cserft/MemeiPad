@@ -208,10 +208,10 @@ Ti.include('lib/secrets.js');
         });
 
 		// Force Landscape mode only
-		authWindow.orientationModes = [
-			Titanium.UI.LANDSCAPE_LEFT
-		];
-
+		// authWindow.orientationModes = [
+		// 		Titanium.UI.LANDSCAPE_LEFT
+		// 	];
+	
         var transform = Ti.UI.create2DMatrix().scale(0);
 
         authView = Ti.UI.createView({
@@ -398,7 +398,7 @@ Ti.include('lib/secrets.js');
 
         Ti.API.debug('*** sendStatus, Response: [' + client.status + '] ' + client.responseText);
 
-        return client.responseText;
+        return client.responseXML;
 
     };
     this.send = send;
