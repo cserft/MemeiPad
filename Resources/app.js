@@ -134,7 +134,7 @@ win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
 
  // consume a service API - Sending queries to YQL
  // yql_base_url, yql_params are configured on secrets.js
- oAuthAdapter.send(yql_base_url, yql_params, yql_query, 'Meme','YQL Query is working properly.','Sorry, YQL query didn\'t work.');
+ var yqlResult = oAuthAdapter.send(yql_base_url, yql_params, yql_query, 'Meme','YQL Query is working properly.','Sorry, YQL query didn\'t work.');
 
  // if the client is not authorized, ask for authorization. the previous tweet will be sent automatically after authorization
  // get_token_url, get_request_token_url and request_auth_url are configured on secrets.js
@@ -155,3 +155,8 @@ win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
      oAuthAdapter.showAuthorizeUI(request_auth_url + '?' + oauthToken, receivePin);
  }
 
+// =======================
+// = retrieving yql data =
+// =======================
+
+Ti.API.debug("Result YQL XML: " + yqlResult);
