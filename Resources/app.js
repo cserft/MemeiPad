@@ -87,34 +87,27 @@ tabGroup.open();
  // var BASE_URL = 'https://query.yahooapis.com/v1/public/yql';
  var yql_query = "SELECT * FROM meme.info where name='acarlos1000'";
 
- // var parameters = [];
- //  parameters.push(["q", queryYQL]);
- //  parameters.push(["format", "json"]);
- //  parameters.push(["diagnostics", "false"]);
- //  // parameters.push(["callback", "back"]);
- //  parameters.push(["env", "http://datatables.org/alltables.env"]);
-
-
  // consume a service API - Sending queries to YQL
+ // yql_base_url, yql_params are configured on secrets.js
  oAuthAdapter.send(yql_base_url, yql_params, yql_query, 'Meme','Query works.','Query didnt work.');
 
  // if the client is not authorized, ask for authorization. the previous tweet will be sent automatically after authorization
+ // get_token_url, get_request_token_url and request_auth_url are configured on secrets.js
  if (oAuthAdapter.isAuthorized() == false)
  {
 	 // this function will be called as soon as the application is authorized
      var receivePin = function() {
 		 // get the access token with the provided pin/oauth_verifier
-         oAuthAdapter.getAccessToken('https://api.login.yahoo.com/oauth/v2/get_token');
-		 // save the access token
+         oAuthAdapter.getAccessToken(get_token_url);
+		 // save the access token locally on a config file
          oAuthAdapter.saveAccessToken('meme');
      };
 
 	 // get the oauth_token response to append on the Request_auth call
-	 var oauthToken = oAuthAdapter.getRequestToken('https://api.login.yahoo.com/oauth/v2/get_request_token')
-	 // Ti.API.debug('oAuthToken from Apps.js: ' + oauthToken);
+	 var oauthToken = oAuthAdapter.getRequestToken(get_request_token_url)
 	
 	 // show the authorization UI and call back the receive PIN function
-     oAuthAdapter.showAuthorizeUI('https://api.login.yahoo.com/oauth/v2/request_auth?' + oauthToken, receivePin);
+     oAuthAdapter.showAuthorizeUI(request_auth_url + oauthToken, receivePin);
  }
 
 
