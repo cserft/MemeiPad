@@ -84,6 +84,17 @@ Ti.include('lib/secrets.js');
         Ti.API.debug('Saving access token: done.');
     };
 
+	// Logs out from Yahoo! deleting the config file
+    this.logout = function(pService)
+	{
+		Ti.API.debug('Deleting access token [' + pService + '].');
+		var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, pService + '.config'); 
+		file.deleteFile();
+		
+		//TODO: insert call for the Login View after logging out
+	
+	}
+
     // will tell if the consumer is authorized (i.e. has the access tokens)
     this.isAuthorized = function()
     {

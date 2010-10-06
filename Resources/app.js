@@ -101,5 +101,3 @@ tabGroup.open();
      oAuthAdapter.showAuthorizeUI(request_auth_url + '?' + oauthToken, receivePin);
  }
 
-
-
