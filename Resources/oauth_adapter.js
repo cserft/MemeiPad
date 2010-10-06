@@ -235,6 +235,7 @@ Ti.include('lib/secrets.js');
 
         webView = Ti.UI.createWebView({
             url: pUrl,
+			scalesPageToFit: 1,
 			autoDetect:[Ti.UI.AUTODETECT_NONE]
         });
 		Ti.API.debug('Setting:['+Ti.UI.AUTODETECT_NONE+']');
@@ -362,18 +363,18 @@ Ti.include('lib/secrets.js');
         var message = createMessage(pUrl, 'POST');
         message.parameters.push(['oauth_token', accessToken]);
         message.parameters.push(['q', pYql_query]);
-        for (p in pParameters) message.parameters.push(pParameters[p]);
+        for (p in pParameters) {
+			message.parameters.push(pParameters[p]);
+		}
         OAuth.setTimestampAndNonce(message);
         OAuth.SignatureMethod.sign(message, accessor);
 
-        var parameterMap = OAuth.getParameterMap(message.parameters);
-        for (var p in parameterMap)
+        var myUrl  = OAuth.addToURL(pUrl, message.parameters);
+		var client = Ti.Network.createHTTPClient();
+        client.open(message.method, myUrl, false);
+        client.send();
 
-        Ti.API.debug(p + ': ' + parameterMap[p]);
-
-        var client = Ti.Network.createHTTPClient();
-        client.open('POST', pUrl, false);
-        client.send(parameterMap);
+		//Ti.API.debug("location: " + client.location);
 
         if (client.status == 200) {
 

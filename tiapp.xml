@@ -5,8 +5,8 @@
 <version>0.1</version>
 <publisher>Antonio Carlos Silveira</publisher>
 <url>http://me.me</url>
-<description>MemePad is a iPad app for Yahoo! Meme that allows you to view and navigate on Yahoo! Meme content</description>
-<copyright>2010 by @acarlos1000 @gneumann @mnovaes @ccoria</copyright>
+<description>Meme iPad is a client for Yahoo! meme to view and navigate on Yahoo! meme content</description>
+<copyright>2010 by @acarlos1000 @gneumann @mnovaes</copyright>
 <icon>default_app_logo.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
