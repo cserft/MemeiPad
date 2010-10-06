@@ -1,4 +1,4 @@
 tmp
 #ignore the secrets file
 secrets.js
-
+build/iphone/*
