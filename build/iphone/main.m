@@ -13,13 +13,13 @@ NSString * const TI_APPLICATION_PUBLISHER = @"Antonio Carlos Silveira";
 NSString * const TI_APPLICATION_URL = @"http://me.me";
 NSString * const TI_APPLICATION_NAME = @"MemeiPad";
 NSString * const TI_APPLICATION_VERSION = @"0.1";
-NSString * const TI_APPLICATION_DESCRIPTION = @"Meme iPad is a client for Yahoo! meme to view and navigate on Yahoo! meme content";
-NSString * const TI_APPLICATION_COPYRIGHT = @"2010 by @acarlos1000 @gneumann @mnovaes";
+NSString * const TI_APPLICATION_DESCRIPTION = @"MemePad is a iPad app for Yahoo! Meme that allows you to view and navigate on Yahoo! Meme content";
+NSString * const TI_APPLICATION_COPYRIGHT = @"2010 by @acarlos1000 @gneumann @mnovaes @ccoria";
 NSString * const TI_APPLICATION_GUID = @"f33c2211-86ab-48a5-9bb2-710c9292da06";
-BOOL const TI_APPLICATION_ANALYTICS = true;
+BOOL const TI_APPLICATION_ANALYTICS = false;
 
 #ifdef TARGET_IPHONE_SIMULATOR
-NSString * const TI_APPLICATION_RESOURCE_DIR = @"/Users/acarlos/Documents/iPhone_Dev/Titanium/MemeiPad/Resources";
+NSString * const TI_APPLICATION_RESOURCE_DIR = @"/Users/gneumann/Desktop/Titanium/memeiPad/Resources";
 #endif
 
 int main(int argc, char *argv[]) {
