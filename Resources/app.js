@@ -89,13 +89,12 @@
 	var hiYahooUserLabel = Titanium.UI.createLabel({
 		color:'#999999',
 		text: 'Hi, ' + meme.name + '    |',
-		// text: 'Hi, Zezinho    |',
 		font:{fontSize:12,fontFamily:'Helvetica Neue'},
 	    textAlign:'right',
 		top:27,
-		left:640,
+		left:590,
 		height:30,
-		width:'100'
+		width:'150'
 	});
 	win1.add(hiYahooUserLabel);
 
