@@ -1,0 +1,6 @@
+- Refresh oAuth Token (verify expiration)
+- get user Y!ID 
+- How to hold the splash Screen for more time.
+- Retrieve YQL XML response
+- FIx the Authentication Window (modal and Fullscreen)
+- Logout btn
