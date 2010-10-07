@@ -67,10 +67,10 @@ var win1 = Titanium.UI.createWindow({
     backgroundImage: 'images/bg.jpg'
 });
 
-// Force Landscape mode only
-// win1.orientationModes = [
-// 	Titanium.UI.LANDSCAPE_LEFT
-// ];
+Force Landscape mode only
+win1.orientationModes = [
+	Titanium.UI.LANDSCAPE_LEFT
+];
 
 
 var label1 = Titanium.UI.createLabel({
