@@ -6,3 +6,4 @@
 - Logout btn
 - Change YDN App description and iCONS
 - Create a Website for the App
+- icons and descriptions on YDN Site
