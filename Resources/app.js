@@ -73,15 +73,15 @@ win1.orientationModes = [
 ];
 
 
-var label1 = Titanium.UI.createLabel({
-	color:'black',
-	text:'Welcome to Meme iPad app',
-	font:{fontSize:35,fontFamily:'Helvetica Neue'},
-	textAlign:'center',
-	width:'auto',
-	zIndex:3
-});
-win1.add(label1);
+// var label1 = Titanium.UI.createLabel({
+// 	color:'black',
+// 	text:'Welcome to Meme iPad app',
+// 	font:{fontSize:35,fontFamily:'Helvetica Neue'},
+// 	textAlign:'center',
+// 	width:'auto',
+// 	zIndex:3
+// });
+// win1.add(label1);
 
 var logoHeader = Titanium.UI.createImageView({
 	image:'images/logo_header.png',
@@ -164,4 +164,23 @@ win1.add(dashboardShadow);
 
 // open Window with Transition
 win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
+
+// ===========================
+// = CREATING DASHBOARD VIEW =
+// ===========================
+
+var winDashboard = Ti.UI.createWindow({
+    url: 'dashboard.js',
+    name: 'Dashboard Window',
+    backgroundColor:'transparent',
+	left:0,
+	top:90,
+	height:655,
+	width:1024,
+	navBarHidden: true,
+	zIndex: 5
+});
+
+winDashboard.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
+
 
