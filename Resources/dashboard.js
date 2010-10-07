@@ -29,7 +29,6 @@ scrollView.add(label1);
 var miniPostView = Ti.UI.createView({
 	backgroundColor:'black',
 	width: 317,
-	height: 241,
-	borderRadius: 5
+	height: 241
 });
-winSignIn.add(signinView);
+scrollView.add(miniPostView);
