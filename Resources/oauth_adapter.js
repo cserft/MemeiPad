@@ -14,7 +14,7 @@ Ti.include('lib/secrets.js');
 Ti.include('lib/yql_queries.js');
 
 // create an OAuthAdapter instance
- var OAuthAdapter = function()
+ var OAuthAdapter = function(pService, pCallback)
  {
 	
 	Ti.API.info('*********************************************');
@@ -45,17 +45,27 @@ Ti.include('lib/yql_queries.js');
     var authWebView = null;
     var receivePinCallback = null;
 
+	loadAccessToken(pService);
+
 	// will check if access tokens are stored in the config file
     this.loadAccessToken = function(pService)
     {
         Ti.API.debug('Loading access token for service [' + pService + '].');
 
         var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, pService + '.config');
-        if (file.exists == false) return;
+        if (file.exists == false) {
+			 Ti.API.debug('Config file for service [' + pService + '] dont exist. Showing Signin Page');
+			
+			return(pCallback());
+		}
+
 
         var contents = file.read();
-        if (contents == null) return;
-
+        if (contents == null) {
+	
+	 		Ti.API.debug('Config File for service [' + pService + '] is empty. Showing Signin Page');
+			return(pCallback());
+		}
         try
         {
             var config = JSON.parse(contents.text);
@@ -71,7 +81,7 @@ Ti.include('lib/yql_queries.js');
     };
 
 	// Saves the access tokens in the config File
-    this.saveAccessToken = function(pService)
+    this.saveAccessToken = function(pService, pCallback)
     {
         Ti.API.debug('Saving access token for [' + pService + '] on config file.');
         var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, pService + '.config');
@@ -83,6 +93,8 @@ Ti.include('lib/yql_queries.js');
         }
         ));
         Ti.API.debug('Saving access token on config file: done.');
+		return(pCallback);
+		
     };
 
 	// Logs out from Yahoo! deleting the config file
@@ -154,6 +166,11 @@ Ti.include('lib/yql_queries.js');
             authWebView.removeEventListener('load', authorizeUICallback);
 	        Ti.API.debug('destroyAuthorizeUI:window.close()');
             authWindow.hide();
+
+			// var t3 = Titanium.UI.create2DMatrix();
+			// 		t3 = t3.scale(0);
+			// 		authWindow.close({transform:t3,duration:300});
+
 			// 	        Ti.API.debug('destroyAuthorizeUI:window.remove(view)');
 			// window.remove(view);
 			// 	        Ti.API.debug('destroyAuthorizeUI:view.remove(webView)');
@@ -202,63 +219,63 @@ Ti.include('lib/yql_queries.js');
     {
         receivePinCallback = pReceivePinCallback;
 
-        authWindow = Ti.UI.createWindow({
-            modal: true,
-            fullscreen: true,
+		        authWindow = Ti.UI.createWindow({
+		            modal: true,
+		            fullscreen: true,
 			navBarHidden: false
-        });
-
+		        });
+		
 		// Force Landscape mode only
-		// authWindow.orientationModes = [
-		// 		Titanium.UI.LANDSCAPE_LEFT
-		// 	];
-	
-        var transform = Ti.UI.create2DMatrix().scale(0);
-
-        authView = Ti.UI.createView({
-            top: 50,
-            width: 550,
-            height: 550,
-            border: 5,
-            backgroundColor: 'white',
-            borderColor: 'gray',
-            borderRadius: 10,
-            borderWidth: 5,
-            zIndex: -1,
-            transform: transform
-        });
-        closeLabel = Ti.UI.createLabel({
-            textAlign: 'right',
-            font: {
-                fontWeight: 'bold',
-                fontSize: '12pt'
-            },
-            text: '(X)',
-            top: 10,
-            right: 12,
-            height: 14
-        });
-        authWindow.open();
-
-        authWebView = Ti.UI.createWebView({
-            url: pUrl,
+		authWindow.orientationModes = [
+				Titanium.UI.LANDSCAPE_LEFT
+			];
+			
+		        var transform = Ti.UI.create2DMatrix().scale(0);
+		
+		        authView = Ti.UI.createView({
+		            top: 50,
+		            width: 550,
+		            height: 550,
+		            border: 5,
+		            backgroundColor: 'white',
+		            borderColor: 'gray',
+		            borderRadius: 10,
+		            borderWidth: 5,
+		            zIndex: -1,
+		            transform: transform
+		        });
+		        closeLabel = Ti.UI.createLabel({
+		            textAlign: 'right',
+		            font: {
+		                fontWeight: 'bold',
+		                fontSize: '12pt'
+		            },
+		            text: '(X)',
+		            top: 10,
+		            right: 12,
+		            height: 14
+		        });
+		        authWindow.open();
+		
+		        authWebView = Ti.UI.createWebView({
+		            url: pUrl,
 			top: 40,
 			scalesPageToFit: false,
 			autoDetect:[Ti.UI.AUTODETECT_NONE]
-        });
+		        });
 		Ti.API.debug('Setting:['+Ti.UI.AUTODETECT_NONE+']');
-        authWebView.addEventListener('load', authorizeUICallback);
-        authView.add(authWebView);
-
-        closeLabel.addEventListener('click', destroyAuthorizeUI);
-        authView.add(closeLabel);
-
-        authWindow.add(authView);
-
-        var animation = Ti.UI.createAnimation();
-        animation.transform = Ti.UI.create2DMatrix();
-        animation.duration = 500;
-        authView.animate(animation);
+		        authWebView.addEventListener('load', authorizeUICallback);
+		        authView.add(authWebView);
+		
+		        closeLabel.addEventListener('click', destroyAuthorizeUI);
+		        authView.add(closeLabel);
+		
+		        authWindow.add(authView);
+		
+		        var animation = Ti.UI.createAnimation();
+		        animation.transform = Ti.UI.create2DMatrix();
+		        animation.duration = 500;
+		        authView.animate(animation);
     };
 
 	// Requests the Access Tokens
@@ -352,7 +369,7 @@ Ti.include('lib/yql_queries.js');
         if (accessToken == null || accessTokenSecret == null)
         {
 
-            Ti.API.debug('The send status cannot be processed as the client doesn\'t have an access token. The status update will be sent as soon as the client has an access token.');
+            Ti.API.debug('The send function cannot be processed as the client doesn\'t have an access token. The query will be sent as soon as the client has an access token.');
 			
 			// if it doesn't have the access tokens, the queries are stored in a queue to later execution
             actionsQueue.push({

@@ -1,5 +1,10 @@
 var win = Ti.UI.currentWindow;
 
+//RETRIEVING YQL OBJECT
+var yql = win.yql;
+
+Ti.API.debug("YQL DENTRO DO JS: " + yql.query("SELECT * FROM meme.user.dashboard"));
+
 var scrollView = Ti.UI.createScrollView({
 	backgroundColor:'transparent',
 	contentWidth:1024,
@@ -20,3 +25,11 @@ var label1 = Titanium.UI.createLabel({
 	zIndex:1
 });
 scrollView.add(label1);
+
+var miniPostView = Ti.UI.createView({
+	backgroundColor:'black',
+	width: 317,
+	height: 241,
+	borderRadius: 5
+});
+winSignIn.add(signinView);
