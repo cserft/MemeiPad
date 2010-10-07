@@ -16,6 +16,7 @@
  // yql_query_meme_info comes form lib/yql_queries.js
 
  var yqlMemeInfo = oAuthAdapter.send(yql_base_url, yql_params, yql_query_meme_info, 'Meme Info','Meme Basic Info retrieved.','Errr, Not Working.');
+ var yqlMemeDashboard = oAuthAdapter.send(yql_base_url, yql_params, yql_query_dashboard, 'Meme Dashboard','Meme Dashboard retrieved.','Errr, Not Working.');
 
  // if the client is not authorized, ask for authorization. the previous tweet will be sent automatically after authorization
  // get_token_url, get_request_token_url and request_auth_url are configured on secrets.js
@@ -36,17 +37,23 @@
      oAuthAdapter.showAuthorizeUI(request_auth_url + '?' + oauthToken, receivePin);
  }
 
-// ======================================
-// = retrieving yql data from Meme.Info =
-// ======================================
+// ========================
+// = retrieving yql data =
+// ========================
 
 if (yqlMemeInfo){
-	var data = JSON.parse(yqlMemeInfo);
-	var meme = data.query.results.meme;	
+	var dataMeme = JSON.parse(yqlMemeInfo);
+	var meme = dataMeme.query.results.meme;	
 }
 
+if (yqlMemeDashboard){
+	var dataPosts = JSON.parse(yqlMemeInfo);
+	var posts = dataPosts.query.results;	
+}
 
-
+// ==========
+// = LAYOUT =
+// ==========
 
 // this sets the background color of the master UIView (when there are no windows/tab groups on it)
 Titanium.UI.setBackgroundColor('#000');
@@ -119,7 +126,7 @@ signoutLabel.addEventListener("click", function(e) {
     }).show();
 	
 	// oAuthAdapter.logout('meme');
-	//     oAuthAdapter.loadAccessToken('meme');
+	// oAuthAdapter.loadAccessToken('meme');
 });
 
 var miniAvatarView = Titanium.UI.createImageView({
