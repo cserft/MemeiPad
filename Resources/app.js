@@ -67,7 +67,7 @@ var win1 = Titanium.UI.createWindow({
     backgroundImage: 'images/bg.jpg'
 });
 
-Force Landscape mode only
+//Forces Landscape mode only
 win1.orientationModes = [
 	Titanium.UI.LANDSCAPE_LEFT
 ];
