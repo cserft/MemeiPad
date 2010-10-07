@@ -11,6 +11,7 @@
 Ti.include('lib/sha1.js');
 Ti.include('lib/oauth.js');
 Ti.include('lib/secrets.js');
+Ti.include('lib/yql_queries.js');
 
 // create an OAuthAdapter instance
  var OAuthAdapter = function()
@@ -388,17 +389,13 @@ Ti.include('lib/secrets.js');
 			popMessage(pSuccessMessage);
 
         } else {
-            // Ti.UI.createAlertDialog({
-            //     title: pTitle,
-            //     message: pErrorMessage
-            // }).show();
 
 			popMessage(pErrorMessage);
         }
 
         Ti.API.debug('*** sendStatus, Response: [' + client.status + '] ' + client.responseText);
 
-        return client.responseXML;
+        return client.responseText;
 
     };
     this.send = send;

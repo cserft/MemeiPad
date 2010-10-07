@@ -4,3 +4,5 @@
 - Retrieve YQL XML response
 - FIx the Authentication Window (modal and Fullscreen)
 - Logout btn
+- Change YDN App description and iCONS
+- Create a Website for the App
