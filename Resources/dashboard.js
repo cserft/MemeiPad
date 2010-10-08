@@ -187,6 +187,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 	// create an Video view
 	if (pType == "video"){	
 		
+		
+		
 		//Retrieve Thum from YouTube Video	
 		var youtubeid = pContent.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
         var _videoThumb = "http://img.youtube.com/vi/" + youtubeid + "/0.jpg";
@@ -199,6 +201,16 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 			height:231
 		});
 		blackBoxView.add(postImageView);
+		
+        var img_play_btn = Titanium.UI.createImageView({
+            image:'images/minipost_play_icon.png',
+            top:60,
+            left:102,
+            width:104,
+            height:61
+        });
+        blackBoxView.add(img_play_btn);
+
 		
 		Ti.API.info('Image width: ' + postImageView.toImage().width);	
 	}
