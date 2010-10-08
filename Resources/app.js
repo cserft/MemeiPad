@@ -51,13 +51,6 @@
 		//var dataMeme = JSON.parse(yqlMemeInfo);
 		var meme = yqlMemeInfo.query.results.meme;	
 	}
-	
-	var yqlMemeDashboard = yql.query(yql_query_dashboard);
-	
-	if (yqlMemeDashboard){
-		//var dataPosts = JSON.parse(yqlMemeDashboard);
-		var posts = yqlMemeDashboard.query.results;	
-	}
 
 	// this sets the background color of the master UIView (when there are no windows/tab groups on it)
 	Titanium.UI.setBackgroundColor('#000');
@@ -120,7 +113,6 @@
 	    }).show();
 
 		// oAuthAdapter.logout('meme');
-		// oAuthAdapter.loadAccessToken('meme');
 	});
 
 	var miniAvatarView = Titanium.UI.createImageView({
@@ -147,15 +139,6 @@
 	});
 	win1.add(memeTitleLabel);
 
-	var dashboardShadow = Titanium.UI.createImageView({
-		image:'images/shadow.png',
-		top:742,
-		left:0,
-		width:1024,
-		height:26
-	});
-	win1.add(dashboardShadow);
-
 
 	// open Window with Transition
 	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
@@ -176,7 +159,7 @@
 		yql: yql,
 		zIndex: 5
 	});
-	winDashboard.dashboard = yqlMemeDashboard;
+	yql:yql; //passing YQL function to the Window
 	winDashboard.open();
 
  }

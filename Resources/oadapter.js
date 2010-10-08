@@ -159,7 +159,7 @@ var OAuthAdapter = function(pService, authorize)
 		Ti.API.debug("url: "+ myUrl);
         client.open(message.method, myUrl, false);
         client.send();
-		Ti.API.debug("Request done, code: "+ client.status +", response: "+ client.responseText);
+		Ti.API.debug("Request done, code: "+ client.status);
 		return(client.responseText);
 	};
 	

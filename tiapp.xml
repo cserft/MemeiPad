@@ -2,12 +2,12 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
 <id>com.acarlos.memeipad</id>
 <name>MemeiPad</name>
-<version>0.2</version>
+<version>0.1</version>
 <publisher>Antonio Carlos Silveira</publisher>
 <url>http://me.me</url>
 <description>Meme iPad is a client for Yahoo! meme to view and navigate on Yahoo! meme content</description>
 <copyright>2010 by @acarlos1000 @gneumann @mnovaes</copyright>
-<icon>meme_appicon.png</icon>
+<icon>default_app_logo.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
     <statusbar-style>opaque_black</statusbar-style>
