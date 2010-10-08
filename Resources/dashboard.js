@@ -284,6 +284,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 // create THE TABLE ROWS
 for (var k=0; k < posts.length; k++)
 {
+
+		
+	
 	Ti.API.debug("Entered on POst Loop");
 	
 	var post = posts[k];
@@ -292,48 +295,51 @@ for (var k=0; k < posts.length; k++)
 	var _postUrl = post.url;
 	var _type = post.type;
 	// var _videoUrl = posts
-	
-	if (_type == "photo")
-	{
-		var _content = post.content.thumb;
 		
-	} else if (_type == "video")
-	{
-		var _content = post.content;
-		
-	} else if (_type == "text")
-	{
-		var _content = post.content;
-		
-	} else if (_type == "comment") {
-		
-		var _caption = post.comment;
-	} else {
-		
-		var _content = "";
-	}
-	
-	
-    if (count == 0) {
-		var row = Ti.UI.createTableViewRow();
-		row.height = 245;
-		row.className = 'datarow';
-		row.clickName = 'row';
-	}
-	
-	var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count);	
-	row.add(postView);
+	if (_type != "comment") {
 
-	count++;
-	
-	// Verifies if it is the third post and closes the row
-	if (count == 3){
+
+		if (_type == "photo")
+		{
+			var _content = post.content.thumb;
+			
+		} else if (_type == "video")
+		{
+			var _content = post.content;
+			
+		} else if (_type == "text")
+		{
+			var _content = post.content;
+			
+		} else {
+			
+			var _content = "";
+		}
 		
-		data.push(row);
-	 	count = 0;
+		
+	    if (count == 0) {
+			var row = Ti.UI.createTableViewRow();
+			row.height = 245;
+			row.className = 'datarow';
+			row.clickName = 'row';
+		}
+		
+		
+		
+		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count);	
+		row.add(postView);
+	
+		count++;
+		
+		// Verifies if it is the third post and closes the row
+		if (count == 3){
+			
+			data.push(row);
+		 	count = 0;
+	
+		}
 
 	}
-
 }
 
 var tableView = Titanium.UI.createTableView({
