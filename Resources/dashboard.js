@@ -26,14 +26,14 @@ var label1 = Titanium.UI.createLabel({
 });
 
 scrollView.add(label1);
-*/
+
 var miniPostView1 = Ti.UI.createView({
 	backgroundColor:'black',
 	width: 317,
 	height: 241,
 	left: 35
 });
-scrollView.add(miniPostView1);
+//scrollView.add(miniPostView1);
 
 
 var miniPostView_txt = Ti.UI.createView({
@@ -130,7 +130,7 @@ var miniPostView3 = Ti.UI.createView({
 		height:231
 	});
 	//miniPostView3.add(miniPostView_video_post);
-	
+*/	
 	
 
 //Ti.API.debug("----------------------");
