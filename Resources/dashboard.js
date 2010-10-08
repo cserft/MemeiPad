@@ -144,6 +144,8 @@ var _y = 0;
 var _x = 0;
 var __id;
 var __id_img;
+var __id_bg_caption;
+var __id_caption;
 for (post in posts) {
 
 	_x = (_xcount * 317) + 35 + (_xcount * 5);
@@ -171,8 +173,8 @@ for (post in posts) {
 	});
 	scrollView.add(__id);
 	//Add a black box
-
-
+	
+	
 	if(posts[post]['type'] == "photo") {
 		
 		var _image = posts[post]['content']['content'];
@@ -191,6 +193,37 @@ for (post in posts) {
 		
 	
 	} else if (posts[post]['type'] == "video") {
+	
+	}
+
+
+	if (posts[post]['caption'] != "") {
+	
+		var __id_bg_caption = Titanium.UI.createView({
+			backgroundColor:'#000',
+			top:177,
+			left:5,
+			width:307,
+			height:64,
+			opacity:0.9 
+		});
+		__id.add(__id_bg_caption);
+	
+	
+	
+	
+		var texto = posts[post]['caption'];
+		var __id_caption = Titanium.UI.createLabel({
+			color:'#FFF',
+			text: texto,
+			font:{fontSize:12,fontFamily:'Helvetica Neue'},
+		    textAlign:'left',
+			top:14,
+			left:14,
+			width:274,
+			height:34,
+		});
+		__id_bg_caption.add(__id_caption);
 	
 	}
 
