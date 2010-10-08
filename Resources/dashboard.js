@@ -2,7 +2,7 @@ var win = Ti.UI.currentWindow;
 
 //RETRIEVING YQL OBJECT
 var yql = win.yql;
-var dashboard_data = yql.query("SELECT * FROM meme.user.dashboard");
+var dashboard_data = yql.query("SELECT * FROM meme.user.dashboard limit 30");
 Ti.API.debug("YQL DENTRO DO JS: " + dashboard_data);
 
 var scrollView = Ti.UI.createScrollView({
@@ -138,7 +138,7 @@ var miniPostView3 = Ti.UI.createView({
 Ti.API.debug("----------------------");
 var posts = dashboard_data['query']['results']['post'];
 var count = 0;
-var _xcount = -1;
+var _xcount = 0;
 var _yline = 0;
 var _y = 0;
 var _x = 0;
@@ -146,17 +146,18 @@ var __id;
 var __id_img;
 for (post in posts) {
 
+	_x = (_xcount * 317) + 35 + (_xcount * 5);
+	_y = (_yline * 241) + ((_yline+1) * 5);
 	count++;
+
 	if(count % 3 == 0){
 		_xcount = 0; // if it gets to 3, go back to zero
 		_yline++; //add another line
-		_y = (_yline * 241) + ((_yline+1) * 5);
 		
 	}else{
 		_xcount++;
 		
 	}
-	_x = (_xcount * 317) + 35 + (_xcount * 5);
 
 
 	//create a black box
