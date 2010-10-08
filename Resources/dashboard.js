@@ -22,12 +22,6 @@ var win = Ti.UI.currentWindow;
 //RETRIEVING YQL OBJECT
 var yql = win.yql;
 
-var tableView = Titanium.UI.createTableView({
-	backgroundColor: "transparent",
-	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
-	selectionStyle:'none'
-});
-
 
 // ===================================================
 // = CREATING POST VIEW TO EMBEDDED IN THE TABLEVIEW =
@@ -171,8 +165,15 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 // = FUNCTION TO BUILD DASHBOARD =
 // ===============================
 
+var tableView = Titanium.UI.createTableView({
+	backgroundColor: "transparent",
+	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
+	selectionStyle:'none'
+});
+
 function setData()
 {
+	
 	var data = [];
 	var count = 0;
 	
@@ -248,6 +249,8 @@ function setData()
 	tableView.setData([]);
 	tableView.setData(data);
 }
+
+
 
 win.add(tableView);
 

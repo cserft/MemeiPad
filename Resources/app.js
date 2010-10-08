@@ -40,8 +40,7 @@
 // If Authentication OK the Show Dashboard
  var showDashboard = function(yql) {
 	
-	var yqlMemeInfo = yql.query(yql_query_meme_info);
-	
+	var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=22,height=22)");
 	
 	// ========================
 	// = retrieving yql data =
