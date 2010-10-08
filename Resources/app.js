@@ -176,7 +176,7 @@
 		yql: yql,
 		zIndex: 5
 	});
-
+	winDashboard.dashboard = yqlMemeDashboard;
 	winDashboard.open();
 
  }

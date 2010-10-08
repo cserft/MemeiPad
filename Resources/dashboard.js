@@ -2,8 +2,8 @@ var win = Ti.UI.currentWindow;
 
 //RETRIEVING YQL OBJECT
 var yql = win.yql;
-
-Ti.API.debug("YQL DENTRO DO JS: " + yql.query("SELECT * FROM meme.user.dashboard"));
+var dashboard_data = yql.query("SELECT * FROM meme.user.dashboard");
+Ti.API.debug("YQL DENTRO DO JS: " + dashboard_data);
 
 var scrollView = Ti.UI.createScrollView({
 	backgroundColor:'transparent',
@@ -27,13 +27,13 @@ var label1 = Titanium.UI.createLabel({
 
 scrollView.add(label1);
 */
-var miniPostView = Ti.UI.createView({
+var miniPostView1 = Ti.UI.createView({
 	backgroundColor:'black',
 	width: 317,
 	height: 241,
 	left: 35
 });
-scrollView.add(miniPostView);
+scrollView.add(miniPostView1);
 
 
 var miniPostView_txt = Ti.UI.createView({
@@ -43,7 +43,7 @@ var miniPostView_txt = Ti.UI.createView({
 	top: 5,
 	left: 5
 });
-miniPostView.add(miniPostView_txt);
+//miniPostView.add(miniPostView_txt);
 
 	var img_quote = Titanium.UI.createImageView({
 		image:'images/minipost_txt_quote.png',
@@ -52,7 +52,7 @@ miniPostView.add(miniPostView_txt);
 		width:20,
 		height:18
 	});
-	miniPostView_txt.add(img_quote);
+	//miniPostView_txt.add(img_quote);
 	
 	var minipost_text = Titanium.UI.createLabel({
 		color:'#FFF',
@@ -64,7 +64,7 @@ miniPostView.add(miniPostView_txt);
 		width:217,
 		height:181
 	});
-	miniPostView_txt.add(minipost_text);
+	//miniPostView_txt.add(minipost_text);
 
 
 
@@ -74,7 +74,7 @@ var miniPostView2 = Ti.UI.createView({
 	height: 241,
 	left: 355
 });
-scrollView.add(miniPostView2);
+//scrollView.add(miniPostView2);
 
 	var miniPostView_img_post = Titanium.UI.createImageView({
 		image:'images/DUMMY_IMAGE.png',
@@ -83,7 +83,7 @@ scrollView.add(miniPostView2);
 		width:307,
 		height:231
 	});
-	miniPostView2.add(miniPostView_img_post);
+	//miniPostView2.add(miniPostView_img_post);
 	
 	
 	var miniPostView_img_bg_label = Titanium.UI.createView({
@@ -94,7 +94,7 @@ scrollView.add(miniPostView2);
 		height:64,
 		opacity:0.9 
 	});
-	miniPostView2.add(miniPostView_img_bg_label);
+	//miniPostView2.add(miniPostView_img_bg_label);
 
 	var minipost_img_txt_label = Titanium.UI.createLabel({
 		color:'#FFF',
@@ -106,7 +106,7 @@ scrollView.add(miniPostView2);
 		width:274,
 		height:34,
 	});
-	miniPostView_img_bg_label.add(minipost_img_txt_label);
+	//miniPostView_img_bg_label.add(minipost_img_txt_label);
 
 
 
@@ -117,7 +117,7 @@ var miniPostView3 = Ti.UI.createView({
 	height: 241,
 	left: 675
 });
-scrollView.add(miniPostView3);
+//scrollView.add(miniPostView3);
 
 	var miniPostView_video_post = Titanium.Media.createVideoPlayer({
 		setURL:'http://www.youtube.com/v/tPAFK_3nx9k?f=videos&app=youtube_gdata',
@@ -129,8 +129,72 @@ scrollView.add(miniPostView3);
 		width:307,
 		height:231
 	});
-	miniPostView3.add(miniPostView_video_post);
+	//miniPostView3.add(miniPostView_video_post);
 	
 	
 
+//Ti.API.debug("----------------------");
+//Ti.API.debug(dashboard_data);
+Ti.API.debug("----------------------");
+var posts = dashboard_data['query']['results']['post'];
+var count = 0;
+var _xcount = -1;
+var _yline = 0;
+var _y = 0;
+var _x = 0;
+var __id;
+var __id_img;
+for (post in posts) {
 
+	count++;
+	if(count % 3 == 0){
+		_xcount = 0; // if it gets to 3, go back to zero
+		_yline++; //add another line
+		_y = (_yline * 241) + ((_yline+1) * 5);
+		
+	}else{
+		_xcount++;
+		
+	}
+	_x = (_xcount * 317) + 35 + (_xcount * 5);
+
+
+	//create a black box
+	var __id = "minipost_view_"+count;
+	__id = Ti.UI.createView({
+		backgroundColor:'black',
+		width: 317,
+		height: 241,
+		left: _x,
+		top: _y
+	});
+	scrollView.add(__id);
+	//Add a black box
+
+
+	if(posts[post]['type'] == "photo") {
+		
+		var _image = posts[post]['content']['content'];
+		// create an image view
+		var __id_img = Titanium.UI.createImageView({
+			image: _image,
+			top:5,
+			left:5,
+			width:307,
+			height:231
+		});
+		__id.add(__id_img);
+		// add an image view to the black box
+
+		
+		
+	
+	} else if (posts[post]['type'] == "video") {
+	
+	}
+
+
+	Ti.API.debug(posts[post]);
+	Ti.API.debug("----");
+}
+Ti.API.debug("----------------------");
