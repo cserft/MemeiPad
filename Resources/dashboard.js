@@ -125,7 +125,7 @@ var win = Ti.UI.currentWindow;
 var yql = win.yql;
 
 //RETRIEVING YQL DASHBOARD DATA TO BUILD DE DASHBOARD
-var dashboard_data = yql.query("SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231)");
+var dashboard_data = yql.query("SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231) | unique(field='origin_pubid')");
 var posts = dashboard_data.query.results.post;	
 
 Ti.API.debug(" =================== YQL DENTRO DO JS: " + JSON.stringify(posts));
@@ -133,22 +133,22 @@ Ti.API.debug(" =================== YQL DENTRO DO JS: " + JSON.stringify(posts));
 
 var data = [];
 
-
-
 var count = 0;
-var __id;
 var __id_img;
 var __id_bg_caption;
 var __id_caption;
 
 
+// ===================================================
+// = CREATING POST VIEW TO EMBEDDED IN THE TABLEVIEW =
+// ===================================================
 
 var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 {
 	//create a black box
 	
 	var blackBoxView = "blackBoxView" + pColumn;
-	Ti.API.debug("blackBoxView: " + blackBoxView);
+	// Ti.API.debug("blackBoxView: " + blackBoxView);
 	
 	var blackBoxView = Ti.UI.createView({
 		backgroundColor:'black',
@@ -198,8 +198,40 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 			width:307,
 			height:231
 		});
-		blackBoxView.add(postImageView);	
+		blackBoxView.add(postImageView);
+		
+		Ti.API.info('Image width: ' + postImageView.toImage().width);	
 	}
+	
+	// create an Text view
+	
+	if(pType == "text"){
+
+        var img_quote = Titanium.UI.createImageView({
+            image:'images/minipost_txt_quote.png',
+            top:25,
+            left:15,
+            width:20,
+            height:18
+        });
+        blackBoxView.add(img_quote);
+
+       var pContent = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+
+       var minipost_text = Titanium.UI.createLabel({
+           color:'#FFF',
+           text: pContent,
+           //minimumFontSize:12,
+           font:{fontSize:18,fontFamily:'Helvetica Neue'},
+           textAlign:'left',
+           top:20,
+           left:50,
+           width:217,
+           height:181
+       });
+       blackBoxView.add(minipost_text);
+   }
+	
 
 	// add an image view to the black box
 	
