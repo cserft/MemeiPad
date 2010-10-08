@@ -15,108 +15,6 @@ var win = Ti.UI.currentWindow;
 // = LAYOUT POSTS =
 // ================
 
-// var miniPostView1 = Ti.UI.createView({
-// 	backgroundColor:'black',
-// 	width: 317,
-// 	height: 241,
-// 	left: 35
-// });
-// scrollView.add(miniPostView1);
-// 
-// 
-// var miniPostView_txt = Ti.UI.createView({
-// 	backgroundColor:'#141414',
-// 	width: 307,
-// 	height: 231,
-// 	top: 5,
-// 	left: 5
-// });
-// miniPostView1.add(miniPostView_txt);
-// 
-// 	var img_quote = Titanium.UI.createImageView({
-// 		image:'images/minipost_txt_quote.png',
-// 		top:25,
-// 		left:15,
-// 		width:20,
-// 		height:18
-// 	});
-// 	miniPostView_txt.add(img_quote);
-// 	
-// 	var minipost_text = Titanium.UI.createLabel({
-// 		color:'#FFF',
-// 		text: 'The new iPod touch is almost like an iPhone 4, without the phone. Even thinner than the original, it has a Retina display, Apple A4 processor, gyroscope, and a digital camera, both on the back  A4 processor, gyroscope, and a digital can thinner than the original, it has a Retina display, Apple A4 processor, gyroscope, and a digital camera, both on the back and for...',
-// 		font:{fontSize:12,fontFamily:'Helvetica Neue'},
-// 	    textAlign:'left',
-// 		top:15,
-// 		left:50,
-// 		width:217,
-// 		height:181
-// 	});
-// 	miniPostView_txt.add(minipost_text);
-// 
-// 
-// 
-// var miniPostView2 = Ti.UI.createView({
-// 	backgroundColor:'black',
-// 	width: 317,
-// 	height: 241,
-// 	left: 355
-// });
-// scrollView.add(miniPostView2);
-// 
-// 	var miniPostView_img_post = Titanium.UI.createImageView({
-// 		image:'images/DUMMY_IMAGE.png',
-// 		top:5,
-// 		left:5,
-// 		width:307,
-// 		height:231
-// 	});
-// 	miniPostView2.add(miniPostView_img_post);
-// 	
-// 	
-// 	var miniPostView_img_bg_label = Titanium.UI.createView({
-// 		backgroundColor:'#000',
-// 		top:177,
-// 		left:5,
-// 		width:307,
-// 		height:64,
-// 		opacity:0.9 
-// 	});
-// 	miniPostView2.add(miniPostView_img_bg_label);
-// 
-// 	var minipost_img_txt_label = Titanium.UI.createLabel({
-// 		color:'#FFF',
-// 		text: 'The new iPod touch is almost like an iPhone 4, without the phone. Even thinner than the original, it has a Retina display, App',
-// 		font:{fontSize:12,fontFamily:'Helvetica Neue'},
-// 	    textAlign:'left',
-// 		top:14,
-// 		left:14,
-// 		width:274,
-// 		height:34,
-// 	});
-// 	miniPostView_img_bg_label.add(minipost_img_txt_label);
-// 
-// 
-// var miniPostView3 = Ti.UI.createView({
-// 	backgroundColor:'black',
-// 	width: 317,
-// 	height: 241,
-// 	left: 675
-// });
-// scrollView.add(miniPostView3);
-// 
-// 	var miniPostView_video_post = Titanium.Media.createVideoPlayer({
-// 		setURL:'http://www.youtube.com/v/tPAFK_3nx9k?f=videos&app=youtube_gdata',
-// 		backgroundColor:'#111',
-// 		movieControlMode:Titanium.Media.VIDEO_CONTROL_DEFAULT,
-// 		scalingMode:Titanium.Media.VIDEO_SCALING_MODE_FILL,
-// 		top:5,
-// 		left:5,
-// 		width:307,
-// 		height:231
-// 	});
-// 	miniPostView3.add(miniPostView_video_post);
-
 // =======================
 // = DASHBOARD TABLEVIEW =
 // =======================
@@ -124,19 +22,11 @@ var win = Ti.UI.currentWindow;
 //RETRIEVING YQL OBJECT
 var yql = win.yql;
 
-//RETRIEVING YQL DASHBOARD DATA TO BUILD DE DASHBOARD
-var dashboard_data = yql.query("SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231) | unique(field='origin_pubid')");
-var posts = dashboard_data.query.results.post;	
-
-Ti.API.debug(" =================== YQL DENTRO DO JS: " + JSON.stringify(posts));
-
-
-var data = [];
-
-var count = 0;
-var __id_img;
-var __id_bg_caption;
-var __id_caption;
+var tableView = Titanium.UI.createTableView({
+	backgroundColor: "transparent",
+	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
+	selectionStyle:'none'
+});
 
 
 // ===================================================
@@ -145,7 +35,11 @@ var __id_caption;
 
 var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 {
-	//create a black box
+	var __id_img;
+	var __id_bg_caption;
+	var __id_caption;
+	
+	//create a black box view
 	
 	var blackBoxView = "blackBoxView" + pColumn;
 	// Ti.API.debug("blackBoxView: " + blackBoxView);
@@ -157,10 +51,10 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 		top: 5
 	});
 	
+	// Sets the proper Column Left position
 	if (pColumn == 0){
 		
-		blackBoxView.left = 35;
-		
+		blackBoxView.left = 35;	
 	}
 	else if (pColumn == 1){
 		
@@ -169,7 +63,6 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 	} else if (pColumn == 2){
 		
 		blackBoxView.left = 675;
-		
 	}
 	
 	// create an post view
@@ -187,12 +80,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 	// create an Video view
 	if (pType == "video"){	
 		
-		
-		
-		//Retrieve Thum from YouTube Video	
 		var youtubeid = pContent.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
         var _videoThumb = "http://img.youtube.com/vi/" + youtubeid + "/0.jpg";
-		
+	
 		var postImageView = Titanium.UI.createImageView({
 			image: _videoThumb,
 			top:5,
@@ -201,7 +91,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 			height:231
 		});
 		blackBoxView.add(postImageView);
-		
+	
         var img_play_btn = Titanium.UI.createImageView({
             image:'images/minipost_play_icon.png',
             top:60,
@@ -211,8 +101,6 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
         });
         blackBoxView.add(img_play_btn);
 
-		
-		Ti.API.info('Image width: ' + postImageView.toImage().width);	
 	}
 	
 	// create an Text view
@@ -228,11 +116,11 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
         });
         blackBoxView.add(img_quote);
 
-       var pContent = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+       var pContentStripado = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
 
        var minipost_text = Titanium.UI.createLabel({
            color:'#FFF',
-           text: pContent,
+           text: pContentStripado,
            //minimumFontSize:12,
            font:{fontSize:18,fontFamily:'Helvetica Neue'},
            textAlign:'left',
@@ -244,8 +132,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
        blackBoxView.add(minipost_text);
    }
 	
-
-	// add an image view to the black box
+	// add the Caption to the BlackBox
 	
 	if (pCaption != undefined && pCaption.length >0 && pCaption != "") {
 	
@@ -275,73 +162,92 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 		__id_bg_caption.add(__id_caption);
 	}
 	
+	//Returns the BlackBoxView Obj with the complete design
 	return(blackBoxView);
 	
 }
 
-//Ti.API.debug("POsts Lenght: ");
+// ===============================
+// = FUNCTION TO BUILD DASHBOARD =
+// ===============================
 
-// create THE TABLE ROWS
-for (var k=0; k < posts.length; k++)
+function setData()
 {
-	Ti.API.debug("Entered on POst Loop");
+	var data = [];
+	var count = 0;
 	
-	var post = posts[k];
-	var _caption = post.caption;
-	var _pubId = post.pubid;
-	var _postUrl = post.url;
-	var _type = post.type;
-	// var _videoUrl = posts
-	
-	if (_type == "photo")
-	{
-		var _content = post.content.thumb;
-		
-	} else if (_type == "video")
-	{
-		var _content = post.content;
-		
-	} else if (_type == "text")
-	{
-		var _content = post.content;
-		
-	} else if (_type == "comment") {
-		
-		var _caption = post.comment;
-	} else {
-		
-		var _content = "";
-	}
-	
-	
-    if (count == 0) {
-		var row = Ti.UI.createTableViewRow();
-		row.height = 245;
-		row.className = 'datarow';
-		row.clickName = 'row';
-	}
-	
-	var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count);	
-	row.add(postView);
+	//RETRIEVING YQL DASHBOARD DATA TO BUILD DE DASHBOARD
+	var dashboard_data = yql.query("SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231) | unique(field='origin_pubid')");
+	var posts = dashboard_data.query.results.post;	
 
-	count++;
+	 Ti.API.debug(" =================== YQL DENTRO DO JS: " + JSON.stringify(posts));
 	
-	// Verifies if it is the third post and closes the row
-	if (count == 3){
-		
-		data.push(row);
-	 	count = 0;
+	// create THE TABLE ROWS
+	for (var k=0; k < posts.length; k++)
+	{
+		var post = posts[k];
+		var _caption = post.caption;
+		var _pubId = post.pubid;
+		var _postUrl = post.url;
+		var _type = post.type;
+
+		// Checks the types of posts and then sets the proper content
+		switch(_type)
+		{
+			case 'photo':
+			{
+				var _content = post.content.thumb;				
+				break;
+			}
+			case 'video':
+			{
+				var _content = post.content;
+
+				//IF VIMEO 
+				if (_content.indexOf("vimeo") != -1)
+				{
+					continue;
+				}
+				break;
+			}
+			case 'text':
+			{
+				var _content = post.content;
+				break;
+			}
+			case 'comment':
+			{
+				var _caption = post.comment;
+				break;
+			}
+		}
+	
+		// Creates the ROW
+	    if (count == 0) {
+			var row = Ti.UI.createTableViewRow();
+			row.height = 245;
+			row.className = 'datarow';
+			row.clickName = 'row';
+		}
+	
+		// Adds the post view
+		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count);	
+		row.add(postView);
+
+		count++;
+	
+		// Verifies if it is the third post and closes the row
+		if (count == 3){
+			
+			data.push(row);
+		 	count = 0;
+
+		}
 
 	}
-
+	tableView.setData([]);
+	tableView.setData(data);
 }
-
-var tableView = Titanium.UI.createTableView({
-	backgroundColor: "transparent",
-	data:data,
-	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
-	selectionStyle:'none'
-});
 
 win.add(tableView);
 
@@ -355,3 +261,146 @@ var dashboardShadow = Titanium.UI.createImageView({
 	zIndex:999
 });
 win.add(dashboardShadow);
+
+// ===================
+// = PULL TO REFRESH =
+// ===================
+function formatDate()
+{
+	var date = new Date;
+	var datestr = date.getMonth()+'/'+date.getDate()+'/'+date.getFullYear();
+	if (date.getHours()>=12)
+	{
+		datestr+=' '+(date.getHours()==12 ? date.getHours() : date.getHours()-12)+':'+date.getMinutes()+' PM';
+	}
+	else
+	{
+		datestr+=' '+date.getHours()+':'+date.getMinutes()+' AM';
+	}
+	return datestr;
+}
+
+
+var border = Ti.UI.createView({
+	backgroundColor:"black",
+	height:2,
+	bottom:0
+})
+
+var tableHeader = Ti.UI.createView({
+	backgroundColor:"black",
+	width:1024,
+	height:60
+});
+
+// fake it til ya make it..  create a 2 pixel
+// bottom border
+tableHeader.add(border);
+
+var arrow = Ti.UI.createView({
+	backgroundImage:"images/whiteArrow.png",
+	width:23,
+	height:60,
+	bottom:10,
+    left:350
+});
+
+var actInd = Titanium.UI.createActivityIndicator({
+	left:350,
+	bottom:13,
+	width:30,
+	height:30
+});
+
+
+var statusLabel = Ti.UI.createLabel({
+	text:"Pull to reload",
+	// left:55,
+	width:200,
+	bottom:30,
+	height:"auto",
+	color:"Gray",
+	textAlign:"center",
+	font:{fontSize:13,fontWeight:"bold"}
+});
+
+var lastUpdatedLabel = Ti.UI.createLabel({
+	text:"Last Updated: "+formatDate(),
+	// left:55,
+	width:200,
+	bottom:15,
+	height:"auto",
+	color:"Gray",
+	textAlign:"center",
+	font:{fontSize:12}
+});
+
+
+tableHeader.add(arrow);
+tableHeader.add(statusLabel);
+tableHeader.add(lastUpdatedLabel);
+tableHeader.add(actInd);
+
+tableView.headerPullView = tableHeader;
+
+var pulling = false;
+var reloading = false;
+
+function beginReloading()
+{
+	tableView.setData([]);
+	setTimeout(function()
+	{	
+		setData();
+	},1000)
+	
+	setTimeout(endReloading,3000);
+}
+
+function endReloading()
+{
+	// when you're done, just reset
+	tableView.setContentInsets({top:0},{animated:true});
+	reloading = false;
+	lastUpdatedLabel.text = "Last Updated: "+formatDate();
+	statusLabel.text = "Pull down to refresh...";
+	actInd.hide();
+	arrow.show();
+}
+
+tableView.addEventListener('scroll',function(e)
+{
+	var offset = e.contentOffset.y;
+	if (offset <= -65.0 && !pulling)
+	{
+		var t = Ti.UI.create2DMatrix();
+		t = t.rotate(-180);
+		pulling = true;
+		arrow.animate({transform:t,duration:180});
+		statusLabel.text = "Release to refresh...";
+	}
+	else if (pulling && offset > -65.0 && offset < 0)
+	{
+		pulling = false;
+		var t = Ti.UI.create2DMatrix();
+		arrow.animate({transform:t,duration:180});
+		statusLabel.text = "Pull down to refresh...";
+	}
+});
+
+tableView.addEventListener('scrollEnd',function(e)
+{
+	if (pulling && !reloading && e.contentOffset.y <= -65.0)
+	{
+		reloading = true;
+		pulling = false;
+		arrow.hide();
+		actInd.show();
+		statusLabel.text = "Reloading...";
+		tableView.setContentInsets({top:60},{animated:true});
+		arrow.transform=Ti.UI.create2DMatrix();
+		beginReloading();
+	}
+});
+
+setData();
