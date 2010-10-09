@@ -1,12 +1,14 @@
-- Refresh oAuth Token (verify expiration)
-- get user Y!ID 
+
 - How to hold the splash Screen for more time.
-- Retrieve YQL XML response
-- FIx the Authentication Window (modal and Fullscreen)
 - Logout btn
 - Change YDN App description and iCONS
 - Create a Website for the App
 - icons and descriptions on YDN Site
+- Vimeo Playback
+- Comments
+- Paginação Dashboard
+- Click to Detail
+- Post Detail View
 
 // //Ti.API.debug("----------------------");
 // //Ti.API.debug(dashboard_data);

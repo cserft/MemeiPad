@@ -27,7 +27,7 @@ var yql = win.yql;
 // = CREATING POST VIEW TO EMBEDDED IN THE TABLEVIEW =
 // ===================================================
 
-var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
+var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, pGuid)
 {
 	var __id_img;
 	var __id_bg_caption;
@@ -42,7 +42,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 		backgroundColor:'black',
 		width: 317,
 		height: 241,
-		top: 5
+		top: 5,
+		pubId:pPubId,
+		guid:pGuid
 	});
 	
 	// Sets the proper Column Left position
@@ -66,7 +68,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 			top:5,
 			left:5,
 			width:307,
-			height:"auto"
+			height:"auto",
+			clickName:"Photo"
 		});
 		blackBoxView.add(postImageView);	
 	}
@@ -82,7 +85,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 			top:5,
 			left:5,
 			width:307,
-			height:231
+			height:231,
+			clickName:pPubId
 		});
 		blackBoxView.add(postImageView);
 	
@@ -106,7 +110,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
             top:25,
             left:15,
             width:20,
-            height:18
+            height:18,
+			clickName:pPubId
         });
         blackBoxView.add(img_quote);
 
@@ -121,7 +126,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
            top:20,
            left:50,
            width:217,
-           height:181
+           height:181,		
+		   clickName:"Post Text"
        });
        blackBoxView.add(minipost_text);
    }
@@ -152,6 +158,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 			left:14,
 			width:274,
 			height:34,
+			clickName:"Caption"
 		});
 		__id_bg_caption.add(__id_caption);
 	}
@@ -164,12 +171,6 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn)
 // ===============================
 // = FUNCTION TO BUILD DASHBOARD =
 // ===============================
-
-var tableView = Titanium.UI.createTableView({
-	backgroundColor: "transparent",
-	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
-	selectionStyle:'none'
-});
 
 function setData()
 {
@@ -186,11 +187,12 @@ function setData()
 	// create THE TABLE ROWS
 	for (var k=0; k < posts.length; k++)
 	{
-		var post = posts[k];
-		var _caption = post.caption;
-		var _pubId = post.pubid;
-		var _postUrl = post.url;
-		var _type = post.type;
+		var post 		= posts[k];
+		var _caption 	= post.caption;
+		var _pubId 		= post.pubid;
+		var _postUrl 	= post.url;
+		var _type 		= post.type;
+		var _guid 		= post.guid;
 
 		// Checks the types of posts and then sets the proper content
 		switch(_type)
@@ -228,11 +230,11 @@ function setData()
 			var row = Ti.UI.createTableViewRow();
 			row.height = 245;
 			row.className = 'datarow';
-			row.clickName = 'row';
+			//row.clickName = 'row';
 		}
 	
 		// Adds the post view
-		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count);	
+		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count, _guid);	
 		row.add(postView);
 
 		count++;
@@ -246,13 +248,31 @@ function setData()
 		}
 
 	}
-	tableView.setData([]);
+	//Sets the new Table with updated Posts
 	tableView.setData(data);
 }
 
+var tableView = Titanium.UI.createTableView({
+	backgroundColor: "transparent",
+	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
+	selectionStyle:'none'
+});
 
 
 win.add(tableView);
+
+// ==================
+// = CLICK LISTENER =
+// ==================
+
+tableView.addEventListener('click', function(e)
+{
+	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+	// use rowNum property on object to get row number
+	// var rowNum = e.index;
+	// var updateRow = createUpdateRow('You clicked on the '+e.source.clickName);
+	// tableView.updateRow(rowNum,updateRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.LEFT});	
+})
 
 var dashboardShadow = Titanium.UI.createImageView({
 	image:'images/shadow.png',
