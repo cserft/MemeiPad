@@ -172,8 +172,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 // = FUNCTION TO BUILD DASHBOARD =
 // ===============================
 
-function setData()
+function setTableViewData()
 {
+<<<<<<< HEAD
 	
 	var data = [];
 	var count = 0;
@@ -226,10 +227,46 @@ function setData()
 		}
 	
 		// Creates the ROW
+=======
+
+		
+	
+	Ti.API.debug("Entered on POst Loop");
+	
+	var post = posts[k];
+	var _caption = post.caption;
+	var _pubId = post.pubid;
+	var _postUrl = post.url;
+	var _type = post.type;
+	// var _videoUrl = posts
+		
+	if (_type != "comment") {
+
+
+		if (_type == "photo")
+		{
+			var _content = post.content.thumb;
+			
+		} else if (_type == "video")
+		{
+			var _content = post.content;
+			
+		} else if (_type == "text")
+		{
+			var _content = post.content;
+			
+		} else {
+			
+			var _content = "";
+		}
+		
+		
+>>>>>>> 847cd2d57914f8e151206be31a79aca705fba7be
 	    if (count == 0) {
 			var row = Ti.UI.createTableViewRow();
 			row.height = 245;
 			row.className = 'datarow';
+<<<<<<< HEAD
 			//row.clickName = 'row';
 		}
 	
@@ -239,17 +276,36 @@ function setData()
 
 		count++;
 	
+=======
+			row.clickName = 'row';
+		}
+		
+		
+		
+		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count);	
+		row.add(postView);
+	
+		count++;
+		
+>>>>>>> 847cd2d57914f8e151206be31a79aca705fba7be
 		// Verifies if it is the third post and closes the row
 		if (count == 3){
 			
 			data.push(row);
 		 	count = 0;
+<<<<<<< HEAD
 
 		}
 
 	}
 	//Sets the new Table with updated Posts
 	tableView.setData(data);
+=======
+	
+		}
+
+	}
+>>>>>>> 847cd2d57914f8e151206be31a79aca705fba7be
 }
 
 var tableView = Titanium.UI.createTableView({
@@ -374,7 +430,7 @@ function beginReloading()
 	tableView.setData([]);
 	setTimeout(function()
 	{	
-		setData();
+		setTableViewData();
 	},1000)
 	
 	setTimeout(endReloading,3000);
@@ -426,4 +482,4 @@ tableView.addEventListener('scrollEnd',function(e)
 	}
 });
 
-setData();
+setTableViewData();
