@@ -185,8 +185,8 @@ var OAuthAdapter = function(pService, authorize)
 	var maybeRefreshToken = function(timedToken) {
 		var token = timedToken.token;
 		var now   = timestamp();
-		if (timedToken.timestamp+token.oauth_expires_in >= now) {
-			Ti.API.debug("Woo! Refreshing token ...");
+		if (timedToken.timestamp+token.oauth_expires_in <= now) {
+			Ti.API.debug("Woo! Refreshing oAuth token ...");
 			var newToken = accessToken(token);
 			saveToken(newToken);
 			return(newToken);
