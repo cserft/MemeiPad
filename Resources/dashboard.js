@@ -52,9 +52,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		backgroundColor:'black',
 		width: 317,
 		height: 241,
-		top: 5,
-		pubId:pPubId,
-		guid:pGuid
+		top: 5
+		//pubId:pPubId,
+		//guid:pGuid
 	});
 	
 	// Sets the proper Column Left position
@@ -95,7 +95,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			top:5,
 			left:5,
 			width:307,
-			height:'auto',
+			height:231,
 			clickName:pPubId
 		});
 		blackBoxView.add(postImageView);
@@ -172,6 +172,22 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		});
 		__id_bg_caption.add(__id_caption);
 	}
+	
+	//Creating the new 
+	var blackBoxLink = "blackBoxLink" + pColumn;
+	// Ti.API.debug("blackBoxView: " + blackBoxView);
+	
+	var blackBoxLink = Ti.UI.createView({
+		backgroundColor:'transparent',
+		width: 317,
+		height: 241,
+		top: 0,
+		pubId:pPubId,
+		guid:pGuid,
+		zindex:99
+	});
+	blackBoxView.add(blackBoxLink);
+	
 	
 	//Returns the BlackBoxView Obj with the complete design
 	return(blackBoxView);
