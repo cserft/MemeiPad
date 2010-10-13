@@ -22,6 +22,16 @@ var win = Ti.UI.currentWindow;
 //RETRIEVING YQL OBJECT
 var yql = win.yql;
 
+// Creating the List Post Table View
+
+var tableView = Titanium.UI.createTableView({
+	backgroundColor: "transparent",
+	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
+	selectionStyle:'none'
+});
+
+
+win.add(tableView);
 
 // ===================================================
 // = CREATING POST VIEW TO EMBEDDED IN THE TABLEVIEW =
@@ -68,7 +78,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			top:5,
 			left:5,
 			width:307,
-			height:"auto",
+			height:'auto',
 			clickName:"Photo"
 		});
 		blackBoxView.add(postImageView);	
@@ -85,7 +95,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			top:5,
 			left:5,
 			width:307,
-			height:231,
+			height:'auto',
 			clickName:pPubId
 		});
 		blackBoxView.add(postImageView);
@@ -174,8 +184,6 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 
 function setTableViewData()
 {
-<<<<<<< HEAD
-	
 	var data = [];
 	var count = 0;
 	
@@ -188,6 +196,14 @@ function setTableViewData()
 	// create THE TABLE ROWS
 	for (var k=0; k < posts.length; k++)
 	{
+	
+		if (count == 0) {
+			var row = Ti.UI.createTableViewRow();
+			row.height = 245;
+			row.className = 'datarow';
+			//row.clickName = 'row';
+		}
+		
 		var post 		= posts[k];
 		var _caption 	= post.caption;
 		var _pubId 		= post.pubid;
@@ -196,126 +212,68 @@ function setTableViewData()
 		var _guid 		= post.guid;
 
 		// Checks the types of posts and then sets the proper content
-		switch(_type)
-		{
-			case 'photo':
+		// We don't render Video Videos and Comments
+		
+		if (_type != "comment"){
+			
+			switch(_type)
 			{
-				var _content = post.content.thumb;				
-				break;
-			}
-			case 'video':
-			{
-				var _content = post.content;
-
-				//IF VIMEO 
-				if (_content.indexOf("vimeo") != -1)
+				case 'photo':
 				{
-					continue;
+					var _content = post.content.thumb;				
+					break;
 				}
-				break;
-			}
-			case 'text':
-			{
-				var _content = post.content;
-				break;
-			}
-			case 'comment':
-			{
-				var _caption = post.comment;
-				break;
-			}
-		}
-	
-		// Creates the ROW
-=======
+				case 'video':
+				{
+					var _content = post.content;
 
-		
-	
-	Ti.API.debug("Entered on POst Loop");
-	
-	var post = posts[k];
-	var _caption = post.caption;
-	var _pubId = post.pubid;
-	var _postUrl = post.url;
-	var _type = post.type;
-	// var _videoUrl = posts
-		
-	if (_type != "comment") {
+					//IF VIMEO 
+					// if (_content.indexOf("vimeo") != -1)
+					// {
+					// 	continue;
+					// }
+					
+					break;
+				}
+				case 'text':
+				{
+					var _content = post.content;
+					
+					//Ti.API.debug("Conteudo do Post de Texto: " + _content);
+					
+					break;
+				}
 
-
-		if (_type == "photo")
-		{
-			var _content = post.content.thumb;
-			
-		} else if (_type == "video")
-		{
-			var _content = post.content;
-			
-		} else if (_type == "text")
-		{
-			var _content = post.content;
+			}
 			
 		} else {
+		
+			//IF Type == Comment then break the current Loop and move to the next post item.
+			continue;
 			
-			var _content = "";
-		}
-		
-		
->>>>>>> 847cd2d57914f8e151206be31a79aca705fba7be
-	    if (count == 0) {
-			var row = Ti.UI.createTableViewRow();
-			row.height = 245;
-			row.className = 'datarow';
-<<<<<<< HEAD
-			//row.clickName = 'row';
 		}
 	
-		// Adds the post view
+		// Adds the post view to a ROW
 		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count, _guid);	
 		row.add(postView);
 
 		count++;
 	
-=======
-			row.clickName = 'row';
-		}
-		
-		
-		
-		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count);	
-		row.add(postView);
-	
-		count++;
-		
->>>>>>> 847cd2d57914f8e151206be31a79aca705fba7be
+
 		// Verifies if it is the third post and closes the row
 		if (count == 3){
 			
 			data.push(row);
 		 	count = 0;
-<<<<<<< HEAD
 
 		}
-
-	}
+		
+	} //End FOR loop
+	
 	//Sets the new Table with updated Posts
 	tableView.setData(data);
-=======
-	
-		}
-
-	}
->>>>>>> 847cd2d57914f8e151206be31a79aca705fba7be
 }
 
-var tableView = Titanium.UI.createTableView({
-	backgroundColor: "transparent",
-	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
-	selectionStyle:'none'
-});
-
-
-win.add(tableView);
 
 // ==================
 // = CLICK LISTENER =
@@ -427,7 +385,7 @@ var reloading = false;
 
 function beginReloading()
 {
-	tableView.setData([]);
+	//tableView.setData([]);
 	setTimeout(function()
 	{	
 		setTableViewData();
