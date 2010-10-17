@@ -10,10 +10,13 @@ var win = Ti.UI.currentWindow;
 // });
 //win.add(scrollView);
 
+//Set current timestamp
 
-// ================
-// = LAYOUT POSTS =
-// ================
+var timestamp = function() {
+	return((new Date()).getTime());
+};
+
+var now   = timestamp();
 
 // =======================
 // = DASHBOARD TABLEVIEW =
@@ -33,6 +36,41 @@ var tableView = Titanium.UI.createTableView({
 
 win.add(tableView);
 
+
+// ================================
+// = GET LAST DASHBOARD TIMESTAMP =
+// ================================
+
+// var getLastItem = function(){
+// 	var yqldata = yql.query("SELECT timestamp FROM meme.user.dashboard | tail(count=1)");
+// 	var last_timestamp = yqldata.query.results.post.timestamp;	
+// 
+// 	//Ti.API.debug(" ============= Last Timestamp on Dashboard: " + last_timestamp);
+// 	
+// 	return(last_timestamp);
+// 	
+// }
+// 
+// getLastItem();
+
+/*
+
+SELECT * FROM meme.user.dashboard WHERE start_timestamp IN (
+	SELECT timestamp FROM meme.user.dashboard WHERE start_timestamp IN (
+		SELECT timestamp FROM meme.user.dashboard |tail(count=1) // ultimo timestamp do primeiro dashboard
+	)|tail(count=1) | tail(count=9)
+) | tail(count=1)
+
+// tras o segundo page do dashboard
+SELECT * FROM meme.user.dashboard WHERE start_timestamp IN (SELECT timestamp FROM meme.user.dashboard |tail(count=1)) | tail (count=9)
+
+SELECT * FROM meme.user.dashboard WHERE start_timestamp IN (SELECT timestamp FROM meme.user.dashboard WHERE start_timestamp IN (SELECT timestamp FROM meme.user.dashboard |tail(count=1)) |tail(count=1)) | tail (count=9)
+
+
+*/
+
+
+
 // ===================================================
 // = CREATING POST VIEW TO EMBEDDED IN THE TABLEVIEW =
 // ===================================================
@@ -43,18 +81,17 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	var __id_bg_caption;
 	var __id_caption;
 	
-	//create a black box view
+	//create a black box view with a unique name including the PubId
 	
-	var blackBoxView = "blackBoxView" + pColumn;
-	// Ti.API.debug("blackBoxView: " + blackBoxView);
+	var blackBoxView = "blackBoxView_" + pPubId;
+	 Ti.API.debug("blackBoxView: " + blackBoxView);
 	
 	var blackBoxView = Ti.UI.createView({
 		backgroundColor:'black',
 		width: 317,
 		height: 241,
-		top: 5
-		//pubId:pPubId,
-		//guid:pGuid
+		top: 5,
+		className:"basicBackBoxView"
 	});
 	
 	// Sets the proper Column Left position
@@ -78,8 +115,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			top:5,
 			left:5,
 			width:307,
-			height:'auto',
-			clickName:"Photo"
+			height:'auto'
 		});
 		blackBoxView.add(postImageView);	
 	}
@@ -95,8 +131,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			top:5,
 			left:5,
 			width:307,
-			height:231,
-			clickName:pPubId
+			height:231
 		});
 		blackBoxView.add(postImageView);
 	
@@ -120,8 +155,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
             top:25,
             left:15,
             width:20,
-            height:18,
-			clickName:pPubId
+            height:18
         });
         blackBoxView.add(img_quote);
 
@@ -136,8 +170,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
            top:20,
            left:50,
            width:217,
-           height:181,		
-		   clickName:"Post Text"
+           height:181
        });
        blackBoxView.add(minipost_text);
    }
@@ -162,13 +195,15 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		var __id_caption = Titanium.UI.createLabel({
 			color:'#FFF',
 			text: pCaptionStripped,
-			font:{fontSize:12,fontFamily:'Helvetica Neue'},
+			font:{
+				fontSize:12,
+				fontFamily:'Helvetica Neue'
+			},
 		    textAlign:'left',
 			top:14,
 			left:14,
 			width:274,
-			height:34,
-			clickName:"Caption"
+			height:34
 		});
 		__id_bg_caption.add(__id_caption);
 	}
@@ -198,40 +233,88 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 // = FUNCTION TO BUILD DASHBOARD =
 // ===============================
 
-function setTableViewData()
-{
-	var data = [];
-	var count = 0;
-	
-	//RETRIEVING YQL DASHBOARD DATA TO BUILD DE DASHBOARD
-	var dashboard_data = yql.query("SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231) | unique(field='origin_pubid')");
-	var posts = dashboard_data.query.results.post;	
+// Creates an empty array to handle the Unique PubIDs from posts to show on Dashboard
+var pubIdList = [];
 
-	 Ti.API.debug(" =================== YQL DENTRO DO JS: " + JSON.stringify(posts));
+//defines the variable that will hold the last timestamp from a given dashboard query
+var lastTimestamp;
+
+
+var getDashboardData = function (pTimestamp){
+	if (pTimestamp == null)
+	{
+		lastRow = 0;
+		var data = [];
+		
+		yqlQuery = "SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231)";
+		
+	} else {
 	
+		Ti.API.info(" ####### STARTING UPDATE 'PRA BAIXO' QUERY ##########");
+		
+		yqlQuery = "SELECT * from meme.user.dashboard where start_timestamp =" + (pTimestamp) + " | meme.functions.thumbs(width=307,height=231)";
+
+	}
+	
+	var itemPerRowCount = 0;
+	
+	
+	Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
+
+	var yqldata = yql.query(yqlQuery);
+	var posts = yqldata.query.results.post;
+
+	//Defines the last post timestamp so we can paginate the Dashboard
+	lastTimestamp = posts[(posts.length - 1)].timestamp;
+	Ti.API.debug("last Time Stamp: " + lastTimestamp );
+
+
 	// create THE TABLE ROWS
 	for (var k=0; k < posts.length; k++)
 	{
-	
-		if (count == 0) {
+
+		if (itemPerRowCount == 0) {
 			var row = Ti.UI.createTableViewRow();
 			row.height = 245;
-			row.className = 'datarow';
+			row.className = 'dashboardTableRow';
 			//row.clickName = 'row';
 		}
-		
+
 		var post 		= posts[k];
 		var _caption 	= post.caption;
 		var _pubId 		= post.pubid;
 		var _postUrl 	= post.url;
 		var _type 		= post.type;
 		var _guid 		= post.guid;
+		var _originPubId = post.origin_pubid;
+		
+		// 	//verify and removes the repost repetition in the Dashboard
+		// 	// 
+		// 	// if (pubIdList.indexOf(_pubId) != -1 && pubIdList.indexOf(_originPubId) != -1) {
+		// 	// 	
+		// 	// 	if (_originPubId != null && pubIdList.indexOf(_originPubId) == -1){
+		// 	// 
+		// 	// 		pubIdList.push(_originPubId);
+		// 	// 
+		// 	// 	} else if (_originPubId == null && pubIdList.indexOf(_pubId) == -1){
+		// 	// 
+		// 	// 		pubIdList.push(_pubId);
+		// 	// 	}
+		// 	// 	
+		// 	// } else {
+		// 	// 
+		// 	// 	continue;
+		// 	// }
+
+
+		// Ti.API.info("Content of the pubIdList: " + JSON.stringify(pubIdList));
+
 
 		// Checks the types of posts and then sets the proper content
 		// We don't render Video Videos and Comments
-		
+
 		if (_type != "comment"){
-			
+
 			switch(_type)
 			{
 				case 'photo':
@@ -244,52 +327,73 @@ function setTableViewData()
 					var _content = post.content;
 
 					//IF VIMEO 
-					// if (_content.indexOf("vimeo") != -1)
-					// {
-					// 	continue;
-					// }
-					
+					if (_content.indexOf("vimeo") != -1)
+					{
+						continue;
+					}
+
 					break;
 				}
 				case 'text':
 				{
 					var _content = post.content;
-					
+
 					//Ti.API.debug("Conteudo do Post de Texto: " + _content);
-					
+
 					break;
 				}
 
 			}
-			
+
 		} else {
-		
+
 			//IF Type == Comment then break the current Loop and move to the next post item.
 			continue;
-			
+
 		}
-	
+
 		// Adds the post view to a ROW
-		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, count, _guid);	
+		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, itemPerRowCount, _guid);
+
 		row.add(postView);
 
-		count++;
-	
+		itemPerRowCount++;
+
 
 		// Verifies if it is the third post and closes the row
-		if (count == 3){
-			
-			data.push(row);
-		 	count = 0;
+		if (itemPerRowCount == 3){
 
-		}
+			if (pTimestamp == null)
+			{
+				lastRow += 1;
 		
-	} //End FOR loop
-	
-	//Sets the new Table with updated Posts
-	tableView.setData(data);
-}
+				Ti.API.info("###### Last Row: " + lastRow );
+		
+				data.push(row);
+			 	itemPerRowCount = 0;
+			
+			} else {
+				
+				tableView.appendRow(row,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.NONE});
+				lastRow += 1;
 
+				Ti.API.info("###### Last Row: " + lastRow );
+
+				// data.push(row);
+			 	itemPerRowCount = 0;
+			}
+		} 
+
+	} //End FOR loop
+
+		//Sets the new Table rows with updated Posts
+	if (pTimestamp == null)
+	{
+		tableView.setData(data);
+	} else {
+		return(posts);
+	}
+}
 
 // ==================
 // = CLICK LISTENER =
@@ -401,10 +505,12 @@ var reloading = false;
 
 function beginReloading()
 {
+	
 	//tableView.setData([]);
 	setTimeout(function()
 	{	
-		setTableViewData();
+		getDashboardData(null);
+
 	},1000)
 	
 	setTimeout(endReloading,3000);
@@ -456,4 +562,100 @@ tableView.addEventListener('scrollEnd',function(e)
 	}
 });
 
-setTableViewData();
+// ==================
+// = SCROLL LOADING =
+// ==================
+
+//var navActInd = Titanium.UI.createActivityIndicator();
+//win.setRightNavButton(navActInd);
+
+var updating = false;
+var loadingRow = Ti.UI.createTableViewRow({
+	className: "LoadingRow", 
+	// backgroundColor: "black",
+	// opacity: 0.9,
+	height: 60
+});
+
+var bellowActInd = Titanium.UI.createActivityIndicator({
+	left:420,
+	bottom:10,
+	width:30,
+	height:30
+});
+
+
+var loadingLabel = Ti.UI.createLabel({
+	text: "Loading...",
+	// left:55,
+	width: 200,
+	bottom: 10,
+	height: 30,
+	color: 'white',
+	textAlign: 'center',
+	font:{fontSize:18,fontWeight:"bold"}
+});
+
+loadingRow.add(bellowActInd);
+loadingRow.add(loadingLabel);
+
+function beginUpdate()
+{
+	updating = true;
+	bellowActInd.show();
+
+	tableView.appendRow(loadingRow);
+	
+	// just mock out the reload
+	setTimeout(endUpdate,2000);
+}
+
+function endUpdate()
+{
+
+	updating = false;
+	
+	tableView.deleteRow(lastRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.FADE});
+	
+	// simulate loading 
+	getDashboardData(lastTimestamp);
+
+	// tableView.appendRow({title:"Row "+(c+1)},{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.NONE});
+	// lastRow += 3;
+	
+	// just scroll down a bit to the new rows to bring them into view
+	tableView.scrollToIndex(lastRow-3,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.BOTTOM})
+	
+	bellowActInd.hide();
+	
+	
+}
+
+var lastDistance = 0; // calculate location to determine direction
+
+tableView.addEventListener('scroll',function(e)
+{
+	var offset = e.contentOffset.y;
+	var height = e.size.height;
+	var total = offset + height;
+	var theEnd = e.contentSize.height;
+	var distance = theEnd - total;
+	
+	// going down is the only time we dynamically load,
+	// going up we can safely ignore -- note here that 
+	// the values will be negative so we do the opposite
+	if (distance < lastDistance)
+	{
+		// adjust the % of rows scrolled before we decide to start fetching
+		var nearEnd = theEnd * 1; 
+		
+		if (!updating && (total >= nearEnd))
+		{
+			beginUpdate();
+		}
+	}
+	lastDistance = distance;
+});
+
+
+getDashboardData(null);
