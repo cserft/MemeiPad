@@ -83,15 +83,15 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	//create a black box view with a unique name including the PubId
 	
-	var blackBoxView = "blackBoxView_" + pPubId;
+	var blackBoxView = "blackBoxView_" + pPubId + "_" + pGuid;
 	 Ti.API.debug("blackBoxView: " + blackBoxView);
 	
 	var blackBoxView = Ti.UI.createView({
 		backgroundColor:'black',
 		width: 317,
 		height: 241,
-		top: 5,
-		className:"basicBackBoxView"
+		top: 5
+		//className:"basicBackBoxView"
 	});
 	
 	// Sets the proper Column Left position
@@ -239,12 +239,17 @@ var pubIdList = [];
 //defines the variable that will hold the last timestamp from a given dashboard query
 var lastTimestamp;
 
+//variable to hold incomplete rows
+var tempRow = null;
+var tempItemRowCount = 0;
 
 var getDashboardData = function (pTimestamp){
 	if (pTimestamp == null)
 	{
 		lastRow = 0;
 		var data = [];
+		tempRow = null;
+		tempItemRowCount = 0;
 		
 		yqlQuery = "SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231)";
 		
@@ -273,13 +278,6 @@ var getDashboardData = function (pTimestamp){
 	for (var k=0; k < posts.length; k++)
 	{
 
-		if (itemPerRowCount == 0) {
-			var row = Ti.UI.createTableViewRow();
-			row.height = 245;
-			row.className = 'dashboardTableRow';
-			//row.clickName = 'row';
-		}
-
 		var post 		= posts[k];
 		var _caption 	= post.caption;
 		var _pubId 		= post.pubid;
@@ -305,8 +303,6 @@ var getDashboardData = function (pTimestamp){
 		// 	// 
 		// 	// 	continue;
 		// 	// }
-
-
 		// Ti.API.info("Content of the pubIdList: " + JSON.stringify(pubIdList));
 
 
@@ -351,38 +347,71 @@ var getDashboardData = function (pTimestamp){
 			continue;
 
 		}
-
-		// Adds the post view to a ROW
+		
+		// verifies if there is any incomplete row and continues from there.
+		if (tempRow != null) {
+			
+			Ti.API.info("Temp Row Found, number of items in this Row: " + tempItemRowCount);
+			
+			itemPerRowCount = tempItemRowCount;
+			
+			//itemPerRowCount++;
+			
+			var row = tempRow;
+			
+		} else {
+			
+			Ti.API.info("Temp Row NOT Found. Creating a new Row");
+			
+			if (itemPerRowCount == 0) {
+				var row = Ti.UI.createTableViewRow();
+				row.height = 245;
+			}
+			
+		}
+		
+		// Adds the post view to a ROW 	
 		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, itemPerRowCount, _guid);
-
+		
 		row.add(postView);
 
 		itemPerRowCount++;
-
-
+		
+		
 		// Verifies if it is the third post and closes the row
 		if (itemPerRowCount == 3){
-
-			if (pTimestamp == null)
-			{
-				lastRow += 1;
-		
-				Ti.API.info("###### Last Row: " + lastRow );
-		
-				data.push(row);
-			 	itemPerRowCount = 0;
 			
-			} else {
-				
-				tableView.appendRow(row,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.NONE});
+				tempRow = null;
+				itemPerRowCount = 0;
 				lastRow += 1;
+				tempItemRowCount = 0;
 
-				Ti.API.info("###### Last Row: " + lastRow );
+				if (pTimestamp == null)
+				{
+					data.push(row);
+										
+					Ti.API.info("###### Just ADDED row number: " + lastRow );
+			
+				} else {
+					
+					// Ti.API.info("###### Appending ROW ");
+				
+					tableView.appendRow(row,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.NONE});
 
-				// data.push(row);
-			 	itemPerRowCount = 0;
-			}
-		} 
+					Ti.API.info("###### APPENDING Row number: " + lastRow );
+				
+					// data.push(row);
+				}
+			
+		} else {
+			
+			Ti.API.info("Temp Row Updated, number of items on TEMP Row: " + itemPerRowCount);
+			
+			// if loop ends with an incomplete row it safes this ROW for the next request
+			tempRow = row;
+			tempItemRowCount = itemPerRowCount;
+			
+		}
 
 	} //End FOR loop
 
@@ -390,9 +419,12 @@ var getDashboardData = function (pTimestamp){
 	if (pTimestamp == null)
 	{
 		tableView.setData(data);
+		
 	} else {
+		
 		return(posts);
 	}
+	
 }
 
 // ==================
@@ -574,12 +606,12 @@ var loadingRow = Ti.UI.createTableViewRow({
 	className: "LoadingRow", 
 	// backgroundColor: "black",
 	// opacity: 0.9,
-	height: 60
+	height: 100
 });
 
 var bellowActInd = Titanium.UI.createActivityIndicator({
 	left:420,
-	bottom:10,
+	bottom:50,
 	width:30,
 	height:30
 });
@@ -589,7 +621,7 @@ var loadingLabel = Ti.UI.createLabel({
 	text: "Loading...",
 	// left:55,
 	width: 200,
-	bottom: 10,
+	bottom: 50,
 	height: 30,
 	color: 'white',
 	textAlign: 'center',
@@ -620,11 +652,8 @@ function endUpdate()
 	// simulate loading 
 	getDashboardData(lastTimestamp);
 
-	// tableView.appendRow({title:"Row "+(c+1)},{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.NONE});
-	// lastRow += 3;
-	
 	// just scroll down a bit to the new rows to bring them into view
-	tableView.scrollToIndex(lastRow-3,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.BOTTOM})
+	tableView.scrollToIndex(lastRow-3,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
 	
 	bellowActInd.hide();
 	
@@ -647,7 +676,7 @@ tableView.addEventListener('scroll',function(e)
 	if (distance < lastDistance)
 	{
 		// adjust the % of rows scrolled before we decide to start fetching
-		var nearEnd = theEnd * 1; 
+		var nearEnd = theEnd * 0.9; 
 		
 		if (!updating && (total >= nearEnd))
 		{
