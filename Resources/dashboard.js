@@ -136,11 +136,11 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		blackBoxView.add(postImageView);
 	
         var img_play_btn = Titanium.UI.createImageView({
-            image:'images/minipost_play_icon.png',
-            top:60,
-            left:102,
-            width:104,
-            height:61
+            image:'images/play.png',
+            top:96,
+            left:134,
+            width:38,
+            height:38
         });
         blackBoxView.add(img_play_btn);
 
