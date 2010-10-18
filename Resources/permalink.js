@@ -106,8 +106,9 @@ if (post.type == "photo"){
 	innerCaption = post.caption;
 	
 } else if (post.type == "text"){
+	innerMedia = "";
 
-	innerCaption = post.content.content;
+	innerCaption = post.content;
 
 }
 
