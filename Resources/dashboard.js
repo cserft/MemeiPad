@@ -164,14 +164,28 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
        var minipost_text = Titanium.UI.createLabel({
            color:'#FFF',
            text: pContentStripado,
-           //minimumFontSize:12,
-           font:{fontSize:18,fontFamily:'Helvetica Neue'},
            textAlign:'left',
            top:20,
            left:50,
            width:217,
            height:181
        });
+
+		// Applying different Font Sizes depending on the Size of the Text Post
+		if (pContentStripado.length < 30){
+			
+			minipost_text.font = {fontSize:30,fontFamily:'Helvetica Neue'};
+			// minipost_text.top = 0;
+			
+		} else if (pContentStripado.length < 60) {
+			
+			minipost_text.font = {fontSize:25,fontFamily:'Helvetica Neue'};
+			
+		} else {
+			
+			minipost_text.font = {fontSize:18,fontFamily:'Helvetica Neue'};
+		}
+
        blackBoxView.add(minipost_text);
    }
 	
@@ -427,18 +441,6 @@ var getDashboardData = function (pTimestamp){
 	
 }
 
-// ==================
-// = CLICK LISTENER =
-// ==================
-
-tableView.addEventListener('click', function(e)
-{
-	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
-	// use rowNum property on object to get row number
-	// var rowNum = e.index;
-	// var updateRow = createUpdateRow('You clicked on the '+e.source.clickName);
-	// tableView.updateRow(rowNum,updateRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.LEFT});	
-})
 
 var dashboardShadow = Titanium.UI.createImageView({
 	image:'images/shadow.png',
@@ -450,6 +452,21 @@ var dashboardShadow = Titanium.UI.createImageView({
 	zIndex:999
 });
 win.add(dashboardShadow);
+
+
+// ==================
+// = CLICK LISTENER =
+// ==================
+
+tableView.addEventListener('click', function(e)
+{
+	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+	
+	// use rowNum property on object to get row number
+	// var rowNum = e.index;
+	// var updateRow = createUpdateRow('You clicked on the '+e.source.clickName);
+	// tableView.updateRow(rowNum,updateRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.LEFT});	
+})
 
 // ===================
 // = PULL TO REFRESH =
@@ -594,14 +611,15 @@ tableView.addEventListener('scrollEnd',function(e)
 	}
 });
 
-// ==================
-// = SCROLL LOADING =
-// ==================
+// =======================
+// = SCROLL DOWN LOADING =
+// =======================
 
 //var navActInd = Titanium.UI.createActivityIndicator();
 //win.setRightNavButton(navActInd);
 
 var updating = false;
+
 var loadingRow = Ti.UI.createTableViewRow({
 	className: "LoadingRow", 
 	// backgroundColor: "black",
@@ -649,14 +667,13 @@ function endUpdate()
 	
 	tableView.deleteRow(lastRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.FADE});
 	
-	// simulate loading 
+	// Get posts from Dashboard
 	getDashboardData(lastTimestamp);
 
 	// just scroll down a bit to the new rows to bring them into view
 	tableView.scrollToIndex(lastRow-3,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
 	
 	bellowActInd.hide();
-	
 	
 }
 
@@ -676,7 +693,7 @@ tableView.addEventListener('scroll',function(e)
 	if (distance < lastDistance)
 	{
 		// adjust the % of rows scrolled before we decide to start fetching
-		var nearEnd = theEnd * 0.9; 
+		var nearEnd = theEnd * 1; 
 		
 		if (!updating && (total >= nearEnd))
 		{
