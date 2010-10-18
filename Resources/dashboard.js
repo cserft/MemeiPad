@@ -462,6 +462,23 @@ tableView.addEventListener('click', function(e)
 {
 	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	
+	var winPermalink = Ti.UI.createWindow({
+	    url: 'permalink.js',
+	    name: 'Permalink Details',
+	    backgroundColor:'transparent',
+		left:0,
+		top:0,
+		height:768,
+		width:1024,
+		navBarHidden: true,
+		zIndex: 6,
+		yql: yql, //passing Variables to this Window
+		pGuid: e.source.guid,
+		pPubId: e.source.pubId
+	});
+
+	winPermalink.open({transition:Ti.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
+	
 	// use rowNum property on object to get row number
 	// var rowNum = e.index;
 	// var updateRow = createUpdateRow('You clicked on the '+e.source.clickName);

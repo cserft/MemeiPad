@@ -156,9 +156,10 @@
 		width:1024,
 		navBarHidden: true,
 		yql: yql,
+		// memeInfo:meme,
 		zIndex: 5
 	});
-	yql:yql; //passing YQL function to the Window
+
 	winDashboard.open();
 
  }
