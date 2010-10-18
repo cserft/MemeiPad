@@ -271,7 +271,7 @@ var getDashboardData = function (pTimestamp){
 	
 		Ti.API.info(" ####### STARTING UPDATE 'PRA BAIXO' QUERY ##########");
 		
-		yqlQuery = "SELECT * from meme.user.dashboard where start_timestamp =" + (pTimestamp) + " | meme.functions.thumbs(width=307,height=231)";
+		yqlQuery = "SELECT * from meme.user.dashboard where start_timestamp =" + (pTimestamp-1) + " | meme.functions.thumbs(width=307,height=231)";
 
 	}
 	
@@ -285,6 +285,8 @@ var getDashboardData = function (pTimestamp){
 
 	//Defines the last post timestamp so we can paginate the Dashboard
 	lastTimestamp = posts[(posts.length - 1)].timestamp;
+	lastTimestamp = parseInt(lastTimestamp);
+	
 	Ti.API.debug("last Time Stamp: " + lastTimestamp );
 
 
@@ -468,8 +470,8 @@ tableView.addEventListener('click', function(e)
 	    backgroundColor:'transparent',
 		left:0,
 		top:0,
-		height:768,
-		width:1024,
+		height:'100%',
+		width:'100%',
 		navBarHidden: true,
 		zIndex: 6,
 		yql: yql, //passing Variables to this Window
@@ -477,13 +479,13 @@ tableView.addEventListener('click', function(e)
 		pPubId: e.source.pubId
 	});
 
-	winPermalink.open({transition:Ti.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
+	winPermalink.open();
 	
 	// use rowNum property on object to get row number
 	// var rowNum = e.index;
 	// var updateRow = createUpdateRow('You clicked on the '+e.source.clickName);
 	// tableView.updateRow(rowNum,updateRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.LEFT});	
-})
+});
 
 // ===================
 // = PULL TO REFRESH =
@@ -673,7 +675,6 @@ function beginUpdate()
 
 	tableView.appendRow(loadingRow);
 	
-	// just mock out the reload
 	setTimeout(endUpdate,2000);
 }
 
