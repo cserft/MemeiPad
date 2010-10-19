@@ -331,10 +331,7 @@ var lastTimestamp;
 var tempRow = null;
 var tempItemRowCount = 0;
 
-
-
 var getDashboardData = function (pTimestamp){
-
 
 	
 	if (pTimestamp == null)
@@ -343,6 +340,7 @@ var getDashboardData = function (pTimestamp){
 		var data = [];
 		tempRow = null;
 		tempItemRowCount = 0;
+		
 		
 		yqlQuery = "SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231)";
 		
@@ -802,5 +800,24 @@ tableView.addEventListener('scroll',function(e)
 	lastDistance = distance;
 });
 
-getDashboardData(null);
+//variable that configs the number of Dashboard pages that loads when the app starts
+var dashboardPages = 3;
+
+if (dashboardPages == 3){
+	
+	getDashboardData(null);
+	
+	dashboardPages--;
+	
+	if (dashboardPages != 0){
+		
+		beginUpdate();
+
+		dashboardPages--;
+	} 
+}
+
+
+
+
 
