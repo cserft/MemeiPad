@@ -1,14 +1,12 @@
 var win = Ti.UI.currentWindow;
 
-// var scrollView = Ti.UI.createScrollView({
-// 	backgroundColor:'transparent',
-// 	contentWidth:1024,
-// 	contentHeight:1000,
-// 	top:0,
-// 	showVerticalScrollIndicator:true,
-// 	showHorizontalScrollIndicator:false
-// });
-//win.add(scrollView);
+var baseView = Ti.UI.createView({
+	backgroundColor:'transparent',
+	width:'100%',
+	height: '100%',
+	top:0,
+});
+win.add(baseView);
 
 //Set current timestamp
 
@@ -23,8 +21,26 @@ var now   = timestamp();
 // =======================
 
 //RETRIEVING YQL OBJECT
-var yql = win.yql;
-var myMemeInfo = win.memeInfo;
+var yql = win.yql; // Holds YQL Object to make queries
+var myMemeInfo = win.memeInfo; //holds the LoggedIn User Meme's Information
+
+// ==============================
+// = LOADING PLACE HOLDER LABEL =
+// ==============================
+// var loadingPlaceholder = Titanium.UI.createLabel({
+//     color:'#999999',
+//     text: "Loading Posts...",
+//     textAlign:'center',
+// 	font: {
+// 		fontSize:45,
+// 		fontFamily:'Helvetica Neue'
+// 		},
+// 	zIndex: 3
+// });
+// baseView.add(loadingPlaceholder);
+// 
+// loadingPlaceholder.show();
+
 
 // Creating the List Post Table View
 
@@ -34,8 +50,8 @@ var tableView = Titanium.UI.createTableView({
 	selectionStyle:'none'
 });
 
+baseView.add(tableView);
 
-win.add(tableView);
 
 
 // ================================
@@ -315,7 +331,12 @@ var lastTimestamp;
 var tempRow = null;
 var tempItemRowCount = 0;
 
+
+
 var getDashboardData = function (pTimestamp){
+
+
+	
 	if (pTimestamp == null)
 	{
 		lastRow = 0;
@@ -490,6 +511,7 @@ var getDashboardData = function (pTimestamp){
 	} //End FOR loop
 
 		//Sets the new Table rows with updated Posts
+	
 	if (pTimestamp == null)
 	{
 		tableView.setData(data);
@@ -780,5 +802,5 @@ tableView.addEventListener('scroll',function(e)
 	lastDistance = distance;
 });
 
-
 getDashboardData(null);
+

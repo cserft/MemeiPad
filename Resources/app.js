@@ -39,7 +39,7 @@
 	// create base UI tab and root window
 	//
 	var win1 = Titanium.UI.createWindow({  
-	    title:'Tab 1',
+	    title:'Meme For iPad',
 	    backgroundColor:'#fff',
 	    backgroundImage: 'images/bg.jpg'
 	});
