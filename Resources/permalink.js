@@ -6,6 +6,61 @@ var timestamp = function() {
 
 var now  = timestamp();
 
+// =============================
+// = CACULATES THE HUMANE DATA =
+// =============================
+
+// With this we can create messages like "This post was created 10 minutes ago" or "Just now", etc
+
+function humane_date(date_str){
+      var time_formats = [
+              [60, 'Just Now'],
+              [90, '1 minute'], // 60*1.5
+              [3600, 'minutes', 60], // 60*60, 60
+              [5400, '1 hour'], // 60*60*1.5
+              [86400, 'hours', 3600], // 60*60*24, 60*60
+              [129600, '1 day'], // 60*60*24*1.5
+              [604800, 'days', 86400], // 60*60*24*7, 60*60*24
+              [907200, '1 week'], // 60*60*24*7*1.5
+              [2628000, 'weeks', 604800], // 60*60*24*(365/12), 60*60*24*7
+              [3942000, '1 month'], // 60*60*24*(365/12)*1.5
+              [31536000, 'months', 2628000], // 60*60*24*365, 60*60*24*(365/12)
+              [47304000, '1 year'], // 60*60*24*365*1.5
+              [3153600000, 'years', 31536000], // 60*60*24*365*100, 60*60*24*365
+              [4730400000, '1 century'], // 60*60*24*365*100*1.5
+      ];
+				var dt = timestamp(); 
+				var seconds = (dt - date_str)/1000;
+              	var token = ' ago';
+          		var prepend = '';
+              	var i = 0;
+              	var format;
+
+      if (seconds < 0) {
+              seconds = Math.abs(seconds);
+              token = '';
+          prepend = 'in ';
+      }
+
+      while (format = time_formats[i++]) {
+              if (seconds < format[0]) {
+                      if (format.length == 2) {
+                              return (i>1?prepend:'') + format[1] + (i > 1 ? token : ''); // Conditional so we don't return Just Now Ago
+                      } else {
+                              return prepend + Math.round(seconds / format[2]) + ' ' + format[1] + (i > 1 ? token : '');
+                      }
+              }
+      }
+
+      // overflow for centuries
+      if(seconds > 4730400000)
+              return Math.round(seconds / 4730400000) + ' Centuries' + token;
+
+      return date_str;
+  };
+
+
+
 // =======================
 // = DASHBOARD TABLEVIEW =
 // =======================
@@ -29,7 +84,6 @@ Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
 
 var yqldata = yql.query(yqlQuery);
 var post = yqldata.query.results.post;
-
 
 // ============================
 // = BULDING PERMALINK LAYOUT =
@@ -61,22 +115,22 @@ var btn_close = Titanium.UI.createButton({
 	left:931,
 	width:36,
 	height:36,
-	zIndex:2
+	zIndex:3
 });
 win.add(btn_close);
 
 
-var scrollView = Ti.UI.createScrollView({
-	backgroundColor:'transparent',
-	contentWidth:826,
-	contentHeight:'auto',
-	top:36,
-	left: 10,
-	width:826,
-	height:516,
-	showVerticalScrollIndicator:true,
-	showHorizontalScrollIndicator:false
-});
+// var scrollView = Ti.UI.createScrollView({
+// 	backgroundColor:'transparent',
+// 	contentWidth:826,
+// 	contentHeight:'auto',
+// 	top:36,
+// 	left: 10,
+// 	width:826,
+// 	height:516,
+// 	showVerticalScrollIndicator:true,
+// 	showHorizontalScrollIndicator:false
+// });
 
 //whiteBox.add(scrollView);
 
@@ -92,8 +146,6 @@ var	innerMedia;
 var innerCaption;
 
 if (post.type == "photo"){
-	
-	Ti.API.info("Photo URL: " + post.content.content)
 	
 	innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
 	innerCaption = post.caption;
@@ -113,17 +165,17 @@ if (post.type == "photo"){
 }
 
 
-var text_in_html = '<html><head><title></title><style type="text/css">#wrapper {padding: 0px;width: 804px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px}</style></head><body><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '</div></div></div></body></html>';
+var text_in_html = '<html><head><title></title><style type="text/css">#wrapper {padding: 20px;width: 700px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px}</style></head><body><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '<br/><br/><br/></div></div></div></body></html>';
 
 
     // Create our Webview
 var postWebView = Ti.UI.createWebView({
         html:text_in_html,
         title:'Title goes here',
-		top:36,
-		width: 846,
-		height: 516,
-        left:15,
+		top:0,
+		width: '100%',
+		height: 565,
+        left:0,
         loading: true   
 });
 whiteBox.add(postWebView);
@@ -136,36 +188,6 @@ var border = Ti.UI.createView({
 })
 whiteBox.add(border);
 
-//link in the bottom
-
-pos_BtnOpenSafari = 80 + (post.url.length * 8) + 30;
-
-var LinkPermalinkLabel = Titanium.UI.createLabel({
-	color:'#FFF',
-	text: post.url ,
-	textAlign:'left',
-	font: {
-		fontSize:14,
-		fontFamily:'Georgia',
-		fontStyle: 'italic',
-		fontWeight: 'bold'
-	},
-	bottom:35,
-	left:73,
-	width:500,
-	height:15
-});
-
-win.add(LinkPermalinkLabel);
-
-var btn_openSafari = Titanium.UI.createButton({
-	backgroundImage:'images/btn_fwd.png',
-	width:22,
-	height:17,
-	bottom: 35,
-	left: pos_BtnOpenSafari
-});
-win.add(btn_openSafari);
 
 // ====================================
 // = OWNER GUID INFORMATION RETRIEVAL =
@@ -178,6 +200,7 @@ Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
 var yqlMemeInfo = yql.query(yqlQuery);
 var meme = yqlMemeInfo.query.results.meme;
 
+// Users Post Owner Avatar
 var guidAvatar = Titanium.UI.createImageView({
 	image: meme.avatar_url.thumb,
 	bottom:10,
@@ -188,12 +211,12 @@ var guidAvatar = Titanium.UI.createImageView({
 });
 whiteBox.add(guidAvatar);
 
-var titleStripado = meme.title.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+var titleStripped = meme.title.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
 
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
 	color:'#853885',
-	text: titleStripado ,
+	text: titleStripped ,
 	textAlign:'left',
 	font: {
 		fontSize:18,
@@ -208,6 +231,30 @@ var guidNameLabel = Titanium.UI.createLabel({
 });
 
 whiteBox.add(guidNameLabel);
+
+
+//POsted X times ago message
+var post_update_time = humane_date(post.timestamp);
+
+var pos_postUpdatedTimeLabel = 70 + (titleStripped.length * 8) + 10;
+
+var postUpdatedTimeLabel = Titanium.UI.createLabel({
+	color:'#999',
+	text: ' •  ' + post_update_time,
+	textAlign:'left',
+	font: {
+		fontSize:13,
+		fontFamily:'Georgia',
+		fontStyle: 'italic'
+	},
+	bottom: 19,
+	left:pos_postUpdatedTimeLabel,
+	width:150,
+	height:29,
+	zIndex: 2
+});
+
+whiteBox.add(postUpdatedTimeLabel);
 
 // ===========================
 // = REPOST BUTTON AND COUNT =
@@ -285,6 +332,38 @@ btn_repost.addEventListener("click", function(e)
 	// setTimeout(repostActInd.hide(),2000);
 
 });
+
+
+//link to Permalink Page on the Web in the bottom
+
+pos_BtnOpenSafari = 80 + (post.url.length * 8) + 30;
+
+var LinkPermalinkLabel = Titanium.UI.createLabel({
+	color:'#FFF',
+	text: post.url ,
+	textAlign:'left',
+	font: {
+		fontSize:14,
+		fontFamily:'Georgia',
+		fontStyle: 'italic',
+		fontWeight: 'bold'
+	},
+	bottom:35,
+	left:73,
+	width:500,
+	height:15
+});
+
+win.add(LinkPermalinkLabel);
+
+var btn_openSafari = Titanium.UI.createButton({
+	backgroundImage:'images/btn_fwd.png',
+	width:22,
+	height:17,
+	bottom: 35,
+	left: pos_BtnOpenSafari
+});
+win.add(btn_openSafari);
 
 //Alert to Open Safari for the Post Permalink
 var alertOpenPermalink= Titanium.UI.createAlertDialog({

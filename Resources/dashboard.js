@@ -278,7 +278,7 @@ var getDashboardData = function (pTimestamp){
 	var itemPerRowCount = 0;
 	
 	
-	Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
+	//Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
 
 	var yqldata = yql.query(yqlQuery);
 	var posts = yqldata.query.results.post;
@@ -287,7 +287,7 @@ var getDashboardData = function (pTimestamp){
 	lastTimestamp = posts[(posts.length - 1)].timestamp;
 	lastTimestamp = parseInt(lastTimestamp);
 	
-	Ti.API.debug("last Time Stamp: " + lastTimestamp );
+	//Ti.API.debug("last Time Stamp: " + lastTimestamp );
 
 
 	// create THE TABLE ROWS
@@ -367,7 +367,7 @@ var getDashboardData = function (pTimestamp){
 		// verifies if there is any incomplete row and continues from there.
 		if (tempRow != null) {
 			
-			Ti.API.info("Temp Row Found, number of items in this Row: " + tempItemRowCount);
+		//	Ti.API.info("Temp Row Found, number of items in this Row: " + tempItemRowCount);
 			
 			itemPerRowCount = tempItemRowCount;
 			
@@ -377,7 +377,7 @@ var getDashboardData = function (pTimestamp){
 			
 		} else {
 			
-			Ti.API.info("Temp Row NOT Found. Creating a new Row");
+		//	Ti.API.info("Temp Row NOT Found. Creating a new Row");
 			
 			if (itemPerRowCount == 0) {
 				var row = Ti.UI.createTableViewRow();
@@ -406,7 +406,7 @@ var getDashboardData = function (pTimestamp){
 				{
 					data.push(row);
 										
-					Ti.API.info("###### Just ADDED row number: " + lastRow );
+				//	Ti.API.info("###### Just ADDED row number: " + lastRow );
 			
 				} else {
 					
@@ -414,14 +414,14 @@ var getDashboardData = function (pTimestamp){
 				
 					tableView.appendRow(row,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.NONE});
 
-					Ti.API.info("###### APPENDING Row number: " + lastRow );
+				//	Ti.API.info("###### APPENDING Row number: " + lastRow );
 				
 					// data.push(row);
 				}
 			
 		} else {
 			
-			Ti.API.info("Temp Row Updated, number of items on TEMP Row: " + itemPerRowCount);
+		//	Ti.API.info("Temp Row Updated, number of items on TEMP Row: " + itemPerRowCount);
 			
 			// if loop ends with an incomplete row it safes this ROW for the next request
 			tempRow = row;
@@ -462,7 +462,7 @@ win.add(dashboardShadow);
 
 tableView.addEventListener('click', function(e)
 {
-	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+//	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	
 	var winPermalink = Ti.UI.createWindow({
 	    url: 'permalink.js',

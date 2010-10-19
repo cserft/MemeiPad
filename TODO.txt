@@ -1,16 +1,16 @@
 
 - How to hold the splash Screen for more time.
 - Logout btn
-- Change YDN App description and iCONS
 - Create a Website for the App
 - icons and descriptions on YDN Site
-- Vimeo Playback
 - Comments
-- Paginação Dashboard
-- Click to Detail
-- Post Detail View
+- Better SignIn Page
+- BUG: SIGNIN WebView goes full Screen
 
 - Repost disabled when owner reposted or visited (check GUID if Origin or VIA)
 - Label "Loading Dashboard..."
-- Time Stamp on Permalink.js ( 15 min ago)
 - Adicionar Player Vimeo
+- Add Feeddbacks (Click to Open Permalink, After Signing in)
+ - Play no video do YouTube na pagina de permalink
+
+
