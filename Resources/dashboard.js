@@ -24,6 +24,7 @@ var now   = timestamp();
 
 //RETRIEVING YQL OBJECT
 var yql = win.yql;
+var myMemeInfo = win.memeInfo;
 
 // Creating the List Post Table View
 
@@ -280,8 +281,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	}
 	
 	//Creating the new 
-	var blackBoxLink = "blackBoxLink" + pColumn;
-	// Ti.API.debug("blackBoxView: " + blackBoxView);
+	var blackBoxLink = "blackBoxLink_" + pPubId + "_" + pGuid;
+	//Ti.API.debug("blackBoxView: " + blackBoxView);
 	
 	var blackBoxLink = Ti.UI.createView({
 		backgroundColor:'transparent',
@@ -519,7 +520,7 @@ win.add(dashboardShadow);
 
 tableView.addEventListener('click', function(e)
 {
-//	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	
 	var winPermalink = Ti.UI.createWindow({
 	    url: 'permalink.js',
@@ -532,6 +533,7 @@ tableView.addEventListener('click', function(e)
 		navBarHidden: true,
 		zIndex: 6,
 		yql: yql, //passing Variables to this Window
+		myMemeInfo: myMemeInfo,
 		pGuid: e.source.guid,
 		pPubId: e.source.pubId
 	});

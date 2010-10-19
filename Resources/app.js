@@ -5,47 +5,17 @@
  var showSignIn = function(continuation) {
 	
 	var winSignIn = Ti.UI.createWindow({
-	    name: 'SignIn Window',
+	    url: 'signin.js',
+		name: 'SignIn Window',
 	    backgroundColor:'transparent',
 	    backgroundImage: 'images/bg.jpg',
+		//yql: yql,
+		// memeInfo:meme,
+		continuation:continuation,
 		borderRadius: 5
 	});
-	winSignIn.orientationModes = [
-		Titanium.UI.LANDSCAPE_LEFT,
-		Titanium.UI.LANDSCAPE_RIGHT
-	];
 
-	var signinView = Ti.UI.createView({
-		backgroundColor:'white',
-		width: 500,
-		height: 400,
-		borderRadius: 5
-	});
-	winSignIn.add(signinView);
-	
-	var logoMeme = Titanium.UI.createImageView({
-		image:'images/meme_logo_en.png',
-		top:50,
-		left:150,
-		width:'auto',
-		height:'auto'
-	});
-	signinView.add(logoMeme);
-
-	var btn_signin = Titanium.UI.createButton({
-		backgroundImage:'images/btn_signin.png',
-		top: 250,
-		width:260,
-		height:57,
-		opacity:1
-	});
-	signinView.add(btn_signin);
-	
-    winSignIn.open();
-
-	// Sign In Button Listener
-	btn_signin.addEventListener("click",continuation);
-
+	    winSignIn.open();
  }
 
 // If Authentication OK the Show Dashboard
@@ -169,7 +139,7 @@
 		width:1024,
 		navBarHidden: true,
 		yql: yql,
-		// memeInfo:meme,
+		memeInfo:meme,
 		zIndex: 5
 	});
 

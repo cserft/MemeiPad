@@ -1,10 +1,17 @@
 var win = Ti.UI.currentWindow;
 
+//RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
+var yql = win.yql;
+var _guid = win.pGuid;
+var _pubId = win.pPubId;
+var myMemeInfo = win.myMemeInfo;
+
 var timestamp = function() {
 	return((new Date()).getTime());
 };
 
 var now  = timestamp();
+
 
 // =============================
 // = CACULATES THE HUMANE DATA =
@@ -65,10 +72,6 @@ function humane_date(date_str){
 // = DASHBOARD TABLEVIEW =
 // =======================
 
-//RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
-var yql = win.yql;
-var _guid = win.pGuid;
-var _pubId = win.pPubId;
 
 // Example Queries to retrieve Post Details
 // "SELECT * FROM meme.posts WHERE owner_guid='MOLV2IG2KYLCBZDPMFVUQ7HKYU' and pubid='NtnNg2A'"
@@ -300,6 +303,15 @@ var repostActInd = Titanium.UI.createActivityIndicator({
 });
 whiteBox.add(repostActInd);
 
+
+// Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
+
+if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_guid == myMemeInfo.guid){
+	btn_repost.enabled = false;	
+} else {
+	btn_repost.enabled = true;	
+}
+
 // =============
 // = LISTENERS =
 // =============
@@ -321,6 +333,7 @@ btn_repost.addEventListener("click", function(e)
 	if (response.message == "ok"){
 		
 		repostCountLabel.text = repost_countInt+=1 ;
+		btn_repost.enabled = false;
 		
 	} else {
 		

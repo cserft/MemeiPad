@@ -3,15 +3,17 @@
 - Logout btn
 - Create a Website for the App
 - icons and descriptions on YDN Site
-- Comments
-- Better SignIn Page
+- After Reposting add Comments
 - BUG: SIGNIN WebView goes full Screen
 
-- Repost disabled when owner reposted or visited (check GUID if Origin or VIA)
 - Label "Loading Dashboard..."
 - Adicionar Player Vimeo
 - Add Feeddbacks (Click to Open Permalink, After Signing in)
  - Play no video do YouTube na pagina de permalink
 - Bring 3 Pages on first login
+- Ajustar Header para ser Variavel posicao do Signout em relacao ao LOgn Yahoo!
 
+
+- Major: SignIn page with Popular
+- Use Place maker to detect places on a given Post and Show them on the Map.
 

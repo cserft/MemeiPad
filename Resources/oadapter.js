@@ -28,7 +28,7 @@ var authorizationUI = function() {
 	        Ti.API.debug('destroyAuthorizeUI:webView.removeEventListener');
             authWebView.removeEventListener('load', lookupVerifier);
 	        Ti.API.debug('destroyAuthorizeUI:window.close()');
-            authWindow.hide();
+            authWindow.close();
         }
         catch(ex)
         {
@@ -64,7 +64,7 @@ var authorizationUI = function() {
 		gCallback  = pCallback;
 		authWindow = Ti.UI.createWindow({
 			modal: true,
-		    fullscreen: false,
+		    fullscreen: true,
 			navBarHidden: true
 		});
         authWebView = Ti.UI.createWebView({
@@ -228,6 +228,7 @@ var OAuthAdapter = function(pService, authorize)
 	};
 
 	var query = function(pQuery) {
+		Ti.API.debug("Function Query Called");
 		var token = maybeRefreshToken(loadToken());
 		var parameters = [ ["format", "json"],
 		 				   ["diagnostics", "false"],
