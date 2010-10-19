@@ -12,5 +12,6 @@
 - Adicionar Player Vimeo
 - Add Feeddbacks (Click to Open Permalink, After Signing in)
  - Play no video do YouTube na pagina de permalink
+- Bring 3 Pages on first login
 
 
