@@ -64,8 +64,8 @@ var authorizationUI = function() {
 		gCallback  = pCallback;
 		authWindow = Ti.UI.createWindow({
 			modal: true,
-		    fullscreen: true,
-			navBarHidden: false
+		    fullscreen: false,
+			navBarHidden: true
 		});
         authWebView = Ti.UI.createWebView({
             url: pUrl,
@@ -75,7 +75,8 @@ var authorizationUI = function() {
         });
 		
 		// Force Landscape mode only
-		authWindow.orientationModes = [Titanium.UI.LANDSCAPE_LEFT];			
+		authWindow.orientationModes = [	Titanium.UI.LANDSCAPE_LEFT,
+			Titanium.UI.LANDSCAPE_RIGHT ];			
 		var transform = Ti.UI.create2DMatrix().scale(0);
         var authView = Ti.UI.createView({
             top: 50,
@@ -236,6 +237,7 @@ var OAuthAdapter = function(pService, authorize)
 		var json = serviceRequest(yql_base_url, parameters, accessorFromToken(token));
 		return(JSON.parse(json));
 	};
+
 
 	// will check if access tokens are stored in the config file
     var login = function(signin, callback)

@@ -11,19 +11,30 @@
 		borderRadius: 5
 	});
 	winSignIn.orientationModes = [
-		Titanium.UI.LANDSCAPE_LEFT
+		Titanium.UI.LANDSCAPE_LEFT,
+		Titanium.UI.LANDSCAPE_RIGHT
 	];
 
 	var signinView = Ti.UI.createView({
 		backgroundColor:'white',
 		width: 500,
-		height: 300,
+		height: 400,
 		borderRadius: 5
 	});
 	winSignIn.add(signinView);
+	
+	var logoMeme = Titanium.UI.createImageView({
+		image:'images/meme_logo_en.png',
+		top:50,
+		left:150,
+		width:'auto',
+		height:'auto'
+	});
+	signinView.add(logoMeme);
 
 	var btn_signin = Titanium.UI.createButton({
 		backgroundImage:'images/btn_signin.png',
+		top: 250,
 		width:260,
 		height:57,
 		opacity:1
@@ -33,7 +44,7 @@
     winSignIn.open();
 
 	// Sign In Button Listener
-	btn_signin.addEventListener("click", continuation);
+	btn_signin.addEventListener("click",continuation);
 
  }
 
@@ -106,12 +117,14 @@
 
 		Ti.API.info("Signout Link clicked");
 
-		Ti.UI.createAlertDialog({
-	        title: 'Signout',
-	        message: "Signout link clicked"
-	    }).show();
+		// Ti.UI.createAlertDialog({
+		// 	        title: 'Signout',
+		// 	        message: "Signout link clicked"
+		// 	    }).show();
 
-		// oAuthAdapter.logout('meme');
+		oAuthAdapter.logout('meme');
+		oAuthAdapter.login(showSignIn, showDashboard);
+		
 	});
 
 	var miniAvatarView = Titanium.UI.createImageView({
@@ -163,6 +176,83 @@
 	winDashboard.open();
 
  }
+
+// ======================
+// = ACTIVITY INDICADOR =
+// ======================		
+
+
+//
+//  CREATE CUSTOM LOADING INDICATOR
+//
+// var indWin = null;
+// var actInd = null;
+// function showIndicator()
+// {
+// 	// window container
+// 	indWin = Titanium.UI.createWindow({
+// 		height:150,
+// 		width:150
+// 	});
+// 
+// 	// black view
+// 	var indView = Titanium.UI.createView({
+// 		height:150,
+// 		width:150,
+// 		backgroundColor:'#000',
+// 		borderRadius:10,
+// 		opacity:0.8
+// 	});
+// 	indWin.add(indView);
+// 
+// 	// loading indicator
+// 	actInd = Titanium.UI.createActivityIndicator({
+// 		style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
+// 		height:30,
+// 		width:30
+// 	});
+// 	indWin.add(actInd);
+// 
+// 	// message
+// 	var message = Titanium.UI.createLabel({
+// 		text:'Loading',
+// 		color:'#fff',
+// 		width:'auto',
+// 		height:'auto',
+// 		font:{fontSize:20,fontWeight:'bold'},
+// 		bottom:20
+// 	});
+// 	indWin.add(message);
+// 	indWin.open();
+// 	actInd.show();
+// 
+// };
+// 
+// function hideIndicator()
+// {
+// 	actInd.hide();
+// 	indWin.close({opacity:0,duration:500});
+// };
+// 
+// //
+// // Add global event handlers to hide/show custom indicator
+// //
+// Titanium.App.addEventListener('show_indicator', function(e)
+// {
+// 	Ti.API.info("IN SHOW INDICATOR");
+// 	showIndicator();
+// });
+// Titanium.App.addEventListener('hide_indicator', function(e)
+// {
+// 	Ti.API.info("IN HIDE INDICATOR");
+// 	hideIndicator();
+// });
+
+// // trap app shutdown event
+// Titanium.App.addEventListener('close',function(e)
+// {
+// 	Ti.API.info("The application is being shutdown");
+// });
 
 // =========================================
 // =  // Initialize oAuthAdapter process   =
