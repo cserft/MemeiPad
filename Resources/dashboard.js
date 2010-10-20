@@ -133,7 +133,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			top:5,
 			left:5,
 			width:307,
-			height: 'auto'
+			height: 'auto',
+			defaultImage: 'images/default_img.png'
 		});
 		blackBoxView.add(postImageView);
 		
@@ -169,29 +170,29 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			
 			//REQUEST VIMEO oEmbed DATA
 			// var xhr = Titanium.Network.createHTTPClient();
-			//     // xhr.setTimeout([99000]);
-			// 
-			//     xhr.onerror = function(e) {
-			//         Ti.API.info("ERROR: " + e.error);
-			//     };
-			// 
-			//     xhr.onload = function(e) {
-			//         Ti.API.info('Vimeo RESPONSE CODE: ' + this.status + ' And Response Text: ' + this.responseText + ' and This is the XML' + this.responseXML);
-			// 	//	var vimeoEmbed = JSON.parse(this.responseText);
+			// 	    // xhr.setTimeout([99000]);
 			// 	
-			// 		//Ti.API.info('Vimeo RESPONSE' + vimeoEmbed.title);
-			//     };
-			// 
-			// 	eContent = encodeURIComponent(pContent);
+			// 	    xhr.onerror = function(e) {
+			// 	        Ti.API.info("ERROR: " + e.error);
+			// 	    };
 			// 	
-			//     xhr.open('GET','http://vimeo.com/api/oembed.xml?url=' + eContent);
-			// 	Ti.API.info('http://vimeo.com/api/oembed.json?url=' + eContent);
+			// 	    xhr.onload = function(e) {
+			// 	        Ti.API.info('Vimeo RESPONSE CODE: ' + this.status + ' And Response Text: ' + this.responseText );
+			// 		//	var vimeoEmbed = JSON.parse(this.responseText);
+			// 		
+			// 			//Ti.API.info('Vimeo RESPONSE' + vimeoEmbed.title);
+			// 	    };
 			// 	
-			// 	// xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8', 'Content-Length', '0');
-			//     xhr.send(); 
-			
-	       // _videoId = pContent.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
-	       // _videoThumb = "http://img.youtube.com/vi/" + _videoId + "/0.jpg";
+			// 		eContent = encodeURIComponent(pContent);
+			// 		
+			// 	    xhr.open('GET','http://vimeo.com/api/oembed.json?url=' + eContent);
+			// 		Ti.API.info('http://vimeo.com/api/oembed.json?url=' + eContent);
+			// 		
+			// 		// xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8', 'Content-Length', '0');
+			// 	    xhr.send(); 
+			// 	
+			// 	       //_videoId = pContent.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
+			// 	       _videoThumb = "http://img.youtube.com/vi/" + _videoId + "/0.jpg";
 			
 		} else {
 			
@@ -205,7 +206,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 				top:5,
 				left:5,
 				width:307,
-				height:231
+				height:231,
+				defaultImage: 'images/default_img.png'
 			});
 			blackBoxView.add(postImageView);
 
@@ -768,7 +770,7 @@ function endUpdate()
 	getDashboardData(lastTimestamp);
 
 	// just scroll down a bit to the new rows to bring them into view
-	tableView.scrollToIndex(lastRow-3,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
+//	tableView.scrollToIndex(lastRow-3,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
 	
 	bellowActInd.hide();
 	

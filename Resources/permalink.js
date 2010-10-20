@@ -122,20 +122,21 @@ var btn_close = Titanium.UI.createButton({
 });
 win.add(btn_close);
 
+// ========================
+// = geo places retrieval =
+// ========================
+var getGeoPlaces = function(pContent){
+	
+	yqlQuery = 'SELECT * FROM geo.placemaker WHERE documentContent = "' + pContent + '" AND documentType="text/plain"';
 
-// var scrollView = Ti.UI.createScrollView({
-// 	backgroundColor:'transparent',
-// 	contentWidth:826,
-// 	contentHeight:'auto',
-// 	top:36,
-// 	left: 10,
-// 	width:826,
-// 	height:516,
-// 	showVerticalScrollIndicator:true,
-// 	showHorizontalScrollIndicator:false
-// });
+	Ti.API.debug("####### YQL Query executed: " + yqlQuery);
 
-//whiteBox.add(scrollView);
+	var yqlGeoPlaces = yql.query(yqlQuery);
+	var places = yqlGeoPlaces.query.results;
+	
+	Ti.API.debug("####### PLACES: " + JSON.stringify(places));
+	
+}
 
 // =========================
 // = WEBVIEW WITH THE POST =
@@ -152,6 +153,8 @@ if (post.type == "photo"){
 	
 	innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
 	innerCaption = post.caption;
+	captionStripped = post.caption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+	// getGeoPlaces(captionStripped);
 	
 } else if (post.type == "video"){
 	
@@ -197,7 +200,7 @@ whiteBox.add(border);
 
 yqlQuery = "SELECT * FROM meme.info where owner_guid='" + _guid + "' | meme.functions.thumbs(width=40,height=40)";
 
-Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
+Ti.API.debug("####### YQL Query executed: " + yqlQuery);
 
 var yqlMemeInfo = yql.query(yqlQuery);
 var meme = yqlMemeInfo.query.results.meme;
@@ -209,7 +212,8 @@ var guidAvatar = Titanium.UI.createImageView({
 	left:10,
 	width:40,
 	height:40,
-	zIndex:3
+	zIndex:3,
+	defaultImage: 'images/default_img.png'
 });
 whiteBox.add(guidAvatar);
 
