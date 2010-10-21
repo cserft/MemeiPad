@@ -10,12 +10,10 @@
 - Adicionar Player Vimeo
 - Add Feeddbacks (Click to Open Permalink, After Signing in)
  - Play no video do YouTube na pagina de permalink
-- Bring 3 Pages on first login
 - Ajustar Header para ser Variavel posicao do Signout em relacao ao LOgn Yahoo!
 - detect Network on Startup
-- change the scrool to update percentage
-- tap to top not working on the iPad
-- Rotate screen is not working
+- [BUG] More than 1 click opens several Permalink Windows
+- 
 
 
 - Major: SignIn page with Popular

@@ -539,11 +539,10 @@ win.add(dashboardShadow);
 // ==================
 // = CLICK LISTENER =
 // ==================
-
 tableView.addEventListener('click', function(e)
 {
 	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
-	
+
 	var winPermalink = Ti.UI.createWindow({
 	    url: 'permalink.js',
 	    name: 'Permalink Details',
@@ -561,12 +560,49 @@ tableView.addEventListener('click', function(e)
 	});
 
 	winPermalink.open();
-	
-	// use rowNum property on object to get row number
-	// var rowNum = e.index;
-	// var updateRow = createUpdateRow('You clicked on the '+e.source.clickName);
-	// tableView.updateRow(rowNum,updateRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.LEFT});	
+
 });
+
+
+// var startTouchX;
+// 
+// tableView.addEventListener('touchstart', function(e)
+// {
+// 	Ti.API.info('Table TouchStarted - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId + ' Xstart: ' + e.x);
+// 	startTouchX = e.x;
+// 	
+// 	// Ti.UI.createAlertDialog({
+// 	// 	        title: 'SWIPED',
+// 	// 	        message: "Great you swipped"
+// 	// 	    }).show();
+// 	// 
+// 	
+// });
+// 
+// tableView.addEventListener('touchend', function(e)
+// {
+// 	Ti.API.info('Table TouchEnded - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId + ' Xend: ' + e.x);
+// 	
+// 	var endTouchX = e.x;
+// 	var swipe_delta = startTouchX - endTouchX;
+// 	
+// 	if (swipe_delta >= 70) {
+// 	
+// 		Ti.API.info('Flip This Object');
+// 		
+// 	} else {
+// 				
+// 
+// 				
+// 	}
+// 	
+// 	// Ti.UI.createAlertDialog({
+// 	// 	        title: 'SWIPED',
+// 	// 	        message: "Great you swipped"
+// 	// 	    }).show();
+// 	// 
+// 	
+// });
 
 // ===================
 // = PULL TO REFRESH =
@@ -792,7 +828,7 @@ tableView.addEventListener('scroll',function(e)
 	if (distance < lastDistance)
 	{
 		// adjust the % of rows scrolled before we decide to start fetching
-		var nearEnd = theEnd * 0.75; 
+		var nearEnd = theEnd * 0.5; 
 		
 		if (!updating && (total >= nearEnd))
 		{
