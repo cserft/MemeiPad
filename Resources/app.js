@@ -16,7 +16,7 @@
 	});
 
 	    winSignIn.open();
- }
+ };
 
 // If Authentication OK the Show Dashboard
  var showDashboard = function(yql) {
@@ -45,10 +45,11 @@
 	});
 
 	//Forces Landscape mode only
-	win1.orientationModes = [
-		Titanium.UI.LANDSCAPE_LEFT
-	];
-
+	// win1.orientationModes = [
+	// 	Titanium.UI.LANDSCAPE_LEFT,
+	// 	Titanium.UI.LANDSCAPE_RIGHT
+	// ];
+	
 
 	var logoHeader = Titanium.UI.createImageView({
 		image:'images/logo_header.png',
@@ -78,7 +79,7 @@
 	    textAlign:'right',
 		top:27,
 		left:690,
-		height:30,
+		height:30,	
 		width:'100'
 	});
 	win1.add(signoutLabel);
@@ -117,7 +118,7 @@
 		top:27,
 		left:840,
 		height:30,
-		width:150,
+		width:150
 	});
 	win1.add(memeTitleLabel);
 
@@ -145,7 +146,7 @@
 
 	winDashboard.open();
 
- }
+ };
 
 // ======================
 // = ACTIVITY INDICADOR =

@@ -2,10 +2,10 @@ var win = Ti.UI.currentWindow;
 
 var continuation = win.continuation;
 
-win.orientationModes = [
-	Titanium.UI.LANDSCAPE_LEFT,
-	Titanium.UI.LANDSCAPE_RIGHT
-];
+// win.orientationModes = [
+// 	Titanium.UI.LANDSCAPE_LEFT,
+// 	Titanium.UI.LANDSCAPE_RIGHT
+// ];
 
 var signinView = Ti.UI.createView({
 	backgroundColor:'white',

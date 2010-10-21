@@ -189,7 +189,7 @@ var border = Ti.UI.createView({
 	backgroundColor:'#EBEBEB',
 	height:1,
 	bottom:60,
-	width: '100%',
+	width: '100%'	
 })
 whiteBox.add(border);
 

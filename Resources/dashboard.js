@@ -4,7 +4,7 @@ var baseView = Ti.UI.createView({
 	backgroundColor:'transparent',
 	width:'100%',
 	height: '100%',
-	top:0,
+	top:0
 });
 win.add(baseView);
 
@@ -100,7 +100,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	//create a black box view with a unique name including the PubId
 	
-	var blackBoxView = "blackBoxView_" + pPubId + "_" + pGuid;
+	//var blackBoxView = "blackBoxView_" + pPubId + "_" + pGuid;
 	 Ti.API.debug("blackBoxView: " + blackBoxView);
 	
 	var blackBoxView = Ti.UI.createView({
@@ -108,7 +108,6 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		width: 317,
 		height: 241,
 		top: 5
-		//className:"basicBackBoxView"
 	});
 	
 	// Sets the proper Column Left position
@@ -299,7 +298,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	}
 	
 	//Creating the new 
-	var blackBoxLink = "blackBoxLink_" + pPubId + "_" + pGuid;
+	//var blackBoxLink = "blackBoxLink_" + pPubId + "_" + pGuid;
 	//Ti.API.debug("blackBoxView: " + blackBoxView);
 	
 	var blackBoxLink = Ti.UI.createView({
@@ -317,7 +316,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	//Returns the BlackBoxView Obj with the complete design
 	return(blackBoxView);
 	
-}
+};
 
 // ===============================
 // = FUNCTION TO BUILD DASHBOARD =
@@ -770,7 +769,7 @@ function endUpdate()
 	getDashboardData(lastTimestamp);
 
 	// just scroll down a bit to the new rows to bring them into view
-//	tableView.scrollToIndex(lastRow-3,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
+    //tableView.scrollToIndex(lastRow,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
 	
 	bellowActInd.hide();
 	
@@ -792,7 +791,7 @@ tableView.addEventListener('scroll',function(e)
 	if (distance < lastDistance)
 	{
 		// adjust the % of rows scrolled before we decide to start fetching
-		var nearEnd = theEnd * 1; 
+		var nearEnd = theEnd * 0.75; 
 		
 		if (!updating && (total >= nearEnd))
 		{
@@ -803,21 +802,10 @@ tableView.addEventListener('scroll',function(e)
 });
 
 //variable that configs the number of Dashboard pages that loads when the app starts
-var dashboardPages = 3;
+	
+getDashboardData(null);
 
-if (dashboardPages == 3){
-	
-	getDashboardData(null);
-	
-	dashboardPages--;
-	
-	if (dashboardPages != 0){
-		
-		beginUpdate();
-
-		dashboardPages--;
-	} 
-}
+beginUpdate();
 
 
 

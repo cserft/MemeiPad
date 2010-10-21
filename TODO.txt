@@ -12,8 +12,13 @@
  - Play no video do YouTube na pagina de permalink
 - Bring 3 Pages on first login
 - Ajustar Header para ser Variavel posicao do Signout em relacao ao LOgn Yahoo!
+- detect Network on Startup
+- change the scrool to update percentage
+- tap to top not working on the iPad
+- Rotate screen is not working
 
 
 - Major: SignIn page with Popular
 - Use Place maker to detect places on a given Post and Show them on the Map.
-
+- flip with 2 fingers on a post on dashboard reveals post informations (Author, Number of Reposts and Number of Comments)
+- Update shouldn't refresh the full table
