@@ -219,10 +219,20 @@
 // 	hideIndicator();
 // });
 
-// // trap app shutdown event
+// trap app shutdown event
 // Titanium.App.addEventListener('close',function(e)
 // {
 // 	Ti.API.info("The application is being shutdown");
+// });
+// 
+// Titanium.App.addEventListener('event_one', function(e)
+// {
+// 	messageLabel.text = 'app.js: event one, array length = ' + e.data.length;
+// 	messageWin.open();
+// 	setTimeout(function()
+// 	{
+// 		messageWin.close({opacity:0,duration:500});
+// 	},1000);
 // });
 
 // =========================================

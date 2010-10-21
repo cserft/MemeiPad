@@ -206,7 +206,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 				left:5,
 				width:307,
 				height:231,
-				defaultImage: 'images/default_img.png'
+				defaultImage: 'images/default_img_video.png'
 			});
 			blackBoxView.add(postImageView);
 
@@ -755,7 +755,7 @@ function beginUpdate()
 
 	tableView.appendRow(loadingRow);
 	
-	setTimeout(endUpdate,2000);
+	setTimeout(endUpdate,2500);
 }
 
 function endUpdate()
