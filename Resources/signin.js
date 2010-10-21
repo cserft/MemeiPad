@@ -2,11 +2,6 @@ var win = Ti.UI.currentWindow;
 
 var continuation = win.continuation;
 
-// win.orientationModes = [
-// 	Titanium.UI.LANDSCAPE_LEFT,
-// 	Titanium.UI.LANDSCAPE_RIGHT
-// ];
-
 var signinView = Ti.UI.createView({
 	backgroundColor:'white',
 	width: 500,
@@ -36,3 +31,21 @@ signinView.add(btn_signin);
 // Sign In Button Listener
 btn_signin.addEventListener("click",continuation);
 
+// YQL 2-leg Oauth Request using native Titanium Support for YQL
+Ti.Yahoo.setOAuthParameters(acessor.consumerKey,acessor.consumerSecret);
+
+var queryYQL = 'SELECT * FROM meme.popular(17) WHERE locale="en"';
+
+Ti.Yahoo.yql(queryYQL,function(e) {
+
+	Ti.API.debug('Found YQL results data? ' + e.success);
+
+	if (e.message) {
+		Ti.API.error('Error Message getPopular(): ' + e.message);
+	}
+
+	// var posts = [];
+	// var data = e.data;
+	// var randomnumber = Math.floor(Math.random()*16);
+	// var post = data.post[randomnumber];
+});

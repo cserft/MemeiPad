@@ -1,3 +1,5 @@
+Ti.include('lib/strip_tags.js');
+
 var win = Ti.UI.currentWindow;
 
 var baseView = Ti.UI.createView({
@@ -99,9 +101,6 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	var __id_caption;
 	
 	//create a black box view with a unique name including the PubId
-	
-	//var blackBoxView = "blackBoxView_" + pPubId + "_" + pGuid;
-	 Ti.API.debug("blackBoxView: " + blackBoxView);
 	
 	var blackBoxView = Ti.UI.createView({
 		backgroundColor:'black',
@@ -234,7 +233,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
         });
         blackBoxView.add(img_quote);
 
-       var pContentStripado = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+       //var pContentStripado = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+
+	   var pContentStripado = strip_tags(pContent);
 
        var minipost_text = Titanium.UI.createLabel({
            color:'#FFF',
@@ -279,7 +280,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		blackBoxView.add(__id_bg_caption);
 		
 		//Strips HTML Entities and Tags from the Caption
-		var pCaptionStripped = pCaption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+		var pCaptionStripped = strip_tags(pCaption);
 	
 		var __id_caption = Titanium.UI.createLabel({
 			color:'#FFF',

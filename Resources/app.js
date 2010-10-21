@@ -1,5 +1,12 @@
- // create a new OAuthAdapter instance by passing by your consumer data and signature method
- Ti.include('oadapter.js');
+// create a new OAuthAdapter instance by passing by your consumer data and signature method
+Ti.include('oadapter.js');
+
+//base Window
+var win1 = Titanium.UI.createWindow({  
+    title:'Meme for iPad',
+    backgroundColor:'#141414',
+    backgroundImage: 'images/bg.jpg'
+});
 
 // If not authenticated then Show SignIn Window
  var showSignIn = function(continuation) {
@@ -37,19 +44,7 @@
 
 	//
 	// create base UI tab and root window
-	//
-	var win1 = Titanium.UI.createWindow({  
-	    title:'Meme For iPad',
-	    backgroundColor:'#fff',
-	    backgroundImage: 'images/bg.jpg'
-	});
-
-	//Forces Landscape mode only
-	// win1.orientationModes = [
-	// 	Titanium.UI.LANDSCAPE_LEFT,
-	// 	Titanium.UI.LANDSCAPE_RIGHT
-	// ];
-	
+	//	
 
 	var logoHeader = Titanium.UI.createImageView({
 		image:'images/logo_header.png',
@@ -148,92 +143,6 @@
 
  };
 
-// ======================
-// = ACTIVITY INDICADOR =
-// ======================		
-
-
-//
-//  CREATE CUSTOM LOADING INDICATOR
-//
-// var indWin = null;
-// var actInd = null;
-// function showIndicator()
-// {
-// 	// window container
-// 	indWin = Titanium.UI.createWindow({
-// 		height:150,
-// 		width:150
-// 	});
-// 
-// 	// black view
-// 	var indView = Titanium.UI.createView({
-// 		height:150,
-// 		width:150,
-// 		backgroundColor:'#000',
-// 		borderRadius:10,
-// 		opacity:0.8
-// 	});
-// 	indWin.add(indView);
-// 
-// 	// loading indicator
-// 	actInd = Titanium.UI.createActivityIndicator({
-// 		style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
-// 		height:30,
-// 		width:30
-// 	});
-// 	indWin.add(actInd);
-// 
-// 	// message
-// 	var message = Titanium.UI.createLabel({
-// 		text:'Loading',
-// 		color:'#fff',
-// 		width:'auto',
-// 		height:'auto',
-// 		font:{fontSize:20,fontWeight:'bold'},
-// 		bottom:20
-// 	});
-// 	indWin.add(message);
-// 	indWin.open();
-// 	actInd.show();
-// 
-// };
-// 
-// function hideIndicator()
-// {
-// 	actInd.hide();
-// 	indWin.close({opacity:0,duration:500});
-// };
-// 
-// //
-// // Add global event handlers to hide/show custom indicator
-// //
-// Titanium.App.addEventListener('show_indicator', function(e)
-// {
-// 	Ti.API.info("IN SHOW INDICATOR");
-// 	showIndicator();
-// });
-// Titanium.App.addEventListener('hide_indicator', function(e)
-// {
-// 	Ti.API.info("IN HIDE INDICATOR");
-// 	hideIndicator();
-// });
-
-// trap app shutdown event
-// Titanium.App.addEventListener('close',function(e)
-// {
-// 	Ti.API.info("The application is being shutdown");
-// });
-// 
-// Titanium.App.addEventListener('event_one', function(e)
-// {
-// 	messageLabel.text = 'app.js: event one, array length = ' + e.data.length;
-// 	messageWin.open();
-// 	setTimeout(function()
-// 	{
-// 		messageWin.close({opacity:0,duration:500});
-// 	},1000);
-// });
 
 // =========================================
 // =  // Initialize oAuthAdapter process   =
