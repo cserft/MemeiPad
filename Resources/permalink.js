@@ -97,9 +97,14 @@ var blackBG = Ti.UI.createView({
 	width: '100%',
 	height: '100%',
 	opacity:0.85,
-	zIndex: 0
+	zIndex: 0,
+	touchEnabled: false
 });
 win.add(blackBG);
+
+var t = Ti.UI.create2DMatrix();
+t = t.scale(0);
+
 
 var whiteBox = Ti.UI.createView({
 	backgroundColor:'white',
@@ -108,9 +113,10 @@ var whiteBox = Ti.UI.createView({
 	top:52,
 	left:73,
 	zIndex: 2
+	//opacity: 0
+	// transform: t
 });
 win.add(whiteBox);
-
 
 var btn_close = Titanium.UI.createButton({
 	backgroundImage: 'images/btn_close.png',
@@ -122,21 +128,22 @@ var btn_close = Titanium.UI.createButton({
 });
 win.add(btn_close);
 
+
 // ========================
 // = geo places retrieval =
 // ========================
-var getGeoPlaces = function(pContent){
-	
-	yqlQuery = 'SELECT * FROM geo.placemaker WHERE documentContent = "' + pContent + '" AND documentType="text/plain"';
-
-	Ti.API.debug("####### YQL Query executed: " + yqlQuery);
-
-	var yqlGeoPlaces = yql.query(yqlQuery);
-	var places = yqlGeoPlaces.query.results;
-	
-	Ti.API.debug("####### PLACES: " + JSON.stringify(places));
-	
-}
+// var getGeoPlaces = function(pContent){
+// 	
+// 	yqlQuery = 'SELECT * FROM geo.placemaker WHERE documentContent = "' + pContent + '" AND documentType="text/plain"';
+// 
+// 	Ti.API.debug("####### YQL Query executed: " + yqlQuery);
+// 
+// 	var yqlGeoPlaces = yql.query(yqlQuery);
+// 	var places = yqlGeoPlaces.query.results;
+// 	
+// 	Ti.API.debug("####### PLACES: " + JSON.stringify(places));
+// 	
+// }
 
 // =========================
 // = WEBVIEW WITH THE POST =
@@ -322,7 +329,10 @@ if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_
 
 btn_close.addEventListener("click", function(e)
 {
-	win.close();
+		var t3 = Titanium.UI.create2DMatrix();
+		t3 = t3.scale(0);
+		win.close({transform:t3,duration:200});
+	
 });
 
 btn_repost.addEventListener("click", function(e)
@@ -348,6 +358,18 @@ btn_repost.addEventListener("click", function(e)
 	// setTimeout(repostActInd.hide(),2000);
 
 });
+
+		
+// Hides the loading indicator indicator
+if (Ti.Platform.model == 'iPad Simulator') {
+
+	Ti.API.debug("HIDING INDICATOR");
+
+} else {
+	
+	//setTimeout(Ti.App.fireEvent('hide_indicator'),2000);
+	Ti.App.fireEvent('hide_indicator');
+}
 
 
 //link to Permalink Page on the Web in the bottom

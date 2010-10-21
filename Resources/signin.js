@@ -1,4 +1,5 @@
 var win = Ti.UI.currentWindow;
+Ti.include('lib/secrets.js');
 
 var continuation = win.continuation;
 
@@ -32,7 +33,7 @@ signinView.add(btn_signin);
 btn_signin.addEventListener("click",continuation);
 
 // YQL 2-leg Oauth Request using native Titanium Support for YQL
-Ti.Yahoo.setOAuthParameters(acessor.consumerKey,acessor.consumerSecret);
+Ti.Yahoo.setOAuthParameters(consumerKey,consumerSecret);
 
 var queryYQL = 'SELECT * FROM meme.popular(17) WHERE locale="en"';
 

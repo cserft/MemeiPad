@@ -25,23 +25,7 @@ var now   = timestamp();
 //RETRIEVING YQL OBJECT
 var yql = win.yql; // Holds YQL Object to make queries
 var myMemeInfo = win.memeInfo; //holds the LoggedIn User Meme's Information
-
-// ==============================
-// = LOADING PLACE HOLDER LABEL =
-// ==============================
-// var loadingPlaceholder = Titanium.UI.createLabel({
-//     color:'#999999',
-//     text: "Loading Posts...",
-//     textAlign:'center',
-// 	font: {
-// 		fontSize:45,
-// 		fontFamily:'Helvetica Neue'
-// 		},
-// 	zIndex: 3
-// });
-// baseView.add(loadingPlaceholder);
-// 
-// loadingPlaceholder.show();
+var win1 = win.win1; // Window Original created on app.js
 
 
 // Creating the List Post Table View
@@ -53,41 +37,6 @@ var tableView = Titanium.UI.createTableView({
 });
 
 baseView.add(tableView);
-
-
-
-// ================================
-// = GET LAST DASHBOARD TIMESTAMP =
-// ================================
-
-// var getLastItem = function(){
-// 	var yqldata = yql.query("SELECT timestamp FROM meme.user.dashboard | tail(count=1)");
-// 	var last_timestamp = yqldata.query.results.post.timestamp;	
-// 
-// 	//Ti.API.debug(" ============= Last Timestamp on Dashboard: " + last_timestamp);
-// 	
-// 	return(last_timestamp);
-// 	
-// }
-// 
-// getLastItem();
-
-/*
-
-SELECT * FROM meme.user.dashboard WHERE start_timestamp IN (
-	SELECT timestamp FROM meme.user.dashboard WHERE start_timestamp IN (
-		SELECT timestamp FROM meme.user.dashboard |tail(count=1) // ultimo timestamp do primeiro dashboard
-	)|tail(count=1) | tail(count=9)
-) | tail(count=1)
-
-// tras o segundo page do dashboard
-SELECT * FROM meme.user.dashboard WHERE start_timestamp IN (SELECT timestamp FROM meme.user.dashboard |tail(count=1)) | tail (count=9)
-
-SELECT * FROM meme.user.dashboard WHERE start_timestamp IN (SELECT timestamp FROM meme.user.dashboard WHERE start_timestamp IN (SELECT timestamp FROM meme.user.dashboard |tail(count=1)) |tail(count=1)) | tail (count=9)
-
-
-*/
-
 
 
 // ===================================================
@@ -433,6 +382,10 @@ var getDashboardData = function (pTimestamp){
 
 					break;
 				}
+				case 'audio':
+				{				
+					continue; 
+				}
 
 			}
 
@@ -500,7 +453,7 @@ var getDashboardData = function (pTimestamp){
 			
 		} else {
 			
-		//	Ti.API.info("Temp Row Updated, number of items on TEMP Row: " + itemPerRowCount);
+			//Ti.API.info("Temp Row Updated, number of items on TEMP Row: " + itemPerRowCount);
 			
 			// if loop ends with an incomplete row it safes this ROW for the next request
 			tempRow = row;
@@ -523,7 +476,6 @@ var getDashboardData = function (pTimestamp){
 	
 }
 
-
 var dashboardShadow = Titanium.UI.createImageView({
 	image:'images/shadow.png',
 	backgroundColor: "transparent",
@@ -541,8 +493,23 @@ win.add(dashboardShadow);
 // ==================
 tableView.addEventListener('click', function(e)
 {
-	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+	
+	if (Ti.Platform.model == 'iPad Simulator') {
 
+		Ti.API.debug("SHOWING INDICATOR");
+
+	} else {
+		
+		Ti.App.fireEvent('show_indicator');
+	}
+	
+	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+	
+	
+	// Sets the Animation start
+	var t = Ti.UI.create2DMatrix();
+	t = t.scale(0);
+	
 	var winPermalink = Ti.UI.createWindow({
 	    url: 'permalink.js',
 	    name: 'Permalink Details',
@@ -553,14 +520,36 @@ tableView.addEventListener('click', function(e)
 		width:'100%',
 		navBarHidden: true,
 		zIndex: 6,
+		transform: t,
 		yql: yql, //passing Variables to this Window
 		myMemeInfo: myMemeInfo,
 		pGuid: e.source.guid,
 		pPubId: e.source.pubId
 	});
 
-	winPermalink.open();
 
+	// Creating the Open Permalink Transition
+	// create first transform to go beyond normal size
+	var t1 = Titanium.UI.create2DMatrix();
+	t1 = t1.scale(1.1);
+
+	var a = Titanium.UI.createAnimation();
+	a.transform = t1;
+	a.duration = 200;
+	
+	// when this animation completes, scale to normal size
+	a.addEventListener('complete', function()
+	{
+		var t2 = Titanium.UI.create2DMatrix();
+		t2 = t2.scale(1.0);
+		winPermalink.animate({transform:t2, duration:200});
+	
+	});
+	
+	// Open the permalink window with animation
+	winPermalink.open(a);
+
+	
 });
 
 
@@ -604,148 +593,7 @@ tableView.addEventListener('click', function(e)
 // 	
 // });
 
-// ===================
-// = PULL TO REFRESH =
-// ===================
-function formatDate()
-{
-	var date = new Date;
-	var datestr = date.getMonth()+'/'+date.getDate()+'/'+date.getFullYear();
-	if (date.getHours()>=12)
-	{
-		datestr+=' '+(date.getHours()==12 ? date.getHours() : date.getHours()-12)+':'+date.getMinutes()+' PM';
-	}
-	else
-	{
-		datestr+=' '+date.getHours()+':'+date.getMinutes()+' AM';
-	}
-	return datestr;
-}
 
-
-var border = Ti.UI.createView({
-	backgroundColor:"black",
-	height:2,
-	bottom:0
-})
-
-var tableHeader = Ti.UI.createView({
-	backgroundColor:"black",
-	width:1024,
-	height:60
-});
-
-// fake it til ya make it..  create a 2 pixel
-// bottom border
-tableHeader.add(border);
-
-var arrow = Ti.UI.createView({
-	backgroundImage:"images/whiteArrow.png",
-	width:23,
-	height:60,
-	bottom:10,
-    left:350
-});
-
-var actInd = Titanium.UI.createActivityIndicator({
-	left:350,
-	bottom:13,
-	width:30,
-	height:30
-});
-
-
-var statusLabel = Ti.UI.createLabel({
-	text:"Pull to reload",
-	// left:55,
-	width:200,
-	bottom:30,
-	height:"auto",
-	color:"Gray",
-	textAlign:"center",
-	font:{fontSize:13,fontWeight:"bold"}
-});
-
-var lastUpdatedLabel = Ti.UI.createLabel({
-	text:"Last Updated: "+formatDate(),
-	// left:55,
-	width:200,
-	bottom:15,
-	height:"auto",
-	color:"Gray",
-	textAlign:"center",
-	font:{fontSize:12}
-});
-
-
-tableHeader.add(arrow);
-tableHeader.add(statusLabel);
-tableHeader.add(lastUpdatedLabel);
-tableHeader.add(actInd);
-
-tableView.headerPullView = tableHeader;
-
-var pulling = false;
-var reloading = false;
-
-function beginReloading()
-{
-	
-	//tableView.setData([]);
-	setTimeout(function()
-	{	
-		getDashboardData(null);
-
-	},1000)
-	
-	setTimeout(endReloading,3000);
-}
-
-function endReloading()
-{
-	// when you're done, just reset
-	tableView.setContentInsets({top:0},{animated:true});
-	reloading = false;
-	lastUpdatedLabel.text = "Last Updated: "+formatDate();
-	statusLabel.text = "Pull down to refresh...";
-	actInd.hide();
-	arrow.show();
-}
-
-tableView.addEventListener('scroll',function(e)
-{
-	var offset = e.contentOffset.y;
-	if (offset <= -65.0 && !pulling)
-	{
-		var t = Ti.UI.create2DMatrix();
-		t = t.rotate(-180);
-		pulling = true;
-		arrow.animate({transform:t,duration:180});
-		statusLabel.text = "Release to refresh...";
-	}
-	else if (pulling && offset > -65.0 && offset < 0)
-	{
-		pulling = false;
-		var t = Ti.UI.create2DMatrix();
-		arrow.animate({transform:t,duration:180});
-		statusLabel.text = "Pull down to refresh...";
-	}
-});
-
-tableView.addEventListener('scrollEnd',function(e)
-{
-	if (pulling && !reloading && e.contentOffset.y <= -65.0)
-	{
-		reloading = true;
-		pulling = false;
-		arrow.hide();
-		actInd.show();
-		statusLabel.text = "Reloading...";
-		tableView.setContentInsets({top:60},{animated:true});
-		arrow.transform=Ti.UI.create2DMatrix();
-		beginReloading();
-	}
-});
 
 // =======================
 // = SCROLL DOWN LOADING =
@@ -838,11 +686,158 @@ tableView.addEventListener('scroll',function(e)
 	lastDistance = distance;
 });
 
+
+// ===================
+// = PULL TO REFRESH =
+// ===================
+function formatDate()
+{
+	var date = new Date;
+	var datestr = date.getMonth()+'/'+date.getDate()+'/'+date.getFullYear();
+	if (date.getHours()>=12)
+	{
+		datestr+=' '+(date.getHours()==12 ? date.getHours() : date.getHours()-12)+':'+date.getMinutes()+' PM';
+	}
+	else
+	{
+		datestr+=' '+date.getHours()+':'+date.getMinutes()+' AM';
+	}
+	return datestr;
+}
+
+
+var border = Ti.UI.createView({
+	backgroundColor:"black",
+	height:2,
+	bottom:0
+})
+
+var tableHeader = Ti.UI.createView({
+	backgroundColor:"black",
+	width:1024,
+	height:60
+});
+
+// fake it til ya make it..  create a 2 pixel
+// bottom border
+tableHeader.add(border);
+
+var arrow = Ti.UI.createView({
+	backgroundImage:"images/whiteArrow.png",
+	width:23,
+	height:60,
+	bottom:10,
+    left:350
+});
+
+var actInd = Titanium.UI.createActivityIndicator({
+	left:350,
+	bottom:13,
+	width:30,
+	height:30
+});
+
+
+var statusLabel = Ti.UI.createLabel({
+	text:"Pull to reload",
+	// left:55,
+	width:200,
+	bottom:30,
+	height:"auto",
+	color:"Gray",
+	textAlign:"center",
+	font:{fontSize:13,fontWeight:"bold"}
+});
+
+var lastUpdatedLabel = Ti.UI.createLabel({
+	text:"Last Updated: "+formatDate(),
+	// left:55,
+	width:200,
+	bottom:15,
+	height:"auto",
+	color:"Gray",
+	textAlign:"center",
+	font:{fontSize:12}
+});
+
+
+tableHeader.add(arrow);
+tableHeader.add(statusLabel);
+tableHeader.add(lastUpdatedLabel);
+tableHeader.add(actInd);
+
+tableView.headerPullView = tableHeader;
+
+var pulling = false;
+var reloading = false;
+
+function beginReloading()
+{
+	
+	//tableView.setData([]);
+	setTimeout(function()
+	{	
+		getDashboardData(null);
+		beginUpdate();
+
+	},1000)
+	
+	setTimeout(endReloading,3000);
+}
+
+function endReloading()
+{
+	// when you're done, just reset
+	tableView.setContentInsets({top:0},{animated:true});
+	reloading = false;
+	lastUpdatedLabel.text = "Last Updated: "+formatDate();
+	statusLabel.text = "Pull down to refresh...";
+	actInd.hide();
+	arrow.show();
+}
+
+tableView.addEventListener('scroll',function(e)
+{
+	var offset = e.contentOffset.y;
+	if (offset <= -65.0 && !pulling)
+	{
+		var t = Ti.UI.create2DMatrix();
+		t = t.rotate(-180);
+		pulling = true;
+		arrow.animate({transform:t,duration:180});
+		statusLabel.text = "Release to refresh...";
+	}
+	else if (pulling && offset > -65.0 && offset < 0)
+	{
+		pulling = false;
+		var t = Ti.UI.create2DMatrix();
+		arrow.animate({transform:t,duration:180});
+		statusLabel.text = "Pull down to refresh...";
+	}
+});
+
+tableView.addEventListener('scrollEnd',function(e)
+{
+	if (pulling && !reloading && e.contentOffset.y <= -65.0)
+	{
+		reloading = true;
+		pulling = false;
+		arrow.hide();
+		actInd.show();
+		statusLabel.text = "Reloading...";
+		tableView.setContentInsets({top:60},{animated:true});
+		arrow.transform=Ti.UI.create2DMatrix();
+		beginReloading();
+	}
+});
 //variable that configs the number of Dashboard pages that loads when the app starts
 	
 getDashboardData(null);
 
 beginUpdate();
+
+// open Main Window from app.js with Transition
+win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
 
 
 

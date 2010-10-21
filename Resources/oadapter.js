@@ -75,8 +75,8 @@ var authorizationUI = function() {
         });
 		
 		// Force Landscape mode only
-		authWindow.orientationModes = [	Titanium.UI.LANDSCAPE_LEFT,
-			Titanium.UI.LANDSCAPE_RIGHT ];			
+		// authWindow.orientationModes = [	Titanium.UI.LANDSCAPE_LEFT,
+		// 	Titanium.UI.LANDSCAPE_RIGHT ];			
 		var transform = Ti.UI.create2DMatrix().scale(0);
         var authView = Ti.UI.createView({
             top: 50,
@@ -205,8 +205,17 @@ var OAuthAdapter = function(pService, authorize)
         {
 			var file  = tokenFilename();
 			var token = JSON.parse(file.read());
-			Ti.API.debug("Loading token done: " + JSON.stringify(token));
-			return(token);
+			
+			if ( ! token.token.oauth_token || token.token.oauth_token === 'undefined'){
+				// IF Token Dict is empty then Starts the Sign Process Again
+				
+				Ti.API.debug("Token{} Empty " + JSON.stringify(token.token));
+				
+			} else {
+			
+				Ti.API.debug("Loading token from file done: " + JSON.stringify(token));
+				return(token);
+			}
         }
         catch(e)
         {

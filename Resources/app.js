@@ -118,9 +118,6 @@ var win1 = Titanium.UI.createWindow({
 	win1.add(memeTitleLabel);
 
 
-	// open Window with Transition
-	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
-
 	// ===========================
 	// = CREATING DASHBOARD VIEW =
 	// ===========================
@@ -136,19 +133,126 @@ var win1 = Titanium.UI.createWindow({
 		navBarHidden: true,
 		yql: yql,
 		memeInfo:meme,
-		zIndex: 5
+		zIndex: 5,
+		win1:win1
 	});
 
 	winDashboard.open();
 
  };
 
+// Checks if the app is resumed
 
-// =========================================
-// =  // Initialize oAuthAdapter process   =
-// =========================================
-var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
-oAuthAdapter.login(showSignIn, showDashboard);
+
+
+// Detects if it is running on the Simulator
+// If Not then creates the Event listeners
+
+if (Ti.Platform.model == 'iPad Simulator') {
+	
+	Ti.API.debug("Platform Name: " + Ti.Platform.model);
+	
+} else {
+	
+	//  CREATE CUSTOM LOADING INDICATOR
+	//
+	var indWin = null;
+	var actInd = null;
+	function showIndicator()
+	{
+		// window container
+		indWin = Titanium.UI.createWindow({
+			height:250,
+			width:250
+		});
+
+		// black view
+		var indView = Titanium.UI.createView({
+			height:250,
+			width:250,
+			backgroundColor:'#AB0899',
+			borderRadius:10,
+			opacity:0.8
+		});
+		indWin.add(indView);
+
+		// loading indicator
+		actInd = Titanium.UI.createActivityIndicator({
+			style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
+			height:40,
+			width:40
+		});
+		indWin.add(actInd);
+
+		// message
+		var message = Titanium.UI.createLabel({
+			text:'Loading...',
+			color:'#fff',
+			width:'auto',
+			height:'auto',
+			font:{fontSize:24,fontWeight:'bold'},
+			bottom:60
+		});
+		indWin.add(message);
+		indWin.open();
+		actInd.show();
+
+	};
+
+	function hideIndicator()
+	{
+		actInd.hide();
+		indWin.close({opacity:0,duration:500});
+	};
+
+	//
+	// Add global event handlers to hide/show custom indicator
+	//
+	Titanium.App.addEventListener('show_indicator', function(e)
+	{
+		Ti.API.info("IN SHOW INDICATOR");
+		showIndicator();
+	});
+	Titanium.App.addEventListener('hide_indicator', function(e)
+	{
+		Ti.API.info("IN HIDE INDICATOR");
+		hideIndicator();
+	});
+}
+
+
+// Titanium.App.addEventListener('resume', function(e)
+// {
+//   var a = Titanium.UI.createAlertDialog({ 
+//     title:'App Resumed',
+//     message: 'YEP it works'
+//   });
+// 	a.show();
+// });
+
+// ================================
+// = Checks if the iPad is Online =
+// ================================
+
+if (!Titanium.Network.online) {
+  var a = Titanium.UI.createAlertDialog({ 
+    title:'Network Connection Required',
+    message: 'Meme for iPad requires an Internet connection to, you know, use stuff from the Internets. Please, check your network connection and try again.'
+  });
+	a.show();
+	
+} else {
+	
+	// =========================================
+	// =  // Initialize oAuthAdapter process   =
+	// =========================================
+	var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
+	oAuthAdapter.login(showSignIn, showDashboard);
+	
+}
+
+
+
 
 
 
