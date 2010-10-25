@@ -65,13 +65,27 @@ var showHeader = function (yql, pType, pWinDashboard){
 			// Sets a FireEvent passing the Meme Object Fwd
 			Ti.App.fireEvent('myMemeInfo',{myMemeInfo:meme});
 		}
+		
+		// ===============
+		// = post button =
+		// ===============
+		
+		var btn_StartPosting = Ti.UI.createButton({
+			//title:'Show Popover 1',
+			backgroundImage: 'images/btn_start_posting.png',
+			height:64,
+			width:240,
+			left: 245,
+			top:15
+		});
+		headerView.add(btn_StartPosting);
 
 		var miniAvatarView = Titanium.UI.createImageView({
 			image: meme.avatar_url.thumb,
 			borderColor: 'black',
 			defaultImage: 'images/default_img_avatar.png',
 			border: 2,
-			top:30,
+			top:32,
 			left:810,
 			width:22,
 			height:22
@@ -83,49 +97,134 @@ var showHeader = function (yql, pType, pWinDashboard){
 			text: 'Hi, ' + meme.name + '    |',
 			font:{fontSize:12,fontFamily:'Helvetica Neue'},
 		    textAlign:'right',
-			top:27,
-			left:590,
+			top:29,
+			left:650,
 			height:30,
 			width:'150'
 		});
 		headerView.add(hiYahooUserLabel);
 
-		var signoutLabel = Titanium.UI.createLabel({
-			color:'#999999',
-			text: 'signout',
-			font:{fontSize:12,fontFamily:'Helvetica Neue'},
-		    textAlign:'right',
-			top:27,
-			left:690,
-			height:30,	
-			width:'100'
-		});
-		headerView.add(signoutLabel);
-
+		// var signoutLabel = Titanium.UI.createLabel({
+		// 			color:'#999999',
+		// 			text: 'signout',
+		// 			font:{fontSize:12,fontFamily:'Helvetica Neue'},
+		// 		    textAlign:'right',
+		// 			top:29,
+		// 			left:690,
+		// 			height:30,	
+		// 			width:'100'
+		// 		});
+		// 		headerView.add(signoutLabel);
+		
 
 		var memeTitleLabel = Titanium.UI.createLabel({
 			color:'#ffffff',
+			// backgroundColor: 'transparent',
+			// borderWidth:0,
 			text: meme.title,
 			font:{fontSize:14,fontFamily:'Helvetica Neue',fontWeight:'bold'},
 			textAlign:'left',
-			top:27,
+			top:29	,
 			left:840,
 			height:30,
 			width:150
 		});
 		headerView.add(memeTitleLabel);
 
-		// Sign out Listener
-		signoutLabel.addEventListener("click", function(e) {
+		// // Sign out Listener
+		// 		signoutLabel.addEventListener("click", function(e) {
+		// 
+		// 			Ti.API.info("Signout Link clicked");
+		// 
+		// 			oAuthAdapter.logout('meme');
+		// 			// pWinDashboard.close();
+		// 			Ti.App.fireEvent('remove_tableview');
+		// 			headerView.hide();
+		// 			oAuthAdapter.login(showSignIn, showDashboard);
+		// 		});
 
-			Ti.API.info("Signout Link clicked");
 
-			oAuthAdapter.logout('meme');
-			// pWinDashboard.close();
-			Ti.App.fireEvent('remove_tableview');
-			headerView.hide();
-			oAuthAdapter.login(showSignIn, showDashboard);
+		// ================
+		// = PopOver Menu =
+		// ================
+
+		// arrow directions
+		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
+		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN
+		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_LEFT
+		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_RIGHT
+		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_ANY
+		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UNKNOWN
+
+		// build first popover
+		memeTitleLabel.addEventListener('click', function()
+		{
+			// var close = Ti.UI.createButton({
+			// 	title:'Close'
+			// });
+			// close.addEventListener('click', function()
+			// {
+			// 	popover.hide({animated:true});
+			// });
+			
+			var popover = Titanium.UI.iPad.createPopover({ 
+				width:200, 
+				height:220,
+				borderWidth: 0,
+				title:'Your Stuff',
+				// rightNavButton:close,
+				// barColor:'white',
+				// backgroundColor: 'white',
+				// backgroundImage: 'images/bg_settings_menu.png',
+				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
+			}); 
+			var searchBar = Ti.UI.createSearchBar({top:0,height:44,barColor:'#333'});
+
+			var settingsTableView = Ti.UI.createTableView({
+				data:[
+					{title:'Your Memes', 
+						font:{
+							fontFamily:'Helvetica Neue'
+						}
+					},
+					{title:'Explore'},
+					{title:'Invite your friends'},
+					{title:'sign out'}
+					],
+				color: '#9E4F9E',
+				top:44,
+				height:200
+				// selectedColor: '#9E4F9E',
+				// selectedBackgroundColor: '#9E4F9E'
+			});
+			
+			settingsTableView.addEventListener('click', function(e) 
+			{
+				Ti.API.info("Table Row Clicked: " + e.index);
+				
+				if (e.index == 3){ // Sign Out
+					
+					Ti.API.info("Signout Link clicked");
+					popover.hide({animated:true});
+					oAuthAdapter.logout('meme');
+					Ti.App.fireEvent('remove_tableview');
+					headerView.hide();
+					oAuthAdapter.login(showSignIn, showDashboard);
+					
+				}
+				
+			});
+
+			popover.add(searchBar)
+			popover.add(settingsTableView);
+
+			popover.show({
+				view:memeTitleLabel,
+				animated:true,
+			}); 
+
 		});
+
 
 	} else {
 		
@@ -135,7 +234,6 @@ var showHeader = function (yql, pType, pWinDashboard){
 	}
 
 };
-
 
 
 // If not authenticated then Show SignIn Window

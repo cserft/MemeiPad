@@ -5,13 +5,13 @@ var yql = win.yql;
 var _guid = win.pGuid;
 var _pubId = win.pPubId;
 var myMemeInfo = win.myMemeInfo;
+var openingpermalink = win.openingpermalink;
 
 var timestamp = function() {
 	return((new Date()).getTime());
 };
 
 var now  = timestamp();
-
 
 // =============================
 // = CACULATES THE HUMANE DATA =
@@ -64,7 +64,7 @@ function humane_date(date_str){
               return Math.round(seconds / 4730400000) + ' Centuries' + token;
 
       return date_str;
-  };
+};
 
 
 
@@ -375,6 +375,8 @@ if (Ti.Platform.model == 'iPad Simulator') {
 	//setTimeout(Ti.App.fireEvent('hide_indicator'),2000);
 	Ti.App.fireEvent('hide_indicator');
 }
+
+openingpermalink = false;
 
 
 //link to Permalink Page on the Web in the bottom

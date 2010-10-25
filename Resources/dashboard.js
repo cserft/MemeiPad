@@ -511,8 +511,12 @@ win.add(dashboardShadow);
 // ==================
 // = CLICK LISTENER =
 // ==================
+
+var openingpermalink = false;
+
 tableView.addEventListener('click', function(e)
 {
+	openingpermalink = true;
 	
 	if (Ti.Platform.model == 'iPad Simulator') {
 
@@ -538,6 +542,7 @@ tableView.addEventListener('click', function(e)
 		height:'100%',
 		width:'100%',
 		navBarHidden: true,
+		openingpermalink: openingpermalink,
 		zIndex: 6,
 		transform: t,
 		yql: yql, //passing Variables to this Window

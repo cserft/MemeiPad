@@ -22,11 +22,11 @@
 ===============================================
 
 dashboard.js
-- Qdo logado montar header (ver signin.js)
-- Criar novo Menu Popover com Logout e informações no header
 - Quando nao Logado Mostrar Populars (usando a language do usuário logado)
 - ver esta resposta: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
+- Styles for the rows in the Popover Menu
 
 
-- After signing in Loses the Header as it doesn't call the showSignIn after authentication
-- 
+permalink.js
+- Animation when reposting
+- Show the App Posting to Meme (how to get App data from YQL)
