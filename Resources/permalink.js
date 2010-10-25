@@ -215,12 +215,12 @@ var meme = yqlMemeInfo.query.results.meme;
 // Users Post Owner Avatar
 var guidAvatar = Titanium.UI.createImageView({
 	image: meme.avatar_url.thumb,
+	defaultImage: 'images/default_img_avatar.png',
 	bottom:10,
 	left:10,
 	width:40,
 	height:40,
-	zIndex:3,
-	defaultImage: 'images/default_img.png'
+	zIndex:3
 });
 whiteBox.add(guidAvatar);
 
@@ -316,12 +316,17 @@ whiteBox.add(repostActInd);
 
 
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
-
-if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_guid == myMemeInfo.guid){
-	btn_repost.enabled = false;	
-} else {
-	btn_repost.enabled = true;	
+if (myMemeInfo){
+	
+	if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_guid == myMemeInfo.guid){
+		btn_repost.enabled = false;	
+	} else {
+		btn_repost.enabled = true;	
+	}
+	
 }
+
+
 
 // =============
 // = LISTENERS =

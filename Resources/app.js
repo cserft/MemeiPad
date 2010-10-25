@@ -1,6 +1,9 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 
+var winDashboardExist;
+
+
 //base Window
 var win1 = Titanium.UI.createWindow({  
     title:'Meme for iPad',
@@ -8,142 +11,185 @@ var win1 = Titanium.UI.createWindow({
     backgroundImage: 'images/bg.jpg'
 });
 
-// If not authenticated then Show SignIn Window
- var showSignIn = function(continuation) {
+var logoHeader = Titanium.UI.createImageView({
+	image:'images/logo_header.png',
+	top:-5,
+	left:3,
+	width:236,
+	height:106
+});
+win1.add(logoHeader);
+
+var btn_signin = Titanium.UI.createButton({
+	backgroundImage:'images/btn_signin_top.png',
+	top: 5,
+	left: 800,
+	width:207,
+	height:77,
+	opacity:1,
+	visible: false
+});
+win1.add(btn_signin);
+
+// ====================
+// = LOGGED IN HEADER =
+// ====================
+
+var showHeader = function (yql, pType, pWinDashboard){
 	
-	var winSignIn = Ti.UI.createWindow({
-	    url: 'signin.js',
-		name: 'SignIn Window',
-	    backgroundColor:'transparent',
-	    backgroundImage: 'images/bg.jpg',
-		//yql: yql,
-		// memeInfo:meme,
-		continuation:continuation,
-		borderRadius: 5
+	Ti.API.info("showHeader function Called with pType = " + pType);
+
+	var headerView = Ti.UI.createView({
+		backgroundColor:'transparent',
+		left:0,
+		top:0,
+		height:88,
+		width:1024,
+		zIndex: 2
+
 	});
+	win1.add(headerView);
 
-	    winSignIn.open();
- };
+	if (pType === "logged") {
 
-// If Authentication OK the Show Dashboard
- var showDashboard = function(yql) {
-	
-	var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=22,height=22)");
-	
-	// ========================
-	// = retrieving yql data =
-	// ========================
+		// ========================
+		// = retrieving yql data =
+		// ========================
 
-	if (yqlMemeInfo){
-		//var dataMeme = JSON.parse(yqlMemeInfo);
-		var meme = yqlMemeInfo.query.results.meme;	
+		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=22,height=22)");
+
+		if (yqlMemeInfo){
+
+			var meme = yqlMemeInfo.query.results.meme;	
+			
+			// Sets a FireEvent passing the Meme Object Fwd
+			Ti.App.fireEvent('myMemeInfo',{myMemeInfo:meme});
+		}
+
+		var miniAvatarView = Titanium.UI.createImageView({
+			image: meme.avatar_url.thumb,
+			borderColor: 'black',
+			defaultImage: 'images/default_img_avatar.png',
+			border: 2,
+			top:30,
+			left:810,
+			width:22,
+			height:22
+		});
+		headerView.add(miniAvatarView);
+
+		var hiYahooUserLabel = Titanium.UI.createLabel({
+			color:'#999999',
+			text: 'Hi, ' + meme.name + '    |',
+			font:{fontSize:12,fontFamily:'Helvetica Neue'},
+		    textAlign:'right',
+			top:27,
+			left:590,
+			height:30,
+			width:'150'
+		});
+		headerView.add(hiYahooUserLabel);
+
+		var signoutLabel = Titanium.UI.createLabel({
+			color:'#999999',
+			text: 'signout',
+			font:{fontSize:12,fontFamily:'Helvetica Neue'},
+		    textAlign:'right',
+			top:27,
+			left:690,
+			height:30,	
+			width:'100'
+		});
+		headerView.add(signoutLabel);
+
+
+		var memeTitleLabel = Titanium.UI.createLabel({
+			color:'#ffffff',
+			text: meme.title,
+			font:{fontSize:14,fontFamily:'Helvetica Neue',fontWeight:'bold'},
+			textAlign:'left',
+			top:27,
+			left:840,
+			height:30,
+			width:150
+		});
+		headerView.add(memeTitleLabel);
+
+		// Sign out Listener
+		signoutLabel.addEventListener("click", function(e) {
+
+			Ti.API.info("Signout Link clicked");
+
+			oAuthAdapter.logout('meme');
+			// pWinDashboard.close();
+			Ti.App.fireEvent('remove_tableview');
+			headerView.hide();
+			oAuthAdapter.login(showSignIn, showDashboard);
+		});
+
+	} else {
+		
+		// NOT LOGGED IN
+		btn_signin.visible = true;
+		headerView.hide();
 	}
 
-	// this sets the background color of the master UIView (when there are no windows/tab groups on it)
-	Titanium.UI.setBackgroundColor('#000');
-
-	//
-	// create base UI tab and root window
-	//	
-
-	var logoHeader = Titanium.UI.createImageView({
-		image:'images/logo_header.png',
-		top:-5,
-		left:3,
-		width:236,
-		height:106
-	});
-	win1.add(logoHeader);
-
-	var hiYahooUserLabel = Titanium.UI.createLabel({
-		color:'#999999',
-		text: 'Hi, ' + meme.name + '    |',
-		font:{fontSize:12,fontFamily:'Helvetica Neue'},
-	    textAlign:'right',
-		top:27,
-		left:590,
-		height:30,
-		width:'150'
-	});
-	win1.add(hiYahooUserLabel);
-
-	var signoutLabel = Titanium.UI.createLabel({
-		color:'#999999',
-		text: 'signout',
-		font:{fontSize:12,fontFamily:'Helvetica Neue'},
-	    textAlign:'right',
-		top:27,
-		left:690,
-		height:30,	
-		width:'100'
-	});
-	win1.add(signoutLabel);
-
-	signoutLabel.addEventListener("click", function(e) {
-
-		Ti.API.info("Signout Link clicked");
-
-		// Ti.UI.createAlertDialog({
-		// 	        title: 'Signout',
-		// 	        message: "Signout link clicked"
-		// 	    }).show();
-
-		oAuthAdapter.logout('meme');
-		oAuthAdapter.login(showSignIn, showDashboard);
-		
-	});
-
-	var miniAvatarView = Titanium.UI.createImageView({
-		image: meme.avatar_url.thumb,
-		borderColor: 'black',
-		border: 2,
-		top:30,
-		left:810,
-		width:22,
-		height:22
-	});
-	win1.add(miniAvatarView);
-
-	var memeTitleLabel = Titanium.UI.createLabel({
-		color:'#ffffff',
-		text: meme.title,
-		// text: 'Antonio Carlos Silveira',
-		font:{fontSize:14,fontFamily:'Helvetica Neue',fontWeight:'bold'},
-		textAlign:'left',
-		top:27,
-		left:840,
-		height:30,
-		width:150
-	});
-	win1.add(memeTitleLabel);
+};
 
 
+
+// If not authenticated then Show SignIn Window
+var showSignIn = function(continuation) {
+	
+	// Sign In Button Listener
+	btn_signin.addEventListener("click",continuation);
+
+   	showDashboard(OAuthAdapter("meme"),"notlogged");
+
+	showHeader(null,"notlogged");
+
+};
+
+// If Authentication OK the Show Dashboard
+var showDashboard = function(yql,pDashboardType) {
+	
+	Ti.API.info('pDashboardType from showDashboard function on app.js = ' + pDashboardType);
+	
 	// ===========================
 	// = CREATING DASHBOARD VIEW =
 	// ===========================
 
 	var winDashboard = Ti.UI.createWindow({
-	    url: 'dashboard.js',
-	    name: 'Dashboard Window',
-	    backgroundColor:'transparent',
+		url: 'dashboard.js',
+		name: 'Dashboard Window',
+		backgroundColor:'transparent',
 		left:0,
-		top:90,
-		height:655,
+		top:90, //90
+		height:748,
 		width:1024,
 		navBarHidden: true,
 		yql: yql,
-		memeInfo:meme,
-		zIndex: 5,
-		win1:win1
+		pDashboardType:pDashboardType,
+		win1:win1,
+		zIndex: 2,
+
 	});
-
 	winDashboard.open();
+	
+	//Removes the TableView so it can start fresh
+    Ti.App.fireEvent('remove_tableview');
+	
+	// Builds the LoggedIn Header or the SignIn one
+	if (pDashboardType === "logged") {
 
- };
+		showHeader(yql, pDashboardType, winDashboard);
+		btn_signin.visible = false;
 
-// Checks if the app is resumed
+	} else {
+		btn_signin.visible = true;
+	}
 
-
+};
 
 // Detects if it is running on the Simulator
 // If Not then creates the Event listeners
@@ -158,6 +204,7 @@ if (Ti.Platform.model == 'iPad Simulator') {
 	//
 	var indWin = null;
 	var actInd = null;
+	
 	function showIndicator()
 	{
 		// window container
@@ -218,7 +265,7 @@ if (Ti.Platform.model == 'iPad Simulator') {
 		Ti.API.info("IN HIDE INDICATOR");
 		hideIndicator();
 	});
-}
+};
 
 
 // Titanium.App.addEventListener('resume', function(e)
@@ -235,6 +282,7 @@ if (Ti.Platform.model == 'iPad Simulator') {
 // ================================
 
 if (!Titanium.Network.online) {
+	
   var a = Titanium.UI.createAlertDialog({ 
     title:'Network Connection Required',
     message: 'Meme for iPad requires an Internet connection to, you know, use stuff from the Internets. Please, check your network connection and try again.'
@@ -246,10 +294,12 @@ if (!Titanium.Network.online) {
 	// =========================================
 	// =  // Initialize oAuthAdapter process   =
 	// =========================================
+	// Ti.API.debug(JSON.stringify(OAuthAdapter('meme').query("SELECT * FROM meme.info WHERE name='dsouza';")));
 	var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
+	
 	oAuthAdapter.login(showSignIn, showDashboard);
 	
-}
+};
 
 
 

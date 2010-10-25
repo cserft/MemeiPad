@@ -14,8 +14,8 @@ Ti.include('lib/secrets.js');
 Ti.include('lib/yql_queries.js');
 
 var authorizationUI = function() {
-	var authWindow, oauthWebView;
-
+	var authWindow, oauthWebView, signingIn;
+   
 	// unloads the UI used to have the user authorize the application
     var destroyUI = function()
     {
@@ -29,6 +29,7 @@ var authorizationUI = function() {
             authWebView.removeEventListener('load', lookupVerifier);
 	        Ti.API.debug('destroyAuthorizeUI:window.close()');
             authWindow.close();
+			signingIn = false;
         }
         catch(ex)
         {
@@ -40,14 +41,16 @@ var authorizationUI = function() {
 		gCallback    = null;
     };
 
-	// looks for the PIN everytime the webview loads
-    // currently works with YAHOO!
+	// looks for the Oauth Verifier everytime the webview loads
+    // currently works only with YAHOO!
     var lookupVerifier = function(pCallback)
     {
 		return(function(e) {
 	        Ti.API.debug('authorizeUILoaded, looking for oAuth Verifier Code');
+	
 			// stores the page HTML source code
 	        var htmlSource = e.source.html;
+	
 	        // REGEXP looking for the oAuth Verifier code in the HTML page
 			var result = (/<span id="shortCode">(\w+)<\/span>/g).exec(htmlSource);
 			if (result && result[1]) {
@@ -61,60 +64,63 @@ var authorizationUI = function() {
 
 	var showUI = function(pUrl, pCallback)
     {
-		gCallback  = pCallback;
-		authWindow = Ti.UI.createWindow({
-			modal: true,
-		    fullscreen: true,
-			navBarHidden: true
-		});
-        authWebView = Ti.UI.createWebView({
-            url: pUrl,
-			top: 40,
-			scalesPageToFit: false,
-			autoDetect:[Ti.UI.AUTODETECT_NONE]
-        });
+	
+		if (signingIn != true) {
+	
+			gCallback  = pCallback;
+			authWindow = Ti.UI.createWindow({
+				modal: false,
+			    fullscreen: false,
+				navBarHidden: true
+			});
+	        authWebView = Ti.UI.createWebView({
+	            url: pUrl,
+				top: 40,
+				scalesPageToFit: false,
+				autoDetect:[Ti.UI.AUTODETECT_NONE]
+	        });
 		
-		// Force Landscape mode only
-		// authWindow.orientationModes = [	Titanium.UI.LANDSCAPE_LEFT,
-		// 	Titanium.UI.LANDSCAPE_RIGHT ];			
-		var transform = Ti.UI.create2DMatrix().scale(0);
-        var authView = Ti.UI.createView({
-            top: 50,
-            width: 550,
-            height: 550,
-            border: 5,
-            backgroundColor: 'white',
-            borderColor: 'gray',
-            borderRadius: 10,
-            borderWidth: 5,
-            zIndex: -1,
-            transform: transform
-        });
-        var closeLabel = Ti.UI.createLabel({
-            textAlign: 'right',
-            font: {
-                fontWeight: 'bold',
-                fontSize: '12pt'
-            },
-            text: '(X)',
-            top: 10,
-            right: 12,
-            height: 14
-        });
-        authWindow.open();
+			// Force Landscape mode only		
+			var transform = Ti.UI.create2DMatrix().scale(0);
+	        var authView = Ti.UI.createView({
+	            top: 50,
+	            width: 550,
+	            height: 550,
+	            border: 5,
+	            backgroundColor: 'white',
+	            borderColor: 'gray',
+	            borderRadius: 10,
+	            borderWidth: 5,
+	            zIndex: -1,
+	            transform: transform
+	        });
+	        var closeLabel = Ti.UI.createLabel({
+	            textAlign: 'right',
+	            font: {
+	                fontWeight: 'bold',
+	                fontSize: '12pt'
+	            },
+	            text: '(X)',
+	            top: 10,
+	            right: 12,
+	            height: 14
+	        });
+	        authWindow.open();
 		
-		Ti.API.debug('Setting:['+Ti.UI.AUTODETECT_NONE+']');
-        authWebView.addEventListener('load', lookupVerifier(pCallback));
-        authView.add(authWebView);
+			Ti.API.debug('Setting:['+Ti.UI.AUTODETECT_NONE+']');
+	        authWebView.addEventListener('load', lookupVerifier(pCallback));
+	        authView.add(authWebView);
 		
-        closeLabel.addEventListener('click', destroyUI);
-        authView.add(closeLabel);
-        authWindow.add(authView);
+	        closeLabel.addEventListener('click', destroyUI);
+	        authView.add(closeLabel);
+	        authWindow.add(authView);
 		
-        var animation = Ti.UI.createAnimation();
-        animation.transform = Ti.UI.create2DMatrix();
-        animation.duration = 500;
-        authView.animate(animation);
+	        var animation = Ti.UI.createAnimation();
+	        animation.transform = Ti.UI.create2DMatrix();
+	        animation.duration = 300;
+	        authView.animate(animation);
+			signingIn = true;
+		}
     };
 
 	return(showUI);
@@ -186,7 +192,8 @@ var OAuthAdapter = function(pService, authorize)
 	var maybeRefreshToken = function(timedToken) {
 		var token = timedToken.token;
 		var now   = timestamp();
-		if (timedToken.timestamp+token.oauth_expires_in >= now) {
+		Ti.API.debug("Refrescando: " + typeof(timedToken.timestamp) + ' and ' + typeof(token.oauth_expires_in));
+		if (timedToken.timestamp + parseInt(token.oauth_expires_in) <= now) {
 			Ti.API.debug("Woo! Refreshing oAuth token ...");
 			var newToken = accessToken(token);
 			saveToken(newToken);
@@ -248,11 +255,22 @@ var OAuthAdapter = function(pService, authorize)
 		return(JSON.parse(json));
 	};
 
+	var query2legg = function(pQuery) {
+		var accessor = { consumerSecret: consumerSecret };
+		Ti.API.debug("Function Query2Legg Called");
+		var parameters = [ ["format", "json"],
+		 				   ["diagnostics", "false"],
+		 				   ["q", pQuery],
+						 ];
+		var json = serviceRequest(yql_base_url, parameters, accessor);
+		return(JSON.parse(json));
+	};
+
 
 	// will check if access tokens are stored in the config file
     var login = function(signin, callback)
     {	
-		var self  = {query: query};
+		var self  = { query: query };
 		var token = loadToken();
         if (! token) {
 			signin(function() {
@@ -262,14 +280,15 @@ var OAuthAdapter = function(pService, authorize)
 					var atoken = accessToken(rtoken, pVerifier);
 					saveToken(atoken);
 					Ti.API.debug('Oauth flow done, calling callback');
-					callback(self);
-				});			
+					callback(self, "logged");
+				});	
 			});
 		} else {
 			Ti.API.debug('Loading token from file!');
-			callback(self);
+			callback(self, "logged");
 		}
     };
+
 
 	// Logs out from Yahoo! deleting the config file
     var logout = function(pService)
@@ -282,6 +301,6 @@ var OAuthAdapter = function(pService, authorize)
 	return({
 		login: login,
 		logout: logout,
-		query: query
+		query: query2legg
 	});
 };

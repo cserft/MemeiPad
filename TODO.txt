@@ -1,19 +1,32 @@
 
 - Create a Website for the App
-- Configure the new Domain memeapp.net
 - icons and descriptions on YDN Site
 - After Reposting add Comments
 
 - Label "Loading Dashboard..."
 - Adicionar Player Vimeo
-- Add Feeddbacks (Click to Open Permalink, After Signing in)
  - Play no video do YouTube na pagina de permalink
 - Ajustar Header para ser Variavel posicao do Signout em relacao ao tamanho do Login Yahoo!
 - [BUG] More than 1 click opens several Permalink Windows
 - BUG no Minutes Ago em cima do Meme.Title (ver post do GNeumann)
-- Criar novo Menu Popover com Logout e informações 
 
-- Major: SignIn page with Popular
+- Total stripper the HTML Entities
+
 - Use Place maker to detect places on a given Post and Show them on the Map.
 - flip with 2 fingers on a post on dashboard reveals post informations (Author, Number of Reposts and Number of Comments)
 - Play Audio
+- add DefaultImage for the ThumbNails (use Yahoo's one)
+- Protect against 2 clicks (Permalink, Sign out)
+
+
+===============================================
+
+dashboard.js
+- Qdo logado montar header (ver signin.js)
+- Criar novo Menu Popover com Logout e informações no header
+- Quando nao Logado Mostrar Populars (usando a language do usuário logado)
+- ver esta resposta: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
+
+
+- After signing in Loses the Header as it doesn't call the showSignIn after authentication
+- 

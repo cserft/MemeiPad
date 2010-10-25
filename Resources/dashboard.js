@@ -2,35 +2,47 @@ Ti.include('lib/strip_tags.js');
 
 var win = Ti.UI.currentWindow;
 
+//Set current timestamp
+var timestamp = function() {
+	return((new Date()).getTime());
+};
+
+var now = timestamp();
+
+//RETRIEVING YQL OBJECT
+var yql = win.yql; // Holds YQL Object to make queries
+var win1 = win.win1; // Window Original created on app.js
+var pDashboardType = win.pDashboardType;
+var myMemeInfo = 0;
+
+Ti.App.addEventListener('myMemeInfo', function(data) 
+{ 
+     myMemeInfo = data.myMemeInfo; 
+});
+
+
+// Creating the List Post Table View
+
 var baseView = Ti.UI.createView({
-	backgroundColor:'transparent',
+    backgroundColor:'transparent',
+	//backgroundImage: 'images/bg.jpg',
 	width:'100%',
 	height: '100%',
 	top:0
 });
 win.add(baseView);
 
-//Set current timestamp
-
-var timestamp = function() {
-	return((new Date()).getTime());
-};
-
-var now   = timestamp();
-
 // =======================
 // = DASHBOARD TABLEVIEW =
 // =======================
 
-//RETRIEVING YQL OBJECT
-var yql = win.yql; // Holds YQL Object to make queries
-var myMemeInfo = win.memeInfo; //holds the LoggedIn User Meme's Information
-var win1 = win.win1; // Window Original created on app.js
-
-
-// Creating the List Post Table View
+Ti.App.addEventListener('remove_tableview', function(e) {
+	Ti.API.debug("Removing TableView!!!!!!");
+    baseView.remove(tableView);
+});
 
 var tableView = Titanium.UI.createTableView({
+	top:0,
 	backgroundColor: "transparent",
 	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
 	selectionStyle:'none'
@@ -40,7 +52,7 @@ baseView.add(tableView);
 
 
 // ===================================================
-// = CREATING POST VIEW TO EMBEDDED IN THE TABLEVIEW =
+// = CREATING POST VIEW TO EMBED IN THE TABLEVIEW =
 // ===================================================
 
 var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, pGuid)
@@ -144,7 +156,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		} else {
 			
 			//ELSE YOUTUBE
-			_videoId = pContent.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
+			_videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
+			
 	        _videoThumb = "http://img.youtube.com/vi/" + _videoId + "/0.jpg";
 		}
 
@@ -182,9 +195,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
         });
         blackBoxView.add(img_quote);
 
-       //var pContentStripado = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+       var pContentStripado = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
 
-	   var pContentStripado = strip_tags(pContent);
+	   // var pContentStripado = strip_tags(pContent);
 
        var minipost_text = Titanium.UI.createLabel({
            color:'#FFF',
@@ -272,44 +285,68 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 // = FUNCTION TO BUILD DASHBOARD =
 // ===============================
 
-// Creates an empty array to handle the Unique PubIDs from posts to show on Dashboard
-var pubIdList = [];
-
 //defines the variable that will hold the last timestamp from a given dashboard query
 var lastTimestamp;
 
 //variable to hold incomplete rows
 var tempRow = null;
 var tempItemRowCount = 0;
+var data = [];
 
-var getDashboardData = function (pTimestamp){
+var getDashboardData = function (pTimestamp, pDashboardType){
 
 	
-	if (pTimestamp == null)
-	{
-		lastRow = 0;
-		var data = [];
-		tempRow = null;
-		tempItemRowCount = 0;
+	Ti.API.info("DashboardType from getDashboardData Function: " + pDashboardType);
+
+	if (pDashboardType === "logged") {
 		
+		if (pTimestamp == null)
+		{
+			// Reload TableVIew or First Build
+			
+		//	clear Table
+			lastRow = 0;
+			data = [];
+			tempRow = null;
+			tempItemRowCount = 0;
+			
+			Ti.API.info(" ####### STARTING DASHBOARD QUERY ##########");
+	
+			yqlQuery = "SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231)";
 		
-		yqlQuery = "SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231)";
+		} else {
+	
+			Ti.API.info(" ####### STARTING UPDATE 'PRA BAIXO' QUERY ##########");
+		
+			yqlQuery = "SELECT * from meme.user.dashboard where start_timestamp =" + (pTimestamp-1) + " | meme.functions.thumbs(width=307,height=231)";
+
+		}
 		
 	} else {
-	
-		Ti.API.info(" ####### STARTING UPDATE 'PRA BAIXO' QUERY ##########");
 		
-		yqlQuery = "SELECT * from meme.user.dashboard where start_timestamp =" + (pTimestamp-1) + " | meme.functions.thumbs(width=307,height=231)";
+		if (pTimestamp == null)
+		{
+			// NOT LOGGED IN SO GETS THE FEATURED POSTS
+			// Reload TableVIew or First Build
+			lastRow = 0;
+			data = [];
+			tempRow = null;
+			tempItemRowCount = 0;
+		
+			Ti.API.info(" ####### STARTING FEATURED DASHBOARD (NOT LOGGED IN) ##########");
 
+			yqlQuery = "SELECT * FROM meme.posts.featured WHERE locale='en' | meme.functions.thumbs(width=307,height=231)";
+		}
 	}
-	
+
 	var itemPerRowCount = 0;
 	
-	
-	//Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
+	Ti.API.info(" ####### YQL Query executed: " + yqlQuery);
 
 	var yqldata = yql.query(yqlQuery);
 	var posts = yqldata.query.results.post;
+	
+	// Ti.API.debug(" ####### YQL Query POSTS RESULT: " + JSON.stringify(posts));
 
 	//Defines the last post timestamp so we can paginate the Dashboard
 	lastTimestamp = posts[(posts.length - 1)].timestamp;
@@ -329,26 +366,6 @@ var getDashboardData = function (pTimestamp){
 		var _type 		= post.type;
 		var _guid 		= post.guid;
 		var _originPubId = post.origin_pubid;
-		
-		// 	//verify and removes the repost repetition in the Dashboard
-		// 	// 
-		// 	// if (pubIdList.indexOf(_pubId) != -1 && pubIdList.indexOf(_originPubId) != -1) {
-		// 	// 	
-		// 	// 	if (_originPubId != null && pubIdList.indexOf(_originPubId) == -1){
-		// 	// 
-		// 	// 		pubIdList.push(_originPubId);
-		// 	// 
-		// 	// 	} else if (_originPubId == null && pubIdList.indexOf(_pubId) == -1){
-		// 	// 
-		// 	// 		pubIdList.push(_pubId);
-		// 	// 	}
-		// 	// 	
-		// 	// } else {
-		// 	// 
-		// 	// 	continue;
-		// 	// }
-		// Ti.API.info("Content of the pubIdList: " + JSON.stringify(pubIdList));
-
 
 		// Checks the types of posts and then sets the proper content
 		// We don't render Video Videos and Comments
@@ -463,10 +480,10 @@ var getDashboardData = function (pTimestamp){
 
 	} //End FOR loop
 
-		//Sets the new Table rows with updated Posts
-	
+	//Sets the new Table rows with updated Posts
 	if (pTimestamp == null)
 	{
+		Ti.API.debug("reseting TableView data");
 		tableView.setData(data);
 		
 	} else {
@@ -474,12 +491,15 @@ var getDashboardData = function (pTimestamp){
 		return(posts);
 	}
 	
+	// open Main Window from app.js with Transition
+	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
+	
 }
 
 var dashboardShadow = Titanium.UI.createImageView({
 	image:'images/shadow.png',
 	backgroundColor: "transparent",
-	top:630,
+	top:632,
 	left:0,
 	width:1024,
 	height:26,
@@ -505,8 +525,7 @@ tableView.addEventListener('click', function(e)
 	
 	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	
-	
-	// Sets the Animation start
+	// Sets the Permalink Animation startup settings
 	var t = Ti.UI.create2DMatrix();
 	t = t.scale(0);
 	
@@ -522,10 +541,14 @@ tableView.addEventListener('click', function(e)
 		zIndex: 6,
 		transform: t,
 		yql: yql, //passing Variables to this Window
-		myMemeInfo: myMemeInfo,
 		pGuid: e.source.guid,
 		pPubId: e.source.pubId
 	});
+	
+	if (myMemeInfo) {
+		
+		winPermalink.myMemeInfo = myMemeInfo;
+	}
 
 
 	// Creating the Open Permalink Transition
@@ -599,9 +622,6 @@ tableView.addEventListener('click', function(e)
 // = SCROLL DOWN LOADING =
 // =======================
 
-//var navActInd = Titanium.UI.createActivityIndicator();
-//win.setRightNavButton(navActInd);
-
 var updating = false;
 
 var loadingRow = Ti.UI.createTableViewRow({
@@ -651,7 +671,7 @@ function endUpdate()
 	tableView.deleteRow(lastRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.FADE});
 	
 	// Get posts from Dashboard
-	getDashboardData(lastTimestamp);
+	getDashboardData(lastTimestamp, pDashboardType);
 
 	// just scroll down a bit to the new rows to bring them into view
     //tableView.scrollToIndex(lastRow,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
@@ -678,13 +698,14 @@ tableView.addEventListener('scroll',function(e)
 		// adjust the % of rows scrolled before we decide to start fetching
 		var nearEnd = theEnd * 0.5; 
 		
-		if (!updating && (total >= nearEnd))
+		if (!updating && pDashboardType === "logged" && (total >= nearEnd))
 		{
 			beginUpdate();
 		}
 	}
 	lastDistance = distance;
 });
+
 
 
 // ===================
@@ -766,7 +787,12 @@ tableHeader.add(statusLabel);
 tableHeader.add(lastUpdatedLabel);
 tableHeader.add(actInd);
 
-tableView.headerPullView = tableHeader;
+// if User is logged in then it will show the Pull to Refresh Feature
+if (pDashboardType === "logged"){
+	
+	tableView.headerPullView = tableHeader;
+}
+
 
 var pulling = false;
 var reloading = false;
@@ -777,7 +803,7 @@ function beginReloading()
 	//tableView.setData([]);
 	setTimeout(function()
 	{	
-		getDashboardData(null);
+		getDashboardData(null, pDashboardType);
 		beginUpdate();
 
 	},1000)
@@ -798,27 +824,30 @@ function endReloading()
 
 tableView.addEventListener('scroll',function(e)
 {
-	var offset = e.contentOffset.y;
-	if (offset <= -65.0 && !pulling)
-	{
-		var t = Ti.UI.create2DMatrix();
-		t = t.rotate(-180);
-		pulling = true;
-		arrow.animate({transform:t,duration:180});
-		statusLabel.text = "Release to refresh...";
-	}
-	else if (pulling && offset > -65.0 && offset < 0)
-	{
-		pulling = false;
-		var t = Ti.UI.create2DMatrix();
-		arrow.animate({transform:t,duration:180});
-		statusLabel.text = "Pull down to refresh...";
+	if (pDashboardType === "logged") {
+		
+		var offset = e.contentOffset.y;
+		if (offset <= -65.0 && !pulling)
+		{
+			var t = Ti.UI.create2DMatrix();
+			t = t.rotate(-180);
+			pulling = true;
+			arrow.animate({transform:t,duration:180});
+			statusLabel.text = "Release to refresh...";
+		}
+		else if (pulling && offset > -65.0 && offset < 0)
+		{
+			pulling = false;
+			var t = Ti.UI.create2DMatrix();
+			arrow.animate({transform:t,duration:180});
+			statusLabel.text = "Pull down to refresh...";
+		}
 	}
 });
 
 tableView.addEventListener('scrollEnd',function(e)
 {
-	if (pulling && !reloading && e.contentOffset.y <= -65.0)
+	if (pDashboardType === "logged" && pulling && !reloading && e.contentOffset.y <= -65.0)
 	{
 		reloading = true;
 		pulling = false;
@@ -831,13 +860,16 @@ tableView.addEventListener('scrollEnd',function(e)
 	}
 });
 //variable that configs the number of Dashboard pages that loads when the app starts
-	
-getDashboardData(null);
 
-beginUpdate();
+if (pDashboardType === "logged") {
+	getDashboardData(null, pDashboardType);
+	beginUpdate();
+} else {
+	Ti.API.debug("Mounting Dashboard Not Logged: pDashboardType= " + pDashboardType);
+	getDashboardData(null, pDashboardType);
+}
 
-// open Main Window from app.js with Transition
-win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
+
 
 
 
