@@ -60,9 +60,11 @@ function humane_date(date_str){
       }
 
       // overflow for centuries
-      if(seconds > 4730400000)
+      if(seconds > 4730400000){
+	
               return Math.round(seconds / 4730400000) + ' Centuries' + token;
-
+		}
+		
       return date_str;
 };
 
@@ -197,7 +199,7 @@ var border = Ti.UI.createView({
 	height:1,
 	bottom:60,
 	width: '100%'	
-})
+});
 whiteBox.add(border);
 
 

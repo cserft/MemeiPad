@@ -79,6 +79,11 @@ var showHeader = function (yql, pType, pWinDashboard){
 			top:15
 		});
 		headerView.add(btn_StartPosting);
+		
+		btn_StartPosting.addEventListener('click', function()
+		{
+			newPost(yql);
+		});
 
 		var miniAvatarView = Titanium.UI.createImageView({
 			image: meme.avatar_url.thumb,
@@ -100,27 +105,12 @@ var showHeader = function (yql, pType, pWinDashboard){
 			top:29,
 			left:650,
 			height:30,
-			width:'150'
+			width:150
 		});
 		headerView.add(hiYahooUserLabel);
-
-		// var signoutLabel = Titanium.UI.createLabel({
-		// 			color:'#999999',
-		// 			text: 'signout',
-		// 			font:{fontSize:12,fontFamily:'Helvetica Neue'},
-		// 		    textAlign:'right',
-		// 			top:29,
-		// 			left:690,
-		// 			height:30,	
-		// 			width:'100'
-		// 		});
-		// 		headerView.add(signoutLabel);
-		
-
+	
 		var memeTitleLabel = Titanium.UI.createLabel({
 			color:'#ffffff',
-			// backgroundColor: 'transparent',
-			// borderWidth:0,
 			text: meme.title,
 			font:{fontSize:14,fontFamily:'Helvetica Neue',fontWeight:'bold'},
 			textAlign:'left',
@@ -131,48 +121,20 @@ var showHeader = function (yql, pType, pWinDashboard){
 		});
 		headerView.add(memeTitleLabel);
 
-		// // Sign out Listener
-		// 		signoutLabel.addEventListener("click", function(e) {
-		// 
-		// 			Ti.API.info("Signout Link clicked");
-		// 
-		// 			oAuthAdapter.logout('meme');
-		// 			// pWinDashboard.close();
-		// 			Ti.App.fireEvent('remove_tableview');
-		// 			headerView.hide();
-		// 			oAuthAdapter.login(showSignIn, showDashboard);
-		// 		});
-
 
 		// ================
 		// = PopOver Menu =
 		// ================
 
-		// arrow directions
-		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
-		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN
-		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_LEFT
-		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_RIGHT
-		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_ANY
-		// Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UNKNOWN
-
 		// build first popover
 		memeTitleLabel.addEventListener('click', function()
 		{
-			// var close = Ti.UI.createButton({
-			// 	title:'Close'
-			// });
-			// close.addEventListener('click', function()
-			// {
-			// 	popover.hide({animated:true});
-			// });
 			
 			var popover = Titanium.UI.iPad.createPopover({ 
 				width:200, 
 				height:220,
 				borderWidth: 0,
 				title:'Your Stuff',
-				// rightNavButton:close,
 				// barColor:'white',
 				// backgroundColor: 'white',
 				// backgroundImage: 'images/bg_settings_menu.png',
@@ -209,8 +171,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 					oAuthAdapter.logout('meme');
 					Ti.App.fireEvent('remove_tableview');
 					headerView.hide();
-					oAuthAdapter.login(showSignIn, showDashboard);
-					
+					oAuthAdapter.login(showSignIn, showDashboard);	
 				}
 				
 			});
@@ -224,7 +185,6 @@ var showHeader = function (yql, pType, pWinDashboard){
 			}); 
 
 		});
-
 
 	} else {
 		
@@ -263,7 +223,7 @@ var showDashboard = function(yql,pDashboardType) {
 		backgroundColor:'transparent',
 		left:0,
 		top:90, //90
-		height:748,
+		height:658,
 		width:1024,
 		navBarHidden: true,
 		yql: yql,
@@ -276,6 +236,9 @@ var showDashboard = function(yql,pDashboardType) {
 	
 	//Removes the TableView so it can start fresh
     Ti.App.fireEvent('remove_tableview');
+
+	//PASSES THE YQL OBJECT fwd
+    Ti.App.fireEvent('yql', {yql:yql});
 	
 	// Builds the LoggedIn Header or the SignIn one
 	if (pDashboardType === "logged") {
@@ -286,6 +249,31 @@ var showDashboard = function(yql,pDashboardType) {
 	} else {
 		btn_signin.visible = true;
 	}
+
+};
+
+
+// ==========================
+// = CREATE THE POST WINDOW =
+// ==========================
+
+var newPost = function(yql) {
+
+	var winNewPost = Ti.UI.createWindow({
+		url: 'newpost.js',
+		title: 'New Post Window',
+		backgroundColor:'white',
+		left:0,
+		top:0,
+		height:748,
+		width:1024,
+		yql: yql,
+		win1:win1,
+		zIndex: 3,
+		navBarHidden: true
+
+	});
+	winNewPost.open();
 
 };
 
