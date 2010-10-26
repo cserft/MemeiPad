@@ -119,3 +119,47 @@ btn_post.addEventListener('click', function()
 {
 
 });
+
+// ======================
+// = END OF THE TOP BAR =
+// ======================
+
+// =============
+// = EDIT VIEW =
+// =============
+
+var editView = Titanium.UI.createScrollView({
+	left: 		0,
+	top: 		66,
+	width:      '100%',
+	height:     683,
+	contentWidth: 1024,
+	contentHeight:'auto',
+	showVerticalScrollIndicator:true,
+	showHorizontalScrollIndicator:false
+});
+win.add(editView);
+
+var editTitleField = Titanium.UI.createTextField({
+	value:'',
+	hintText:'Add Title',
+	textAlign: 'center',
+	font: {fontSize:26,fontFamily:'Helvetica', fontWeight:'bold'},
+	width:1024,
+	height:55,
+	top:0,
+	left:0,
+	borderStyle:Titanium.UI.INPUT_BORDERSTYLE_NONE
+});
+
+editView.add(editTitleField);
+
+var dotted_lineView = Titanium.UI.createView({
+	backgroundImage: 'images/dotted_line.png',
+	top:56,
+	left: 0,
+	width: 1024,
+	height: 2
+});
+editView.add(dotted_lineView);
+
