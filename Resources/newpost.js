@@ -141,15 +141,17 @@ var editView = Titanium.UI.createScrollView({
 win.add(editView);
 
 var editTitleField = Titanium.UI.createTextField({
-	value:'',
-	hintText:'Add Title',
-	textAlign: 'center',
-	font: {fontSize:26,fontFamily:'Helvetica', fontWeight:'bold'},
-	width:1024,
-	height:55,
-	top:0,
-	left:0,
-	borderStyle:Titanium.UI.INPUT_BORDERSTYLE_NONE
+	value: 			'',
+	hintText: 		'Add Title',
+	textAlign: 		'center',
+	font: 			{fontSize:26,fontFamily:'Helvetica', fontWeight:'bold'},
+	width: 			970,
+	height: 		55,
+	top: 			0,
+	left: 			16,
+	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_NONE,
+	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
+	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
 
 editView.add(editTitleField);
@@ -162,4 +164,59 @@ var dotted_lineView = Titanium.UI.createView({
 	height: 2
 });
 editView.add(dotted_lineView);
+
+// Image View Holder
+var editImageView = Titanium.UI.createImageView({
+	image: 'images/image_placeholder.png',
+	top: 		79,
+	left: 		33,
+	width: 		'auto',
+	height: 	'auto'
+});
+editView.add(editImageView);
+
+//Main Text Area
+
+var TextAreaFake = "The iPhone 4 is no small thing to review. As most readers of Engadget are well aware, in the gadget world a new piece of Apple hardware is a major event, preceded by rumors, speculation, an over-the-top announcement, and finally days, weeks, or months of anticipation from an ever-widening fan base. The iPhone 4 is certainly no exception -- in fact, it may be Apple’s most successful launch yet, despite some bumps on the road.";
+
+var textArea = Titanium.UI.createTextArea({
+	value: TextAreaFake,
+	height: 		357,
+	width: 			953,
+	top: 			316,
+	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
+	color:'#666',
+	textAlign:'left',
+	appearance:Titanium.UI.KEYBOARD_APPEARANCE_ALERT,	
+	keyboardType:Titanium.UI.KEYBOARD_DEFAULT,
+	//returnKeyType:Titanium.UI.RETURNKEY_EMERGENCY_CALL,
+	suppressReturn:false
+	
+});
+editView.add(textArea);
+
+
+
+// White Gradient in the Bottom
+var whiteShadow = Titanium.UI.createImageView({
+	image: 'images/white_shadow.png',
+	bottom: 	0,
+	left: 		0,
+	width: 		1024,
+	height: 	91
+});
+editView.add(whiteShadow);
+
+//Disclaimer
+var disclaimerLabel = Titanium.UI.createLabel({
+	text: 		'Don’t infringe copyright or post adult content. Check the Ccommunity Guidelines for more information. Your Post will be shared via Yahoo! Updates. ',
+	color: 		'#CCC',
+	width: 		800,
+	height: 	15,
+	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
+	bottom: 	18
+});
+editView.add(disclaimerLabel);
+
+
 

@@ -270,7 +270,8 @@ var newPost = function(yql) {
 		yql: yql,
 		win1:win1,
 		zIndex: 3,
-		navBarHidden: true
+		navBarHidden: true,
+		
 
 	});
 	winNewPost.open();

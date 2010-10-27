@@ -17,6 +17,7 @@
 - Play Audio
 - add DefaultImage for the ThumbNails (use Yahoo's one)
 - Protect against 2 clicks (Permalink, Sign out)
+- Tratar error 0 nas calls do YQL
 
 
 ===============================================
@@ -30,3 +31,8 @@ dashboard.js
 permalink.js
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)
+
+
+newpost.js
+- Bug the clicks to open the gallery
+- When going back to Dashboard save the post draft
