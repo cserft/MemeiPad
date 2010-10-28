@@ -178,6 +178,7 @@ var viewContainerPhoto = Titanium.UI.createView({
 	width: 			'auto',
 	height: 		'auto',
 	borderRadius: 	0,
+	backgroundColor: 'red',
 	visible: 		false
 });
 editView.add(viewContainerPhoto);
@@ -206,29 +207,27 @@ var postText = '';
 var textArea = Titanium.UI.createTextArea({
 	value: postText,
 	height: 		200,
-	width: 			953,
-	//top: 			316,
+	width: 			954,
+	top: 			79,
 	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
-	color:'#666',
-	textAlign:'left',
-	appearance:Titanium.UI.KEYBOARD_APPEARANCE_ALERT,	
-	keyboardType:Titanium.UI.KEYBOARD_DEFAULT,
+	color: 			'#666',
+	// backgroundColor: 'blue',
+	textAlign: 		'left',
+	appearance: 	Titanium.UI.KEYBOARD_APPEARANCE_ALERT,	
+	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
 	//returnKeyType:Titanium.UI.RETURNKEY_EMERGENCY_CALL,
-	suppressReturn:false
+	suppressReturn: false,
+	zIndex: 		2
 	
 });
 editView.add(textArea);
-
-if (theImage = null){
-		textArea.top = 79;
-}
 
 //Temporary Text when open the New Post Window, helping users to know where to click
 var tempPostLabel = Titanium.UI.createLabel({
 	text: 		'write your post here',
 	align: 		'center',
 	color: 		'#CCC',
-	top: 		350,
+	top: 		320,
 	left: 		300,
 	width: 		800,
 	height: 	100,
@@ -335,26 +334,50 @@ function handleImageEvent(event) {
 
 Ti.App.addEventListener("photoChosen", function(e) {
 	img.image = theImage;
+	
 	viewContainerPhoto.visible = true;
 	
-	var photo_close_x = img.width - 24;
+	//detects the size of the image and resizes the Photo Container
+	if (img.size.width > 958) {
+		viewContainerPhoto.width = 958;
+		var photo_close_x = 958 - 24;
+		
+	} else {
+		var photo_close_x = img.size.width - 24;
+		
+	}
+
+	
+
+	//adds the close button to the image
 	btn_photo_close.left = photo_close_x;
 	btn_photo_close.visible = true;
 	
-	var textArea_top =  img.height + 109;
+	// Repositioned the TextArea below the chosen photo
+	var textArea_top =  img.size.height + 109;
+	textArea.animate({top: textArea_top});
 	
-	textArea.top = textArea_top;
+	//Repositioned the Temp Caption on top of the TextArea
+	tempPostLabel.animate({top : 120 + img.size.height});
 	
-	Ti.API.debug(img.width + "x" + img.height);
+	//textArea.top = textArea_top;
+	
+	Ti.API.debug(img.size.width + "x" + img.size.height + " and Top for Text Area= " + textArea_top + " and typeOf: " + typeof(textArea_top));
 
 });
+
+//numeor Amil Mae
+// 341-7
+// 34191 75868 54227 742936 80101 920009 1 480200000541103
 
 // to remove the photo chosen
 Ti.App.addEventListener("photoRemoved", function(e) {
 	theImage = null;
 	viewContainerPhoto.visible = false;
-	btn_photo_delete.visible = false;
-	textArea.top = 79;
+	viewContainerPhoto.width = 'auto';
+	btn_photo_close.visible = false;
+	textArea.animate({top: 79});
+	tempPostLabel.animate({top: 320});
   
 });
 
