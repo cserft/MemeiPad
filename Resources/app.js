@@ -201,10 +201,10 @@ var showSignIn = function(continuation) {
 	
 	// Sign In Button Listener
 	btn_signin.addEventListener("click",continuation);
+	
+	showHeader(null,"notlogged");
 
    	showDashboard(OAuthAdapter("meme"),"notlogged");
-
-	showHeader(null,"notlogged");
 
 };
 

@@ -1,20 +1,22 @@
-var win = Ti.UI.currentWindow;
+var win 			= 	Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
-var yql = win.yql;
-var win1 = win.win1; // Window Original created on app.js
+var yql 			= 	win.yql;
+var win1 			= 	win.win1; // Window Original created on app.js
+var theImage 		= 	null;
+var theThumbnail 	= 	null;
 
 // ===============
 // = Header View =
 // ===============
 
 var postHeaderView = Ti.UI.createView({
-	backgroundImage:'images/bg_post_top_bar.png',
-	left:0,
-	top:0,
-	height:65,
-	width:1024,
-	zIndex: 2
+	backgroundImage: 	'images/bg_post_top_bar.png',
+	left: 				0,
+	top: 				0,
+	height: 			65,
+	width: 				1024,
+	zIndex: 			2
 
 });
 win.add(postHeaderView);
@@ -78,12 +80,13 @@ postHeaderView.add(popoverGalleryView);
 // build the Photo Gallery popover
 btn_addPhoto.addEventListener('click', function()
 {
+	Ti.API.info('Dialog Open Gallery was clicked');
 	
-	Titanium.Media.openPhotoGallery({
+	Ti.Media.openPhotoGallery({
 
 		success:function(event)
 		{
-
+			handleImageEvent(event);
 		},
 		cancel:function()
 		{
@@ -91,8 +94,14 @@ btn_addPhoto.addEventListener('click', function()
 		},
 		error:function(error)
 		{
+			Ti.API.debug('Photo Gallery Message: ' + JSON.stringify(error));
+			var a = Titanium.UI.createAlertDialog({ 
+		  	    title:'Uh Oh...',
+		  	    message: 'We had a problem reading from your photo gallery - please try again'
+		  	  });
+		  		a.show();
 		},
-		allowEditing:true,
+		allowEditing:false,
 		popoverView:popoverGalleryView,
 		arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP,
 		mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],
@@ -115,10 +124,6 @@ var btn_post = Ti.UI.createButton({
 });
 postHeaderView.add(btn_post);
 
-btn_post.addEventListener('click', function()
-{
-
-});
 
 // ======================
 // = END OF THE TOP BAR =
@@ -165,25 +170,44 @@ var dotted_lineView = Titanium.UI.createView({
 });
 editView.add(dotted_lineView);
 
-// Image View Holder
-var editImageView = Titanium.UI.createImageView({
-	image: 'images/image_placeholder.png',
-	top: 		79,
-	left: 		33,
+
+//Create Image view to display Photo
+var viewContainerPhoto = Titanium.UI.createView({
+	top: 			79,
+	left: 			33,	
+	width: 			'auto',
+	height: 		'auto',
+	borderRadius: 	0,
+	visible: 		false
+});
+editView.add(viewContainerPhoto);
+
+//Create Image view to display Photo from Selection from the Gallery
+var img = Titanium.UI.createImageView({
+	img: 		theImage,
 	width: 		'auto',
 	height: 	'auto'
 });
-editView.add(editImageView);
+viewContainerPhoto.add(img);
 
-//Main Text Area
+//Photo delete Button
+var btn_photo_close = Titanium.UI.createButton({
+	backgroundImage:'images/btn_close_gray.png',
+	width: 			22,
+	height: 		22,
+	top: 			2
+});
+viewContainerPhoto.add(btn_photo_close);
 
-var TextAreaFake = "The iPhone 4 is no small thing to review. As most readers of Engadget are well aware, in the gadget world a new piece of Apple hardware is a major event, preceded by rumors, speculation, an over-the-top announcement, and finally days, weeks, or months of anticipation from an ever-widening fan base. The iPhone 4 is certainly no exception -- in fact, it may be Apple’s most successful launch yet, despite some bumps on the road.";
+//Main TextArea
+
+var postText = '';
 
 var textArea = Titanium.UI.createTextArea({
-	value: TextAreaFake,
-	height: 		357,
+	value: postText,
+	height: 		200,
 	width: 			953,
-	top: 			316,
+	//top: 			316,
 	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
 	color:'#666',
 	textAlign:'left',
@@ -195,6 +219,27 @@ var textArea = Titanium.UI.createTextArea({
 });
 editView.add(textArea);
 
+if (theImage = null){
+		textArea.top = 79;
+}
+
+//Temporary Text when open the New Post Window, helping users to know where to click
+var tempPostLabel = Titanium.UI.createLabel({
+	text: 		'write your post here',
+	align: 		'center',
+	color: 		'#CCC',
+	top: 		350,
+	left: 		300,
+	width: 		800,
+	height: 	100,
+	font: 		{fontSize:50, fontFamily:'Helvetica', fontWeight:'bold'},
+	zIndex: 	3 	
+});
+editView.add(tempPostLabel);
+
+if (postText == ''){
+	tempPostLabel.show();	
+}
 
 
 // White Gradient in the Bottom
@@ -209,7 +254,7 @@ editView.add(whiteShadow);
 
 //Disclaimer
 var disclaimerLabel = Titanium.UI.createLabel({
-	text: 		'Don’t infringe copyright or post adult content. Check the Ccommunity Guidelines for more information. Your Post will be shared via Yahoo! Updates. ',
+	text: 		'Don’t infringe copyright or post adult content. Check the Community Guidelines for more information. Your Post will be shared via Yahoo! Updates. ',
 	color: 		'#CCC',
 	width: 		800,
 	height: 	15,
@@ -217,6 +262,123 @@ var disclaimerLabel = Titanium.UI.createLabel({
 	bottom: 	18
 });
 editView.add(disclaimerLabel);
+
+// =============
+// = LISTENERS =
+// =============
+
+// ===========================
+// = TEXT AREA FORM HANDLERS =
+// ===========================
+
+// Hide Text hint on Text Area
+tempPostLabel.addEventListener('touchend', function(e)
+{
+	Ti.API.info('Touch End Gesture captured on Label Write your POst Here?');
+	tempPostLabel.hide(); // hide the hint text when touches the TEXT AREA bar
+	textArea.focus(); //Focus on the Text Area and bring up the Keyboard
+});
+
+//Captures the value on the textArea form and hide hintText
+textArea.addEventListener('change', function(e)
+{
+	Ti.API.info('textArea form: you typed ' + e.value + ' act val ' + textArea.value);
+	tempPostLabel.hide(); // hide the hint text when starts using the keyboard
+	postText = e.value;
+});
+
+textArea.addEventListener('focus', function(e)
+{
+   	Ti.API.info('TextArea: focus received');
+	tempPostLabel.hide(); // hide the hint text when textArea receives Focus
+	
+});
+
+// =======================
+// = POST BUTTON TRIGGER =
+// =======================
+
+btn_post.addEventListener('click', function()
+{
+	Ti.API.info('Post BTN fired');
+	// 
+	// if ((!postText || postText == null || postText = "") /* && theImage == null*/ ) {
+	// 	
+	// 	Ti.API.debug('Error: Nothing To Post');
+	// 	
+	// 	var alertNothing = Titanium.UI.createAlertDialog({
+	// 	    title: 'Ops!',
+	// 	    message: 'Write something before hitting the Post Button',
+	// 	    buttonNames: ['OK']
+	// 	});
+	// 	
+	// 	alertNothing.show();
+	// 	
+	// } else {
+	// 
+	// 	Titanium.App.fireEvent("postClicked", {
+	// 		   message: postText
+	// 	});
+	// }
+	  
+});
+
+// ===============================
+// = PHOTO GALLERY HANDLERS      =
+// ===============================
+
+function handleImageEvent(event) {
+  theImage = event.media;
+  theThumbnail = event.thumbnail;
+  Ti.App.fireEvent("photoChosen");
+}
+
+Ti.App.addEventListener("photoChosen", function(e) {
+	img.image = theImage;
+	viewContainerPhoto.visible = true;
+	
+	var photo_close_x = img.width - 24;
+	btn_photo_close.left = photo_close_x;
+	btn_photo_close.visible = true;
+	
+	var textArea_top =  img.height + 109;
+	
+	textArea.top = textArea_top;
+	
+	Ti.API.debug(img.width + "x" + img.height);
+
+});
+
+// to remove the photo chosen
+Ti.App.addEventListener("photoRemoved", function(e) {
+	theImage = null;
+	viewContainerPhoto.visible = false;
+	btn_photo_delete.visible = false;
+	textArea.top = 79;
+  
+});
+
+//Alert to remove the photo
+var alertCloseImage = Titanium.UI.createAlertDialog({
+
+});
+
+// Listener to delete the Image and start again
+btn_photo_close.addEventListener('click', function(e)
+{
+	alertCloseImage.title = 'Remove';
+	alertCloseImage.message = 'Are you sure you to remove the photo?';
+	alertCloseImage.buttonNames = ['Yes','No'];
+	alertCloseImage.cancel = 1;
+	alertCloseImage.show();
+});
+
+alertCloseImage.addEventListener('click',function(e)
+{
+	if (e.index == 0){
+		Ti.App.fireEvent("photoRemoved");	
+	}
+});
 
 
 
