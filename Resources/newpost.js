@@ -178,8 +178,8 @@ var viewContainerPhoto = Titanium.UI.createView({
 	width: 			'auto',
 	height: 		'auto',
 	borderRadius: 	0,
-	backgroundColor: 'red',
-	visible: 		false
+	visible: 		false,
+	zIndex: 		2
 });
 editView.add(viewContainerPhoto);
 
@@ -217,7 +217,7 @@ var textArea = Titanium.UI.createTextArea({
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
 	//returnKeyType:Titanium.UI.RETURNKEY_EMERGENCY_CALL,
 	suppressReturn: false,
-	zIndex: 		2
+	zIndex: 		0
 	
 });
 editView.add(textArea);
@@ -232,7 +232,7 @@ var tempPostLabel = Titanium.UI.createLabel({
 	width: 		800,
 	height: 	100,
 	font: 		{fontSize:50, fontFamily:'Helvetica', fontWeight:'bold'},
-	zIndex: 	3 	
+	zIndex: 	1
 });
 editView.add(tempPostLabel);
 
@@ -249,7 +249,7 @@ var whiteShadow = Titanium.UI.createImageView({
 	width: 		1024,
 	height: 	91
 });
-editView.add(whiteShadow);
+win.add(whiteShadow);
 
 //Disclaimer
 var disclaimerLabel = Titanium.UI.createLabel({
@@ -260,7 +260,7 @@ var disclaimerLabel = Titanium.UI.createLabel({
 	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
 	bottom: 	18
 });
-editView.add(disclaimerLabel);
+win.add(disclaimerLabel);
 
 // =============
 // = LISTENERS =
@@ -300,25 +300,25 @@ textArea.addEventListener('focus', function(e)
 btn_post.addEventListener('click', function()
 {
 	Ti.API.info('Post BTN fired');
-	// 
-	// if ((!postText || postText == null || postText = "") /* && theImage == null*/ ) {
-	// 	
-	// 	Ti.API.debug('Error: Nothing To Post');
-	// 	
-	// 	var alertNothing = Titanium.UI.createAlertDialog({
-	// 	    title: 'Ops!',
-	// 	    message: 'Write something before hitting the Post Button',
-	// 	    buttonNames: ['OK']
-	// 	});
-	// 	
-	// 	alertNothing.show();
-	// 	
-	// } else {
-	// 
-	// 	Titanium.App.fireEvent("postClicked", {
-	// 		   message: postText
-	// 	});
-	// }
+	
+	if ( /*(!postText || postText == null || postText = "")  && */theImage == null ) {
+		
+		Ti.API.debug('Error: Nothing To Post');
+		
+		var alertNothing = Titanium.UI.createAlertDialog({
+		    title: 'Ops!',
+		    message: 'Write something before hitting the Post Button',
+		    buttonNames: ['OK']
+		});
+		
+		alertNothing.show();
+		
+	} else {
+	
+		Titanium.App.fireEvent("postClicked", {
+			   message: postText
+		});
+	}
 	  
 });
 
@@ -347,26 +347,22 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		
 	}
 
-	
-
 	//adds the close button to the image
 	btn_photo_close.left = photo_close_x;
 	btn_photo_close.visible = true;
 	
 	// Repositioned the TextArea below the chosen photo
 	var textArea_top =  img.size.height + 109;
-	textArea.animate({top: textArea_top});
+	textArea.animate({zIndex: 0, top: textArea_top});
 	
 	//Repositioned the Temp Caption on top of the TextArea
-	tempPostLabel.animate({top : 120 + img.size.height});
+	tempPostLabel.animate({zIndex: 0, top : 120 + img.size.height});
 	
-	//textArea.top = textArea_top;
-	
-	Ti.API.debug(img.size.width + "x" + img.size.height + " and Top for Text Area= " + textArea_top + " and typeOf: " + typeof(textArea_top));
+	//Ti.API.debug(img.size.width + "x" + img.size.height + " and Top for Text Area= " + textArea_top + " and typeOf: " + typeof(textArea_top));
 
 });
 
-//numeor Amil Mae
+//numero Amil Mae
 // 341-7
 // 34191 75868 54227 742936 80101 920009 1 480200000541103
 
@@ -401,6 +397,119 @@ alertCloseImage.addEventListener('click',function(e)
 	if (e.index == 0){
 		Ti.App.fireEvent("photoRemoved");	
 	}
+});
+
+// Selected Text Listener
+textArea.addEventListener('selected', function(e) {
+	var selectedText = textArea.value.substr(e.range.location, e.range.length);
+	Ti.API.debug("Selected Text: " + selectedText);
+});
+
+
+// ==================================
+// = Uploads Image and posts on Meme =
+// ==================================
+
+
+
+var getMediaLink = function (pMediaId){
+	
+	var xhr = Titanium.Network.createHTTPClient();
+
+	
+	xhr.onerror = function(e) {
+		
+		Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
+	};
+	
+	xhr.onload = function() {
+		Ti.API.info("Request for more Info Worked!");
+
+		var doc = this.responseXML.documentElement; 
+		
+		var response_media_link;
+
+		response_media_link = doc.getElementsByTagName("image_link").item(0).text;
+
+		Ti.API.debug('Response Media Link: ' + response_media_link );
+		
+		Titanium.App.fireEvent("postOnMeme", {
+			   media_link: response_media_link
+		});
+
+
+	}
+	
+	xhr.open('GET','http://yfrog.com/api/xmlInfo?path=' + pMediaId);
+	
+  	xhr.send();
+	
+};
+
+Titanium.App.addEventListener("postClicked", function(e) {
+	
+	var xhr = Titanium.Network.createHTTPClient();
+	
+	xhr.onerror = function(e) {
+		
+		Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
+
+	};
+	
+	xhr.onload = function() {
+		
+	  var doc = this.responseXML.documentElement;
+	  
+	  if (doc.getElementsByTagName("err") != null && doc.getElementsByTagName("err").length > 0) {
+	    		var a = Titanium.UI.createAlertDialog({ 
+			  	    title:'Well, this is awkward...',
+			  	    message: 'YFrog error: '+ doc.getElementsByTagName("err").item(0).getAttribute("msg")
+		  	  	});
+
+		  		a.show();
+
+	  } else {
+	
+	  		 	Ti.API.info("Upload complete!");
+	
+			  	var doc = this.responseXML.documentElement; 
+
+			  	var response_mediaid = doc.getElementsByTagName("mediaid").item(0).text;
+
+			  	Ti.API.debug('Response Media ID: ' + response_mediaid );
+			
+			 	getMediaLink(response_mediaid);
+		
+	  }
+	  
+	  // ind.value = 0;
+	
+    // setTimeout(function() {
+    //   // showChooser();
+    //   // resultLabel.text = 'Magically beaming image...';
+    // },2000);
+
+	};
+	
+	xhr.onsendstream = function(e) {
+		// ind.value = e.progress;
+	};
+	xhr.open('POST','http://yfrog.com/api/upload');
+	
+  	xhr.send({
+		    media: theImage,
+			username: "memepost",
+		    password: "Yahoo123",
+		    message: e.message,
+			key: "F3ZA64TM533497a3eaea8b6e298e0fed69512b8b"
+	  });
+  // warp.play();
+});
+
+Titanium.App.addEventListener("postOnMeme", function(e) {
+	
+	Ti.API.debug('MediaLink variable: ' + e.media_link );
+	
 });
 
 

@@ -34,8 +34,7 @@ permalink.js
 
 
 newpost.js
-- Bug the clicks to open the gallery
+- Bug the clicks to open the gallery (supress error)
 - When going back to Dashboard save the post draft
-- SetFocus in the textArea quando clicar no Label Temp "write oyour post here"
-- Show Temp Message over the TextArea when Text Area is Blur and Text: is empty
-- limit the Width of images to max 1024
+- Post no Meme
+- Bug when add a Photo, then replace with other (the close button is in the wrong place)
