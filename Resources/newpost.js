@@ -412,10 +412,9 @@ textArea.addEventListener('selected', function(e) {
 
 
 
-var getMediaLink = function (pMediaId){
+var getMediaLink = function (pMediaId, pPostText){
 	
 	var xhr = Titanium.Network.createHTTPClient();
-
 	
 	xhr.onerror = function(e) {
 		
@@ -434,11 +433,13 @@ var getMediaLink = function (pMediaId){
 		Ti.API.debug('Response Media Link: ' + response_media_link );
 		
 		Titanium.App.fireEvent("postOnMeme", {
-			   media_link: response_media_link
+			   media_link: response_media_link,
+			   message: pPostText
 		});
 
 
 	}
+	//xhr.setRequestHeader("Content-Type", "image/png")
 	
 	xhr.open('GET','http://yfrog.com/api/xmlInfo?path=' + pMediaId);
 	
@@ -478,7 +479,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 
 			  	Ti.API.debug('Response Media ID: ' + response_mediaid );
 			
-			 	getMediaLink(response_mediaid);
+			 	getMediaLink(response_mediaid, e.message);
 		
 	  }
 	  
@@ -509,6 +510,25 @@ Titanium.App.addEventListener("postClicked", function(e) {
 Titanium.App.addEventListener("postOnMeme", function(e) {
 	
 	Ti.API.debug('MediaLink variable: ' + e.media_link );
+	
+	// repostActInd.show();
+	
+	//INSERT INTO meme.user.posts (type, content, caption) VALUES ("photo", "http://www.yahoo.com/myphoto.jpg", "this is the photo caption")
+	yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('photo', '" + e.media_link + "', '" + e.message + "')";
+		Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
+
+	var yqlInsert = yql.query(yqlQuery);
+	var response = yqlInsert.query.results.status;
+	
+	if (response.message == "ok"){
+		
+			Ti.API.debug(" ####### YQL INSERT POST executed");
+		
+	} else {
+		
+		Ti.API.info("Error while Posting");
+		
+	}
 	
 });
 

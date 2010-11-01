@@ -129,29 +129,44 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			
 			//REQUEST VIMEO oEmbed DATA
 			// var xhr = Titanium.Network.createHTTPClient();
-			// 	    // xhr.setTimeout([99000]);
-			// 	
-			// 	    xhr.onerror = function(e) {
-			// 	        Ti.API.info("ERROR: " + e.error);
-			// 	    };
-			// 	
-			// 	    xhr.onload = function(e) {
-			// 	        Ti.API.info('Vimeo RESPONSE CODE: ' + this.status + ' And Response Text: ' + this.responseText );
-			// 		//	var vimeoEmbed = JSON.parse(this.responseText);
-			// 		
-			// 			//Ti.API.info('Vimeo RESPONSE' + vimeoEmbed.title);
-			// 	    };
-			// 	
-			// 		eContent = encodeURIComponent(pContent);
-			// 		
-			// 	    xhr.open('GET','http://vimeo.com/api/oembed.json?url=' + eContent);
-			// 		Ti.API.info('http://vimeo.com/api/oembed.json?url=' + eContent);
-			// 		
-			// 		// xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8', 'Content-Length', '0');
-			// 	    xhr.send(); 
-			// 	
-			// 	       //_videoId = pContent.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
-			// 	       _videoThumb = "http://img.youtube.com/vi/" + _videoId + "/0.jpg";
+			// 				    // xhr.setTimeout([99000]);
+			// 				
+			// 					xhr.onreadystatechange = function() {
+			// 
+			// 					    try {
+			// 					      if (this.readyState == 4) {
+			// 					           var results = JSON.stringify(this.responseText);
+			// 								Ti.API.debug("Response Text on State 4: " + results);
+			// 
+			// 					        }
+			// 					    } catch(e) {
+			// 					        Ti.API.debug("Error: " + e.error);
+			// 					    }
+			// 					};
+			// 				
+			// 				
+			// 				    xhr.onerror = function(e) {
+			// 				        Ti.API.info("ERROR: " + e.error);
+			// 				    };
+			// 				
+			// 				    xhr.onload = function(e) {
+			// 				        Ti.API.info('Vimeo RESPONSE CODE: ' + this.status + ' And Response Text: ' + this.responseText );
+			// 					//	var vimeoEmbed = JSON.parse(this.responseText);
+			// 					
+			// 						//Ti.API.info('Vimeo RESPONSE' + vimeoEmbed.title);
+			// 				    };
+			// 				
+			// 					eContent = encodeURIComponent(pContent);
+			// 					xhr.setRequestHeader('Content-Type', 'application/json');
+			// 					
+			// 				    xhr.open('GET','http://vimeo.com/api/oembed.json?url=' + eContent);
+			// 					Ti.API.info('http://vimeo.com/api/oembed.json?url=' + eContent);
+			// 					
+			// 					
+			// 				    xhr.send(); 
+			// 				
+			// 				       //_videoId = pContent.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
+			// 				       _videoThumb = "http://img.youtube.com/vi/" + _videoId + "/0.jpg";
 			
 		} else {
 			
