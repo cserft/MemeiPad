@@ -25,33 +25,54 @@ win.add(postHeaderView);
 // = BACK BUTTON =
 // ===============
 
-var btn_back = Ti.UI.createButton({
-	backgroundImage: 'images/btn_back_top.png',
-	height: 52,
-	width: 85,
-	left: 20,
-	top: 5,
+var btn_close_post = Ti.UI.createButton({
+	backgroundImage: 'images/btn_close_post.png',
+	height: 16,
+	width: 16,
+	left: 988,
+	top: 24,
 	style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 });
 
-postHeaderView.add(btn_back);
+postHeaderView.add(btn_close_post);
 
-var backButtonLabel = Titanium.UI.createLabel({
-	color:'white',
-	text: 'home',
-	font:{fontSize:12,fontFamily:'Helvetica Neue', fontWeight:'bold'},
-    textAlign:'left',
-	top:17,
-	left:29,
-	height:17,
-	width:36
-});
-btn_back.add(backButtonLabel);
-
-btn_back.addEventListener('click', function()
+btn_close_post.addEventListener('click', function()
 {
 	win.close();
 });
+
+
+// =========================
+// = Awesome bar TextField =
+// =========================
+
+var searchTextField = Titanium.UI.createTextField({
+	value: 			'',
+	hintText: 		'Do a search to illustrate your post',
+	textAlign: 		'left',
+	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
+	width: 			447,
+	height: 		41,
+	top: 			14,
+	left: 			16,
+	borderRadius: 	4,
+	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
+	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
+});
+
+postHeaderView.add(searchTextField);
+
+var btn_flashlight = Ti.UI.createButton({
+	backgroundImage: 'images/btn_flashlight.png',
+	width: 			162,
+	height: 		49,
+	left: 			456,
+	top: 			11,
+	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+	
+});
+postHeaderView.add(btn_flashlight);
 
 // ==========================
 // = ADD PHOTO FROM GALLERY =
@@ -59,18 +80,19 @@ btn_back.addEventListener('click', function()
 
 var btn_addPhoto = Ti.UI.createButton({
 	backgroundImage: 'images/btn_add_photos.png',
-	height: 		23,
-	width: 			109,
-	borderRadius: 	3,
-	left: 			685,
-	top: 			22,
+	width: 			59,
+	height: 		50,
+	borderRadius: 	4,
+	left: 			629,
+	top: 			11,
 	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 	
 });
 postHeaderView.add(btn_addPhoto);
 
 var popoverGalleryView = Titanium.UI.createView({
-	left: 		532,
+	title: 		'Add a photo',
+	left: 		487,
 	top: 		76,
 	width:      330
 });
@@ -119,7 +141,7 @@ var btn_post = Ti.UI.createButton({
 	backgroundImage: 'images/btn_post_top.png',
 	height:85,
 	width:192,
-	left: 840,
+	left: 800,
 	top:-10
 });
 postHeaderView.add(btn_post);
