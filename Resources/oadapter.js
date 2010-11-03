@@ -260,7 +260,7 @@ var OAuthAdapter = function(pService, authorize)
 		Ti.API.debug("Function Query2Legg Called");
 		var parameters = [ ["format", "json"],
 		 				   ["diagnostics", "false"],
-		 				   ["q", pQuery],
+		 				   ["q", pQuery]
 						 ];
 		var json = serviceRequest(yql_base_url, parameters, accessor);
 		return(JSON.parse(json));

@@ -410,43 +410,6 @@ textArea.addEventListener('selected', function(e) {
 // = Uploads Image and posts on Meme =
 // ==================================
 
-
-
-var getMediaLink = function (pMediaId, pPostText){
-	
-	var xhr = Titanium.Network.createHTTPClient();
-	
-	xhr.onerror = function(e) {
-		
-		Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
-	};
-	
-	xhr.onload = function() {
-		Ti.API.info("Request for more Info Worked!");
-
-		var doc = this.responseXML.documentElement; 
-		
-		var response_media_link;
-
-		response_media_link = doc.getElementsByTagName("image_link").item(0).text;
-
-		Ti.API.debug('Response Media Link: ' + response_media_link );
-		
-		Titanium.App.fireEvent("postOnMeme", {
-			   media_link: response_media_link,
-			   message: pPostText
-		});
-
-
-	}
-	//xhr.setRequestHeader("Content-Type", "image/png")
-	
-	xhr.open('GET','http://yfrog.com/api/xmlInfo?path=' + pMediaId);
-	
-  	xhr.send();
-	
-};
-
 Titanium.App.addEventListener("postClicked", function(e) {
 	
 	var xhr = Titanium.Network.createHTTPClient();
@@ -457,52 +420,36 @@ Titanium.App.addEventListener("postClicked", function(e) {
 
 	};
 	
-	xhr.onload = function() {
-		
-	  var doc = this.responseXML.documentElement;
-	  
-	  if (doc.getElementsByTagName("err") != null && doc.getElementsByTagName("err").length > 0) {
-	    		var a = Titanium.UI.createAlertDialog({ 
-			  	    title:'Well, this is awkward...',
-			  	    message: 'YFrog error: '+ doc.getElementsByTagName("err").item(0).getAttribute("msg")
-		  	  	});
-
-		  		a.show();
-
-	  } else {
+	xhr.onload = function(e) {
 	
-	  		 	Ti.API.info("Upload complete!");
-	
-			  	var doc = this.responseXML.documentElement; 
+ 		Ti.API.info("Upload complete!");
 
-			  	var response_mediaid = doc.getElementsByTagName("mediaid").item(0).text;
+		var uploadResult = JSON.parse(this.responseText);
 
-			  	Ti.API.debug('Response Media ID: ' + response_mediaid );
-			
-			 	getMediaLink(response_mediaid, e.message);
-		
-	  }
-	  
+	  	Ti.API.debug('Response Media ID: ' + uploadResult.id + ' And Response URL: ' + uploadResult.url + ' and Message: ' + postText);
+
+		Titanium.App.fireEvent("postOnMeme", {
+			   media_link: uploadResult.url,
+			   message: postText
+		});
+
 	  // ind.value = 0;
 	
-    // setTimeout(function() {
-    //   // showChooser();
-    //   // resultLabel.text = 'Magically beaming image...';
-    // },2000);
+    	// setTimeout(function() {
+	    //   // showChooser();
+	    //   // resultLabel.text = 'Magically beaming image...';
+	    // },2000);
 
 	};
 	
 	xhr.onsendstream = function(e) {
 		// ind.value = e.progress;
 	};
-	xhr.open('POST','http://yfrog.com/api/upload');
 	
+	xhr.open('POST','http://meme-ios-backend.appspot.com/img/upload');
   	xhr.send({
-		    media: theImage,
-			username: "memepost",
-		    password: "Yahoo123",
-		    message: e.message,
-			key: "F3ZA64TM533497a3eaea8b6e298e0fed69512b8b"
+			file: theImage
+			// key: "F3ZA64TM533497a3eaea8b6e298e0fed69512b8b"
 	  });
   // warp.play();
 });
