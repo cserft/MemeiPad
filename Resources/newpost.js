@@ -1,10 +1,11 @@
+Ti.include('lib/secrets.js')
+
 var win 			= 	Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var yql 			= 	win.yql;
 var win1 			= 	win.win1; // Window Original created on app.js
 var theImage 		= 	null;
-var theThumbnail 	= 	null;
 
 // ===============
 // = Header View =
@@ -445,7 +446,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 		var uploadResult = JSON.parse(this.responseText);
 
 	  	Ti.API.debug('Response Media ID: ' + uploadResult.id + ' And Response URL: ' + uploadResult.url + ' and Message: ' + postText);
-
+		
 		Titanium.App.fireEvent("postOnMeme", {
 			   media_link: uploadResult.url,
 			   message: postText
@@ -464,11 +465,17 @@ Titanium.App.addEventListener("postClicked", function(e) {
 		// ind.value = e.progress;
 	};
 	
+	// "type:image/jpeg|800x600|secret:xxx"
+	var auth = Ti.Utils.md5HexDigest('type:' + theImage.mimetype + '|' + theImage.width + 'x' + theImage.height + '|secret:' + meme_be_secret);
+	
 	xhr.open('POST','http://meme-ios-backend.appspot.com/img/upload');
+	xhr.setRequestHeader('X-MemeApp-AppId', 'MemeAppiPad');
+	xhr.setRequestHeader('X-MemeApp-Auth', auth);
+	xhr.setRequestHeader('X-MemeApp-Type', theImage.mimetype);
+	xhr.setRequestHeader('X-MemeApp-Size', theImage.width + 'x' + theImage.height);
   	xhr.send({
-			file: theImage
-			// key: "F3ZA64TM533497a3eaea8b6e298e0fed69512b8b"
-	  });
+		file: theImage
+	});
   // warp.play();
 });
 
