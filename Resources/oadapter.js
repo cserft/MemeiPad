@@ -249,7 +249,8 @@ var OAuthAdapter = function(pService, authorize)
 		var parameters = [ ["format", "json"],
 		 				   ["diagnostics", "false"],
 		 				   ["q", pQuery],
-						   ["oauth_token", token.oauth_token]
+						   ["oauth_token", token.oauth_token],
+						   ["env", "http://datatables.org/alltables.env"]
 						 ];
 		var json = serviceRequest(yql_base_url, parameters, accessorFromToken(token));
 		return(JSON.parse(json));
@@ -260,7 +261,8 @@ var OAuthAdapter = function(pService, authorize)
 		Ti.API.debug("Function Query2Legg Called");
 		var parameters = [ ["format", "json"],
 		 				   ["diagnostics", "false"],
-		 				   ["q", pQuery]
+		 				   ["q", pQuery],
+						   ["env", "http://datatables.org/alltables.env"]
 						 ];
 		var json = serviceRequest(yql_base_url, parameters, accessor);
 		return(JSON.parse(json));

@@ -47,8 +47,10 @@ btn_close_post.addEventListener('click', function()
 // = Awesome bar TextField =
 // =========================
 
+var queryText = "";
+
 var searchTextField = Titanium.UI.createTextField({
-	value: 			'',
+	value: 			queryText,
 	hintText: 		'Do a search to illustrate your post',
 	textAlign: 		'left',
 	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
@@ -74,6 +76,15 @@ var btn_flashlight = Ti.UI.createButton({
 	
 });
 postHeaderView.add(btn_flashlight);
+
+//creates the popover for the results
+var popoverSearchView = Titanium.UI.iPad.createPopover({ 
+	width:330, 
+	height:320,
+	borderWidth: 0,
+	title:'Suggested Content',
+	arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
+});
 
 // ==========================
 // = ADD PHOTO FROM GALLERY =
@@ -288,6 +299,86 @@ win.add(disclaimerLabel);
 // =============
 // = LISTENERS =
 // =============
+
+// ======================
+// = AWESOME SEARCH BAR =
+// ======================
+
+//Captures the value on the textArea form and hide hintText
+searchTextField.addEventListener('change', function(e)
+{
+	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
+	tempPostLabel.hide(); // hide the hint text when starts using the keyboard
+	queryText = searchTextField.value;
+	
+	//show the Popover
+	popoverSearchView.show({
+		view:btn_flashlight,
+		animated:true,
+	});
+	
+	
+	var resultsTableView = Ti.UI.createTableView({
+		color: '#9E4F9E',
+		top:50,
+		height:235
+
+		// selectedColor: '#9E4F9E',
+		// selectedBackgroundColor: '#9E4F9E'
+	});
+
+	popoverSearchView.add(resultsTableView);
+	
+	// YQL search
+	
+	yqlQuery = "select * from youtube.search where query='" + queryText + "'";
+
+	Ti.API.debug("####### YQL Query executed: " + yqlQuery);
+
+	var yqlYouTubeSearch = yql.query(yqlQuery);
+	var videos = yqlYouTubeSearch.query.results.video;
+	
+	//Loop to present the Search Results for YouTube
+	var results = [];
+	// var data = e.data;
+	for (var c=0 ; c < videos.length ; c++)
+	{
+		var video = videos[c];
+		// form the flickr url
+		var thumb = video.thumbnails.thumbnail[0].content;
+		
+		//Ti.API.info("YouTUbe Thumb = " + thumb);
+		
+		var row = Ti.UI.createTableViewRow({height:77});
+		
+		var title = Ti.UI.createLabel({
+			text: video.title,
+			height:50,
+			width: 192,
+			left:110,
+			textAlign:'left',
+			font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
+		});
+
+		var image = Ti.UI.createImageView({
+			image : thumb,
+			backgroundColor: 'black',
+			height:75,
+			width:100,
+			left:2,
+			defaultImage:'images/default_img.png'
+		});
+			
+		row.add(image);
+		row.add(title);
+		results[c] = row;
+	}
+	resultsTableView.setData(results);
+
+	Ti.App.fireEvent("hide_indicator");
+	
+	
+});
 
 // ===========================
 // = TEXT AREA FORM HANDLERS =
