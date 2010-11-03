@@ -362,10 +362,6 @@ Ti.App.addEventListener("photoChosen", function(e) {
 
 });
 
-//numero Amil Mae
-// 341-7
-// 34191 75868 54227 742936 80101 920009 1 480200000541103
-
 // to remove the photo chosen
 Ti.App.addEventListener("photoRemoved", function(e) {
 	theImage = null;
