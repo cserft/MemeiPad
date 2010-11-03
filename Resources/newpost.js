@@ -447,6 +447,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	var auth = Ti.Utils.md5HexDigest('type:' + theImage.mimetype + '|' + theImage.width + 'x' + theImage.height + '|secret:' + meme_be_secret);
 	
 	xhr.open('POST','http://meme-ios-backend.appspot.com/img/upload');
+	xhr.setRequestHeader('X-MemeApp-AppId', 'MemeAppiPad');
 	xhr.setRequestHeader('X-MemeApp-Auth', auth);
 	xhr.setRequestHeader('X-MemeApp-Type', theImage.mimetype);
 	xhr.setRequestHeader('X-MemeApp-Size', theImage.width + 'x' + theImage.height);
