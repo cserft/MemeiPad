@@ -532,15 +532,8 @@ var openingpermalink = false;
 tableView.addEventListener('click', function(e)
 {
 	openingpermalink = true;
-	
-	if (Ti.Platform.model == 'iPad Simulator') {
-
-		Ti.API.debug("SHOWING INDICATOR");
-
-	} else {
 		
-		Ti.App.fireEvent('show_indicator');
-	}
+	Ti.App.fireEvent('show_indicator');
 	
 	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	

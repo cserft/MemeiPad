@@ -368,15 +368,7 @@ btn_repost.addEventListener("click", function(e)
 
 		
 // Hides the loading indicator indicator
-if (Ti.Platform.model == 'iPad Simulator') {
-
-	Ti.API.debug("HIDING INDICATOR");
-
-} else {
-	
-	//setTimeout(Ti.App.fireEvent('hide_indicator'),2000);
-	Ti.App.fireEvent('hide_indicator');
-}
+Ti.App.fireEvent('hide_indicator');
 
 openingpermalink = false;
 
