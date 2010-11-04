@@ -280,11 +280,11 @@ var newPost = function(yql) {
 // Detects if it is running on the Simulator
 // If Not then creates the Event listeners
 
-if (Ti.Platform.model == 'iPad Simulator') {
-	
-	Ti.API.debug("Platform Name: " + Ti.Platform.model);
-	
-} else {
+// if (Ti.Platform.model == 'iPad Simulator') {
+// 	
+// 	Ti.API.debug("Platform Name: " + Ti.Platform.model);
+// 	
+// } else {
 	
 	//  CREATE CUSTOM LOADING INDICATOR
 	//
@@ -351,7 +351,7 @@ if (Ti.Platform.model == 'iPad Simulator') {
 		Ti.API.info("IN HIDE INDICATOR");
 		hideIndicator();
 	});
-};
+// };
 
 
 // Titanium.App.addEventListener('resume', function(e)
