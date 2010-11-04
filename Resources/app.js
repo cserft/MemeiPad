@@ -256,13 +256,7 @@ var showDashboard = function(yql,pDashboardType) {
 // ==========================
 
 var newPost = function(yql) {
-	
-	// var animation = Titanium.UI.createAnimation();
-	// animation.backgroundColor = 'black';
-	// animation.duration = 500;
-	// view.animate(animation);
-	// 
-	// 
+
 
 	var winNewPost = Ti.UI.createWindow({
 		url: 'newpost.js',
@@ -279,8 +273,8 @@ var newPost = function(yql) {
 		
 
 	});
-	winNewPost.open();
-
+	winNewPost.open({modal:true,modalTransitionStyle:Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,modalStyle:Ti.UI.iPhone.MODAL_PRESENTATION_FULLSCREEN,navBarHidden:true});
+	
 };
 
 // Detects if it is running on the Simulator

@@ -10,7 +10,7 @@
 - [BUG] More than 1 click opens several Permalink Windows
 - BUG no Minutes Ago em cima do Meme.Title (ver post do GNeumann)
 
-- Total stripper the HTML Entities
+- Total stripper for  HTML Entities
 
 - Use Place maker to detect places on a given Post and Show them on the Map.
 - flip with 2 fingers on a post on dashboard reveals post informations (Author, Number of Reposts and Number of Comments)
@@ -36,8 +36,7 @@ permalink.js
 
 newpost.js
 - Bug the clicks to open the gallery (supress error)
-- When going back to Dashboard save the post draft
-- Post no Meme
+- When going back to Dashboard save the post draft (use SetString/GetString)
 - Bug when add a Photo, then replace with other (the close button is in the wrong place)
 - Fix the detection of Photo and post only text
 - Upload indicator

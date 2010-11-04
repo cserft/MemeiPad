@@ -522,6 +522,66 @@ searchTextField.addEventListener('change', function(e)
 				resultsTableView.scrollToIndex(0,{animated:true})
 
 				break;
+				
+				case 3: // Twitter Search
+
+				Ti.API.info("####### Twitter Search ");
+
+				yqlQuery = "SELECT * FROM twitter.search WHERE q='" + queryText + "'";
+
+				var yqlData = yql.query(yqlQuery);
+				var items = yqlData.query.results.results;
+
+				//Loop to present the Search Results from the Web
+				var results = [];
+
+				for (var c=0 ; c < items.length ; c++)	
+				{
+					var item = items[c];
+
+					var row = Ti.UI.createTableViewRow({height:78});
+					
+					var avatar = Ti.UI.createImageView({
+						image : item.profile_image_url,
+						backgroundColor: 'black',
+						height:48,
+						width:48,
+						top:10,
+						left:2,
+						defaultImage:'images/default_img_avatar.png'
+					});
+
+					row.add(avatar);
+
+					var username = Ti.UI.createLabel({
+						text: '@' + item.from_user,
+						width: 250,
+						height:15,
+						top: 8,
+						left:55,
+						textAlign:'left',
+						font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
+					});
+					row.add(username);
+
+					var tweet = Ti.UI.createLabel({
+						text: item.text,
+						height:52,
+						width: 270,
+						top: 23,
+						left: 55,
+						textAlign:'left',
+						font:{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'}
+					});
+					
+					row.add(tweet);
+			
+					results[c] = row;
+				}
+				resultsTableView.setData(results);
+				resultsTableView.scrollToIndex(0,{animated:true})
+
+				break;
 		
 		}
 	
@@ -556,6 +616,9 @@ searchTextField.addEventListener('change', function(e)
 				});
 				break;
 			case 3: // Twitter Search
+				Ti.App.fireEvent("showAwesomeSearch", {
+					   searchType: 3
+				});
 				break;
 	
 		}
