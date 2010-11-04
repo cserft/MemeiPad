@@ -751,7 +751,7 @@ btn_photo_close.addEventListener('click', function(e)
 alertCloseImage.addEventListener('click',function(e)
 {
 	if (e.index == 0){
-		Ti.App.fireEvent("photoRemoved");	
+		Ti.App.fireEvent("photoRemoved");
 	}
 });
 
@@ -767,18 +767,32 @@ textArea.addEventListener('selected', function(e) {
 // ==================================
 
 Titanium.App.addEventListener("postClicked", function(e) {
-	
 	var xhr = Titanium.Network.createHTTPClient();
 	
 	xhr.onerror = function(e) {
-		
-		Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
-
+		Ti.API.debug("Error getting upload URL: " + JSON.stringify(e));
 	};
 	
 	xhr.onload = function(e) {
+		Ti.API.debug('Got upload URL from API: ' + this.responseText)
+		var result = JSON.parse(this.responseText);
+		Ti.App.fireEvent("postClickedReadyToUpload", { url: result.url });
+	};
 	
+ 	xhr.open('GET', 'http://meme-ios-backend.appspot.com/img/upload/url');
+  	xhr.send();
+});
+
+Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
+	var xhr = Titanium.Network.createHTTPClient();
+	
+	xhr.onerror = function(e) {
+		Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
+	};
+	
+	xhr.onload = function(e) {
  		Ti.API.info("Upload complete!");
+		Ti.API.debug('api response was: ' + this.responseText)
 
 		var uploadResult = JSON.parse(this.responseText);
 
@@ -789,7 +803,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 			   message: postText
 		});
 
-	  // ind.value = 0;
+	  	// ind.value = 0;
 	
     	// setTimeout(function() {
 	    //   // showChooser();
@@ -805,7 +819,8 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	// "type:image/jpeg|800x600|secret:xxx"
 	var auth = Ti.Utils.md5HexDigest('type:' + theImage.mimetype + '|' + theImage.width + 'x' + theImage.height + '|secret:' + meme_be_secret);
 	
-	xhr.open('POST','http://meme-ios-backend.appspot.com/img/upload');
+	Ti.API.debug('Starting upload to URL [' + e.url + ']');
+	xhr.open('POST', e.url);
 	xhr.setRequestHeader('X-MemeApp-AppId', 'MemeAppiPad');
 	xhr.setRequestHeader('X-MemeApp-Auth', auth);
 	xhr.setRequestHeader('X-MemeApp-Type', theImage.mimetype);
