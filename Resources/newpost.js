@@ -153,7 +153,7 @@ var btn_post = Ti.UI.createButton({
 	backgroundImage: 'images/btn_post_top.png',
 	height:85,
 	width:192,
-	left: 800,
+	left: 780,
 	top:-10
 });
 postHeaderView.add(btn_post);
@@ -203,7 +203,6 @@ var dotted_lineView = Titanium.UI.createView({
 	height: 2
 });
 editView.add(dotted_lineView);
-
 
 //Create Image view to display Photo
 var viewContainerPhoto = Titanium.UI.createView({
@@ -762,14 +761,50 @@ textArea.addEventListener('selected', function(e) {
 });
 
 
+var progressView = Titanium.UI.createView({
+	top: 			300,
+	width: 			300,
+	height: 		80,
+	borderRadius: 	5,
+	backgroundColor: 'black',
+	visible: false,
+	zIndex:99
+});
+editView.add(progressView);
+
+// Upload Progress Bar
+var ind = Ti.UI.createProgressBar({
+	width:250,
+	height:60,
+	min:0,
+	max:1,
+	value:0,
+	style:Titanium.UI.iPhone.ProgressBarStyle.BAR,
+	message:'',
+	font:{fontSize:16, fontWeight:'bold'},
+	color:'white'
+});
+
+progressView.add(ind);
+
 // ==================================
 // = Uploads Image and posts on Meme =
 // ==================================
 
 Titanium.App.addEventListener("postClicked", function(e) {
+	
+	//Shows the Upload Progress bar
+	progressView.show();
+	ind.show();
+	ind.message = "Preparing to post...";
+	
 	var xhr = Titanium.Network.createHTTPClient();
 	
 	xhr.onerror = function(e) {
+		// Hides the Progress bar
+		progressView.hide();
+		ind.hide();
+		
 		Ti.API.debug("Error getting upload URL: " + JSON.stringify(e));
 	};
 	
@@ -787,33 +822,36 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	var xhr = Titanium.Network.createHTTPClient();
 	
 	xhr.onerror = function(e) {
+		// Hides the Progress bar
+		progressView.hide();
+		ind.hide();
+		
 		Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
 	};
 	
 	xhr.onload = function(e) {
+		
+		// Hides the Progress Bar
+		ind.message = "Recording Post on Meme";
+		
  		Ti.API.info("Upload complete!");
 		Ti.API.debug('api response was: ' + this.responseText)
 
 		var uploadResult = JSON.parse(this.responseText);
-
-	  	Ti.API.debug('Response Media ID: ' + uploadResult.id + ' And Response URL: ' + uploadResult.url + ' and Message: ' + postText);
-		
+	
 		Titanium.App.fireEvent("postOnMeme", {
 			   media_link: uploadResult.url,
 			   message: postText
 		});
 
-	  	// ind.value = 0;
-	
-    	// setTimeout(function() {
-	    //   // showChooser();
-	    //   // resultLabel.text = 'Magically beaming image...';
-	    // },2000);
+	  	ind.value = 0;
 
 	};
 	
 	xhr.onsendstream = function(e) {
-		// ind.value = e.progress;
+		ind.message = "Uploading File...";
+		ind.value = e.progress;
+		Ti.API.info('ONSENDSTREAM - PROGRESS: ' + e.progress);
 	};
 	
 	// "type:image/jpeg|800x600|secret:xxx"
@@ -833,11 +871,8 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 
 Titanium.App.addEventListener("postOnMeme", function(e) {
 	
-	Ti.API.debug('MediaLink variable: ' + e.media_link );
+	//Ti.API.debug('MediaLink variable: ' + e.media_link );
 	
-	// repostActInd.show();
-	
-	//INSERT INTO meme.user.posts (type, content, caption) VALUES ("photo", "http://www.yahoo.com/myphoto.jpg", "this is the photo caption")
 	yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('photo', '" + e.media_link + "', '" + e.message + "')";
 		Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
 
@@ -847,6 +882,23 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	if (response.message == "ok"){
 		
 			Ti.API.debug(" ####### YQL INSERT POST executed");
+			
+			progressView.hide();
+			ind.hide();
+			
+			var a = Titanium.UI.createAlertDialog({ 
+		  	    title:'Success',
+		  	    message: 'Your Post was published successfully'
+		  	  });
+		  		a.show();
+	
+			a.addEventListener('click',function(e)
+			{
+				if (e.index == 0){
+					
+					win.close();
+				}
+			});
 		
 	} else {
 		
