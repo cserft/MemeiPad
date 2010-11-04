@@ -40,6 +40,7 @@ newpost.js
 - Post no Meme
 - Bug when add a Photo, then replace with other (the close button is in the wrong place)
 - Fix the detection of Photo and post only text
-- Uplaod indicator
+- Upload indicator
 - Better handling the search as you type, can't be on Change
 - Add listener to the search results to add the info in the Post area
+- Better treatment of Web Results when abstract is empty

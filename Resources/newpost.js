@@ -345,7 +345,7 @@ Ti.App.addEventListener('showAwesomeSearch', function (e) {
 	
 	switch(e.searchType) {
 		
-		case 0: // Video
+		case 0: // Video 
 		
 			Ti.API.info("####### Video Search ");
 			
@@ -424,8 +424,8 @@ Ti.App.addEventListener('showAwesomeSearch', function (e) {
 
 				var title = Ti.UI.createLabel({
 					text: photo.title,
-					height:50,
-					width: 192,
+					height:55,
+					width: 200,
 					left:110,
 					textAlign:'left',
 					font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
@@ -448,6 +448,60 @@ Ti.App.addEventListener('showAwesomeSearch', function (e) {
 			resultsTableView.scrollToIndex(0,{animated:true})
 
 			break;
+			
+		case 2: // Web Search
+		
+			Ti.API.info("####### Web Search ");
+		
+			yqlQuery = "SELECT title, abstract FROM search.web WHERE query='" + queryText + "'";
+
+			var yqlData = yql.query(yqlQuery);
+			var items = yqlData.query.results.result;
+
+			//Loop to present the Search Results for Flickr
+			var results = [];
+			// var data = e.data;
+			for (var c=0 ; c < items.length ; c++)	
+			{
+				var item = items[c];
+				
+				var row = Ti.UI.createTableViewRow({height:78});
+				
+				var titleStripped = item.title.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+
+				var title = Ti.UI.createLabel({
+					text: titleStripped,
+					width: 310,
+					height:15,
+					top: 10,
+					left:10,
+					textAlign:'left',
+					font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
+				});
+				
+				var abstractContent = item.abstract;
+				
+				var abstractStripped = abstractContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+				
+				var abstract = Ti.UI.createLabel({
+					text: abstractStripped,
+					height:50,
+					width: 310,
+					top: 25,
+					left: 10,
+					textAlign:'left',
+					font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
+				});
+				
+				row.add(title);
+				row.add(abstract);
+				results[c] = row;
+			}
+			resultsTableView.setData(results);
+			resultsTableView.scrollToIndex(0,{animated:true})
+
+			break;
+		
 	}
 	
 	//show the Popover
@@ -467,14 +521,17 @@ Ti.App.addEventListener('showAwesomeSearch', function (e) {
 					   searchType: 0
 				});
 				break;
+				
 			case 1: // Flickr
 				Ti.App.fireEvent("showAwesomeSearch", {
 					   searchType: 1
 				});
-				// browseView.hide();
-				// searchView.show();
 				break;	
+				
 			case 2: // Web Search
+				Ti.App.fireEvent("showAwesomeSearch", {
+					   searchType: 2
+				});
 				break;
 			case 3: // Twitter Search
 				break;
