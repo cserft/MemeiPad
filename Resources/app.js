@@ -140,7 +140,6 @@ var showHeader = function (yql, pType, pWinDashboard){
 				// backgroundImage: 'images/bg_settings_menu.png',
 				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
 			}); 
-			var searchBar = Ti.UI.createSearchBar({top:0,height:44,barColor:'#333'});
 
 			var settingsTableView = Ti.UI.createTableView({
 				data:[
@@ -154,7 +153,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 					{title:'sign out'}
 					],
 				color: '#9E4F9E',
-				top:44,
+				top:0,
 				height:200
 				// selectedColor: '#9E4F9E',
 				// selectedBackgroundColor: '#9E4F9E'
@@ -175,8 +174,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 				}
 				
 			});
-
-			popover.add(searchBar)
+			
 			popover.add(settingsTableView);
 
 			popover.show({
@@ -258,6 +256,13 @@ var showDashboard = function(yql,pDashboardType) {
 // ==========================
 
 var newPost = function(yql) {
+	
+	// var animation = Titanium.UI.createAnimation();
+	// animation.backgroundColor = 'black';
+	// animation.duration = 500;
+	// view.animate(animation);
+	// 
+	// 
 
 	var winNewPost = Ti.UI.createWindow({
 		url: 'newpost.js',
