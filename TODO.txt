@@ -43,3 +43,4 @@ newpost.js
 - Better handling the search as you type, can't be on Change
 - Add listener to the search results to add the info in the Post area
 - Better treatment of Web Results when abstract is empty
+- Limit image size to 3000 pixels (width or height)
