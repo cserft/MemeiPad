@@ -478,23 +478,31 @@ Ti.App.addEventListener('showAwesomeSearch', function (e) {
 					textAlign:'left',
 					font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
 				});
-				
-				var abstractContent = item.abstract;
-				
-				var abstractStripped = abstractContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
-				
-				var abstract = Ti.UI.createLabel({
-					text: abstractStripped,
-					height:50,
-					width: 310,
-					top: 25,
-					left: 10,
-					textAlign:'left',
-					font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
-				});
-				
 				row.add(title);
-				row.add(abstract);
+				
+				if (item.abstract != null) {
+					
+					var abstractContent = item.abstract;
+
+					var abstractStripped = abstractContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+
+					var abstract = Ti.UI.createLabel({
+						text: abstractStripped,
+						height:50,
+						width: 310,
+						top: 25,
+						left: 10,
+						textAlign:'left',
+						font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
+					});
+					
+					row.add(abstract);
+				}
+				
+
+				
+
+
 				results[c] = row;
 			}
 			resultsTableView.setData(results);
