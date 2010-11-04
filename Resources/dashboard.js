@@ -190,8 +190,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	            image:'images/play.png',
 	            top:96,
 	            left:134,
-	            width:38,
-	            height:38
+	            width:37,
+	            height:37
 	        });
 	        blackBoxView.add(img_play_btn);	
 	
