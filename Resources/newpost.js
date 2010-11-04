@@ -309,19 +309,25 @@ var monitor_value;
 var last_monitor_value;
 
 var text_change_monitor = function(new_monitor_value) {
+	Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
 	monitor_value = new_monitor_value;
 	if (!monitor_started) {
 		monitor_started = true;
-		setInterval(monitor, 1000);
+		Ti.API.debug('change monitor started');
+		setInterval(monitor, 500);
 	}
 };
 
 var monitor = function() {
 	if (monitor_value) {
 		if (monitor_value == last_monitor_value) {
+			Ti.API.debug('TIMEOUT reached with no changes, firing search!');
 			Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
+			monitor_value = null;
+			last_monitor_value = null;
+		} else {
+			last_monitor_value = monitor_value;
 		}
-		last_monitor_value = monitor_value;
 	}
 };
 
@@ -624,10 +630,8 @@ searchTextField.addEventListener('change', function(e)
 		}
 	});
 	
-	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
-	
-	// TODO: gc
 	//text_change_monitor(queryText);
+	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
 });
 
 // ===========================
