@@ -26,16 +26,19 @@ dashboard.js
 - Quando nao Logado Mostrar Populars (usando a language do usuário logado)
 - ver esta resposta: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
 - Styles for the rows in the Popover Menu
+- BUG: When Opening newpost.js the Dashboard Rotates
 
 
 permalink.js
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)
 - Error when Requesting YQL, locks the Permalink Window, needs to restart the App
+- add popover when click on Users'Name showing options like: follow/unfollow - See Posts from that user
 
 
 newpost.js
 - Bug the clicks to open the gallery (supress error)
+- Split the Legal Disclaimers allowing different clicks to open different Links
 - When going back to Dashboard save the post draft (use SetString/GetString)
 - Bug when add a Photo, then replace with other (the close button is in the wrong place)
 - Fix the detection of Photo and post only text
@@ -43,4 +46,8 @@ newpost.js
 - Better handling the search as you type, can't be on Change
 - Add listener to the search results to add the info in the Post area
 - Better treatment of Web Results when abstract is empty
+- When finishing Posting FireEvent to Refresh the Dashboard
 - Limit image size to 3000 pixels (width or height)
+- Add BLUR on All Text Areas once the user presses POST btn
+- BUG: must escape " '` on postText before posting on Meme
+

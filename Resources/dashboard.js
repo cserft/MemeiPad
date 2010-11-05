@@ -2,6 +2,11 @@ Ti.include('lib/strip_tags.js');
 
 var win = Ti.UI.currentWindow;
 
+win.orientationModes =  [
+Titanium.UI.LANDSCAPE_LEFT,
+Titanium.UI.LANDSCAPE_RIGHT
+];
+
 //Set current timestamp
 var timestamp = function() {
 	return((new Date()).getTime());
@@ -103,7 +108,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			
 			var img_play_btn = Titanium.UI.createImageView({
 	            image:'images/play.png',
-	            top:96,
+	            top:86,
 	            left:134,
 	            width:38,
 	            height:38
@@ -555,7 +560,11 @@ tableView.addEventListener('click', function(e)
 		transform: t,
 		yql: yql, //passing Variables to this Window
 		pGuid: e.source.guid,
-		pPubId: e.source.pubId
+		pPubId: e.source.pubId,
+		orientationModes : [
+		Titanium.UI.LANDSCAPE_LEFT,
+		Titanium.UI.LANDSCAPE_RIGHT,
+		]
 	});
 	
 	if (myMemeInfo) {
