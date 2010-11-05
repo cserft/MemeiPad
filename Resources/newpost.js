@@ -686,12 +686,9 @@ btn_post.addEventListener('click', function() {
 	
 	//merging Post Body + Post Title
 	if (postTitle != ""){
-		postText = "<strong>" + postTitle + "</strong><p>\n</p>" + postBody;  
-		
-	} else {
-		postText = postBody;
+		postText = "<strong>" + postTitle + "</strong><p>\n</p>";
 	}
-	
+	postText = postText + postBody;
 	postText = postText.replace(/(\')/g, '\\$1');
 	
 	Ti.API.info("PostText Has the value: " + postText);
