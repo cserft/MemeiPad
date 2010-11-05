@@ -555,7 +555,11 @@ tableView.addEventListener('click', function(e)
 		transform: t,
 		yql: yql, //passing Variables to this Window
 		pGuid: e.source.guid,
-		pPubId: e.source.pubId
+		pPubId: e.source.pubId,
+		orientationModes : [
+		Titanium.UI.LANDSCAPE_LEFT,
+		Titanium.UI.LANDSCAPE_RIGHT,
+		]
 	});
 	
 	if (myMemeInfo) {

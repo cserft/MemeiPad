@@ -831,7 +831,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	
 	xhr.onload = function(e) {
 		
-		// Hides the Progress Bar
+		// updates the Message in the Progress Bar
 		ind.message = "Recording Post on Meme";
 		
  		Ti.API.info("Upload complete!");
@@ -844,7 +844,6 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 			   message: postText
 		});
 
-	  	ind.value = 0;
 
 	};
 	
@@ -879,27 +878,27 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	var yqlInsert = yql.query(yqlQuery);
 	var response = yqlInsert.query.results.status;
 	
+	// SUCCESS
 	if (response.message == "ok"){
 		
 			Ti.API.debug(" ####### YQL INSERT POST executed");
 			
+			// hides the Progress Bar
 			progressView.hide();
 			ind.hide();
+			ind.value = 0; //resets the Progress Bar
 			
-			var a = Titanium.UI.createAlertDialog({ 
-		  	    title:'Success',
-		  	    message: 'Your Post was published successfully'
-		  	  });
+			var a = Titanium.UI.createAlertDialog({ title:'Success', message: 'Your Post was published successfully' });
 		  		a.show();
 	
 			a.addEventListener('click',function(e)
 			{
-				if (e.index == 0){
-					
+				if (e.index == 0){	
 					win.close();
 				}
 			});
-		
+	
+	// FAILED TO INSERT
 	} else {
 		
 		Ti.API.info("Error while Posting");

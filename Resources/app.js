@@ -1,14 +1,19 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 
-var winDashboardExist;
+// var winDashboardExist;
 
 
 //base Window
 var win1 = Titanium.UI.createWindow({  
     title:'Meme for iPad',
     backgroundColor:'#141414',
-    backgroundImage: 'images/bg.jpg'
+    backgroundImage: 'images/bg.jpg',
+	orientationModes : [
+	Titanium.UI.LANDSCAPE_LEFT,
+	Titanium.UI.LANDSCAPE_RIGHT,
+	]
+
 });
 
 var logoHeader = Titanium.UI.createImageView({
@@ -228,6 +233,10 @@ var showDashboard = function(yql,pDashboardType) {
 		pDashboardType:pDashboardType,
 		win1:win1,
 		zIndex: 2,
+		orientationModes : [
+		Titanium.UI.LANDSCAPE_LEFT,
+		Titanium.UI.LANDSCAPE_RIGHT,
+		]
 
 	});
 	winDashboard.open();
@@ -270,21 +279,16 @@ var newPost = function(yql) {
 		win1:win1,
 		zIndex: 3,
 		navBarHidden: true,
+		orientationModes : [
+		Titanium.UI.LANDSCAPE_LEFT,
+		Titanium.UI.LANDSCAPE_RIGHT,
+		]
 		
 
 	});
 	winNewPost.open({modal:true,modalTransitionStyle:Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,modalStyle:Ti.UI.iPhone.MODAL_PRESENTATION_FULLSCREEN,navBarHidden:true});
 	
 };
-
-// Detects if it is running on the Simulator
-// If Not then creates the Event listeners
-
-// if (Ti.Platform.model == 'iPad Simulator') {
-// 	
-// 	Ti.API.debug("Platform Name: " + Ti.Platform.model);
-// 	
-// } else {
 	
 	//  CREATE CUSTOM LOADING INDICATOR
 	//
@@ -351,7 +355,6 @@ var newPost = function(yql) {
 		Ti.API.info("IN HIDE INDICATOR");
 		hideIndicator();
 	});
-// };
 
 
 // Titanium.App.addEventListener('resume', function(e)
@@ -363,9 +366,9 @@ var newPost = function(yql) {
 // 	a.show();
 // });
 
-// ================================
-// = Checks if the iPad is Online =
-// ================================
+// ==================================
+// = Checks if the Device is Online =
+// ==================================
 
 if (!Titanium.Network.online) {
 	

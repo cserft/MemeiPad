@@ -26,6 +26,7 @@ dashboard.js
 - Quando nao Logado Mostrar Populars (usando a language do usuário logado)
 - ver esta resposta: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
 - Styles for the rows in the Popover Menu
+- BUG: When Opening newpost.js the Dashboard Rotates
 
 
 permalink.js
@@ -45,4 +46,5 @@ newpost.js
 - Better treatment of Web Results when abstract is empty
 - When finishing Posting FireEvent to Refresh the Dashboard
 - Limit image size to 3000 pixels (width or height)
+- Add BLUR on All Text Areas once the user presses POST btn
 
