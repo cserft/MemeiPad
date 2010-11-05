@@ -311,21 +311,21 @@ var monitor_started = false;
 var monitor_value;
 var last_monitor_value;
 
-var text_change_monitor = function(new_monitor_value) {
+var flashlight_text_change_monitor = function(new_monitor_value) {
 	Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
 	monitor_value = new_monitor_value;
 	if (!monitor_started) {
 		monitor_started = true;
 		Ti.API.debug('change monitor started');
-		setInterval(monitor, 500);
+		setInterval(flashlight_monitor, 500);
 	}
 };
 
-var monitor = function() {
+var flashlight_monitor = function() {
 	if (monitor_value) {
 		if (monitor_value == last_monitor_value) {
 			Ti.API.debug('TIMEOUT reached with no changes, firing search!');
-			Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
+			flashlight_show();
 			monitor_value = null;
 			last_monitor_value = null;
 		} else {
@@ -334,14 +334,7 @@ var monitor = function() {
 	}
 };
 
-// ================================
-// = AWESOME BAR SEARCH LISTENERS =
-// ================================
-
-searchTextField.addEventListener('change', function(e)
-{	
-	
-	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
+var flashlight_show = function() {
 	queryText = searchTextField.value;
 	
 	var resultsTableView = Ti.UI.createTableView({
@@ -602,10 +595,7 @@ searchTextField.addEventListener('change', function(e)
 			view:btn_flashlight,
 			animated:true,
 		});
-	
 	});
-	
-
 	
 	//Tabs listeners
 	searchTabs.addEventListener('click',function(e) {
@@ -636,8 +626,16 @@ searchTextField.addEventListener('change', function(e)
 		}
 	});
 	
-	//text_change_monitor(queryText);
 	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
+};
+
+// ================================
+// = AWESOME BAR SEARCH LISTENERS =
+// ================================
+
+searchTextField.addEventListener('change', function(e) {
+	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
+	flashlight_text_change_monitor(searchTextField.value);
 });
 
 // ===========================
