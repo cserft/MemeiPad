@@ -49,5 +49,4 @@ newpost.js
 - When finishing Posting FireEvent to Refresh the Dashboard
 - Limit image size to 3000 pixels (width or height)
 - Add BLUR on All Text Areas once the user presses POST btn
-- BUG: must escape " '` on postText before posting on Meme
 
