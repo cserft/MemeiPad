@@ -687,7 +687,9 @@ btn_post.addEventListener('click', function() {
 	} else {
 		postText = postBody;
 	}
-
+	
+	postText = postText.replace(/([\'\"\&`])/g, '\\$1');
+	
 	Ti.API.info("PostText Has the value: " + postText);
 	
 	if (theImage == null) {
