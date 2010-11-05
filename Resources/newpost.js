@@ -2,6 +2,12 @@ Ti.include('lib/secrets.js')
 
 var win 			= 	Ti.UI.currentWindow;
 
+// initialize to LANDSCAPE modes
+win.orientationModes = [
+	Titanium.UI.LANDSCAPE_LEFT,
+	Titanium.UI.LANDSCAPE_RIGHT
+];
+
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var yql 			= 	win.yql;
 var win1 			= 	win.win1; // Window Original created on app.js
@@ -40,6 +46,8 @@ postHeaderView.add(btn_close_post);
 btn_close_post.addEventListener('click', function()
 {
 	win.close();
+	
+	//TODO: add Save Temp POst on Properties
 });
 
 
@@ -179,8 +187,10 @@ var editView = Titanium.UI.createScrollView({
 });
 win.add(editView);
 
+var postTitle = '';
+
 var editTitleField = Titanium.UI.createTextField({
-	value: 			'',
+	value: 			postTitle,
 	hintText: 		'Add Title',
 	textAlign: 		'center',
 	font: 			{fontSize:26,fontFamily:'Helvetica', fontWeight:'bold'},
@@ -235,10 +245,10 @@ viewContainerPhoto.add(btn_photo_close);
 
 //Main TextArea
 
-var postText = '';
+var postBody = ''; 
 
 var textArea = Titanium.UI.createTextArea({
-	value: postText,
+	value: postBody,
 	height: 		200,
 	width: 			954,
 	top: 			79,
@@ -269,7 +279,7 @@ var tempPostLabel = Titanium.UI.createLabel({
 });
 editView.add(tempPostLabel);
 
-if (postText == ''){
+if (postBody == ''){
 	tempPostLabel.show();	
 }
 
@@ -324,7 +334,10 @@ var monitor = function() {
 	}
 };
 
-//Captures the value on the textArea form and hide hintText
+// ================================
+// = AWESOME BAR SEARCH LISTENERS =
+// ================================
+
 searchTextField.addEventListener('change', function(e)
 {	
 	
@@ -635,16 +648,16 @@ searchTextField.addEventListener('change', function(e)
 
 // Hide Text hint on Text Area
 tempPostLabel.addEventListener('touchend', function(e) {
-	Ti.API.info('Touch End Gesture captured on Label Write your POst Here?');
+	Ti.API.info('Touch End Gesture captured on Label Write your Post Here?');
 	tempPostLabel.hide(); // hide the hint text when touches the TEXT AREA bar
 	textArea.focus(); //Focus on the Text Area and bring up the Keyboard
 });
 
 //Captures the value on the textArea form and hide hintText
 textArea.addEventListener('change', function(e) {
-	Ti.API.info('textArea form: you typed ' + e.value + ' act val ' + textArea.value);
+	//Ti.API.info('textArea form: you typed ' + e.value + ' act val ' + textArea.value);
 	tempPostLabel.hide(); // hide the hint text when starts using the keyboard
-	postText = e.value;
+	postBody = e.value;
 });
 
 textArea.addEventListener('focus', function(e) {
@@ -657,16 +670,26 @@ textArea.addEventListener('focus', function(e) {
 // = POST BUTTON TRIGGER =
 // =======================
 
+// This is the FULL Post variable: Title + Body
+var postText = ""; 
+
+//merging Post Body + Post Title
+if (postTitle != ""){
+	postText = "<strong>" + postTitle + "</strong><br/><br/>" + postBody;  
+} else {
+	postText = postTitle
+}
+
 btn_post.addEventListener('click', function() {
 	Ti.API.info('Post BTN fired');
 	
-	if ( /*(!postText || postText == null || postText = "")  && */theImage == null ) {
+	if ( (!postText || postText == null || postText = "")  && theImage == null ) {
 		
 		Ti.API.debug('Error: Nothing To Post');
 		
 		var alertNothing = Titanium.UI.createAlertDialog({
 		    title: 'Ops!',
-		    message: 'Write something before hitting the Post Button',
+		    message: 'Write something before you hit the Post Button',
 		    buttonNames: ['OK']
 		});
 		
@@ -677,6 +700,11 @@ btn_post.addEventListener('click', function() {
 		Titanium.App.fireEvent("postClicked", {
 			   message: postText
 		});
+		
+		//Closes the Keyboard if open
+		textArea.blur();
+		editTitleField.blur();
+		searchTextField.blur();
 	}
 	  
 });
