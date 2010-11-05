@@ -108,7 +108,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			
 			var img_play_btn = Titanium.UI.createImageView({
 	            image:'images/play.png',
-	            top:96,
+	            top:86,
 	            left:134,
 	            width:38,
 	            height:38

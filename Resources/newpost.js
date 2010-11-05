@@ -675,43 +675,56 @@ var postText = "";
 
 btn_post.addEventListener('click', function() {
 	
+	//Closes the Keyboard if open
+	textArea.blur();
+	editTitleField.blur();
+	searchTextField.blur();
+	
 	//merging Post Body + Post Title
 	if (postTitle != ""){
 		postText = "<strong>" + postTitle + "</strong><p>\n</p>" + postBody;  
+		
 	} else {
 		postText = postBody;
 	}
 
 	Ti.API.info("PostText Has the value: " + postText);
 	
-	if ( !postText || postText == null || postText == "" ) {
+	if (theImage == null) {
 		
-		Ti.API.debug('Error: Nothing To Post');
+		Ti.API.info("No Image to Upload");
 		
-		var alertNothing = Titanium.UI.createAlertDialog({
-		    title: 'Ops!',
-		    message: 'Write something before you hit the Post Button',
-		    buttonNames: ['OK']
-		});
-		
-		alertNothing.show();
+		if ( postText == null || postText == "" ) {
+			Ti.API.debug('Error: Nothing To Post');
+
+			var alertNothing = Titanium.UI.createAlertDialog({
+			    title: 'Ops!',
+			    message: 'Write something before you hit the Post Button',
+			    buttonNames: ['OK']
+			});
+			alertNothing.show();
+			
+		} else {
+			//Shows the Upload Progress bar
+			progressView.show();
+			ind.show();
+			ind.message = "Preparing to post...";
+			ind.value = 0;
+			btn_post.enabled = false;
+			
+			Titanium.App.fireEvent("postOnMeme", {
+				message: postText,
+				postType: "text"
+			});
+		}
 		
 	} else {
 		
 		// Scroll to Top
 		// editView.scrollTo(0,{animated:true})
-		
-		//Closes the Keyboard if open
-		textArea.blur();
-		editTitleField.blur();
-		searchTextField.blur();
-	
 		Titanium.App.fireEvent("postClicked", {
 			   message: postText
 		});
-
-
-		
 
 	}
 	  
@@ -791,12 +804,12 @@ alertCloseImage.addEventListener('click',function(e)
 });
 
 // Selected Text Listener
-textArea.addEventListener('selected', function(e) {
-	var selectedText = textArea.value.substr(e.range.location, e.range.length);
-	Ti.API.debug("Selected Text: " + selectedText);
-});
+// textArea.addEventListener('selected', function(e) {
+// 	var selectedText = textArea.value.substr(e.range.location, e.range.length);
+// 	Ti.API.debug("Selected Text: " + selectedText);
+// });
 
-
+// Upload Progress Bar
 var progressView = Titanium.UI.createView({
 	top: 			300,
 	width: 			300,
@@ -808,7 +821,6 @@ var progressView = Titanium.UI.createView({
 });
 win.add(progressView);
 
-// Upload Progress Bar
 var ind = Ti.UI.createProgressBar({
 	width:250,
 	height:60,
@@ -820,7 +832,6 @@ var ind = Ti.UI.createProgressBar({
 	font:{fontSize:16, fontWeight:'bold'},
 	color:'white'
 });
-
 progressView.add(ind);
 
 // ==================================
@@ -854,6 +865,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 		xhr.onload = function(e) {
 			Ti.API.debug('Got upload URL from API: ' + this.responseText)
 			var result = JSON.parse(this.responseText);
+			
 			Ti.App.fireEvent("postClickedReadyToUpload", { url: result.url });
 		};
 	
@@ -904,7 +916,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	xhr.onsendstream = function(e) {
 		ind.message = "Uploading File...";
 		ind.value = e.progress;
-		Ti.API.info('ONSENDSTREAM - PROGRESS: ' + e.progress);
+		Ti.API.debug('ONSENDSTREAM - PROGRESS: ' + e.progress);
 	};
 	
 	// "type:image/jpeg|800x600|secret:xxx"
@@ -919,7 +931,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
   	xhr.send({
 		file: theImage
 	});
-  // warp.play();
+
 });
 
 Titanium.App.addEventListener("postOnMeme", function(e) {
@@ -930,6 +942,7 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 		
 	} else if (e.postType == "text"){
 		yqlQuery = "INSERT INTO meme.user.posts (type, content) VALUES ('"+ e.postType +"', '" + e.message + "')";
+		
 		// updates the Message in the Progress Bar
 		ind.value = 10; 
 		ind.message = "Publishing your post on Meme";

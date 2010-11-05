@@ -33,10 +33,12 @@ permalink.js
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)
 - Error when Requesting YQL, locks the Permalink Window, needs to restart the App
+- add popover when click on Users'Name showing options like: follow/unfollow - See Posts from that user
 
 
 newpost.js
 - Bug the clicks to open the gallery (supress error)
+- Split the Legal Disclaimers allowing different clicks to open different Links
 - When going back to Dashboard save the post draft (use SetString/GetString)
 - Bug when add a Photo, then replace with other (the close button is in the wrong place)
 - Fix the detection of Photo and post only text
