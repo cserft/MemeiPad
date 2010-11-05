@@ -2,6 +2,11 @@ Ti.include('lib/strip_tags.js');
 
 var win = Ti.UI.currentWindow;
 
+win.orientationModes =  [
+Titanium.UI.LANDSCAPE_LEFT,
+Titanium.UI.LANDSCAPE_RIGHT
+];
+
 //Set current timestamp
 var timestamp = function() {
 	return((new Date()).getTime());

@@ -11,7 +11,7 @@ var win1 = Titanium.UI.createWindow({
     backgroundImage: 'images/bg.jpg',
 	orientationModes : [
 	Titanium.UI.LANDSCAPE_LEFT,
-	Titanium.UI.LANDSCAPE_RIGHT,
+	Titanium.UI.LANDSCAPE_RIGHT
 	]
 
 });
@@ -235,7 +235,7 @@ var showDashboard = function(yql,pDashboardType) {
 		zIndex: 2,
 		orientationModes : [
 		Titanium.UI.LANDSCAPE_LEFT,
-		Titanium.UI.LANDSCAPE_RIGHT,
+		Titanium.UI.LANDSCAPE_RIGHT
 		]
 
 	});
@@ -281,7 +281,7 @@ var newPost = function(yql) {
 		navBarHidden: true,
 		orientationModes : [
 		Titanium.UI.LANDSCAPE_LEFT,
-		Titanium.UI.LANDSCAPE_RIGHT,
+		Titanium.UI.LANDSCAPE_RIGHT
 		]
 		
 
