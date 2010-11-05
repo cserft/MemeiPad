@@ -37,13 +37,10 @@ var btn_close_post = Ti.UI.createButton({
 
 postHeaderView.add(btn_close_post);
 
-btn_close_post.addEventListener('click', function()
-{
+btn_close_post.addEventListener('click', function() {
 	win.close();
-	
-	//TODO: add Save Temp POst on Properties
+	//TODO: add Save Temp Post on Properties
 });
-
 
 // =========================
 // = Awesome bar TextField =
@@ -114,28 +111,23 @@ postHeaderView.add(popoverGalleryView);
 
 
 // build the Photo Gallery popover
-btn_addPhoto.addEventListener('click', function()
-{
+btn_addPhoto.addEventListener('click', function() {
 	Ti.API.info('Dialog Open Gallery was clicked');
 	
 	Ti.Media.openPhotoGallery({
-
-		success:function(event)
-		{
+		success:function(event) {
 			handleImageEvent(event);
 		},
-		cancel:function()
-		{
+		cancel:function() {
 
 		},
-		error:function(error)
-		{
+		error:function(error) {
 			Ti.API.debug('Photo Gallery Message: ' + JSON.stringify(error));
 			var a = Titanium.UI.createAlertDialog({ 
 		  	    title:'Uh Oh...',
 		  	    message: 'We had a problem reading from your photo gallery - please try again'
-		  	  });
-		  		a.show();
+		  	});
+		  	a.show();
 		},
 		allowEditing:false,
 		popoverView:popoverGalleryView,
@@ -144,23 +136,19 @@ btn_addPhoto.addEventListener('click', function()
 	});
 
 });
-
 		
 // ===============
 // = POST BUTTON =
 // ===============
-
 var btn_post = Ti.UI.createButton({
 	//title:'Show Popover 1',
 	backgroundImage: 'images/btn_post_top.png',
-	height:85,
-	width:192,
+	height: 85,
+	width: 192,
 	left: 780,
 	top:-10
 });
 postHeaderView.add(btn_post);
-
-
 // ======================
 // = END OF THE TOP BAR =
 // ======================
@@ -168,7 +156,6 @@ postHeaderView.add(btn_post);
 // =============
 // = EDIT VIEW =
 // =============
-
 var editView = Titanium.UI.createScrollView({
 	left: 		0,
 	top: 		66,
@@ -238,7 +225,6 @@ var btn_photo_close = Titanium.UI.createButton({
 viewContainerPhoto.add(btn_photo_close);
 
 //Main TextArea
-
 var postBody = ''; 
 
 var textArea = Titanium.UI.createTextArea({
@@ -277,7 +263,6 @@ if (postBody == ''){
 	tempPostLabel.show();	
 }
 
-
 // White Gradient in the Bottom
 var whiteShadow = Titanium.UI.createImageView({
 	image: 'images/white_shadow.png',
@@ -306,7 +291,6 @@ win.add(disclaimerLabel);
 // ======================
 // = AWESOME SEARCH BAR =
 // ======================
-
 var monitor_started = false;
 var monitor_value;
 var last_monitor_value;
@@ -363,13 +347,11 @@ var flashlight_show = function() {
 	popoverSearchView.add(searchTabs);
 	
 	Ti.App.addEventListener('showAwesomeSearch', function (e) {
-	
+
 		Ti.API.info("####### Type of search: " + e.searchType);
-	
+
 		switch(e.searchType) {
-		
 			case 0: // Video 
-		
 				Ti.API.info("####### Video Search ");
 			
 				yqlQuery = "select * from youtube.search where query='" + queryText + "'";
@@ -528,7 +510,7 @@ var flashlight_show = function() {
 
 				break;
 				
-				case 3: // Twitter Search
+			case 3: // Twitter Search
 
 				Ti.API.info("####### Twitter Search ");
 
@@ -540,8 +522,7 @@ var flashlight_show = function() {
 				//Loop to present the Search Results from the Web
 				var results = [];
 
-				for (var c=0 ; c < items.length ; c++)	
-				{
+				for (var c=0 ; c < items.length ; c++) {
 					var item = items[c];
 
 					var row = Ti.UI.createTableViewRow({height:78});
@@ -587,7 +568,6 @@ var flashlight_show = function() {
 				resultsTableView.scrollToIndex(0,{animated:true})
 
 				break;
-		
 		}
 	
 		//show the Popover
@@ -598,32 +578,8 @@ var flashlight_show = function() {
 	});
 	
 	//Tabs listeners
-	searchTabs.addEventListener('click',function(e) {
-		switch(e.index) {
-			case 0: // Video
-				Ti.App.fireEvent("showAwesomeSearch", {
-					   searchType: 0
-				});
-				break;
-		
-			case 1: // Flickr
-				Ti.App.fireEvent("showAwesomeSearch", {
-					   searchType: 1
-				});
-				break;	
-		
-			case 2: // Web Search
-				Ti.App.fireEvent("showAwesomeSearch", {
-					   searchType: 2
-				});
-				break;
-			case 3: // Twitter Search
-				Ti.App.fireEvent("showAwesomeSearch", {
-					   searchType: 3
-				});
-				break;
-	
-		}
+	searchTabs.addEventListener('click', function(e) {
+		Ti.App.fireEvent("showAwesomeSearch", { searchType: e.index });
 	});
 	
 	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
@@ -632,7 +588,6 @@ var flashlight_show = function() {
 // ================================
 // = AWESOME BAR SEARCH LISTENERS =
 // ================================
-
 searchTextField.addEventListener('change', function(e) {
 	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
 	flashlight_text_change_monitor(searchTextField.value);
@@ -641,7 +596,6 @@ searchTextField.addEventListener('change', function(e) {
 // ===========================
 // = TEXT AREA FORM HANDLERS =
 // ===========================
-
 // Hide Text hint on Text Area
 tempPostLabel.addEventListener('touchend', function(e) {
 	Ti.API.info('Touch End Gesture captured on Label Write your Post Here?');
@@ -676,7 +630,6 @@ editTitleField.addEventListener('change', function(e) {
 var postText = ""; 
 
 btn_post.addEventListener('click', function() {
-	
 	//Closes the Keyboard if open
 	textArea.blur();
 	editTitleField.blur();
@@ -718,17 +671,13 @@ btn_post.addEventListener('click', function() {
 				postType: "text"
 			});
 		}
-		
 	} else {
-		
 		// Scroll to Top
 		// editView.scrollTo(0,{animated:true})
 		Titanium.App.fireEvent("postClicked", {
 			   message: postText
 		});
-
 	}
-	  
 });
 
 // ===============================
@@ -750,10 +699,8 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	if (img.size.width > 958) {
 		viewContainerPhoto.width = 958;
 		var photo_close_x = 958 - 24;
-		
 	} else {
 		var photo_close_x = img.size.width - 24;
-		
 	}
 
 	//adds the close button to the image
@@ -768,7 +715,6 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	tempPostLabel.animate({zIndex: 0, top : 120 + img.size.height});
 	
 	//Ti.API.debug(img.size.width + "x" + img.size.height + " and Top for Text Area= " + textArea_top + " and typeOf: " + typeof(textArea_top));
-
 });
 
 // to remove the photo chosen
@@ -779,7 +725,6 @@ Ti.App.addEventListener("photoRemoved", function(e) {
 	btn_photo_close.visible = false;
 	textArea.animate({top: 79});
 	tempPostLabel.animate({top: 320});
-  
 });
 
 //Alert to remove the photo
@@ -788,8 +733,7 @@ var alertCloseImage = Titanium.UI.createAlertDialog({
 });
 
 // Listener to delete the Image and start again
-btn_photo_close.addEventListener('click', function(e)
-{
+btn_photo_close.addEventListener('click', function(e) {
 	alertCloseImage.title = 'Remove';
 	alertCloseImage.message = 'Are you sure you to remove the photo?';
 	alertCloseImage.buttonNames = ['Yes','No'];
@@ -797,9 +741,8 @@ btn_photo_close.addEventListener('click', function(e)
 	alertCloseImage.show();
 });
 
-alertCloseImage.addEventListener('click',function(e)
-{
-	if (e.index == 0){
+alertCloseImage.addEventListener('click',function(e) {
+	if (e.index == 0) {
 		Ti.App.fireEvent("photoRemoved");
 	}
 });
@@ -840,7 +783,6 @@ progressView.add(ind);
 // ==================================
 
 Titanium.App.addEventListener("postClicked", function(e) {
-	
 	//DISABLES THE POST BUTTON
 	btn_post.enabled = false;
 	
@@ -850,9 +792,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	ind.message = "Preparing to post...";
 	
 	if (theImage != null) {
-		
 		// IF there is a Image to Upload
-	
 		var xhr = Titanium.Network.createHTTPClient();
 	
 		xhr.onerror = function(e) {
@@ -874,12 +814,10 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	  	xhr.send();
 	
 	} else {
-		
 		// Else is Only Text
-		
 		Titanium.App.fireEvent("postOnMeme", {
-				postType: "text",
-				message: postText
+			postType: "text",
+			message: postText
 		});
 	}
 });
@@ -896,7 +834,6 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	};
 	
 	xhr.onload = function(e) {
-		
 		// updates the Message in the Progress Bar
 		ind.message = "Publishing your post on Meme";
 		
@@ -910,8 +847,6 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 			   media_link: uploadResult.url,
 			   message: postText
 		});
-
-
 	};
 	
 	xhr.onsendstream = function(e) {
@@ -932,60 +867,45 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
   	xhr.send({
 		file: theImage
 	});
-
 });
 
 Titanium.App.addEventListener("postOnMeme", function(e) {
-	
 	// Verifies the Type of Post and selects the Proper YQL Query
 	if (e.postType == "photo") {
 		yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('"+ e.postType +"', '" + e.media_link + "', '" + e.message + "')";
-		
 	} else if (e.postType == "text"){
 		yqlQuery = "INSERT INTO meme.user.posts (type, content) VALUES ('"+ e.postType +"', '" + e.message + "')";
 		
 		// updates the Message in the Progress Bar
 		ind.value = 10; 
 		ind.message = "Publishing your post on Meme";
-		
 	}
 	
-		Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
-
+	Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
+	
 	var yqlInsert = yql.query(yqlQuery);
 	var response = yqlInsert.query.results.status;
 	
 	// SUCCESS
-	if (response.message == "ok"){
+	if (response.message == "ok") {
+		Ti.API.debug(" ####### YQL INSERT POST executed");
 		
-			Ti.API.debug(" ####### YQL INSERT POST executed");
-			
-			// hides the Progress Bar
-			progressView.hide();
-			ind.hide();
-			ind.value = 0; //resets the Progress Bar
-			
-			var a = Titanium.UI.createAlertDialog({ title:'Success', message: 'Your Post was published successfully!' });
-		  		a.show();
-	
-			a.addEventListener('click',function(e)
-			{
-				if (e.index == 0){	
-					win.close();
-					
-					//ENABLES THE POST BUTTON
-					btn_post.enabled = true;
-				}
-			});
-	
-	// FAILED TO INSERT
+		// hides the Progress Bar
+		progressView.hide();
+		ind.hide();
+		ind.value = 0; //resets the Progress Bar
+		
+		var a = Titanium.UI.createAlertDialog({ title:'Success', message: 'Your Post was published successfully!' });
+	  	a.show();
+		a.addEventListener('click',function(e) {
+			if (e.index == 0){	
+				win.close();
+				
+				//ENABLES THE POST BUTTON
+				btn_post.enabled = true;
+			}
+		});
 	} else {
-		
 		Ti.API.info("Error while Posting");
-		
 	}
-	
 });
-
-
-
