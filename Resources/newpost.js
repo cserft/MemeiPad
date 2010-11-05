@@ -688,7 +688,7 @@ btn_post.addEventListener('click', function() {
 		postText = postBody;
 	}
 	
-	postText = postText.replace(/([\'\"\&`])/g, '\\$1');
+	postText = postText.replace(/([\'\&`])/g, '\\$1');
 	
 	Ti.API.info("PostText Has the value: " + postText);
 	
