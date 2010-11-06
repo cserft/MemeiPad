@@ -123,11 +123,13 @@ btn_addPhoto.addEventListener('click', function() {
 		},
 		error:function(error) {
 			Ti.API.debug('Photo Gallery Message: ' + JSON.stringify(error));
-			var a = Titanium.UI.createAlertDialog({ 
-		  	    title:'Uh Oh...',
-		  	    message: 'We had a problem reading from your photo gallery - please try again'
-		  	});
-		  	a.show();
+			
+			Ti.API.degug('Error on Gallery');
+			// var a = Titanium.UI.createAlertDialog({ 
+			// 		  	    title:'Uh Oh...',
+			// 		  	    message: 'We had a problem reading from your photo gallery - please try again'
+			// 		  	});
+			// 		  	a.show();
 		},
 		allowEditing:false,
 		popoverView:popoverGalleryView,
@@ -141,7 +143,6 @@ btn_addPhoto.addEventListener('click', function() {
 // = POST BUTTON =
 // ===============
 var btn_post = Ti.UI.createButton({
-	//title:'Show Popover 1',
 	backgroundImage: 'images/btn_post_top.png',
 	height: 85,
 	width: 192,
@@ -283,6 +284,56 @@ var disclaimerLabel = Titanium.UI.createLabel({
 	bottom: 	18
 });
 win.add(disclaimerLabel);
+
+// Upload Progress Bar
+var progressView = Titanium.UI.createView({
+	top: 			300,
+	width: 			350,
+	height: 		80,
+	borderRadius: 	5,
+	backgroundColor: 'black',
+	visible: false,
+	zIndex:99
+});
+win.add(progressView);
+
+var actInd = Ti.UI.createActivityIndicator({
+	top: 10, 
+	left: 25,
+	height: 50,
+	width: 10,
+	style:Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
+});
+progressView.add(actInd);
+
+var ind = Ti.UI.createProgressBar({
+	width: 250,
+	height: 60,
+	min: 0,
+	max: 1,
+	value: 0,
+	style:Titanium.UI.iPhone.ProgressBarStyle.BAR,
+	message: '',
+	font:{fontSize:16, fontWeight:'bold'},
+	color:'white'
+});
+progressView.add(ind);
+
+function showProgressView (pCommand, pMessage) {
+	
+	if (pCommand == "hide") { // Hides the Progress bar
+		progressView.hide();
+		ind.hide();
+		actInd.hide();
+		ind.message = '';	
+		
+	} else { // Hides the Progress bar
+		progressView.show();
+		ind.show();
+		actInd.show();
+		ind.message = pMessage;	
+	}	
+}
 
 // =============
 // = LISTENERS =
@@ -650,19 +701,16 @@ btn_post.addEventListener('click', function() {
 		
 		if ( postText == null || postText == "" ) {
 			Ti.API.debug('Error: Nothing To Post');
-
-			var alertNothing = Titanium.UI.createAlertDialog({
-			    title: 'Ops!',
+			
+			Ti.App.fireEvent('show_alert_dialog', { 
+				title: 'Ops!',
 			    message: 'Write something before you hit the Post Button',
-			    buttonNames: ['OK']
+				buttons: ['OK']
 			});
-			alertNothing.show();
 			
 		} else {
 			//Shows the Upload Progress bar
-			progressView.show();
-			ind.show();
-			ind.message = "Preparing to post...";
+			showProgressView ('show', 'Preparing to post...')
 			ind.value = 0;
 			btn_post.enabled = false;
 			
@@ -753,55 +801,6 @@ alertCloseImage.addEventListener('click',function(e) {
 // 	Ti.API.debug("Selected Text: " + selectedText);
 // });
 
-// Upload Progress Bar
-var progressView = Titanium.UI.createView({
-	top: 			300,
-	width: 			350,
-	height: 		80,
-	borderRadius: 	5,
-	backgroundColor: 'black',
-	visible: false,
-	zIndex:99
-});
-win.add(progressView);
-
-var actInd = Ti.UI.createActivityIndicator({
-	top: 10, 
-	left: 25,
-	height: 50,
-	width: 10,
-	style:Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
-});
-progressView.add(actInd);
-
-var ind = Ti.UI.createProgressBar({
-	width: 250,
-	height: 60,
-	min: 0,
-	max: 1,
-	value: 0,
-	style:Titanium.UI.iPhone.ProgressBarStyle.BAR,
-	message: '',
-	font:{fontSize:16, fontWeight:'bold'},
-	color:'white'
-});
-progressView.add(ind);
-
-function showProgressView (pCommand, pMessage) {
-	
-	if (pCommand == "hide") { // Hides the Progress bar
-		progressView.hide();
-		ind.hide();
-		actInd.hide();
-		ind.message = '';	
-		
-	} else { // Hides the Progress bar
-		progressView.show();
-		ind.show();
-		actInd.show();
-		ind.message = pMessage;	
-	}	
-}
 
 // ==================================
 // = Uploads Image and posts on Meme =

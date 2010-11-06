@@ -131,22 +131,21 @@ var showHeader = function (yql, pType, pWinDashboard){
 		// = PopOver Menu =
 		// ================
 
-		// build first popover
+		// build User popover
 		memeTitleLabel.addEventListener('click', function()
 		{
 			
 			var popover = Titanium.UI.iPad.createPopover({ 
 				width:200, 
-				height:220,
+				height:180,
 				borderWidth: 0,
 				title:'Your Stuff',
-				// barColor:'white',
-				// backgroundColor: 'white',
-				// backgroundImage: 'images/bg_settings_menu.png',
 				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
 			}); 
 
 			var settingsTableView = Ti.UI.createTableView({
+				top:0,
+				height:180,
 				data:[
 					{title:'Your Memes', 
 						font:{
@@ -157,11 +156,8 @@ var showHeader = function (yql, pType, pWinDashboard){
 					{title:'Invite your friends'},
 					{title:'sign out'}
 					],
-				color: '#9E4F9E',
-				top:0,
-				height:200
-				// selectedColor: '#9E4F9E',
-				// selectedBackgroundColor: '#9E4F9E'
+				color: '#9E4F9E'
+				//style: Ti.UI.iPhone.TableViewStyle.GROUPED
 			});
 			
 			settingsTableView.addEventListener('click', function(e) 
@@ -290,71 +286,93 @@ var newPost = function(yql) {
 	
 };
 	
-	//  CREATE CUSTOM LOADING INDICATOR
-	//
-	var indWin = null;
-	var actInd = null;
-	
-	function showIndicator()
-	{
-		// window container
-		indWin = Titanium.UI.createWindow({
-			height:250,
-			width:250
-		});
+//  CREATE CUSTOM LOADING INDICATOR
+//
+var indWin = null;
+var actInd = null;
 
-		// black view
-		var indView = Titanium.UI.createView({
-			height:250,
-			width:250,
-			backgroundColor:'#AB0899',
-			borderRadius:10,
-			opacity:0.8
-		});
-		indWin.add(indView);
-
-		// loading indicator
-		actInd = Titanium.UI.createActivityIndicator({
-			style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
-			height:40,
-			width:40
-		});
-		indWin.add(actInd);
-
-		// message
-		var message = Titanium.UI.createLabel({
-			text:'Loading...',
-			color:'#fff',
-			width:'auto',
-			height:'auto',
-			font:{fontSize:24,fontWeight:'bold'},
-			bottom:60
-		});
-		indWin.add(message);
-		indWin.open();
-		actInd.show();
-
-	};
-
-	function hideIndicator()
-	{
-		actInd.hide();
-		indWin.close({opacity:0,duration:500});
-	};
-
-	//
-	// Add global event handlers to hide/show custom indicator
-	//
-	Titanium.App.addEventListener('show_indicator', function(e)
-	{
-		Ti.API.info("IN SHOW INDICATOR");
-		showIndicator();
+function showIndicator()
+{
+	// window container
+	indWin = Titanium.UI.createWindow({
+		height:250,
+		width:250
 	});
-	Titanium.App.addEventListener('hide_indicator', function(e)
-	{
-		Ti.API.info("IN HIDE INDICATOR");
-		hideIndicator();
+
+	// black view
+	var indView = Titanium.UI.createView({
+		height:250,
+		width:250,
+		backgroundColor:'#AB0899',
+		borderRadius:10,
+		opacity:0.8
 	});
+	indWin.add(indView);
+
+	// loading indicator
+	actInd = Titanium.UI.createActivityIndicator({
+		style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
+		height:40,
+		width:40
+	});
+	indWin.add(actInd);
+
+	// message
+	var message = Titanium.UI.createLabel({
+		text:'Loading...',
+		color:'#fff',
+		width:'auto',
+		height:'auto',
+		font:{fontSize:24,fontWeight:'bold'},
+		bottom:60
+	});
+	indWin.add(message);
+	indWin.open();
+	actInd.show();
+
+};
+
+function hideIndicator()
+{
+	actInd.hide();
+	indWin.close({opacity:0,duration:500});
+};
+
+//
+// Add global event handlers to hide/show custom indicator
+//
+Titanium.App.addEventListener('show_indicator', function(e)
+{
+	Ti.API.info("IN SHOW INDICATOR");
+	showIndicator();
+});
+Titanium.App.addEventListener('hide_indicator', function(e)
+{
+	Ti.API.info("IN HIDE INDICATOR");
+	hideIndicator();
+});
+
+
+//
+// Add global event handlers for Alert Dialogs
+//
+
+function showAlertDialog(pTitle, pMessage, pButtons, pCancel) {
+	  var a = Ti.UI.createAlertDialog({ 
+	    title: pTitle,
+	    message: pMessage,
+		buttonNames: pButtons,
+		cancel: pCancel
+	  });
+		a.show();	
+}
+
+Ti.App.addEventListener('show_alert_dialog', function(e)
+{
+	Ti.API.info("ALERT DIALOG CALLED");
+	showAlertDialog(e.title, e.message, e.buttons, e.cancel);
+});
+
 
 
 // Titanium.App.addEventListener('resume', function(e)
@@ -372,18 +390,23 @@ var newPost = function(yql) {
 
 if (!Titanium.Network.online) {
 	
-  var a = Titanium.UI.createAlertDialog({ 
-    title:'Network Connection Required',
-    message: 'Meme for iPad requires an Internet connection to, you know, use stuff from the Internets. Please, check your network connection and try again.'
-  });
-	a.show();
+	Ti.App.fireEvent('show_alert_dialog', { 
+		title:'Network Connection Required',
+	    message: 'Meme for iPad requires an Internet connection to, you know, use stuff from the Internets. Please, check your network connection and try again.' 
+	 });
+	
+	//   var a = Titanium.UI.createAlertDialog({ 
+	//     title:'Network Connection Required',
+	//     message: 'Meme for iPad requires an Internet connection to, you know, use stuff from the Internets. Please, check your network connection and try again.'
+	//   });
+	// a.show();
 	
 } else {
 	
 	// =========================================
 	// =  // Initialize oAuthAdapter process   =
 	// =========================================
-	// Ti.API.debug(JSON.stringify(OAuthAdapter('meme').query("SELECT * FROM meme.info WHERE name='dsouza';")));
+	
 	var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 	
 	oAuthAdapter.login(showSignIn, showDashboard);
