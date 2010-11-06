@@ -756,7 +756,7 @@ alertCloseImage.addEventListener('click',function(e) {
 // Upload Progress Bar
 var progressView = Titanium.UI.createView({
 	top: 			300,
-	width: 			300,
+	width: 			350,
 	height: 		80,
 	borderRadius: 	5,
 	backgroundColor: 'black',
@@ -765,18 +765,43 @@ var progressView = Titanium.UI.createView({
 });
 win.add(progressView);
 
+var actInd = Ti.UI.createActivityIndicator({
+	top: 10, 
+	left: 25,
+	height: 50,
+	width: 10,
+	style:Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
+});
+progressView.add(actInd);
+
 var ind = Ti.UI.createProgressBar({
-	width:250,
-	height:60,
-	min:0,
-	max:1,
-	value:0,
+	width: 250,
+	height: 60,
+	min: 0,
+	max: 1,
+	value: 0,
 	style:Titanium.UI.iPhone.ProgressBarStyle.BAR,
-	message:'',
+	message: '',
 	font:{fontSize:16, fontWeight:'bold'},
 	color:'white'
 });
 progressView.add(ind);
+
+function showProgressView (pCommand, pMessage) {
+	
+	if (pCommand == "hide") { // Hides the Progress bar
+		progressView.hide();
+		ind.hide();
+		actInd.hide();
+		ind.message = '';	
+		
+	} else { // Hides the Progress bar
+		progressView.show();
+		ind.show();
+		actInd.show();
+		ind.message = pMessage;	
+	}	
+}
 
 // ==================================
 // = Uploads Image and posts on Meme =
@@ -787,9 +812,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	btn_post.enabled = false;
 	
 	//Shows the Upload Progress bar
-	progressView.show();
-	ind.show();
-	ind.message = "Preparing to post...";
+	showProgressView('show', 'Preparing to post...');
 	
 	if (theImage != null) {
 		// IF there is a Image to Upload
@@ -797,8 +820,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	
 		xhr.onerror = function(e) {
 			// Hides the Progress bar
-			progressView.hide();
-			ind.hide();
+			showProgressView('hide', null);
 		
 			Ti.API.debug("Error getting upload URL: " + JSON.stringify(e));
 		};
@@ -827,15 +849,14 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	
 	xhr.onerror = function(e) {
 		// Hides the Progress bar
-		progressView.hide();
-		ind.hide();
+		showProgressView('hide', null);
 		
 		Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
 	};
 	
 	xhr.onload = function(e) {
 		// updates the Message in the Progress Bar
-		ind.message = "Publishing your post on Meme";
+		showProgressView('show', 'Publishing your post on Meme');
 		
  		Ti.API.info("Upload complete!");
 		Ti.API.debug('api response was: ' + this.responseText)
@@ -850,7 +871,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	};
 	
 	xhr.onsendstream = function(e) {
-		ind.message = "Uploading File...";
+		showProgressView('show', 'Uploading File...');
 		ind.value = e.progress;
 		Ti.API.debug('ONSENDSTREAM - PROGRESS: ' + e.progress);
 	};
@@ -877,8 +898,8 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 		yqlQuery = "INSERT INTO meme.user.posts (type, content) VALUES ('"+ e.postType +"', '" + e.message + "')";
 		
 		// updates the Message in the Progress Bar
-		ind.value = 10; 
-		ind.message = "Publishing your post on Meme";
+		showProgressView('show', 'Publishing your post on Meme');
+		ind.value = 10;
 	}
 	
 	Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
@@ -891,8 +912,7 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 		Ti.API.debug(" ####### YQL INSERT POST executed");
 		
 		// hides the Progress Bar
-		progressView.hide();
-		ind.hide();
+		showProgressView('hide', null);
 		ind.value = 0; //resets the Progress Bar
 		
 		var a = Titanium.UI.createAlertDialog({ title:'Success', message: 'Your Post was published successfully!' });
