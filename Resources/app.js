@@ -291,19 +291,19 @@ var newPost = function(yql) {
 var indWin = null;
 var actInd = null;
 
-function showIndicator()
+function showIndicator(pMessage, pColor, pSize)
 {
 	// window container
 	indWin = Titanium.UI.createWindow({
-		height:250,
-		width:250
+		height: pSize,
+		width: pSize
 	});
 
 	// black view
 	var indView = Titanium.UI.createView({
-		height:250,
-		width:250,
-		backgroundColor:'#AB0899',
+		height: pSize,
+		width: pSize,
+		backgroundColor: pColor,
 		borderRadius:10,
 		opacity:0.8
 	});
@@ -312,30 +312,31 @@ function showIndicator()
 	// loading indicator
 	actInd = Titanium.UI.createActivityIndicator({
 		style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
-		height:40,
-		width:40
+		top: pSize/3,
+		height:30,
+		width:30
 	});
 	indWin.add(actInd);
 
 	// message
 	var message = Titanium.UI.createLabel({
-		text:'Loading...',
+		text: pMessage,
 		color:'#fff',
 		width:'auto',
 		height:'auto',
-		font:{fontSize:24,fontWeight:'bold'},
-		bottom:60
+		font:{fontSize:22,fontWeight:'bold'},
+		bottom: pSize/4
 	});
 	indWin.add(message);
 	indWin.open();
-	actInd.show();
+	actInd.show();	
 
 };
 
 function hideIndicator()
 {
 	actInd.hide();
-	indWin.close({opacity:0,duration:500});
+	indWin.close({opacity:0,duration:500});	
 };
 
 //
@@ -343,12 +344,12 @@ function hideIndicator()
 //
 Titanium.App.addEventListener('show_indicator', function(e)
 {
-	Ti.API.info("IN SHOW INDICATOR");
-	showIndicator();
+	Ti.API.info("SHOW INDICATOR");
+	showIndicator(e.message, e.color, e.size);
 });
 Titanium.App.addEventListener('hide_indicator', function(e)
 {
-	Ti.API.info("IN HIDE INDICATOR");
+	Ti.API.info("HIDE INDICATOR");
 	hideIndicator();
 });
 
@@ -369,7 +370,7 @@ function showAlertDialog(pTitle, pMessage, pButtons, pCancel) {
 
 Ti.App.addEventListener('show_alert_dialog', function(e)
 {
-	Ti.API.info("ALERT DIALOG CALLED");
+	Ti.API.debug("ALERT DIALOG CALLED");
 	showAlertDialog(e.title, e.message, e.buttons, e.cancel);
 });
 

@@ -7,6 +7,8 @@ Titanium.UI.LANDSCAPE_LEFT,
 Titanium.UI.LANDSCAPE_RIGHT
 ];
 
+var openingDetails = false; // controls multiple Permalinks Openned
+
 //Set current timestamp
 var timestamp = function() {
 	return((new Date()).getTime());
@@ -532,15 +534,16 @@ win.add(dashboardShadow);
 // = CLICK LISTENER =
 // ==================
 
-var openingpermalink = false;
+// Avoiding multiple Permalinks Opening
+Titanium.App.addEventListener('openingDetailsFalse', function(e)
+{
+	openingDetails = false;
+});
 
 tableView.addEventListener('click', function(e)
 {
-	openingpermalink = true;
-		
-	Ti.App.fireEvent('show_indicator');
 	
-	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+	//Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	
 	// Sets the Permalink Animation startup settings
 	var t = Ti.UI.create2DMatrix();
@@ -548,14 +551,13 @@ tableView.addEventListener('click', function(e)
 	
 	var winPermalink = Ti.UI.createWindow({
 	    url: 'permalink.js',
-	    name: 'Permalink Details',
+	    name: 'Permalink Window',
 	    backgroundColor:'transparent',
 		left:0,
 		top:0,
 		height:'100%',
 		width:'100%',
 		navBarHidden: true,
-		openingpermalink: openingpermalink,
 		zIndex: 6,
 		transform: t,
 		yql: yql, //passing Variables to this Window
@@ -591,9 +593,18 @@ tableView.addEventListener('click', function(e)
 	
 	});
 	
+	if (openingDetails == false){
+		
+		Ti.App.fireEvent('show_indicator', {
+			message: "Loading...",
+			color: "#AB0899",
+			size: 200
+		});
+		openingDetails = true;
+		winPermalink.openingDetails = openingDetails;
+		winPermalink.open(a);	
+	}
 	// Open the permalink window with animation
-	winPermalink.open(a);
-
 	
 });
 

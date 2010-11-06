@@ -1,32 +1,21 @@
 
 - Create a Website for the App
 - icons and descriptions on YDN Site
-- After Reposting add Comments
-
-- Label "Loading Dashboard..."
-- Adicionar Player Vimeo
- - Play no video do YouTube na pagina de permalink
-- Ajustar Header para ser Variavel posicao do Signout em relacao ao tamanho do Login Yahoo!
-- [BUG] More than 1 click opens several Permalink Windows
-- BUG no Minutes Ago em cima do Meme.Title (ver post do GNeumann)
-
-- Total stripper for  HTML Entities
-
-- Use Place maker to detect places on a given Post and Show them on the Map.
-- flip with 2 fingers on a post on dashboard reveals post informations (Author, Number of Reposts and Number of Comments)
-- Play Audio
-- add DefaultImage for the ThumbNails (use Yahoo's one)
-- Protect against 2 clicks (Permalink, Sign out)
 - Tratar error 0 nas calls do YQL
 
 
 ===============================================
 
 dashboard.js
+- Ajustar Header para ser Variavel posicao do Signout em relacao ao tamanho do Login Yahoo!
 - Quando nao Logado Mostrar Explore (usando a language do usuário logado)
 - ver esta resposta: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
-- Styles for the rows in the Popover Menu
+- Styles for the rows in the User Popover Menu
 - BUG: When Opening newpost.js the Dashboard Rotates
+- add a Label "Loading Dashboard..."
+- Adicionar Player Vimeo
+- flip with 2 fingers on a post on dashboard reveals post informations (Author, Number of Reposts and Number of Comments)
+- Play Audio
 
 
 permalink.js
@@ -34,6 +23,12 @@ permalink.js
 - Show the App Posting to Meme (how to get App data from YQL)
 - Error when Requesting YQL, locks the Permalink Window, needs to restart the App
 - add popover when click on Users'Name showing options like: follow/unfollow - See Posts from that user
+- After Reposting allow users to add Comments
+- Adicionar Player Vimeo
+- BUG no Minutes Ago em cima do Meme.Title (ver post do GNeumann)
+- Total stripper for  HTML Entities and send it to Placemaker()
+- Use Place maker to detect places on a given Post and Show them on the Map.
+- Play Audio
 
 
 newpost.js
@@ -48,4 +43,5 @@ newpost.js
 - When finishing Posting FireEvent to Refresh the Dashboard
 - Limit image size to 3000 pixels (width or height)
 - Add BLUR on All Text Areas once the user presses POST btn
+- Use Place maker to detect places on a given Post and Show them on the Map.
 

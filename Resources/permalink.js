@@ -5,7 +5,7 @@ var yql = win.yql;
 var _guid = win.pGuid;
 var _pubId = win.pPubId;
 var myMemeInfo = win.myMemeInfo;
-var openingpermalink = win.openingpermalink;
+var openingDetails = win.openingDetails;
 
 var timestamp = function() {
 	return((new Date()).getTime());
@@ -69,7 +69,6 @@ function humane_date(date_str){
 };
 
 
-
 // =======================
 // = DASHBOARD TABLEVIEW =
 // =======================
@@ -104,10 +103,6 @@ var blackBG = Ti.UI.createView({
 });
 win.add(blackBG);
 
-var t = Ti.UI.create2DMatrix();
-t = t.scale(0);
-
-
 var whiteBox = Ti.UI.createView({
 	backgroundColor:'white',
 	width: 878,
@@ -115,8 +110,6 @@ var whiteBox = Ti.UI.createView({
 	top:52,
 	left:73,
 	zIndex: 2
-	//opacity: 0
-	// transform: t
 });
 win.add(whiteBox);
 
@@ -185,15 +178,16 @@ var text_in_html = '<html><head><title></title><style type="text/css">#wrapper {
 // Create our Webview to render the Post's content
 var postWebView = Ti.UI.createWebView({
         html:text_in_html,
-        title:'Title goes here',
+		backgroundImage: 'images/bg.jpg',
 		top:0,
 		width: '100%',
 		height: 565,
         left:0,
-        loading: true   
+        loading: true
 });
 whiteBox.add(postWebView);
 
+//Border from the WebView to the User Information bottom bar
 var border = Ti.UI.createView({
 	backgroundColor:'#EBEBEB',
 	height:1,
@@ -339,6 +333,8 @@ btn_close.addEventListener("click", function(e)
 		var t3 = Titanium.UI.create2DMatrix();
 		t3 = t3.scale(0);
 		win.close({transform:t3,duration:200});
+		Ti.App.fireEvent('openingDetailsFalse');
+	    // allows for other Permalinks to Open
 	
 });
 
@@ -369,9 +365,6 @@ btn_repost.addEventListener("click", function(e)
 		
 // Hides the loading indicator indicator
 Ti.App.fireEvent('hide_indicator');
-
-openingpermalink = false;
-
 
 //link to Permalink Page on the Web in the bottom
 
