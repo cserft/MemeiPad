@@ -407,8 +407,8 @@ btn_openSafari.addEventListener("click", function(e)
 	Ti.API.info('Permalink Open on Safari Fired');
 	alertOpenPermalink.title = 'Open link';
 	alertOpenPermalink.message = 'Are you sure you want to leave this application to open this link?';
-	alertOpenPermalink.buttonNames = ['Yes','Copy','Cancel'];
-	alertOpenPermalink.cancel = 2;
+	alertOpenPermalink.buttonNames = ['Yes','Cancel'];
+	alertOpenPermalink.cancel = 1;
 	alertOpenPermalink.show();
 });
 
@@ -419,8 +419,5 @@ alertOpenPermalink.addEventListener('click',function(e)
 	if (e.index == 0){
 		// Open Link to the Guidelines Page on Safari
 		Ti.Platform.openURL(post.url);	
-	} else if (e.index == 1) {
-		Ti.UI.Clipboard.setText('alalala');
-		Ti.API.debug('Pasting something: ' + Ti.UI.Clipboard.getText());
 	}
 });

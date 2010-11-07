@@ -274,16 +274,29 @@ var whiteShadow = Titanium.UI.createImageView({
 });
 win.add(whiteShadow);
 
-//Disclaimer
-var disclaimerLabel = Titanium.UI.createLabel({
-	text: 		'Don’t infringe copyright or post adult content. Check the Community Guidelines for more information. Your Post will be shared via Yahoo! Updates. ',
+//Disclaimer Community Guidelines
+var disclaimerLabel1 = Titanium.UI.createLabel({
+	text: 		'Don’t infringe copyright or post adult content. Check the Community Guidelines for more information.',
 	color: 		'#CCC',
-	width: 		800,
+	width: 		500,
 	height: 	15,
+	left: 		140,
 	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
 	bottom: 	18
 });
-win.add(disclaimerLabel);
+win.add(disclaimerLabel1);
+
+//Disclaimer Settings Yahoo! Updates.
+var disclaimerLabel2 = Titanium.UI.createLabel({
+	text: 		' Your Post will be shared via Yahoo! Updates.',
+	color: 		'#CCC',
+	width: 		230,
+	height: 	15,
+	left: 		disclaimerLabel1.left + disclaimerLabel1.width + 5,
+	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
+	bottom: 	18
+});
+win.add(disclaimerLabel2);
 
 // Upload Progress Bar
 var progressView = Titanium.UI.createView({
