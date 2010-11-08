@@ -796,7 +796,7 @@ var alertCloseImage = Titanium.UI.createAlertDialog({
 // Listener to delete the Image and start again
 btn_photo_close.addEventListener('click', function(e) {
 	alertCloseImage.title = 'Remove';
-	alertCloseImage.message = 'Are you sure you to remove the photo?';
+	alertCloseImage.message = 'Are you sure you want to remove the photo?';
 	alertCloseImage.buttonNames = ['Yes','No'];
 	alertCloseImage.cancel = 1;
 	alertCloseImage.show();
