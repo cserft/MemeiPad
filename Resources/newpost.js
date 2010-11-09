@@ -6,6 +6,15 @@ var win 			= 	Ti.UI.currentWindow;
 var yql 			= 	win.yql;
 var win1 			= 	win.win1; // Window Original created on app.js
 var theImage 		= 	null;
+var postTitle 		= 	'';
+var postBody 		= 	'';
+
+// Loading draft
+var draft_post = Ti.App.Properties.getList('draft_post');
+if (draft_post) {
+	postTitle = draft_post[0];
+	postBody = draft_post[1];
+}
 
 // ===============
 // = Header View =
@@ -34,12 +43,13 @@ var btn_close_post = Ti.UI.createButton({
 	top: 24,
 	style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 });
-
 postHeaderView.add(btn_close_post);
 
 btn_close_post.addEventListener('click', function() {
 	win.close();
-	//TODO: add Save Temp Post on Properties
+	
+	Ti.API.debug('Saving post on properties: title[' + postTitle + '], body[' + postBody + ']');
+	Ti.App.Properties.setList('draft_post', [ postTitle, postBody ]);
 });
 
 // =========================
@@ -169,8 +179,6 @@ var editView = Titanium.UI.createScrollView({
 });
 win.add(editView);
 
-var postTitle = '';
-
 var editTitleField = Titanium.UI.createTextField({
 	value: 			postTitle,
 	hintText: 		'Add Title',
@@ -184,7 +192,6 @@ var editTitleField = Titanium.UI.createTextField({
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
 	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
-
 editView.add(editTitleField);
 
 var dotted_lineView = Titanium.UI.createView({
@@ -226,8 +233,6 @@ var btn_photo_close = Titanium.UI.createButton({
 viewContainerPhoto.add(btn_photo_close);
 
 //Main TextArea
-var postBody = ''; 
-
 var textArea = Titanium.UI.createTextArea({
 	value: postBody,
 	height: 		200,
@@ -258,9 +263,9 @@ var tempPostLabel = Titanium.UI.createLabel({
 	font: 		{fontSize:50, fontFamily:'Helvetica', fontWeight:'bold'},
 	zIndex: 	1
 });
-editView.add(tempPostLabel);
 
 if (postBody == ''){
+	editView.add(tempPostLabel);
 	tempPostLabel.show();	
 }
 

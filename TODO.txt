@@ -33,7 +33,6 @@ permalink.js
 
 newpost.js
 - Split the Legal Disclaimers allowing different clicks to open different Links
-- When going back to Dashboard save the post draft (use SetString/GetString)
 - Bug when add a Photo, then replace with other (the close button is in the wrong place)
 - Fix the detection of Photo and post only text
 - Better handling the search as you type, can't be on Change
