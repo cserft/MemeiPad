@@ -922,26 +922,32 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	
 	var yqlInsert = yql.query(yqlQuery);
 	var response = yqlInsert.query.results.status;
+	var alertInfo;
 	
 	// SUCCESS
-	if (response.message == "ok") {
-		Ti.API.debug(" ####### YQL INSERT POST executed");
-		
-		// hides the Progress Bar
-		showProgressView('hide', null);
-		ind.value = 0; //resets the Progress Bar
-		
-		var a = Titanium.UI.createAlertDialog({ title:'Success', message: 'Your Post was published successfully!' });
-	  	a.show();
-		a.addEventListener('click',function(e) {
-			if (e.index == 0){	
-				win.close();
-				
-				//ENABLES THE POST BUTTON
-				btn_post.enabled = true;
-			}
-		});
+	if (response) {
+		if (response.message == "ok") {
+			Ti.API.debug(" ####### YQL INSERT POST executed");
+			alertInfo = { title: 'Success', message: 'Your post was published successfully!' };
+		} else {
+			alertInfo = { title: 'Error', message: 'Your post could not be published.' };
+		}
 	} else {
-		Ti.API.info("Error while Posting");
+		alertInfo = { title: 'Error', message: 'Your post could not be published. Please check the image size, it must be less than 7MB.' };
 	}
+	
+	// hides the Progress Bar
+	showProgressView('hide', null);
+	ind.value = 0; //resets the Progress Bar
+
+	var a = Titanium.UI.createAlertDialog(alertInfo);
+  	a.show();
+	a.addEventListener('click',function(e) {
+		if (e.index == 0){	
+			win.close();
+
+			//ENABLES THE POST BUTTON
+			btn_post.enabled = true;
+		}
+	});
 });
