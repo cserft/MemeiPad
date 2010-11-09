@@ -1,41 +1,45 @@
-
-- Create a Website for the App
-- icons and descriptions on YDN Site
+etc
+---
 - Tratar error 0 nas calls do YQL
-
-
-===============================================
+- icons and descriptions on YDN Site
+_____ AFTER LAUNCH _____
+- Create a Website for the App
 
 dashboard.js
+------------
+- BUG: When Opening newpost.js the Dashboard Rotates
+- add a Label "Loading Dashboard..."
+_____ AFTER LAUNCH _____
 - Ajustar Header para ser Variavel posicao do Signout em relacao ao tamanho do Login Yahoo!
 - Quando nao Logado Mostrar Explore (usando a language do usuário logado)
 - ver esta resposta: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
 - Styles for the rows in the User Popover Menu
-- BUG: When Opening newpost.js the Dashboard Rotates
-- add a Label "Loading Dashboard..."
 - Adicionar Player Vimeo
 - flip with 2 fingers on a post on dashboard reveals post informations (Author, Number of Reposts and Number of Comments)
 - Play Audio
 
-
 permalink.js
+------------
+- Error when Requesting YQL, locks the Permalink Window, needs to restart the App
+- BUG no Minutes Ago em cima do Meme.Title (ver post do GNeumann)
+_____ AFTER LAUNCH _____
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)
-- Error when Requesting YQL, locks the Permalink Window, needs to restart the App
 - add popover when click on Users'Name showing options like: follow/unfollow - See Posts from that user
 - After Reposting allow users to add Comments
 - Adicionar Player Vimeo
-- BUG no Minutes Ago em cima do Meme.Title (ver post do GNeumann)
-- Total stripper for  HTML Entities and send it to Placemaker()
+- Total stripper for HTML Entities and send it to Placemaker()
 - Use Place maker to detect places on a given Post and Show them on the Map.
 - Play Audio
 
-
 newpost.js
+----------
 - Split the Legal Disclaimers allowing different clicks to open different Links
 - Bug when add a Photo, then replace with other (the close button is in the wrong place)
 - Fix the detection of Photo and post only text
 - Add listener to the search results to add the info in the Post area
+_____ AFTER LAUNCH _____
 - Better treatment of Web Results when abstract is empty
 - Add BLUR on All Text Areas once the user presses POST btn
 - Use Place maker to detect places on a given Post and Show them on the Map.
+- Handle post later
