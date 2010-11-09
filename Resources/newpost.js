@@ -952,11 +952,8 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	var a = Titanium.UI.createAlertDialog(alertInfo);
   	a.show();
 	a.addEventListener('click',function(e) {
-		if (e.index == 0){	
-			win.close();
-
-			//ENABLES THE POST BUTTON
-			btn_post.enabled = true;
-		}
+		win.close();
+		btn_post.enabled = true;
+		Ti.App.fireEvent('reloadDashboard', null);
 	});
 });

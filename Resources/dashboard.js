@@ -902,9 +902,6 @@ if (pDashboardType === "logged") {
 	getDashboardData(null, pDashboardType);
 }
 
-
-
-
-
-
-
+Ti.App.addEventListener('reloadDashboard', function(e) {
+	beginReloading();
+});
