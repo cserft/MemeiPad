@@ -745,26 +745,32 @@ btn_post.addEventListener('click', function() {
 // = PHOTO GALLERY HANDLERS      =
 // ===============================
 
-function handleImageEvent(event) {
+var handleImageEvent = function(event) {
   theImage = event.media;
   theThumbnail = event.thumbnail;
   Ti.App.fireEvent("photoChosen");
-}
+};
+
+var getImagePreviewSizes = function(max_side_size, original_img) {
+	var w = original_img.width, h = original_img.height;
+	if (w > h) {
+		return { width: max_side_size, height: max_side_size * (h / w) };
+	}
+	return { height: max_side_size, width: max_side_size * (w / h) };
+};
 
 Ti.App.addEventListener("photoChosen", function(e) {
-	img.image = theImage;
+	// set smaller size for preview (max 250px for the biggest side)
+	preview_sizes = getImagePreviewSizes(400, theImage);
 	
+	// img properties
+	img.image = theImage;
+	img.height = preview_sizes.height + 'px';
+	img.width = preview_sizes.width + 'px';
 	viewContainerPhoto.visible = true;
 	
-	//detects the size of the image and resizes the Photo Container
-	if (img.size.width > 958) {
-		viewContainerPhoto.width = 958;
-		var photo_close_x = 958 - 24;
-	} else {
-		var photo_close_x = img.size.width - 24;
-	}
-
 	//adds the close button to the image
+	var photo_close_x = img.size.width - 24;
 	btn_photo_close.left = photo_close_x;
 	btn_photo_close.visible = true;
 	
@@ -774,8 +780,6 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	
 	//Repositioned the Temp Caption on top of the TextArea
 	tempPostLabel.animate({zIndex: 0, top : 120 + img.size.height});
-	
-	//Ti.API.debug(img.size.width + "x" + img.size.height + " and Top for Text Area= " + textArea_top + " and typeOf: " + typeof(textArea_top));
 });
 
 // to remove the photo chosen
