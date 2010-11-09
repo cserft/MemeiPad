@@ -44,4 +44,5 @@ newpost.js
 - Add BLUR on All Text Areas once the user presses POST btn
 - Use Place maker to detect places on a given Post and Show them on the Map.
 - Handle error when Meme response is undefined (usually when img > 7MB)
+- When Photo is added to post, erase "write your post here" (gneumann request)
 
