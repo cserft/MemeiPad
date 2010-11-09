@@ -9,17 +9,17 @@ var theImage 		= 	null;
 var postTitle 		= 	'';
 var postBody 		= 	'';
 
-// Loading draft
-var draft_post = Ti.App.Properties.getList('draft_post');
-if (draft_post) {
-	postTitle = draft_post[0];
-	postBody = draft_post[1];
+// Load post draft
+if (Ti.App.Properties.hasProperty('draft_post')) {
+	var draft = Ti.App.Properties.getList('draft_post');
+	postTitle = draft[0];
+	postBody = draft[1];
+	Ti.App.Properties.removeProperty('draft_post');
 }
 
 // ===============
 // = Header View =
 // ===============
-
 var postHeaderView = Ti.UI.createView({
 	backgroundImage: 	'images/bg_post_top_bar.png',
 	left: 				0,
@@ -34,7 +34,6 @@ win.add(postHeaderView);
 // ===============
 // = BACK BUTTON =
 // ===============
-
 var btn_close_post = Ti.UI.createButton({
 	backgroundImage: 'images/btn_close_post.png',
 	height: 16,
@@ -55,7 +54,6 @@ btn_close_post.addEventListener('click', function() {
 // =========================
 // = Awesome bar TextField =
 // =========================
-
 var queryText = "";
 
 var searchTextField = Titanium.UI.createTextField({
@@ -72,7 +70,6 @@ var searchTextField = Titanium.UI.createTextField({
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT
 	// clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
-
 postHeaderView.add(searchTextField);
 
 var btn_flashlight = Ti.UI.createButton({
@@ -118,7 +115,6 @@ var popoverGalleryView = Titanium.UI.createView({
 	width:      330
 });
 postHeaderView.add(popoverGalleryView);
-
 
 // build the Photo Gallery popover
 btn_addPhoto.addEventListener('click', function() {
