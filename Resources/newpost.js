@@ -760,6 +760,15 @@ var getImagePreviewSizes = function(max_side_size, original_img) {
 };
 
 Ti.App.addEventListener("photoChosen", function(e) {
+	if ((theImage.width > 3000) || (theImage.height > 3000)) {
+		var a = Titanium.UI.createAlertDialog({ 
+			title: 'Oops...', 
+			message: 'The chosen image is too large to post. Please pick another one.' 
+		});
+	  	a.show();
+		return;
+	}
+	
 	// set smaller size for preview (max 250px for the biggest side)
 	preview_sizes = getImagePreviewSizes(400, theImage);
 	
