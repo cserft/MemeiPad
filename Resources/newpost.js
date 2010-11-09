@@ -753,19 +753,22 @@ var handleImageEvent = function(event) {
 
 var getImagePreviewSizes = function(max_side_size, original_img) {
 	var w = original_img.width, h = original_img.height;
-	if (w > h) {
-		return { width: max_side_size, height: max_side_size * (h / w) };
+	if ((w > max_side_size) || (h > max_side_size)) {
+		if (w > h) {
+			return { width: max_side_size, height: max_side_size * (h / w) };
+		}
+		return { height: max_side_size, width: max_side_size * (w / h) };
 	}
-	return { height: max_side_size, width: max_side_size * (w / h) };
+	// maintain original size, no need to reduce
+	return { width: w, height: h };
 };
 
 Ti.App.addEventListener("photoChosen", function(e) {
 	if ((theImage.width > 3000) || (theImage.height > 3000)) {
-		var a = Titanium.UI.createAlertDialog({ 
+		Titanium.UI.createAlertDialog({ 
 			title: 'Oops...', 
 			message: 'The chosen image is too large to post. Please pick another one.' 
-		});
-	  	a.show();
+		}).show();
 		return;
 	}
 	
@@ -954,6 +957,6 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	a.addEventListener('click',function(e) {
 		win.close();
 		btn_post.enabled = true;
-		Ti.App.fireEvent('reloadDashboard', null);
+		Ti.App.fireEvent('reloadDashboard');
 	});
 });
