@@ -36,7 +36,6 @@ newpost.js
 - When going back to Dashboard save the post draft (use SetString/GetString)
 - Bug when add a Photo, then replace with other (the close button is in the wrong place)
 - Fix the detection of Photo and post only text
-- Upload indicator
 - Better handling the search as you type, can't be on Change
 - Add listener to the search results to add the info in the Post area
 - Better treatment of Web Results when abstract is empty
@@ -44,4 +43,5 @@ newpost.js
 - Limit image size to 3000 pixels (width or height)
 - Add BLUR on All Text Areas once the user presses POST btn
 - Use Place maker to detect places on a given Post and Show them on the Map.
+- Handle error when Meme response is undefined (usually when img > 7MB)
 
