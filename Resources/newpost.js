@@ -710,18 +710,14 @@ btn_post.addEventListener('click', function() {
 	Ti.API.info("PostText Has the value: " + postText);
 	
 	if (theImage == null) {
-		
 		Ti.API.info("No Image to Upload");
 		
 		if ( postText == null || postText == "" ) {
-			Ti.API.debug('Error: Nothing To Post');
-			
-			Ti.App.fireEvent('show_alert_dialog', { 
-				title: 'Ops!',
-			    message: 'Write something before you hit the Post Button',
-				buttons: ['OK']
-			});
-			
+			Ti.UI.createAlertDialog({ 
+				title: 'Oops...',
+			    message: 'Write something before you hit the post button',
+				buttonNames: ['OK']
+			}).show();
 		} else {
 			//Shows the Upload Progress bar
 			showProgressView ('show', 'Preparing to post...')
@@ -770,6 +766,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 			title: 'Oops...', 
 			message: 'The chosen image is too large to post. Please pick another one.' 
 		}).show();
+		theImage = null;
 		return;
 	}
 	
@@ -946,16 +943,16 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 			alertInfo = { title: 'Error', message: 'Your post could not be published.' };
 		}
 	} else {
-		alertInfo = { title: 'Error', message: 'Your post could not be published. Please check the image size, it must be less than 7MB.' };
+		alertInfo = { title: 'Error', message: 'Your post could not be published. Please check the image size, it must have less than 7MB.' };
 	}
 	
 	// hides the Progress Bar
 	showProgressView('hide', null);
 	ind.value = 0; //resets the Progress Bar
 
-	var a = Titanium.UI.createAlertDialog(alertInfo);
-  	a.show();
-	a.addEventListener('click',function(e) {
+	var alert = Titanium.UI.createAlertDialog(alertInfo);
+  	alert.show();
+	alert.addEventListener('click',function(e) {
 		win.close();
 		btn_post.enabled = true;
 		Ti.App.fireEvent('reloadDashboard');

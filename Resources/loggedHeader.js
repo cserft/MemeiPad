@@ -17,9 +17,6 @@ if (yqlMemeInfo){
 	var meme = yqlMemeInfo.query.results.meme;	
 }
 
-
-
-
 var miniAvatarView = Titanium.UI.createImageView({
 	image: meme.avatar_url.thumb,
 	borderColor: 'black',

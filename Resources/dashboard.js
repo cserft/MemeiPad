@@ -183,24 +183,24 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	        _videoThumb = "http://img.youtube.com/vi/" + _videoId + "/0.jpg";
 		}
 
-			var postImageView = Titanium.UI.createImageView({
-				image: _videoThumb,
-				top:5,
-				left:5,
-				width:307,
-				height:231,
-				defaultImage: 'images/default_img_video.png'
-			});
-			blackBoxView.add(postImageView);
+		var postImageView = Titanium.UI.createImageView({
+			image: _videoThumb,
+			top:5,
+			left:5,
+			width:307,
+			height:231,
+			defaultImage: 'images/default_img_video.png'
+		});
+		blackBoxView.add(postImageView);
 
-	        var img_play_btn = Titanium.UI.createImageView({
-	            image:'images/play.png',
-	            top:96,
-	            left:134,
-	            width:37,
-	            height:37
-	        });
-	        blackBoxView.add(img_play_btn);	
+        var img_play_btn = Titanium.UI.createImageView({
+            image:'images/play.png',
+            top:96,
+            left:134,
+            width:37,
+            height:37
+        });
+        blackBoxView.add(img_play_btn);	
 	
 	}
 	

@@ -261,29 +261,25 @@ var showDashboard = function(yql,pDashboardType) {
 // ==========================
 
 var newPost = function(yql) {
-
-
-	var winNewPost = Ti.UI.createWindow({
+	Ti.UI.createWindow({
 		url: 'newpost.js',
-		title: 'New Post Window',
-		backgroundColor:'white',
-		left:0,
-		top:0,
-		height:748,
-		width:1024,
+		title: 'New Post',
+		backgroundColor: 'white',
+		left: 0,
+		top: 0,
+		height: 748,
+		width: 1024,
 		yql: yql,
-		win1:win1,
 		zIndex: 3,
+		modal: true,
+		modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
+		modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FULLSCREEN,
 		navBarHidden: true,
-		orientationModes : [
-		Titanium.UI.LANDSCAPE_LEFT,
-		Titanium.UI.LANDSCAPE_RIGHT
+		orientationModes: [
+			Titanium.UI.LANDSCAPE_LEFT,
+			Titanium.UI.LANDSCAPE_RIGHT
 		]
-		
-
-	});
-	winNewPost.open({modal:true,modalTransitionStyle:Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,modalStyle:Ti.UI.iPhone.MODAL_PRESENTATION_FULLSCREEN,navBarHidden:true});
-	
+	}).open();
 };
 	
 //  CREATE CUSTOM LOADING INDICATOR
@@ -353,29 +349,6 @@ Titanium.App.addEventListener('hide_indicator', function(e)
 	hideIndicator();
 });
 
-
-//
-// Add global event handlers for Alert Dialogs
-//
-
-function showAlertDialog(pTitle, pMessage, pButtons, pCancel) {
-	  var a = Ti.UI.createAlertDialog({ 
-	    title: pTitle,
-	    message: pMessage,
-		buttonNames: pButtons,
-		cancel: pCancel
-	  });
-		a.show();	
-}
-
-Ti.App.addEventListener('show_alert_dialog', function(e)
-{
-	Ti.API.debug("ALERT DIALOG CALLED");
-	showAlertDialog(e.title, e.message, e.buttons, e.cancel);
-});
-
-
-
 // Titanium.App.addEventListener('resume', function(e)
 // {
 //   var a = Titanium.UI.createAlertDialog({ 
@@ -390,34 +363,14 @@ Ti.App.addEventListener('show_alert_dialog', function(e)
 // ==================================
 
 if (!Titanium.Network.online) {
-	
-	Ti.App.fireEvent('show_alert_dialog', { 
+	Ti.UI.createAlertDialog({ 
 		title:'Network Connection Required',
-	    message: 'Meme for iPad requires an Internet connection to, you know, use stuff from the Internets. Please, check your network connection and try again.' 
-	 });
-	
-	//   var a = Titanium.UI.createAlertDialog({ 
-	//     title:'Network Connection Required',
-	//     message: 'Meme for iPad requires an Internet connection to, you know, use stuff from the Internets. Please, check your network connection and try again.'
-	//   });
-	// a.show();
-	
+	    message: 'Meme for iPad requires an Internet connection to, you know, use stuff from the Internets. Please, check your network connection and try again.'
+	}).show();
 } else {
-	
 	// =========================================
 	// =  // Initialize oAuthAdapter process   =
 	// =========================================
-	
 	var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
-	
 	oAuthAdapter.login(showSignIn, showDashboard);
-	
 };
-
-
-
-
-
-
-
-
