@@ -20,52 +20,52 @@ var now  = timestamp();
 // With this we can create messages like "This post was created 10 minutes ago" or "Just now", etc
 
 function humane_date(date_str){
-      var time_formats = [
-              [60, 'Just Now'],
-              [90, '1 minute'], // 60*1.5
-              [3600, 'minutes', 60], // 60*60, 60
-              [5400, '1 hour'], // 60*60*1.5
-              [86400, 'hours', 3600], // 60*60*24, 60*60
-              [129600, '1 day'], // 60*60*24*1.5
-              [604800, 'days', 86400], // 60*60*24*7, 60*60*24
-              [907200, '1 week'], // 60*60*24*7*1.5
-              [2628000, 'weeks', 604800], // 60*60*24*(365/12), 60*60*24*7
-              [3942000, '1 month'], // 60*60*24*(365/12)*1.5
-              [31536000, 'months', 2628000], // 60*60*24*365, 60*60*24*(365/12)
-              [47304000, '1 year'], // 60*60*24*365*1.5
-              [3153600000, 'years', 31536000], // 60*60*24*365*100, 60*60*24*365
-              [4730400000, '1 century'] // 60*60*24*365*100*1.5
-      ];
-				var dt = timestamp(); 
-				var seconds = (dt - date_str)/1000;
-              	var token = ' ago';
-          		var prepend = '';
-              	var i = 0;
-              	var format;
-
-      if (seconds < 0) {
-              seconds = Math.abs(seconds);
-              token = '';
-          prepend = 'in ';
-      }
-
-      while (format = time_formats[i++]) {
-              if (seconds < format[0]) {
-                      if (format.length == 2) {
-                              return (i>1?prepend:'') + format[1] + (i > 1 ? token : ''); // Conditional so we don't return Just Now Ago
-                      } else {
-                              return prepend + Math.round(seconds / format[2]) + ' ' + format[1] + (i > 1 ? token : '');
-                      }
-              }
-      }
-
-      // overflow for centuries
-      if(seconds > 4730400000){
+	var time_formats = [
+		[60, 'Just Now'],
+		[90, '1 minute'], // 60*1.5
+		[3600, 'minutes', 60], // 60*60, 60
+		[5400, '1 hour'], // 60*60*1.5
+		[86400, 'hours', 3600], // 60*60*24, 60*60
+		[129600, '1 day'], // 60*60*24*1.5
+		[604800, 'days', 86400], // 60*60*24*7, 60*60*24
+		[907200, '1 week'], // 60*60*24*7*1.5
+		[2628000, 'weeks', 604800], // 60*60*24*(365/12), 60*60*24*7
+		[3942000, '1 month'], // 60*60*24*(365/12)*1.5
+		[31536000, 'months', 2628000], // 60*60*24*365, 60*60*24*(365/12)
+		[47304000, '1 year'], // 60*60*24*365*1.5
+		[3153600000, 'years', 31536000], // 60*60*24*365*100, 60*60*24*365
+		[4730400000, '1 century'] // 60*60*24*365*100*1.5
+	];
 	
-              return Math.round(seconds / 4730400000) + ' Centuries' + token;
+	var dt = timestamp(); 
+	var seconds = (dt - date_str)/1000;
+	var token = ' ago';
+	var prepend = '';
+	var i = 0;
+	var format;
+	
+	if (seconds < 0) {
+		seconds = Math.abs(seconds);
+		token = '';
+		prepend = 'in ';
+	}
+	
+	while (format = time_formats[i++]) {
+		if (seconds < format[0]) {
+			if (format.length == 2) {
+				return (i>1?prepend:'') + format[1] + (i > 1 ? token : ''); // Conditional so we don't return Just Now Ago
+			} else {
+				return prepend + Math.round(seconds / format[2]) + ' ' + format[1] + (i > 1 ? token : '');
+			}
 		}
-		
-      return date_str;
+	}
+	
+	// overflow for centuries
+	if(seconds > 4730400000) {
+		return Math.round(seconds / 4730400000) + ' Centuries' + token;
+	}
+	
+	return date_str;
 };
 
 
@@ -225,17 +225,17 @@ var titleStripped = meme.title.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
 	color:'#853885',
-	text: titleStripped ,
+	text: titleStripped,
 	textAlign:'left',
 	font: {
-		fontSize:18,
+		fontSize: 18,
 		fontFamily:'Helvetica',
 		fontWeight: 'bold'
 	},
-	bottom: 19,
-	left:60,
-	width:400,
-	height:29,
+	bottom: 22,
+	left: 60,
+	width: 400,
+	height: 29,
 	zIndex: 2
 });
 
@@ -245,21 +245,19 @@ whiteBox.add(guidNameLabel);
 //POsted X times ago message
 var post_update_time = humane_date(post.timestamp);
 
-var pos_postUpdatedTimeLabel = 70 + (titleStripped.length * 8) + 10;
-
 var postUpdatedTimeLabel = Titanium.UI.createLabel({
-	color:'#999',
-	text: ' •  ' + post_update_time,
-	textAlign:'left',
+	color: '#999',
+	text: ' posted ' + post_update_time,
+	textAlign: 'left',
 	font: {
-		fontSize:13,
-		fontFamily:'Georgia',
+		fontSize: 13,
+		fontFamily: 'Georgia',
 		fontStyle: 'italic'
 	},
-	bottom: 19,
-	left:pos_postUpdatedTimeLabel,
-	width:150,
-	height:29,
+	bottom: 6,
+	left: 60,
+	width: 150,
+	height: 29,
 	zIndex: 2
 });
 
@@ -270,7 +268,6 @@ whiteBox.add(postUpdatedTimeLabel);
 // ===========================
 
 var repost_countInt = parseInt(post.repost_count);
-
 
 var repostCountLabel = Titanium.UI.createLabel({
 	color:'#666',
@@ -313,16 +310,12 @@ whiteBox.add(repostActInd);
 
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
 if (myMemeInfo){
-	
 	if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_guid == myMemeInfo.guid){
 		btn_repost.enabled = false;	
 	} else {
 		btn_repost.enabled = true;	
 	}
-	
 }
-
-
 
 // =============
 // = LISTENERS =

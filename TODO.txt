@@ -21,7 +21,6 @@ _____ AFTER LAUNCH _____
 permalink.js
 ------------
 - Error when Requesting YQL, locks the Permalink Window, needs to restart the App
-- BUG no Minutes Ago em cima do Meme.Title (ver post do GNeumann)
 _____ AFTER LAUNCH _____
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)
