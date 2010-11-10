@@ -9,6 +9,7 @@ dashboard.js
 ------------
 - BUG: When Opening newpost.js the Dashboard Rotates
 - add a Label "Loading Dashboard..."
+- Application crashes when OAuth token expires
 _____ AFTER LAUNCH _____
 - Ajustar Header para ser Variavel posicao do Signout em relacao ao tamanho do Login Yahoo!
 - Quando nao Logado Mostrar Explore (usando a language do usuário logado)

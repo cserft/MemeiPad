@@ -218,22 +218,21 @@ var showDashboard = function(yql,pDashboardType) {
 
 	var winDashboard = Ti.UI.createWindow({
 		url: 'dashboard.js',
-		name: 'Dashboard Window',
-		backgroundColor:'transparent',
-		left:0,
-		top:90, //90
-		height:658,
-		width:1024,
+		name: 'Dashboard',
+		backgroundColor: 'transparent',
+		left: 0,
+		top: 90,
+		height: 658,
+		width: 1024,
 		navBarHidden: true,
 		yql: yql,
-		pDashboardType:pDashboardType,
-		win1:win1,
+		pDashboardType: pDashboardType,
+		win1: win1,
 		zIndex: 2,
-		orientationModes : [
-		Titanium.UI.LANDSCAPE_LEFT,
-		Titanium.UI.LANDSCAPE_RIGHT
+		orientationModes: [
+			Titanium.UI.LANDSCAPE_LEFT,
+			Titanium.UI.LANDSCAPE_RIGHT
 		]
-
 	});
 	winDashboard.open();
 	
@@ -245,21 +244,16 @@ var showDashboard = function(yql,pDashboardType) {
 	
 	// Builds the LoggedIn Header or the SignIn one
 	if (pDashboardType === "logged") {
-
 		showHeader(yql, pDashboardType, winDashboard);
 		btn_signin.visible = false;
-
 	} else {
 		btn_signin.visible = true;
 	}
-
 };
-
 
 // ==========================
 // = CREATE THE POST WINDOW =
 // ==========================
-
 var newPost = function(yql) {
 	Ti.UI.createWindow({
 		url: 'newpost.js',
