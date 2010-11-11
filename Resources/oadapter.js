@@ -183,7 +183,7 @@ var OAuthAdapter = function(pService, authorize) {
 		var oauth_expires_in = parseInt(token.oauth_expires_in) * 1000;
 		Ti.API.debug('Refrescando: timestamp[' + timedToken.timestamp + '], oauth_expires_in[' + oauth_expires_in + '], now[' + now + ']');
 		if (timedToken.timestamp + oauth_expires_in <= now) {
-			Ti.API.info("Woo! Refreshing oAuth token...");
+			Ti.API.info('Woo! Refreshing oAuth token...');
 			var newToken = accessToken(token);
 			saveToken(newToken);
 			return(newToken);
@@ -250,7 +250,7 @@ var OAuthAdapter = function(pService, authorize) {
 	};
 	
 	var doQuery = function(yql_base_url, parameters, token) {
-		var MAX_RETRIES = 5;
+		var MAX_RETRIES = 3;
 		var json, yqldata, tries = 0;
 		var request = function() {
 			json = serviceRequest(yql_base_url, parameters.slice(0), token);
@@ -263,6 +263,13 @@ var OAuthAdapter = function(pService, authorize) {
 			}
 			request();
 		};
+		if (tries >= MAX_RETRIES) {
+			Ti.API.error('App crashed (cannot connect to YQL)');
+			Titanium.UI.createAlertDialog({ 
+				title: 'Error',
+				message: 'There was an error connecting to Yahoo! APIs. Please try again later.'
+			}).show();
+		}
 		return yqldata;
 	};
 	
