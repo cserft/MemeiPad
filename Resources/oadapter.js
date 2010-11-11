@@ -180,9 +180,10 @@ var OAuthAdapter = function(pService, authorize) {
 	var maybeRefreshToken = function(timedToken) {
 		var token = timedToken.token;
 		var now   = timestamp();
-		Ti.API.debug("Refrescando: " + typeof(timedToken.timestamp) + ' and ' + typeof(token.oauth_expires_in));
-		if (timedToken.timestamp + parseInt(token.oauth_expires_in) <= now) {
-			Ti.API.debug("Woo! Refreshing oAuth token ...");
+		var oauth_expires_in = parseInt(token.oauth_expires_in) * 1000;
+		Ti.API.debug('Refrescando: timestamp[' + timedToken.timestamp + '], oauth_expires_in[' + oauth_expires_in + '], now[' + now + ']');
+		if (timedToken.timestamp + oauth_expires_in <= now) {
+			Ti.API.info("Woo! Refreshing oAuth token...");
 			var newToken = accessToken(token);
 			saveToken(newToken);
 			return(newToken);
