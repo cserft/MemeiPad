@@ -1,11 +1,10 @@
 var getVideoData = function(pContent, callback) {
-	var _videoId, _videoThumb;
+	var videoId, videoThumb;
 	
 	if (pContent.indexOf("vimeo") != -1){
 		Ti.API.debug("Found Vimeo Video: " + pContent);
 		// If VIMEO VIDEO
 		
-		//REQUEST VIMEO oEmbed DATA
 		var xhr = Titanium.Network.createHTTPClient();
 	
 		xhr.onreadystatechange = function() {
@@ -26,13 +25,12 @@ var getVideoData = function(pContent, callback) {
 	    };
 	
 	    xhr.onload = function(e) {
-	        Ti.API.debug('Vimeo RESPONSE CODE: ' + this.status + ' And Response Text: [' + this.responseText + ']');
 			var vimeoEmbed = JSON.parse(this.responseText);
 
-	        _videoThumb = vimeoEmbed.thumbnail_url;
-			Ti.API.debug('got thumbnail for vimeo: ' + _videoThumb);
+	        videoThumb = vimeoEmbed.thumbnail_url;
+			Ti.API.debug('got thumbnail for vimeo: ' + videoThumb);
 			
-			callback(_videoThumb, vimeoEmbed);
+			callback(videoThumb, vimeoEmbed);
 	    };
 	
 		eContent = encodeURIComponent(pContent);
@@ -41,8 +39,8 @@ var getVideoData = function(pContent, callback) {
 		xhr.send();
 	} else {
 		//ELSE YOUTUBE
-		_videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
-        _videoThumb = "http://img.youtube.com/vi/" + _videoId + "/0.jpg";
-		callback(_videoThumb);
+		videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
+        videoThumb = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
+		callback(videoThumb);
 	}
 };

@@ -189,7 +189,6 @@ if (post.type == "photo"){
 	
 	if (post.content.indexOf("vimeo") != -1){
 		getVideoData(post.content, function(thumb, data) {
-			Ti.API.info('post caption is [' + post.caption + '] and data is [' + JSON.stringify(data) + ']')
 			innerMedia = data.html;
 			innerCaption = post.caption;
 			postWebView.html = getPostHtml(innerMedia, innerCaption);
