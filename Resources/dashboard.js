@@ -1,4 +1,5 @@
 Ti.include('lib/strip_tags.js');
+Ti.include('lib/video.js');
 
 var win = Ti.UI.currentWindow;
 
@@ -61,57 +62,6 @@ baseView.add(tableView);
 // ===================================================
 // = CREATING POST VIEW TO EMBED IN THE TABLEVIEW =
 // ===================================================
-var getVideoThumbnail = function(pContent, callback) {
-	var _videoId, _videoThumb;
-	
-	if (pContent.indexOf("vimeo") != -1){
-		Ti.API.info("Found Vimeo Video: " + pContent);
-		// If VIMEO VIDEO
-		
-		//REQUEST VIMEO oEmbed DATA
-		var xhr = Titanium.Network.createHTTPClient();
-	    // xhr.setTimeout([99000]);
-	
-		xhr.onreadystatechange = function() {
-
-		    try {
-		      if (this.readyState == 4) {
-		           var results = JSON.stringify(this.responseText);
-					Ti.API.debug("Response Text on State 4: " + results);
-
-		        }
-		    } catch(e) {
-		        Ti.API.debug("Error: " + e.error);
-		    }
-		};
-	
-	
-	    xhr.onerror = function(e) {
-	        Ti.API.info("ERROR: " + e.error);
-	    };
-	
-	    xhr.onload = function(e) {
-	        Ti.API.debug('Vimeo RESPONSE CODE: ' + this.status + ' And Response Text: [' + this.responseText + ']');
-			var vimeoEmbed = JSON.parse(this.responseText);
-
-	        _videoThumb = vimeoEmbed.thumbnail_url;
-			Ti.API.debug('got thumbnail for vimeo: ' + _videoThumb);
-			
-			callback(_videoThumb);
-	    };
-	
-		eContent = encodeURIComponent(pContent);
-	    xhr.open('GET','http://vimeo.com/api/oembed.json?url=' + eContent);
-		xhr.setRequestHeader('X-Requested-With', '');
-		xhr.send();
-	} else {
-		//ELSE YOUTUBE
-		_videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
-        _videoThumb = "http://img.youtube.com/vi/" + _videoId + "/0.jpg";
-		callback(_videoThumb);
-	}
-};
-
 var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, pGuid)
 {
 	var __id_img;
@@ -175,7 +125,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	// create an Video view
 	if (pType == "video") {	
-		getVideoThumbnail(pContent, function(_videoThumb) {
+		getVideoData(pContent, function(_videoThumb) {
 			Ti.API.info('my video thumb is [' + _videoThumb + ']');
 
 			var postImageView = Titanium.UI.createImageView({
@@ -560,13 +510,12 @@ tableView.addEventListener('click', function(e)
 		pGuid: e.source.guid,
 		pPubId: e.source.pubId,
 		orientationModes : [
-		Titanium.UI.LANDSCAPE_LEFT,
-		Titanium.UI.LANDSCAPE_RIGHT,
+			Titanium.UI.LANDSCAPE_LEFT,
+			Titanium.UI.LANDSCAPE_RIGHT,
 		]
 	});
 	
 	if (myMemeInfo) {
-		
 		winPermalink.myMemeInfo = myMemeInfo;
 	}
 

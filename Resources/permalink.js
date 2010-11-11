@@ -1,3 +1,5 @@
+Ti.include('lib/video.js');
+
 var win = Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
@@ -151,33 +153,9 @@ win.add(btn_close);
 var	innerMedia;
 var innerCaption;
 
-if (post.type == "photo"){
-	
-	innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
-	innerCaption = post.caption;
-	captionStripped = post.caption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
-	// getGeoPlaces(captionStripped);
-	
-} else if (post.type == "video"){
-	
-	var youtubeid = post.content.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
-	
-	innerMedia = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + youtubeid + '" frameborder="0"></iframe>';
-	innerCaption = post.caption;
-	
-} else if (post.type == "text"){
-	innerMedia = "";
-
-	innerCaption = post.content;
-
-}
-
-
-var text_in_html = '<html><head><title></title><style type="text/css">#wrapper {padding: 20px;width: 700px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px}</style></head><body><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '<br/><br/><br/></div></div></div></body></html>';
-
 // Create our Webview to render the Post's content
 var postWebView = Ti.UI.createWebView({
-        html:text_in_html,
+        html: '',
 		backgroundImage: 'images/bg.jpg',
 		top:0,
 		width: '100%',
@@ -195,6 +173,42 @@ var border = Ti.UI.createView({
 	width: '100%'	
 });
 whiteBox.add(border);
+
+var getPostHtml = function(innerMedia, innerCaption) {
+	return '<html><head><title></title><style type="text/css">#wrapper {padding: 20px;width: 700px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px}</style></head><body><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '<br/><br/><br/></div></div></div></body></html>';
+};
+
+if (post.type == "photo"){
+	
+	innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
+	innerCaption = post.caption;
+	captionStripped = post.caption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+	// getGeoPlaces(captionStripped);
+	
+} else if (post.type == "video"){
+	
+	if (post.content.indexOf("vimeo") != -1){
+		getVideoData(post.content, function(thumb, data) {
+			Ti.API.info('post caption is [' + post.caption + '] and data is [' + JSON.stringify(data) + ']')
+			innerMedia = data.html;
+			innerCaption = post.caption;
+			postWebView.html = getPostHtml(innerMedia, innerCaption);
+		});
+	} else {
+		var youtubeid = post.content.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
+		innerMedia = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + youtubeid + '" frameborder="0"></iframe>';
+		innerCaption = post.caption;
+	}
+	
+} else if (post.type == "text"){
+	innerMedia = "";
+
+	innerCaption = post.content;
+}
+
+if (innerMedia && innerCaption) {
+	postWebView.html = getPostHtml(innerMedia, innerCaption);
+}
 
 
 // ====================================
@@ -323,11 +337,11 @@ if (myMemeInfo){
 
 btn_close.addEventListener("click", function(e)
 {
-		var t3 = Titanium.UI.create2DMatrix();
-		t3 = t3.scale(0);
-		win.close({transform:t3,duration:200});
-		Ti.App.fireEvent('openingDetailsFalse');
-	    // allows for other Permalinks to Open
+	var t3 = Titanium.UI.create2DMatrix();
+	t3 = t3.scale(0);
+	win.close({transform:t3,duration:200});
+	Ti.App.fireEvent('openingDetailsFalse');
+    // allows for other Permalinks to Open
 	
 });
 
