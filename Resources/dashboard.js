@@ -126,7 +126,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	// create an Video view
 	if (pType == "video") {	
 		getVideoData(pContent, function(_videoThumb) {
-			Ti.API.info('my video thumb is [' + _videoThumb + ']');
+			Ti.API.debug('my video thumb is [' + _videoThumb + ']');
 
 			var postImageView = Titanium.UI.createImageView({
 				image: _videoThumb,

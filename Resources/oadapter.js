@@ -3,9 +3,8 @@
  *  http://oauth.googlecode.com/svn/code/javascript/
  * Save them locally in a lib subfolder
  * 
- * Your Oauth secrets as well as you API end points must be in the *secrets.js* file inside the lib folder
- *
- * 
+ * Your Oauth secrets as well as you API end points must be in the *secrets.js* 
+ * file inside the lib folder
  */
 
 Ti.include('lib/sha1.js');
@@ -17,8 +16,7 @@ var authorizationUI = function() {
 	var authWindow, oauthWebView, signingIn;
    
 	// unloads the UI used to have the user authorize the application
-    var destroyUI = function()
-    {
+    var destroyUI = function() {
         Ti.API.debug('destroyUI');
         // if the window doesn't exist, exit
         if (authWindow == null) return;
@@ -30,9 +28,7 @@ var authorizationUI = function() {
 	        Ti.API.debug('destroyAuthorizeUI:window.close()');
             authWindow.close();
 			signingIn = false;
-        }
-        catch(ex)
-        {
+        } catch(ex) {
             Ti.API.debug('Cannot destroy the authorize UI, ignoring. reason: '+ ex.message);
         }
 
@@ -43,8 +39,7 @@ var authorizationUI = function() {
 
 	// looks for the Oauth Verifier everytime the webview loads
     // currently works only with YAHOO!
-    var lookupVerifier = function(pCallback)
-    {
+    var lookupVerifier = function(pCallback) {
 		return(function(e) {
 	        Ti.API.debug('authorizeUILoaded, looking for oAuth Verifier Code');
 	
@@ -62,11 +57,8 @@ var authorizationUI = function() {
 		});
     };
 
-	var showUI = function(pUrl, pCallback)
-    {
-	
+	var showUI = function(pUrl, pCallback) {
 		if (signingIn != true) {
-	
 			gCallback  = pCallback;
 			authWindow = Ti.UI.createWindow({
 				modal: false,
@@ -129,10 +121,7 @@ var authorizationUI = function() {
 // ====================================
 // = create an OAuthAdapter instance =
 // ====================================
-
-
-var OAuthAdapter = function(pService, authorize)
-{
+var OAuthAdapter = function(pService, authorize) {
 	Ti.API.info('*********************************************');
 	Ti.API.info('CREATING OAUTH ADAPTER INSTANCE');
 	Ti.API.info('*********************************************');
@@ -170,8 +159,7 @@ var OAuthAdapter = function(pService, authorize)
 		return(client.responseText);
 	};
 	
-    var requestToken = function()
-    {
+    var requestToken = function() {
 		var accessor       = { consumerSecret: consumerSecret };
 		var oauth_response = oauthRequest(get_request_token_url, [ [ "oauth_callback", "oob" ] ], accessor);
 		return(oauth_response);
@@ -208,24 +196,18 @@ var OAuthAdapter = function(pService, authorize)
 	};
 	
 	var loadToken = function() {
-        try
-        {
+        try {
 			var file  = tokenFilename();
 			var token = JSON.parse(file.read());
 			
 			if ( ! token.token.oauth_token || token.token.oauth_token === 'undefined'){
 				// IF Token Dict is empty then Starts the Sign Process Again
-				
 				Ti.API.debug("Token{} Empty " + JSON.stringify(token.token));
-				
 			} else {
-			
 				Ti.API.debug("Loading token from file done: " + JSON.stringify(token));
 				return(token);
 			}
-        }
-        catch(e)
-        {
+        } catch(e) {
 			Ti.API.debug("Loading token failed. Reason=" + e.message);
 		}
 	};
@@ -252,26 +234,39 @@ var OAuthAdapter = function(pService, authorize)
 						   ["oauth_token", token.oauth_token],
 						   ["env", "http://datatables.org/alltables.env"]
 						 ];
-		var json = serviceRequest(yql_base_url, parameters, accessorFromToken(token));
-		return(JSON.parse(json));
+		return doQuery(yql_base_url, parameters, accessorFromToken(token));
 	};
 
 	var query2legg = function(pQuery) {
-		var accessor = { consumerSecret: consumerSecret };
 		Ti.API.debug("Function Query2Legg Called");
+		var accessor = { consumerSecret: consumerSecret };
 		var parameters = [ ["format", "json"],
 		 				   ["diagnostics", "false"],
 		 				   ["q", pQuery],
 						   ["env", "http://datatables.org/alltables.env"]
 						 ];
-		var json = serviceRequest(yql_base_url, parameters, accessor);
-		return(JSON.parse(json));
+		return doQuery(yql_base_url, parameters, accessor);
 	};
-
-
+	
+	var doQuery = function(yql_base_url, parameters, token) {
+		var MAX_RETRIES = 5;
+		var json, yqldata, tries = 0;
+		var request = function() {
+			json = serviceRequest(yql_base_url, parameters.slice(0), token);
+			yqldata = JSON.parse(json);
+			tries++;
+		};
+		while ((!yqldata || !yqldata.query || !yqldata.query.results) && (tries < MAX_RETRIES)) {
+			if (tries > 0) {
+				Ti.API.warn('*** BAD *** Retrying YQL query - tried already ' + tries + ' time(s)');
+			}
+			request();
+		};
+		return yqldata;
+	};
+	
 	// will check if access tokens are stored in the config file
-    var login = function(signin, callback)
-    {	
+    var login = function(signin, callback) {	
 		var self  = { query: query };
 		var token = loadToken();
         if (! token) {
@@ -290,11 +285,9 @@ var OAuthAdapter = function(pService, authorize)
 			callback(self, "logged");
 		}
     };
-
-
+	
 	// Logs out from Yahoo! deleting the config file
-    var logout = function(pService)
-	{
+    var logout = function(pService) {
 		Ti.API.debug('Deleting access token [' + pService + '].');
 		var file = tokenFilename();
 		file.deleteFile();

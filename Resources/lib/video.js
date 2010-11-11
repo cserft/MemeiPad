@@ -2,7 +2,7 @@ var getVideoData = function(pContent, callback) {
 	var _videoId, _videoThumb;
 	
 	if (pContent.indexOf("vimeo") != -1){
-		Ti.API.info("Found Vimeo Video: " + pContent);
+		Ti.API.debug("Found Vimeo Video: " + pContent);
 		// If VIMEO VIDEO
 		
 		//REQUEST VIMEO oEmbed DATA
@@ -22,7 +22,7 @@ var getVideoData = function(pContent, callback) {
 		};
 	
 	    xhr.onerror = function(e) {
-	        Ti.API.info("ERROR: " + e.error);
+	        Ti.API.error("ERROR: " + e.error);
 	    };
 	
 	    xhr.onload = function(e) {
