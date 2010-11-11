@@ -254,7 +254,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			left:5,
 			width:307,
 			height:64,
-			opacity:0.9
+			opacity:0.9,
+			zIndex: 99
 		});
 		blackBoxView.add(__id_bg_caption);
 		
