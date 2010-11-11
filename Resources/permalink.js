@@ -205,7 +205,7 @@ if (post.type == "photo"){
 	innerCaption = post.content;
 }
 
-if (innerMedia && innerCaption) {
+if (innerMedia || innerCaption) {
 	postWebView.html = getPostHtml(innerMedia, innerCaption);
 }
 

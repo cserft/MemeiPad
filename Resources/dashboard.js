@@ -237,9 +237,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		width: 317,
 		height: 241,
 		top: 0,
-		pubId:pPubId,
-		guid:pGuid,
-		zindex:99
+		pubId: pPubId,
+		guid: pGuid,
+		zindex: 99
 	});
 	blackBoxView.add(blackBoxLink);
 	
@@ -488,8 +488,7 @@ Titanium.App.addEventListener('openingDetailsFalse', function(e)
 
 tableView.addEventListener('click', function(e)
 {
-	
-	//Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+	Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	
 	// Sets the Permalink Animation startup settings
 	var t = Ti.UI.create2DMatrix();
@@ -674,7 +673,7 @@ tableView.addEventListener('scroll',function(e)
 	if (distance < lastDistance)
 	{
 		// adjust the % of rows scrolled before we decide to start fetching
-		var nearEnd = theEnd * 0.5; 
+		var nearEnd = theEnd * 0.2; 
 		
 		if (!updating && pDashboardType === "logged" && (total >= nearEnd))
 		{
