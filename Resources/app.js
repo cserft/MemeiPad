@@ -1,3 +1,5 @@
+Ti.API.info('APAOKSPAOKSPOAKSPKASPASOASKPAOPKSKPO' + Ti.userAgent);
+
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 
