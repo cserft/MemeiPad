@@ -519,25 +519,18 @@ var flashlight_show = function() {
 				break;
 			
 			case 2: // Web Search
-		
 				Ti.API.info("####### Web Search ");
-		
 				yqlQuery = "SELECT title, abstract FROM search.web WHERE query='" + queryText + "'";
-
+				
 				var yqlData = yql.query(yqlQuery);
 				var items = yqlData.query.results.result;
-
+				
 				//Loop to present the Search Results from the Web
 				var results = [];
-
-				for (var c=0 ; c < items.length ; c++)	
-				{
+				
+				for (var c=0 ; c < items.length ; c++) {
 					var item = items[c];
-				
-					var row = Ti.UI.createTableViewRow({height:78});
-				
 					var titleStripped = item.title.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
-
 					var title = Ti.UI.createLabel({
 						text: titleStripped,
 						width: 310,
@@ -547,14 +540,10 @@ var flashlight_show = function() {
 						textAlign:'left',
 						font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
 					});
-					row.add(title);
-				
-					if (item.abstract != null) {
 					
+					if (item.abstract != null) {
 						var abstractContent = item.abstract;
-
 						var abstractStripped = abstractContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
-
 						var abstract = Ti.UI.createLabel({
 							text: abstractStripped,
 							height:50,
@@ -564,15 +553,28 @@ var flashlight_show = function() {
 							textAlign:'left',
 							font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
 						});
-					
-						row.add(abstract);
 					}
-				
+					
+					// create new row
+					var row = Ti.UI.createTableViewRow({
+						height: 78,
+						titleStripped: titleStripped,
+						abstractStripped: abstractStripped
+					});
+					row.add(title);
+					row.add(abstract);
+					row.addEventListener('click', function(e) {
+						editTitleField.value = e.row.titleStripped;
+						textArea.value = e.row.abstractStripped;
+						popoverSearchView.hide();
+					});
+					
+					// add row to result
 					results[c] = row;
 				}
 				resultsTableView.setData(results);
 				resultsTableView.scrollToIndex(0,{animated:true})
-
+				
 				break;
 				
 			case 3: // Twitter Search
