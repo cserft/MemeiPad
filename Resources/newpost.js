@@ -471,9 +471,7 @@ var flashlight_show = function() {
 				break;
 			
 			case 1: // Flickr
-		
 				Ti.API.info("####### Photo Search ");
-		
 				yqlQuery = "SELECT * FROM flickr.photos.search WHERE text='" + queryText + "' AND license='4'";
 
 				var yqlData = yql.query(yqlQuery);
@@ -482,15 +480,11 @@ var flashlight_show = function() {
 				//Loop to present the Search Results for Flickr
 				var results = [];
 				
-				for (var c=0 ; c < photos.length ; c++)	
-				{
+				for (var c=0 ; c < photos.length ; c++)	{
 					var photo = photos[c];
 				
 					// form the flickr url
 					var thumb = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '_t_d.jpg';
-
-					var row = Ti.UI.createTableViewRow({height:78});
-
 					var title = Ti.UI.createLabel({
 						text: photo.title,
 						height:55,
@@ -499,18 +493,29 @@ var flashlight_show = function() {
 						textAlign:'left',
 						font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
 					});
-
 					var image = Ti.UI.createImageView({
-						image : thumb,
+						image: thumb,
 						backgroundColor: 'black',
 						height:75,
 						width:100,
 						left:2,
 						defaultImage:'images/default_img.png'
 					});
-
+					
+					// create new row
+					var row = Ti.UI.createTableViewRow({height:78});
 					row.add(image);
 					row.add(title);
+					row.add(Ti.UI.createView({
+						height: 78,
+						width: 310,
+						zIndex: 2,
+						title: photo.title,
+						image: thumb,
+						type: 'photo'
+					}));
+					
+					// add row to result
 					results[c] = row;
 				}
 				resultsTableView.setData(results);
@@ -652,6 +657,10 @@ var flashlight_show = function() {
 	
 	resultsTableView.addEventListener('click', function(e) {
 		switch (e.source.type) {
+			case 'photo':
+				textArea.value = e.source.title;
+				//handleImageEvent({ media: image });
+				break;
 			case 'text':
 				editTitleField.value = e.source.title;
 				textArea.value = e.source.abstract;
@@ -757,7 +766,6 @@ btn_post.addEventListener('click', function() {
 
 var handleImageEvent = function(event) {
   theImage = event.media;
-  theThumbnail = event.thumbnail;
   Ti.App.fireEvent("photoChosen");
 };
 
