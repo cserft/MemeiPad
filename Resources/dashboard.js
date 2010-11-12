@@ -154,11 +154,11 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	if(pType == "text"){
 
         var img_quote = Titanium.UI.createImageView({
-            image:'images/minipost_txt_quote.png',
+            image:'images/quote_icon.png',
             top:25,
             left:15,
-            width:20,
-            height:18
+            width:25,
+            height:20
         });
         blackBoxView.add(img_quote);
 
