@@ -557,17 +557,18 @@ var flashlight_show = function() {
 					
 					// create new row
 					var row = Ti.UI.createTableViewRow({
-						height: 78,
-						titleStripped: titleStripped,
-						abstractStripped: abstractStripped
+						height: 78
 					});
 					row.add(title);
 					row.add(abstract);
-					row.addEventListener('click', function(e) {
-						editTitleField.value = e.row.titleStripped;
-						textArea.value = e.row.abstractStripped;
-						popoverSearchView.hide();
-					});
+					row.add(Ti.UI.createView({
+						height: 78,
+						width: 310,
+						zIndex: 2,
+						title: titleStripped,
+						abstract: abstractStripped,
+						type: 'text'
+					}));
 					
 					// add row to result
 					results[c] = row;
@@ -647,6 +648,16 @@ var flashlight_show = function() {
 	//Tabs listeners
 	searchTabs.addEventListener('click', function(e) {
 		Ti.App.fireEvent("showAwesomeSearch", { searchType: e.index });
+	});
+	
+	resultsTableView.addEventListener('click', function(e) {
+		switch (e.source.type) {
+			case 'text':
+				editTitleField.value = e.source.title;
+				textArea.value = e.source.abstract;
+				break;
+		}
+		popoverSearchView.hide();
 	});
 	
 	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
