@@ -9,6 +9,8 @@ dashboard.js
 ------------
 - add a Label "Loading Dashboard..."
 - Application crashes when OAuth token expires
+- Work Araound for Flickr Images
+
 _____ AFTER LAUNCH _____
 - BUG: When Opening newpost.js the Dashboard Rotates
 - Ajustar Header para ser Variavel posicao do Signout em relacao ao tamanho do Login Yahoo!
@@ -20,6 +22,8 @@ _____ AFTER LAUNCH _____
 
 permalink.js
 ------------
+- Work around for Flickr Images
+
 _____ AFTER LAUNCH _____
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)

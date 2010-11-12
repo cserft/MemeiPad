@@ -344,19 +344,18 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 			{
 				case 'photo':
 				{
-					var _content = post.content.thumb;				
+					var _content = post.content.thumb;	
+					
+					// If Flick 
+					if (_content.indexOf("flickr") != -1)
+						{
+							continue; 
+						}			
 					break;
 				}
 				case 'video':
 				{
 					var _content = post.content;
-
-					//IF VIMEO 
-					// if (_content.indexOf("vimeo") != -1)
-					// 				{
-					// 					continue; 
-					// 				}
-
 					break;
 				}
 				case 'text':
@@ -364,7 +363,6 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 					var _content = post.content;
 
 					//Ti.API.debug("Conteudo do Post de Texto: " + _content);
-
 					break;
 				}
 				case 'audio':
