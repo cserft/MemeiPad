@@ -478,9 +478,7 @@ var flashlight_show = function() {
 				break;
 			
 			case 1: // Flickr
-		
 				Ti.API.info("####### Photo Search ");
-		
 				yqlQuery = "SELECT * FROM flickr.photos.search WHERE text='" + queryText + "' AND license='4'";
 
 				var yqlData = yql.query(yqlQuery);
@@ -489,15 +487,11 @@ var flashlight_show = function() {
 				//Loop to present the Search Results for Flickr
 				var results = [];
 				
-				for (var c=0 ; c < photos.length ; c++)	
-				{
+				for (var c=0 ; c < photos.length ; c++)	{
 					var photo = photos[c];
 				
 					// form the flickr url
 					var thumb = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '_t_d.jpg';
-
-					var row = Ti.UI.createTableViewRow({height:78});
-
 					var title = Ti.UI.createLabel({
 						text: photo.title,
 						height:55,
@@ -506,18 +500,29 @@ var flashlight_show = function() {
 						textAlign:'left',
 						font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
 					});
-
 					var image = Ti.UI.createImageView({
-						image : thumb,
+						image: thumb,
 						backgroundColor: 'black',
 						height:75,
 						width:100,
 						left:2,
 						defaultImage:'images/default_img.png'
 					});
-
+					
+					// create new row
+					var row = Ti.UI.createTableViewRow({height:78});
 					row.add(image);
 					row.add(title);
+					row.add(Ti.UI.createView({
+						height: 78,
+						width: 310,
+						zIndex: 2,
+						title: photo.title,
+						image: thumb,
+						type: 'photo'
+					}));
+					
+					// add row to result
 					results[c] = row;
 				}
 				resultsTableView.setData(results);
@@ -526,25 +531,18 @@ var flashlight_show = function() {
 				break;
 			
 			case 2: // Web Search
-		
 				Ti.API.info("####### Web Search ");
-		
 				yqlQuery = "SELECT title, abstract FROM search.web WHERE query='" + queryText + "'";
-
+				
 				var yqlData = yql.query(yqlQuery);
 				var items = yqlData.query.results.result;
-
+				
 				//Loop to present the Search Results from the Web
 				var results = [];
-
-				for (var c=0 ; c < items.length ; c++)	
-				{
+				
+				for (var c=0 ; c < items.length ; c++) {
 					var item = items[c];
-				
-					var row = Ti.UI.createTableViewRow({height:78});
-				
 					var titleStripped = item.title.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
-
 					var title = Ti.UI.createLabel({
 						text: titleStripped,
 						width: 310,
@@ -554,14 +552,10 @@ var flashlight_show = function() {
 						textAlign:'left',
 						font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
 					});
-					row.add(title);
-				
-					if (item.abstract != null) {
 					
+					if (item.abstract != null) {
 						var abstractContent = item.abstract;
-
 						var abstractStripped = abstractContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
-
 						var abstract = Ti.UI.createLabel({
 							text: abstractStripped,
 							height:50,
@@ -571,15 +565,29 @@ var flashlight_show = function() {
 							textAlign:'left',
 							font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
 						});
-					
-						row.add(abstract);
 					}
-				
+					
+					// create new row
+					var row = Ti.UI.createTableViewRow({
+						height: 78
+					});
+					row.add(title);
+					row.add(abstract);
+					row.add(Ti.UI.createView({
+						height: 78,
+						width: 310,
+						zIndex: 2,
+						title: titleStripped,
+						abstract: abstractStripped,
+						type: 'text'
+					}));
+					
+					// add row to result
 					results[c] = row;
 				}
 				resultsTableView.setData(results);
 				resultsTableView.scrollToIndex(0,{animated:true})
-
+				
 				break;
 				
 			case 3: // Twitter Search
@@ -652,6 +660,20 @@ var flashlight_show = function() {
 	//Tabs listeners
 	searchTabs.addEventListener('click', function(e) {
 		Ti.App.fireEvent("showAwesomeSearch", { searchType: e.index });
+	});
+	
+	resultsTableView.addEventListener('click', function(e) {
+		switch (e.source.type) {
+			case 'photo':
+				textArea.value = e.source.title;
+				//handleImageEvent({ media: image });
+				break;
+			case 'text':
+				editTitleField.value = e.source.title;
+				textArea.value = e.source.abstract;
+				break;
+		}
+		popoverSearchView.hide();
 	});
 	
 	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
@@ -751,7 +773,6 @@ btn_post.addEventListener('click', function() {
 
 var handleImageEvent = function(event) {
   theImage = event.media;
-  theThumbnail = event.thumbnail;
   Ti.App.fireEvent("photoChosen");
 };
 
