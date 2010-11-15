@@ -1,5 +1,5 @@
 Ti.include('lib/strip_tags.js');
-Ti.include('lib/video.js');
+Ti.include('lib/commons.js');
 
 var win = Ti.UI.currentWindow;
 
@@ -95,7 +95,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	// create an post view
 	if (pType == "photo"){	
 		
-		getPhotoData(pContent, yql, function(_photoThumb){
+		getPhotoData(pContent, 307, 230, yql, function(_photoThumb){
 			
 		//	Ti.API.debug('my video thumb is [' + _photoThumb + ']');
 				
@@ -351,10 +351,9 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 					if (post.content.content.indexOf("flickr") != -1)
 					{
 						var _content = post.content.content;
-						Ti.API.info('Content From Flickr:' + _content)
+						//Ti.API.info('Content From Flickr:' + _content)
 						
 					} else {
-						
 						var _content = post.content.thumb;
 					}
 								
@@ -368,8 +367,6 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 				case 'text':
 				{
 					var _content = post.content;
-
-					//Ti.API.debug("Conteudo do Post de Texto: " + _content);
 					break;
 				}
 				case 'audio':
@@ -490,7 +487,7 @@ Titanium.App.addEventListener('openingDetailsFalse', function(e)
 
 tableView.addEventListener('click', function(e)
 {
-	Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	
 	// Sets the Permalink Animation startup settings
 	var t = Ti.UI.create2DMatrix();
@@ -509,11 +506,7 @@ tableView.addEventListener('click', function(e)
 		transform: t,
 		yql: yql, //passing Variables to this Window
 		pGuid: e.source.guid,
-		pPubId: e.source.pubId,
-		orientationModes : [
-			Titanium.UI.LANDSCAPE_LEFT,
-			Titanium.UI.LANDSCAPE_RIGHT,
-		]
+		pPubId: e.source.pubId
 	});
 	
 	if (myMemeInfo) {

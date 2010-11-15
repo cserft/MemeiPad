@@ -1,4 +1,4 @@
-Ti.include('lib/video.js');
+Ti.include('lib/commons.js');
 
 var win = Ti.UI.currentWindow;
 
@@ -8,68 +8,6 @@ var _guid = win.pGuid;
 var _pubId = win.pPubId;
 var myMemeInfo = win.myMemeInfo;
 var openingDetails = win.openingDetails;
-
-var timestamp = function() {
-	return((new Date()).getTime());
-};
-
-var now  = timestamp();
-
-// =============================
-// = CACULATES THE HUMANE DATA =
-// =============================
-
-// With this we can create messages like "This post was created 10 minutes ago" or "Just now", etc
-
-function humane_date(date_str){
-	var time_formats = [
-		[60, 'Just Now'],
-		[90, '1 minute'], // 60*1.5
-		[3600, 'minutes', 60], // 60*60, 60
-		[5400, '1 hour'], // 60*60*1.5
-		[86400, 'hours', 3600], // 60*60*24, 60*60
-		[129600, '1 day'], // 60*60*24*1.5
-		[604800, 'days', 86400], // 60*60*24*7, 60*60*24
-		[907200, '1 week'], // 60*60*24*7*1.5
-		[2628000, 'weeks', 604800], // 60*60*24*(365/12), 60*60*24*7
-		[3942000, '1 month'], // 60*60*24*(365/12)*1.5
-		[31536000, 'months', 2628000], // 60*60*24*365, 60*60*24*(365/12)
-		[47304000, '1 year'], // 60*60*24*365*1.5
-		[3153600000, 'years', 31536000], // 60*60*24*365*100, 60*60*24*365
-		[4730400000, '1 century'] // 60*60*24*365*100*1.5
-	];
-	
-	var dt = timestamp(); 
-	var seconds = (dt - date_str)/1000;
-	var token = ' ago';
-	var prepend = '';
-	var i = 0;
-	var format;
-	
-	if (seconds < 0) {
-		seconds = Math.abs(seconds);
-		token = '';
-		prepend = 'in ';
-	}
-	
-	while (format = time_formats[i++]) {
-		if (seconds < format[0]) {
-			if (format.length == 2) {
-				return (i>1?prepend:'') + format[1] + (i > 1 ? token : ''); // Conditional so we don't return Just Now Ago
-			} else {
-				return prepend + Math.round(seconds / format[2]) + ' ' + format[1] + (i > 1 ? token : '');
-			}
-		}
-	}
-	
-	// overflow for centuries
-	if(seconds > 4730400000) {
-		return Math.round(seconds / 4730400000) + ' Centuries' + token;
-	}
-	
-	return date_str;
-};
-
 
 // =======================
 // = DASHBOARD TABLEVIEW =
@@ -125,6 +63,16 @@ var btn_close = Titanium.UI.createButton({
 });
 win.add(btn_close);
 
+btn_close.addEventListener("click", function(e)
+{
+	var t3 = Titanium.UI.create2DMatrix();
+	t3 = t3.scale(0);
+	win.close({transform:t3,duration:200});
+	Ti.App.fireEvent('openingDetailsFalse');
+    // allows for other Permalinks to Open
+	
+});
+
 
 // ========================
 // = geo places retrieval =
@@ -175,23 +123,25 @@ var border = Ti.UI.createView({
 whiteBox.add(border);
 
 var getPostHtml = function(innerMedia, innerCaption) {
-	return '<html><head><title></title><style type="text/css">#wrapper {padding: 20px;width: 700px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px}</style></head><body><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '<br/><br/><br/></div></div></div></body></html>';
+	return '<html><head><title></title><style type="text/css">#wrapper {padding: 20px;width: 700px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px} .post blockquote {background:url("images/quote_innerhtml.png") no-repeat scroll 7px 3px transparent; border-left:2px solid #CCCCCC; font-size:16px; margin:8px 0; padding-left:30px;}</style></head><body><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '<br/><br/><br/></div></div></div></body></html>';
 };
+
+
 
 if (post.type == "photo"){
 	
-	// if (post.content.content.indexOf("flickr") != -1){
-	// 	getPhotoData(post.content, yql, function(_photoThumb, data){
-	// 		innerMedia = data.url;
-	// 		innerCaption = post.caption;
-	// 		postWebView.html = getPostHtml(innerMedia, innerCaption);
-	// 	});
-	// } else {
+	if (post.content.content.indexOf("flickr") != -1){
+		getPhotoData(post.content.content, 550, '',  yql, function(_photoThumb, data){
+			innerMedia = '<img src="' + _photoThumb + '" class="block_clear">';
+			innerCaption = post.caption;
+			postWebView.html = getPostHtml(innerMedia, innerCaption);
+		});
+	} else {
 		innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
 		innerCaption = post.caption;
 		captionStripped = post.caption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
 		// getGeoPlaces(captionStripped);
-	// }
+	}
 	
 	
 } else if (post.type == "video"){
@@ -343,15 +293,6 @@ if (myMemeInfo){
 // = LISTENERS =
 // =============
 
-btn_close.addEventListener("click", function(e)
-{
-	var t3 = Titanium.UI.create2DMatrix();
-	t3 = t3.scale(0);
-	win.close({transform:t3,duration:200});
-	Ti.App.fireEvent('openingDetailsFalse');
-    // allows for other Permalinks to Open
-	
-});
 
 btn_repost.addEventListener("click", function(e)
 {

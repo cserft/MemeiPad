@@ -9,7 +9,6 @@ dashboard.js
 ------------
 - add a Label "Loading Dashboard..."
 - Application crashes when OAuth token expires
-- Work Araound for Flickr Images
 
 _____ AFTER LAUNCH _____
 - BUG: When Opening newpost.js the Dashboard Rotates
@@ -22,7 +21,6 @@ _____ AFTER LAUNCH _____
 
 permalink.js
 ------------
-- Work around for Flickr Images
 
 _____ AFTER LAUNCH _____
 - Animation when reposting
@@ -32,6 +30,7 @@ _____ AFTER LAUNCH _____
 - Total stripper for HTML Entities and send it to Placemaker()
 - Use Place maker to detect places on a given Post and Show them on the Map.
 - Play Audio
+- Add Flickr user and link just like it happens on Meme
 
 newpost.js
 ----------
