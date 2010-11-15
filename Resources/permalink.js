@@ -180,10 +180,19 @@ var getPostHtml = function(innerMedia, innerCaption) {
 
 if (post.type == "photo"){
 	
-	innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
-	innerCaption = post.caption;
-	captionStripped = post.caption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
-	// getGeoPlaces(captionStripped);
+	// if (post.content.content.indexOf("flickr") != -1){
+	// 	getPhotoData(post.content, yql, function(_photoThumb, data){
+	// 		innerMedia = data.url;
+	// 		innerCaption = post.caption;
+	// 		postWebView.html = getPostHtml(innerMedia, innerCaption);
+	// 	});
+	// } else {
+		innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
+		innerCaption = post.caption;
+		captionStripped = post.caption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+		// getGeoPlaces(captionStripped);
+	// }
+	
 	
 } else if (post.type == "video"){
 	

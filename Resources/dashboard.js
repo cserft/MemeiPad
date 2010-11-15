@@ -91,44 +91,48 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		blackBoxView.left = 675;
 	}
 	
+	
 	// create an post view
 	if (pType == "photo"){	
 		
-		var postImageView = Titanium.UI.createImageView({
-			image: pContent,
-			top:5,
-			left:5,
-			width:307,
-			height: 'auto',
-			defaultImage: 'images/default_img.png'
+		getPhotoData(pContent, yql, function(_photoThumb){
+			
+		//	Ti.API.debug('my video thumb is [' + _photoThumb + ']');
+				
+			var postImageView = Ti.UI.createImageView({
+				image: _photoThumb,
+				top:5,
+				left:5,
+				width:307,
+				height: 'auto',
+				zIndex: 0,
+				defaultImage: 'images/default_img.png'
+			});
+			blackBoxView.add(postImageView);
+
+			if (pContent.indexOf(".gifa") != -1){
+
+				var img_play_btn = Ti.UI.createImageView({
+		            image:'images/play.png',
+		            top:86,
+		            left:134,
+		            width:38,
+		            height:38
+		        });
+		        blackBoxView.add(img_play_btn);
+
+			}
+			
 		});
-		blackBoxView.add(postImageView);
 		
-		if (pContent.indexOf(".gifa") != -1){
-			
-			//Ti.API.info("Found a Animated GIF: " + pContent);
-			
-			var img_play_btn = Titanium.UI.createImageView({
-	            image:'images/play.png',
-	            top:86,
-	            left:134,
-	            width:38,
-	            height:38
-	        });
-	        blackBoxView.add(img_play_btn);
-			
-		} else {
-			
-			
-		}	
 	}
 	
 	// create an Video view
 	if (pType == "video") {	
 		getVideoData(pContent, function(_videoThumb) {
-			Ti.API.debug('my video thumb is [' + _videoThumb + ']');
+		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
 
-			var postImageView = Titanium.UI.createImageView({
+			var postImageView = Ti.UI.createImageView({
 				image: _videoThumb,
 				top:5,
 				left:5,
@@ -138,7 +142,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			});
 			blackBoxView.add(postImageView);
 
-	        var img_play_btn = Titanium.UI.createImageView({
+	        var img_play_btn = Ti.UI.createImageView({
 	            image:'images/play.png',
 	            top:96,
 	            left:134,
@@ -153,7 +157,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	if(pType == "text"){
 
-        var img_quote = Titanium.UI.createImageView({
+        var img_quote = Ti.UI.createImageView({
             image:'images/quote_icon.png',
             top:25,
             left:15,
@@ -166,7 +170,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 
 	   // var pContentStripado = strip_tags(pContent);
 
-       var minipost_text = Titanium.UI.createLabel({
+       var minipost_text = Ti.UI.createLabel({
            color:'#FFF',
            text: pContentStripado,
            textAlign:'left',
@@ -180,7 +184,6 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		if (pContentStripado.length < 30){
 			
 			minipost_text.font = {fontSize:30,fontFamily:'Helvetica Neue'};
-			// minipost_text.top = 0;
 			
 		} else if (pContentStripado.length < 60) {
 			
@@ -194,10 +197,10 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
        blackBoxView.add(minipost_text);
    }
 	
+
 	// add the Caption to the BlackBox
-	
 	if (pCaption != undefined && pCaption.length >0 && pCaption != "") {
-	
+
 		var __id_bg_caption = Titanium.UI.createView({
 			backgroundColor:'#000',
 			top:177,
@@ -205,13 +208,13 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			width:307,
 			height:64,
 			opacity:0.9,
-			zIndex: 99
+			zIndex: 50
 		});
 		blackBoxView.add(__id_bg_caption);
-		
+
 		//Strips HTML Entities and Tags from the Caption
 		var pCaptionStripped = strip_tags(pCaption);
-	
+
 		var __id_caption = Titanium.UI.createLabel({
 			color:'#FFF',
 			text: pCaptionStripped,
@@ -334,7 +337,7 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 		var _type 		= post.type;
 		var _guid 		= post.guid;
 		var _originPubId = post.origin_pubid;
-
+		
 		// Checks the types of posts and then sets the proper content
 		// We don't render Video Videos and Comments
 
@@ -343,14 +346,18 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 			switch(_type)
 			{
 				case 'photo':
-				{
-					var _content = post.content.thumb;	
-					
+				{	
 					// If Flick 
-					if (_content.indexOf("flickr") != -1)
-						{
-							continue; 
-						}			
+					if (post.content.content.indexOf("flickr") != -1)
+					{
+						var _content = post.content.content;
+						Ti.API.info('Content From Flickr:' + _content)
+						
+					} else {
+						
+						var _content = post.content.thumb;
+					}
+								
 					break;
 				}
 				case 'video':
@@ -408,7 +415,6 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 
 		itemPerRowCount++;
 		
-		
 		// Verifies if it is the third post and closes the row
 		if (itemPerRowCount == 3){
 			
@@ -429,9 +435,7 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 				
 					tableView.appendRow(row,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.NONE});
 
-				//	Ti.API.info("###### APPENDING Row number: " + lastRow );
-				
-					// data.push(row);
+					//	Ti.API.info("###### APPENDING Row number: " + lastRow );
 				}
 			
 		} else {

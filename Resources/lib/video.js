@@ -12,7 +12,7 @@ var getVideoData = function(pContent, callback) {
 		    try {
 		      if (this.readyState == 4) {
 		           var results = JSON.stringify(this.responseText);
-					Ti.API.debug("Response Text on State 4: " + results);
+				//	Ti.API.debug("Response Text on State 4: " + results);
 
 		        }
 		    } catch(e) {
@@ -25,12 +25,12 @@ var getVideoData = function(pContent, callback) {
 	    };
 	
 	    xhr.onload = function(e) {
-			var vimeoEmbed = JSON.parse(this.responseText);
+			var data = JSON.parse(this.responseText);
 
-	        videoThumb = vimeoEmbed.thumbnail_url;
+	        videoThumb = data.thumbnail_url;
 			Ti.API.debug('got thumbnail for vimeo: ' + videoThumb);
 			
-			callback(videoThumb, vimeoEmbed);
+			callback(videoThumb, data);
 	    };
 	
 		eContent = encodeURIComponent(pContent);
@@ -42,5 +42,53 @@ var getVideoData = function(pContent, callback) {
 		videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
         videoThumb = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
 		callback(videoThumb);
+	}
+};
+
+var getPhotoData = function(pContent, yql, callback) {
+	var photoThumb;
+	
+	if (pContent.indexOf("flickr") != -1){
+		// IF FLICKR PHOTO
+		
+		var xhr = Titanium.Network.createHTTPClient();
+	
+		xhr.onreadystatechange = function() {
+
+		    try {
+		      if (this.readyState == 4) {
+		           var results = JSON.stringify(this.responseText);
+					//Ti.API.debug("Response Text on State 4: " + results);
+
+		        }
+		    } catch(e) {
+		        Ti.API.debug("Error: " + e.error);
+		    }
+		};
+	
+	    xhr.onerror = function(e) {
+	        Ti.API.error("ERROR: " + e.error);
+	    };
+	
+	    xhr.onload = function(e) {
+			var data = JSON.parse(this.responseText);
+			
+			// Ti.API.info("Data from Flickr oEmbed Call: " + JSON.stringify(data));
+
+	        photoThumb = data.url;
+			// Ti.API.debug('got thumbnail for Flickr: ' + photoThumb);
+			
+			callback(photoThumb, data);
+	    };
+	
+		eContent = encodeURIComponent(pContent);
+	    xhr.open('GET','http://www.flickr.com/services/oembed/?maxwidth=310&format=json&url=' + pContent);
+		xhr.setRequestHeader('X-Requested-With', '');
+		xhr.send();
+		
+	} else {
+		//ELSE REGULAR PHOTO
+        photoThumb = pContent;
+		callback(photoThumb);
 	}
 };

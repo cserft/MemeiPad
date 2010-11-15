@@ -1,5 +1,3 @@
-Ti.API.info('APAOKSPAOKSPOAKSPKASPASOASKPAOPKSKPO' + Ti.userAgent);
-
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 
@@ -256,26 +254,29 @@ var showDashboard = function(yql,pDashboardType) {
 // ==========================
 // = CREATE THE POST WINDOW =
 // ==========================
+// 
+// tempPostLabel.animate({zIndex: 0, top : 120 + img.size.height});
+// 
+var a = Titanium.UI.createAnimation();
+a.duration = 200;
+a.top = 0;
+
 var newPost = function(yql) {
 	Ti.UI.createWindow({
 		url: 'newpost.js',
 		title: 'New Post',
 		backgroundColor: 'white',
 		left: 0,
-		top: 0,
+		top: 749,
 		height: 748,
 		width: 1024,
 		yql: yql,
 		zIndex: 3,
-		modal: true,
-		modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
-		modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FULLSCREEN,
-		navBarHidden: true,
-		orientationModes: [
-			Titanium.UI.LANDSCAPE_LEFT,
-			Titanium.UI.LANDSCAPE_RIGHT
-		]
-	}).open();
+		// modal: true,
+		// 	modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
+		// 	modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FULLSCREEN,
+		navBarHidden: true
+	}).open(a);
 };
 	
 //  CREATE CUSTOM LOADING INDICATOR

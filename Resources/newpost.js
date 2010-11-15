@@ -17,6 +17,13 @@ if (Ti.App.Properties.hasProperty('draft_post')) {
 	Ti.App.Properties.removeProperty('draft_post');
 }
 
+// animation on zclose Window
+var animeClose = Titanium.UI.createAnimation({
+	duration: 200,
+	top: 749	
+});
+
+
 // ===============
 // = Header View =
 // ===============
@@ -45,7 +52,7 @@ var btn_close_post = Ti.UI.createButton({
 postHeaderView.add(btn_close_post);
 
 btn_close_post.addEventListener('click', function() {
-	win.close();
+	win.close(animeClose);
 	
 	Ti.API.debug('Saving post on properties: title[' + postTitle + '], body[' + postBody + ']');
 	Ti.App.Properties.setList('draft_post', [ postTitle, postBody ]);
@@ -952,7 +959,7 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	var alert = Titanium.UI.createAlertDialog(alertInfo);
   	alert.show();
 	alert.addEventListener('click',function(e) {
-		win.close();
+		win.close(animeClose);
 		btn_post.enabled = true;
 		Ti.App.fireEvent('reloadDashboard');
 	});
