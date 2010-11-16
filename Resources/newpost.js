@@ -696,7 +696,7 @@ var flashlight_show = function() {
 		switch (e.source.type) {
 			case 'photo':
 				if (e.source.title != "") {
-					textArea.value = e.source.title;
+					editTitleField.value = e.source.title;
 					tempPostLabel.hide();	
 				}
 				theImage = e.source.fullPhoto;
@@ -835,26 +835,22 @@ var getImagePreviewSizes = function(max_side_size, original_img) {
 };
 
 Ti.App.addEventListener("photoChosen", function(e) {
-	
+	//Closes the Keyboard if open
+	textArea.blur();
+	editTitleField.blur();
+	searchTextField.blur();
+	Ti.API.info('Image Type: ' + typeof(theImage));
 
 	if (e.typePhoto == 'flashlight') {
-		//IF FlashLight image is selected then:
-		var imageHeight = img.size.height;
-		var imageWidth = img.size.width;
-		
+		img.width = 400;
+		img.height = 400;
 		img.image = theImage;
-		// img.width = imageWidth;
-		// img.height = imageHeight;
-		img.defaultImage = 'images/default_img.png';
+		img.defaultImage = 'images/default_img_white.png';
 		viewContainerPhoto.show();
-		
-		 Ti.API.info(" Sizes - W: " + imageWidth + " H: " + imageHeight);
 
 	} else {
 		
 		// If it is a local image
-		Ti.API.info('Entered on the ELSE from Photo Chosen Event');
-	
 		if ((theImage.width > 3000) || (theImage.height > 3000)) {
 			Titanium.UI.createAlertDialog({ 
 				title: 'Oops...', 
@@ -869,13 +865,13 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	
 		// img properties
 		img.image = theImage;
-		img.height = preview_sizes.height + 'px';
-		img.width = preview_sizes.width + 'px';
+		img.height = preview_sizes.height;
+		img.width = preview_sizes.width;
 		viewContainerPhoto.visible = true;
 	}
 	
 	//adds the close button to the image
-	var photo_close_x = img.size.width - 24;
+	var photo_close_x = img.width - 24;
 	btn_photo_close.left = photo_close_x;
 	btn_photo_close.visible = true;
 
@@ -884,7 +880,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	textArea.animate({zIndex: 0, top: textArea_top});
 
 	//Repositioned the Temp Caption on top of the TextArea
-	tempPostLabel.animate({zIndex: 0, top : 120 + img.size.height});
+	tempPostLabel.animate({zIndex: 0, top: 120 + img.size.height});
 });
 
 // to remove the photo chosen
@@ -934,7 +930,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	//Shows the Upload Progress bar
 	showProgressView('show', 'Preparing to post...');
 	
-	if (theImage != null) {
+	if (theImage != null && typeof(theImage) == 'object') {
 		// IF there is a Image to Upload
 		var xhr = Titanium.Network.createHTTPClient();
 	
@@ -954,6 +950,13 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	
 	 	xhr.open('GET', 'http://meme-ios-backend.appspot.com/img/upload/url');
 	  	xhr.send();
+	
+	} else if (theImage != null && typeof(theImage) == 'string') {
+		Titanium.App.fireEvent("postOnMeme", {
+			postType: "photo",
+			media_link: theImage,
+			message: postText
+		});
 	
 	} else {
 		// Else is Only Text
@@ -984,7 +987,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 		var uploadResult = JSON.parse(this.responseText);
 	
 		Titanium.App.fireEvent("postOnMeme", {
-				postType: "photo",
+			   postType: "photo",
 			   media_link: uploadResult.url,
 			   message: postText
 		});
@@ -1014,6 +1017,7 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	// Verifies the Type of Post and selects the Proper YQL Query
 	if (e.postType == "photo") {
 		yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('"+ e.postType +"', '" + e.media_link + "', '" + e.message + "')";
+		
 	} else if (e.postType == "text"){
 		yqlQuery = "INSERT INTO meme.user.posts (type, content) VALUES ('"+ e.postType +"', '" + e.message + "')";
 		
