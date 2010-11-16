@@ -40,7 +40,7 @@ newpost.js
 - Fix the detection of Photo and post only text
 - Add listener to the search results to add the info in the Post area
 _____ AFTER LAUNCH _____
-- When clicking on FlashLight Button, should bring the last search results
+- When changing tabs on FlashLight Search, should keep the table and not perform another search
 - Better treatment of Web Results when abstract is empty
 - Use Place maker to detect places on a given Post and Show them on the Map.
 - Handle post later
