@@ -403,15 +403,15 @@ var monitor_started = false;
 var monitor_value;
 var last_monitor_value;
 
+var verifyMediaLink = function (pContent) {
+
+	// //CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
+	// var youtubeVideoId = searchTextField.value.match(/v=([a-zA-Z0-9_-]{11})&?/)[0];
+	// var youtube_short = searchTextField.value.match(/youtu.be\/([a-zA-Z0-9_-]{11})&?/)[0]);
+	// 
+}
+
 var flashlight_text_change_monitor = function(new_monitor_value) {
-	
-	// var verifyMediaLink = function (pContent) {
-	// 	
-	// 	//CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
-	// 	var youtubeVideoId = searchTextField.value.match(/v=([a-zA-Z0-9_-]{11})&?/)[0];
-	// 	       $youtube_short = preg_match('/youtu.be\/([a-zA-Z0-9_-]{11})&?/', $url, $youtube_short_match);
-	// 	
-	// }
 	
 	Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
 	monitor_value = new_monitor_value;
@@ -708,6 +708,14 @@ var flashlight_show = function() {
 					});
 					
 					row.add(tweet);
+					row.add(Ti.UI.createView({
+						height: 78,
+						width: 310,
+						zIndex: 2,
+						username: '@' + item.from_user,
+						tweet: item.text,
+						type: 'twitter'
+					}));
 			
 					results[c] = row;
 				}
@@ -778,14 +786,15 @@ var flashlight_show = function() {
 				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 
 				break;
+				
 			case 'twitter':
 	    	//Removes whatever medias where ther ebefore
 			Ti.App.fireEvent("photoRemoved");
-			if (e.source.abstract != "") {
-				textArea.value = e.source.abstract;
-				postBody = e.source.abstract;
-				tempPostLabel.hide();
-			}
+		
+			textArea.value = e.source.username + '\n' + e.source.tweet;
+			postBody = '<blockquote><strong>' + e.source.username + '</strong><p>\n</p>' + e.source.tweet + '</blockquote>';
+			tempPostLabel.hide();
+			
 			break;
 		}
 		
