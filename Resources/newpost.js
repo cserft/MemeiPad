@@ -94,13 +94,6 @@ var btn_flashlight = Ti.UI.createButton({
 });
 postHeaderView.add(btn_flashlight);
 
-// Flashlight button listener
-btn_flashlight.addEventListener('click', function() {
-
-	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
-	
-});
-
 //creates the popover for the results
 var popoverSearchView = Titanium.UI.iPad.createPopover({ 
 	width:330, 
@@ -415,6 +408,22 @@ var flashlight_monitor = function() {
 	}
 };
 
+// Tabs
+var tabsButtons = [
+	{image:'images/tab_icon_video.png'},
+	{image:'images/tab_icon_foto.png'},
+	{image:'images/tab_icon_web.png'},	
+	{image:'images/tab_icon_twitter.png'}	
+];
+var searchTabs = Titanium.UI.createTabbedBar({
+	labels:tabsButtons,
+	backgroundColor:'#333',
+	top:0,
+	height:49,
+	style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
+	index:0,
+});
+
 var flashlight_show = function() {
 	queryText = searchTextField.value;
 	
@@ -424,22 +433,6 @@ var flashlight_show = function() {
 	});
 
 	popoverSearchView.add(resultsTableView);
-	
-	// Tabs
-	var tabsButtons = [
-		{image:'images/tab_icon_video.png'},
-		{image:'images/tab_icon_foto.png'},
-		{image:'images/tab_icon_web.png'},	
-		{image:'images/tab_icon_twitter.png'}	
-	];
-	var searchTabs = Titanium.UI.createTabbedBar({
-		labels:tabsButtons,
-		backgroundColor:'#333',
-		top:0,
-		height:49,
-		style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
-		index:0,
-	});
 
 	popoverSearchView.add(searchTabs);
 	
@@ -500,7 +493,8 @@ var flashlight_show = function() {
 					results[c] = row;
 				}
 				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true})
+				resultsTableView.scrollToIndex(0,{animated:true});
+				searchTabs.index = e.searchType;
 			
 				break;
 			
@@ -554,7 +548,8 @@ var flashlight_show = function() {
 					results[c] = row;
 				}
 				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true})
+				resultsTableView.scrollToIndex(0,{animated:true});
+				searchTabs.index = e.searchType;
 
 				break;
 			
@@ -614,7 +609,8 @@ var flashlight_show = function() {
 					results[c] = row;
 				}
 				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true})
+				resultsTableView.scrollToIndex(0,{animated:true});
+				searchTabs.index = e.searchType;
 				
 				break;
 				
@@ -673,7 +669,8 @@ var flashlight_show = function() {
 					results[c] = row;
 				}
 				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true})
+				resultsTableView.scrollToIndex(0,{animated:true});
+				searchTabs.index = e.searchType;
 
 				break;
 		}
@@ -723,6 +720,14 @@ var flashlight_show = function() {
 // ================================
 // = AWESOME BAR SEARCH LISTENERS =
 // ================================
+// Flashlight button listener
+btn_flashlight.addEventListener('click', function() {
+
+	Ti.App.fireEvent("showAwesomeSearch", {searchType: searchTabs.index});
+	
+});
+
+
 searchTextField.addEventListener('change', function(e) {
 	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
 	flashlight_text_change_monitor(searchTextField.value);

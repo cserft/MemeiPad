@@ -37,7 +37,6 @@ newpost.js
 ----------
 - Split the Legal Disclaimers allowing different clicks to open different Links
 - Bug when add a Photo, then replace with other (the close button is in the wrong place)
-- Fix the detection of Photo and post only text
 - Add listener to the search results to add the info in the Post area
 _____ AFTER LAUNCH _____
 - When changing tabs on FlashLight Search, should keep the table and not perform another search
