@@ -272,9 +272,6 @@ var newPost = function(yql) {
 		width: 1024,
 		yql: yql,
 		zIndex: 3,
-		// modal: true,
-		// 	modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
-		// 	modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FULLSCREEN,
 		navBarHidden: true
 	}).open(a);
 };

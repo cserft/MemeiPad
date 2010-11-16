@@ -17,9 +17,9 @@ if (Ti.App.Properties.hasProperty('draft_post')) {
 	Ti.App.Properties.removeProperty('draft_post');
 }
 
-// animation on zclose Window
+// animation on close Window
 var animeClose = Titanium.UI.createAnimation({
-	duration: 200,
+	duration: 300,
 	top: 749	
 });
 
@@ -51,12 +51,6 @@ var btn_close_post = Ti.UI.createButton({
 });
 postHeaderView.add(btn_close_post);
 
-btn_close_post.addEventListener('click', function() {
-	win.close(animeClose);
-	
-	Ti.API.debug('Saving post on properties: title[' + postTitle + '], body[' + postBody + ']');
-	Ti.App.Properties.setList('draft_post', [ postTitle, postBody ]);
-});
 
 // =========================
 // = Awesome bar TextField =
@@ -79,6 +73,16 @@ var searchTextField = Titanium.UI.createTextField({
 });
 postHeaderView.add(searchTextField);
 
+// AJAX when using Flashlight
+var actIndFlashlight = Ti.UI.createActivityIndicator({
+	top: 			10, 
+	left: 			410,
+	height: 		20,
+	width: 			20,
+	style: 			Titanium.UI.iPhone.ActivityIndicatorStyle.DARK
+});
+searchTextField.add(actIndFlashlight);
+
 var btn_flashlight = Ti.UI.createButton({
 	backgroundImage: 'images/btn_flashlight.png',
 	width: 			162,
@@ -89,6 +93,13 @@ var btn_flashlight = Ti.UI.createButton({
 	
 });
 postHeaderView.add(btn_flashlight);
+
+// Flashlight button listener
+btn_flashlight.addEventListener('click', function() {
+
+	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
+	
+});
 
 //creates the popover for the results
 var popoverSearchView = Titanium.UI.iPad.createPopover({ 
@@ -214,13 +225,14 @@ var viewContainerPhoto = Titanium.UI.createView({
 	height: 		'auto',
 	borderRadius: 	0,
 	visible: 		false,
+	// backgroundColor: 'red',
 	zIndex: 		2
 });
 editView.add(viewContainerPhoto);
 
 //Create Image view to display Photo from Selection from the Gallery
 var img = Titanium.UI.createImageView({
-	img: 		theImage,
+	// image: 		theImage,
 	width: 		'auto',
 	height: 	'auto'
 });
@@ -231,14 +243,15 @@ var btn_photo_close = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
 	width: 			22,
 	height: 		22,
-	top: 			2
+	top: 			2,
+	zIndex: 		10
 });
 viewContainerPhoto.add(btn_photo_close);
 
 //Main TextArea
 var textArea = Titanium.UI.createTextArea({
 	value: postBody,
-	height: 		200,
+	height: 		600,
 	width: 			954,
 	top: 			79,
 	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
@@ -247,7 +260,6 @@ var textArea = Titanium.UI.createTextArea({
 	textAlign: 		'left',
 	appearance: 	Titanium.UI.KEYBOARD_APPEARANCE_ALERT,	
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
-	//returnKeyType:Titanium.UI.RETURNKEY_EMERGENCY_CALL,
 	suppressReturn: false,
 	zIndex: 		0
 	
@@ -360,6 +372,19 @@ function showProgressView (pCommand, pMessage) {
 // = LISTENERS =
 // =============
 
+btn_close_post.addEventListener('click', function() {
+
+	win.close(animeClose);
+	
+	//Closes the Keyboard if open
+	textArea.blur();
+	editTitleField.blur();
+	searchTextField.blur();
+	
+	Ti.API.debug('Saving post on properties: title[' + postTitle + '], body[' + postBody + ']');
+	Ti.App.Properties.setList('draft_post', [ postTitle, postBody ]);
+});
+
 // ======================
 // = AWESOME SEARCH BAR =
 // ======================
@@ -419,6 +444,8 @@ var flashlight_show = function() {
 	popoverSearchView.add(searchTabs);
 	
 	Ti.App.addEventListener('showAwesomeSearch', function (e) {
+		
+		actIndFlashlight.show();
 
 		Ti.API.info("####### Type of search: " + e.searchType);
 
@@ -492,6 +519,7 @@ var flashlight_show = function() {
 				
 					// form the flickr url
 					var thumb = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '_t_d.jpg';
+					var fullPhoto = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '.jpg';
 					var title = Ti.UI.createLabel({
 						text: photo.title,
 						height:55,
@@ -518,7 +546,7 @@ var flashlight_show = function() {
 						width: 310,
 						zIndex: 2,
 						title: photo.title,
-						image: thumb,
+						fullPhoto: fullPhoto,
 						type: 'photo'
 					}));
 					
@@ -653,8 +681,10 @@ var flashlight_show = function() {
 		//show the Popover
 		popoverSearchView.show({
 			view:btn_flashlight,
-			animated:true,
+			animated:true
 		});
+		
+		actIndFlashlight.hide();
 	});
 	
 	//Tabs listeners
@@ -663,14 +693,25 @@ var flashlight_show = function() {
 	});
 	
 	resultsTableView.addEventListener('click', function(e) {
+		
+		// Ti.API.info("Full Photo:  [" + e.source.fullPhoto + "] and Title: [" + e.source.title + "]");
+		
 		switch (e.source.type) {
 			case 'photo':
-				textArea.value = e.source.title;
-				//handleImageEvent({ media: image });
+				if (e.source.title != "") {
+					textArea.value = e.source.title;
+					tempPostLabel.hide();	
+				}
+				theImage = e.source.fullPhoto;
+				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 				break;
 			case 'text':
+			
+			if (e.source.abstract != "") {
+				textArea.value = e.source.title;
+				tempPostLabel.hide();	
+			}
 				editTitleField.value = e.source.title;
-				textArea.value = e.source.abstract;
 				break;
 		}
 		popoverSearchView.hide();
@@ -789,33 +830,54 @@ var getImagePreviewSizes = function(max_side_size, original_img) {
 };
 
 Ti.App.addEventListener("photoChosen", function(e) {
-	if ((theImage.width > 3000) || (theImage.height > 3000)) {
-		Titanium.UI.createAlertDialog({ 
-			title: 'Oops...', 
-			message: 'The chosen image is too large to post. Please pick another one.' 
-		}).show();
-		theImage = null;
-		return;
+	
+
+	if (e.typePhoto == 'flashlight') {
+		//IF FlashLight image is selected then:
+		var imageHeight = img.size.height;
+		var imageWidth = img.size.width;
+		
+		img.image = theImage;
+		// img.width = imageWidth;
+		// img.height = imageHeight;
+		img.defaultImage = 'images/default_img.png';
+		viewContainerPhoto.show();
+		
+		 Ti.API.info(" Sizes - W: " + imageWidth + " H: " + imageHeight);
+
+	} else {
+		
+		// If it is a local image
+		Ti.API.info('Entered on the ELSE from Photo Chosen Event');
+	
+		if ((theImage.width > 3000) || (theImage.height > 3000)) {
+			Titanium.UI.createAlertDialog({ 
+				title: 'Oops...', 
+				message: 'The chosen image is too large to post. Please pick another one.' 
+			}).show();
+			theImage = null;
+			return;
+		}
+	
+		// set smaller size for preview (max 250px for the biggest side)
+		preview_sizes = getImagePreviewSizes(400, theImage);
+	
+		// img properties
+		img.image = theImage;
+		img.height = preview_sizes.height + 'px';
+		img.width = preview_sizes.width + 'px';
+		viewContainerPhoto.visible = true;
 	}
-	
-	// set smaller size for preview (max 250px for the biggest side)
-	preview_sizes = getImagePreviewSizes(400, theImage);
-	
-	// img properties
-	img.image = theImage;
-	img.height = preview_sizes.height + 'px';
-	img.width = preview_sizes.width + 'px';
-	viewContainerPhoto.visible = true;
 	
 	//adds the close button to the image
 	var photo_close_x = img.size.width - 24;
 	btn_photo_close.left = photo_close_x;
 	btn_photo_close.visible = true;
-	
+
 	// Repositioned the TextArea below the chosen photo
 	var textArea_top =  img.size.height + 109;
 	textArea.animate({zIndex: 0, top: textArea_top});
-	
+
 	//Repositioned the Temp Caption on top of the TextArea
 	tempPostLabel.animate({zIndex: 0, top : 120 + img.size.height});
 });
