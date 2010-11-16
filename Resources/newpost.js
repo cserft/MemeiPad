@@ -226,9 +226,22 @@ var viewContainerPhoto = Titanium.UI.createView({
 });
 editView.add(viewContainerPhoto);
 
+// Create our Webview to render the Video Preview
+var webViewPreview = Ti.UI.createWebView({
+        html: '',
+		top:0,
+		width: 640,
+		height: 385,
+        left:0,
+        loading: true,
+		visible: false
+});
+
 //Create Image view to display Photo from Selection from the Gallery
 var img = Titanium.UI.createImageView({
 	// image: 		theImage,
+	left: 		0,
+	top: 		0,
 	width: 		'auto',
 	height: 	'auto'
 });
@@ -719,11 +732,13 @@ var flashlight_show = function() {
 					postTitle = e.source.title;
 				}
 				theImage = e.source.fullPhoto;
+				textArea.value = "";
 				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 				break;
 				
 			case 'text':
-			
+		    	//Removes whatever medias where ther ebefore
+				Ti.App.fireEvent("photoRemoved");
 				if (e.source.abstract != "") {
 					textArea.value = e.source.abstract;
 					postBody = e.source.abstract;
@@ -882,26 +897,36 @@ Ti.App.addEventListener("photoChosen", function(e) {
 
 	if (e.typePhoto == 'flashlight') {
 		//FlashLight Content was clicked
-		img.width = 480;
-		img.height = 360;
-		img.image = theImage;
-		img.defaultImage = 'images/default_img_white.png';
-		viewContainerPhoto.show();
+	
 		
 		// If the content from FlashLight is a Video then presents a Video Player
 		if (theImage.indexOf("ytimg") != -1){
 			
+			webViewPreview.html = '';
+			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
+			img.image = null;
+			
 			// Create our Webview to render the Video
-			var webView = Ti.UI.createWebView({
-			        html: '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>',
-					top:0,
-					width: 640,
-					height: 385,
-			        left:0,
-			        loading: true
-			});
-			viewContainerPhoto.add(webView);
+			webViewPreview.html = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
+			webViewPreview.visible = true;
+			viewContainerPhoto.add(webViewPreview);
+			viewContainerPhoto.show();
+			
+		} else {	
+			// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
+			webViewPreview.html = '';
+			webViewPreview.visible = false;
+			viewContainerPhoto.remove(webViewPreview);
+			
+			//DEFINES THE BASIC IMAGE VIEW FOR THE PREVIEW
+			// TODO: DETECT THE IMAGE SIZE AND DESIGN PROPERLY
+			img.width = 400;
+			img.height = 400;
+			img.image = theImage;
+			img.defaultImage = 'images/default_img_white.png';
+			viewContainerPhoto.show();
 		}
+		
 
 	} else {
 		
@@ -926,22 +951,24 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	}
 	
 	//adds the close button to the image
-	var photo_close_x = 10;
-	btn_photo_close.left = 10;
+	var photo_close_x = 0;
+	btn_photo_close.left = 0;
 	btn_photo_close.visible = true;
 
 	// Repositioned the TextArea below the chosen photo
-	var textArea_top =  img.size.height + 109;
+	var textArea_top =  viewContainerPhoto.size.height + 109;
 	textArea.animate({zIndex: 0, top: textArea_top});
 
 	//Repositioned the Temp Caption on top of the TextArea
-	tempPostLabel.animate({zIndex: 0, top: 120 + img.size.height});
+	tempPostLabel.animate({zIndex: 0, top: 120 + viewContainerPhoto.size.height});
 });
 
 // to remove the photo chosen
 Ti.App.addEventListener("photoRemoved", function(e) {
 	theImage = null;
-	viewContainerPhoto.visible = false;
+	webViewPreview.visible = false;
+	viewContainerPhoto.add(webViewPreview);
+	viewContainerPhoto.hide();
 	viewContainerPhoto.width = 'auto';
 	btn_photo_close.visible = false;
 	textArea.animate({top: 79});
@@ -951,7 +978,7 @@ Ti.App.addEventListener("photoRemoved", function(e) {
 //Alert to remove the photo
 var alertCloseImage = Titanium.UI.createAlertDialog({
 	title: 'Remove',
-	message: 'Are you sure you want to remove the photo?',
+	message: 'Are you sure you want to remove this media from your post?',
 	buttonNames: ['Yes','No'],
 	cancel: 1
 });

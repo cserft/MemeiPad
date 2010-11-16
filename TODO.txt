@@ -37,9 +37,8 @@ newpost.js
 ----------
 - BUG: POsting twice the content when an error occurs with YQL
 - Split the Legal Disclaimers allowing different clicks to open different Links
-- Bug when add a Photo, then replace with other (the close button is in the wrong place)
-- Add listener to the search results to add the info in the Post area
 _____ AFTER LAUNCH _____
+- Draft Should save Media as well
 - When Clicks on Flashlight Button without content to search it should Alert that the user should type something
 - When changing tabs on FlashLight Search, should keep the table and not perform another search
 - Better treatment of Web Results when abstract is empty
