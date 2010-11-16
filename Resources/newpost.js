@@ -9,6 +9,8 @@ var theImage 		= 	null;
 var postText 		= 	""; 
 var postTitle 		= 	'';
 var postBody 		= 	'';
+var videoLink 		=   ''; 
+var videoId			=	'';
 
 // Load post draft
 if (Ti.App.Properties.hasProperty('draft_post')) {
@@ -44,10 +46,10 @@ win.add(postHeaderView);
 // ===============
 var btn_close_post = Ti.UI.createButton({
 	backgroundImage: 'images/btn_close_post.png',
-	height: 16,
-	width: 16,
+	height: 22,
+	width: 22,
 	left: 988,
-	top: 24,
+	top: 20,
 	style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 });
 postHeaderView.add(btn_close_post);
@@ -451,6 +453,8 @@ var flashlight_show = function() {
 
 				var yqlData = yql.query(yqlQuery);
 				var videos = yqlData.query.results.video;
+				
+				// Ti.API.info("Videos Results: " + JSON.stringify(videos));
 
 				//Loop to present the Search Results for YouTube
 				var results = [];
@@ -459,7 +463,9 @@ var flashlight_show = function() {
 					var video = videos[c];
 
 					var thumb = video.thumbnails.thumbnail[0].content;
-
+					var thumbFull = video.thumbnails.thumbnail[4].content;
+					
+					//Ti.API.info("Videos Link: " + JSON.stringify(videoLink));
 					var row = Ti.UI.createTableViewRow({height:78});
 
 					var title = Ti.UI.createLabel({
@@ -491,6 +497,18 @@ var flashlight_show = function() {
 					row.add(image);
 			        row.add(img_play_btn);
 					row.add(title);
+					row.add(Ti.UI.createView({
+						height: 78,
+						width: 310,
+						zIndex: 2,
+						title: video.title,
+						content: video.content,
+						image: thumbFull,
+						videoId: video.id,
+						videoLink: video.url,
+						type: 'video'
+					}));
+					
 					results[c] = row;
 				}
 				resultsTableView.setData(results);
@@ -703,16 +721,34 @@ var flashlight_show = function() {
 				theImage = e.source.fullPhoto;
 				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 				break;
+				
 			case 'text':
 			
 				if (e.source.abstract != "") {
 					textArea.value = e.source.abstract;
 					postBody = e.source.abstract;
+					tempPostLabel.hide();
 				}
 				editTitleField.value = e.source.title;	
 				postTitle = e.source.title;
+				break;
+				
+			case 'video':
+				if (e.source.content != "") {
+					textArea.value = e.source.content;
+					postBody = e.source.content;
+					tempPostLabel.hide();
+				}
+				editTitleField.value = e.source.title;	
+				postTitle = e.source.title;
+				
+				//Sets the Image to the Videos Thumbnail
+				theImage = e.source.image;
+				
+				videoLink = e.source.videoLink;
+				videoId = e.source.videoId;
+				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 
-				tempPostLabel.hide();
 				break;
 		}
 		
@@ -845,11 +881,27 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	searchTextField.blur();
 
 	if (e.typePhoto == 'flashlight') {
-		img.width = 400;
-		img.height = 400;
+		//FlashLight Content was clicked
+		img.width = 480;
+		img.height = 360;
 		img.image = theImage;
 		img.defaultImage = 'images/default_img_white.png';
 		viewContainerPhoto.show();
+		
+		// If the content from FlashLight is a Video then presents a Video Player
+		if (theImage.indexOf("ytimg") != -1){
+			
+			// Create our Webview to render the Video
+			var webView = Ti.UI.createWebView({
+			        html: '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>',
+					top:0,
+					width: 640,
+					height: 385,
+			        left:0,
+			        loading: true
+			});
+			viewContainerPhoto.add(webView);
+		}
 
 	} else {
 		
@@ -874,8 +926,8 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	}
 	
 	//adds the close button to the image
-	var photo_close_x = img.width - 24;
-	btn_photo_close.left = photo_close_x;
+	var photo_close_x = 10;
+	btn_photo_close.left = 10;
 	btn_photo_close.visible = true;
 
 	// Repositioned the TextArea below the chosen photo
@@ -954,13 +1006,21 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	 	xhr.open('GET', 'http://meme-ios-backend.appspot.com/img/upload/url');
 	  	xhr.send();
 	
-	} else if (theImage != null && typeof(theImage) == 'string') {
+	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("flickr") != -1) {
 		Titanium.App.fireEvent("postOnMeme", {
 			postType: "photo",
 			media_link: theImage,
 			message: postText
 		});
-	
+		Ti.API.info("The Image IndexOf Flickr: " + theImage.indexOf("flickr"));
+		
+	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("ytimg") != -1) {
+		Titanium.App.fireEvent("postOnMeme", {
+			postType: "video",
+			media_link: videoLink,
+			message: postText
+		});
+		Ti.API.info("The Image YouTube: " + theImage.indexOf("ytimg"));
 	} else {
 		// Else is Only Text
 		Titanium.App.fireEvent("postOnMeme", {
@@ -1024,6 +1084,13 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	} else if (e.postType == "text"){
 		yqlQuery = "INSERT INTO meme.user.posts (type, content) VALUES ('"+ e.postType +"', '" + e.message + "')";
 		
+		// updates the Message in the Progress Bar
+		showProgressView('show', 'Publishing your post on Meme');
+		ind.value = 10;
+		
+	} else if (e.postType == "video"){
+		yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('"+ e.postType +"', '" + e.media_link + "', '" + e.message + "')";
+
 		// updates the Message in the Progress Bar
 		showProgressView('show', 'Publishing your post on Meme');
 		ind.value = 10;
