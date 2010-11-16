@@ -6,6 +6,7 @@ var win 			= 	Ti.UI.currentWindow;
 var yql 			= 	win.yql;
 var win1 			= 	win.win1; // Window Original created on app.js
 var theImage 		= 	null;
+var postText 		= 	""; 
 var postTitle 		= 	'';
 var postBody 		= 	'';
 
@@ -696,21 +697,25 @@ var flashlight_show = function() {
 		switch (e.source.type) {
 			case 'photo':
 				if (e.source.title != "") {
-					editTitleField.value = e.source.title;
-					tempPostLabel.hide();	
+					editTitleField.value = e.source.title;	
+					postTitle = e.source.title;
 				}
 				theImage = e.source.fullPhoto;
 				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 				break;
 			case 'text':
 			
-			if (e.source.abstract != "") {
-				textArea.value = e.source.title;
-				tempPostLabel.hide();	
-			}
-				editTitleField.value = e.source.title;
+				if (e.source.abstract != "") {
+					textArea.value = e.source.abstract;
+					postBody = e.source.abstract;
+				}
+				editTitleField.value = e.source.title;	
+				postTitle = e.source.title;
+
+				tempPostLabel.hide();
 				break;
 		}
+		
 		popoverSearchView.hide();
 	});
 	
@@ -767,7 +772,6 @@ editTitleField.addEventListener('change', function(e) {
 // =======================
 
 // This is the FULL Post variable: Title + Body
-var postText = ""; 
 
 btn_post.addEventListener('click', function() {
 	//Closes the Keyboard if open
@@ -839,7 +843,6 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	textArea.blur();
 	editTitleField.blur();
 	searchTextField.blur();
-	Ti.API.info('Image Type: ' + typeof(theImage));
 
 	if (e.typePhoto == 'flashlight') {
 		img.width = 400;
