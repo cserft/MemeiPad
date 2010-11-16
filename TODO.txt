@@ -38,6 +38,7 @@ newpost.js
 - BUG: POsting twice the content when an error occurs with YQL
 - Split the Legal Disclaimers allowing different clicks to open different Links
 _____ AFTER LAUNCH _____
+- BUG: animation of the postBody goes crazy when selecting different images from local file and from Flashlight
 - Draft Should save Media as well
 - When Clicks on Flashlight Button without content to search it should Alert that the user should type something
 - When changing tabs on FlashLight Search, should keep the table and not perform another search

@@ -128,18 +128,11 @@ var getPostHtml = function(innerMedia, innerCaption) {
 
 if (post.type == "photo"){
 	
-	if (post.content.content.indexOf("flickr") != -1){
-		getPhotoData(post.content.content, 550, '',  yql, function(_photoThumb, data){
-			innerMedia = '<img src="' + _photoThumb + '" class="block_clear">';
-			innerCaption = post.caption;
-			postWebView.html = getPostHtml(innerMedia, innerCaption);
-		});
-	} else {
-		innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
-		innerCaption = post.caption;
-		captionStripped = post.caption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
-		// getGeoPlaces(captionStripped);
-	}
+	innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
+	innerCaption = post.caption;
+	captionStripped = post.caption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+	// getGeoPlaces(captionStripped);
+
 	
 	
 } else if (post.type == "video"){

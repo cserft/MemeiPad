@@ -111,65 +111,6 @@ var getVideoData = function(pContent, callback) {
 
 var getPhotoData = function(pContent, pWidth, pHeight, yql, callback) {
 	var photoThumb;
-	
-	//Ti.API.info('pContent from Photo Permalink: ' + JSON.stringify(pContent));
-	
-	 if (pContent.indexOf('flickr') != -1) {
-		// IF FLICKR PHOTO
-	
-		Ti.API.info("####### Embed.ly YQL query ");
-		// Embed.ly Query Example for Flickr Photo: SELECT * FROM embedly WHERE url="http://www.flickr.com/photos/36821100@N04/3948666283/" and maxwidth='250' and maxheight='250'
-		yqlQuery = "SELECT * FROM embedly WHERE maxwidth='" + pWidth + "' and maxheight='"+ pHeight +"' and url='" + pContent + "'";
-
-		var yqlPhoto = yql.query(yqlQuery);
-		var data = yqlPhoto.query.results.json;
-
-		// form the flickr url
-		photoThumb = data.url;
-		callback(photoThumb, data);
-
-	
-	// if (pContent.indexOf("flickr") != -1){
-	// 	// IF FLICKR PHOTO called OEmbed
-	// 	
-	// 	var xhr = Titanium.Network.createHTTPClient();
-	// 
-	// 	xhr.onreadystatechange = function() {
-	// 
-	// 	    try {
-	// 	      if (this.readyState == 4) {
-	// 	           var results = JSON.stringify(this.responseText);
-	// 				//Ti.API.debug("Response Text on State 4: " + results);
-	// 
-	// 	        }
-	// 	    } catch(e) {
-	// 	        Ti.API.debug("Error: " + e.error);
-	// 	    }
-	// 	};
-	// 
-	//     xhr.onerror = function(e) {
-	//         Ti.API.error("ERROR: " + e.error);
-	//     };
-	// 
-	//     xhr.onload = function(e) {
-	// 		var data = JSON.parse(this.responseText);
-	// 		
-	// 		// Ti.API.info("Data from Flickr oEmbed Call: " + JSON.stringify(data));
-	// 
-	//         photoThumb = data.url;
-	// 		// Ti.API.debug('got thumbnail for Flickr: ' + photoThumb);
-	// 		
-	// 		callback(photoThumb, data);
-	//     };
-	// 
-	// 	eContent = encodeURIComponent(pContent);
-	//     xhr.open('GET','http://www.flickr.com/services/oembed/?maxwidth=310&format=json&url=' + pContent);
-	// 	xhr.setRequestHeader('X-Requested-With', '');
-	// 	xhr.send();
-		
-	} else {
-		//ELSE REGULAR PHOTO
-        photoThumb = pContent;
-		callback(photoThumb);
-	}
+    photoThumb = pContent;
+	callback(photoThumb);
 };

@@ -233,6 +233,7 @@ var webViewPreview = Ti.UI.createWebView({
 		width: 640,
 		height: 385,
         left:0,
+		// backgroundColor: 'green',
         loading: true,
 		visible: false
 });
@@ -269,6 +270,7 @@ var textArea = Titanium.UI.createTextArea({
 	textAlign: 		'left',
 	appearance: 	Titanium.UI.KEYBOARD_APPEARANCE_ALERT,	
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
+	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS,
 	suppressReturn: false,
 	zIndex: 		0
 	
@@ -402,6 +404,15 @@ var monitor_value;
 var last_monitor_value;
 
 var flashlight_text_change_monitor = function(new_monitor_value) {
+	
+	// var verifyMediaLink = function (pContent) {
+	// 	
+	// 	//CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
+	// 	var youtubeVideoId = searchTextField.value.match(/v=([a-zA-Z0-9_-]{11})&?/)[0];
+	// 	       $youtube_short = preg_match('/youtu.be\/([a-zA-Z0-9_-]{11})&?/', $url, $youtube_short_match);
+	// 	
+	// }
+	
 	Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
 	monitor_value = new_monitor_value;
 	if (!monitor_started) {
@@ -731,8 +742,10 @@ var flashlight_show = function() {
 					editTitleField.value = e.source.title;	
 					postTitle = e.source.title;
 				}
+				postBody = '';
+				textArea.value = '';
+				tempPostLabel.show();
 				theImage = e.source.fullPhoto;
-				textArea.value = "";
 				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 				break;
 				
@@ -765,6 +778,15 @@ var flashlight_show = function() {
 				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 
 				break;
+			case 'twitter':
+	    	//Removes whatever medias where ther ebefore
+			Ti.App.fireEvent("photoRemoved");
+			if (e.source.abstract != "") {
+				textArea.value = e.source.abstract;
+				postBody = e.source.abstract;
+				tempPostLabel.hide();
+			}
+			break;
 		}
 		
 		popoverSearchView.hide();
@@ -782,7 +804,6 @@ btn_flashlight.addEventListener('click', function() {
 	Ti.App.fireEvent("showAwesomeSearch", {searchType: searchTabs.index});
 	
 });
-
 
 searchTextField.addEventListener('change', function(e) {
 	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
@@ -898,7 +919,6 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	if (e.typePhoto == 'flashlight') {
 		//FlashLight Content was clicked
 	
-		
 		// If the content from FlashLight is a Video then presents a Video Player
 		if (theImage.indexOf("ytimg") != -1){
 			
@@ -915,20 +935,30 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		} else {	
 			// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
 			webViewPreview.html = '';
-			webViewPreview.visible = false;
 			viewContainerPhoto.remove(webViewPreview);
 			
 			//DEFINES THE BASIC IMAGE VIEW FOR THE PREVIEW
 			// TODO: DETECT THE IMAGE SIZE AND DESIGN PROPERLY
 			img.width = 400;
 			img.height = 400;
-			img.image = theImage;
 			img.defaultImage = 'images/default_img_white.png';
+			img.image = theImage;
 			viewContainerPhoto.show();
 		}
 		
+		// Repositioned the TextArea below the chosen photo
+		var textArea_top =  viewContainerPhoto.size.height + 109;
+		textArea.animate({zIndex: 0, top: textArea_top});
+
+		//Repositioned the Temp Caption on top of the TextArea
+		tempPostLabel.animate({zIndex: 0, top: 120 + viewContainerPhoto.size.height});
 
 	} else {
+		// IF IT IS A LOCAL FILE THEN
+		
+		// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
+		webViewPreview.html = '';
+		viewContainerPhoto.remove(webViewPreview);
 		
 		// If it is a local image
 		if ((theImage.width > 3000) || (theImage.height > 3000)) {
@@ -948,6 +978,13 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		img.height = preview_sizes.height;
 		img.width = preview_sizes.width;
 		viewContainerPhoto.visible = true;
+		
+		// Repositioned the TextArea below the chosen photo
+		var textArea_top =  img.size.height + 109;
+		textArea.animate({zIndex: 0, top: textArea_top});
+
+		//Repositioned the Temp Caption on top of the TextArea
+		tempPostLabel.animate({zIndex: 0, top: 120 + img.size.height});
 	}
 	
 	//adds the close button to the image
@@ -955,12 +992,6 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	btn_photo_close.left = 0;
 	btn_photo_close.visible = true;
 
-	// Repositioned the TextArea below the chosen photo
-	var textArea_top =  viewContainerPhoto.size.height + 109;
-	textArea.animate({zIndex: 0, top: textArea_top});
-
-	//Repositioned the Temp Caption on top of the TextArea
-	tempPostLabel.animate({zIndex: 0, top: 120 + viewContainerPhoto.size.height});
 });
 
 // to remove the photo chosen

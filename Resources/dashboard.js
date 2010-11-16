@@ -94,36 +94,30 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	// create an post view
 	if (pType == "photo"){	
-		
-		getPhotoData(pContent, 307, 230, yql, function(_photoThumb){
-			
-		//	Ti.API.debug('my video thumb is [' + _photoThumb + ']');
 				
-			var postImageView = Ti.UI.createImageView({
-				image: _photoThumb,
-				top:5,
-				left:5,
-				width:307,
-				height: 'auto',
-				zIndex: 0,
-				defaultImage: 'images/default_img.png'
-			});
-			blackBoxView.add(postImageView);
-
-			if (pContent.indexOf(".gifa") != -1){
-
-				var img_play_btn = Ti.UI.createImageView({
-		            image:'images/play.png',
-		            top:86,
-		            left:134,
-		            width:38,
-		            height:38
-		        });
-		        blackBoxView.add(img_play_btn);
-
-			}
-			
+		var postImageView = Ti.UI.createImageView({
+			image: pContent,
+			top:5,
+			left:5,
+			width:307,
+			height: 'auto',
+			zIndex: 0,
+			defaultImage: 'images/default_img.png'
 		});
+		blackBoxView.add(postImageView);
+
+		if (pContent.indexOf(".gifa") != -1){
+
+			var img_play_btn = Ti.UI.createImageView({
+	            image:'images/play.png',
+	            top:86,
+	            left:134,
+	            width:38,
+	            height:38
+	        });
+	        blackBoxView.add(img_play_btn);
+
+		}
 		
 	}
 	
@@ -348,14 +342,14 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 				case 'photo':
 				{	
 					// If Flick 
-					if (post.content.content.indexOf("flickr") != -1)
-					{
-						var _content = post.content.content;
-						//Ti.API.info('Content From Flickr:' + _content)
-						
-					} else {
+					// if (post.content.content.indexOf("flickr") != -1)
+					// {
+					// 	var _content = post.content.content;
+					// 	//Ti.API.info('Content From Flickr:' + _content)
+					// 	
+					// } else {
 						var _content = post.content.thumb;
-					}
+					// }
 								
 					break;
 				}
