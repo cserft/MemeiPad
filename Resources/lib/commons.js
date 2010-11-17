@@ -130,12 +130,7 @@ var getVideoData = function(pContent, callback) {
 	
 	    xhr.onload = function(e) {
 			var data = JSON.parse(this.responseText);
-			
-			Ti.API.info('YouTube Response: ' + JSON.stringify(data));
-
 	        videoThumb = data.thumbnail_url;
-			Ti.API.debug('got thumbnail for YouTube: ' + videoThumb);
-			
 			callback(videoThumb, data);
 	    };
 	
