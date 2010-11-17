@@ -64,7 +64,11 @@ function humane_date(date_str){
 // = FUNCTION TO GET VIDEO THUMBNAILS =
 // ====================================
 var getVideoData = function(pContent, callback) {
-	var videoId, videoThumb;
+
+	//Loop to present the Search Results for YouTube
+	var results = [];
+	
+	var videoId, videoThumb, videoLink;
 	
 	if (pContent.indexOf("vimeo") != -1){
 	//	Ti.API.debug("Found Vimeo Video: " + pContent);
@@ -96,11 +100,16 @@ var getVideoData = function(pContent, callback) {
 			callback(videoThumb, data);
 	    };
 	
-		eContent = encodeURIComponent(pContent);
-	    xhr.open('GET','http://vimeo.com/api/oembed.json?maxwidth=640&maxheight=385&url=' + eContent);
+		//eContent = encodeURIComponent(pContent);
+	    xhr.open('GET','http://vimeo.com/api/oembed.json?maxwidth=640&maxheight=385&url=' + pContent);
 		xhr.setRequestHeader('X-Requested-With', '');
 		xhr.send();
+		
 	} else {
+		
+		videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
+		videoLink = "http://youtube.com/watch?v=" + videoId;
+		
 		//ELSE YOUTUBE
 		var xhr = Titanium.Network.createHTTPClient();
 	
@@ -121,20 +130,19 @@ var getVideoData = function(pContent, callback) {
 	
 	    xhr.onload = function(e) {
 			var data = JSON.parse(this.responseText);
+			
+			Ti.API.info('YouTube Response: ' + JSON.stringify(data));
 
 	        videoThumb = data.thumbnail_url;
-		//	Ti.API.debug('got thumbnail for YouTube: ' + videoThumb);
+			Ti.API.debug('got thumbnail for YouTube: ' + videoThumb);
 			
 			callback(videoThumb, data);
 	    };
 	
-		eContent = encodeURIComponent(pContent);
-	    xhr.open('GET','http://www.youtube.com/oembed?format=json&maxwidth=640&maxheight=385&url=' + eContent);
+		//eContent = encodeURIComponent(pContent);
+	    xhr.open('GET','http://www.youtube.com/oembed?format=json&url=' + videoLink);
 		xhr.setRequestHeader('X-Requested-With', '');
 		xhr.send();
-		
-		// http://www.youtube.com/oembed?url=http%3A//www.youtube.com/watch%3Fv%3DbDOYN-6gdRE&format=xml
-		callback(videoThumb, data);
 	}
 };
 

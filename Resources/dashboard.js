@@ -124,8 +124,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	// create an Video view
 	if (pType == "video") {	
+		
 		getVideoData(pContent, function(_videoThumb) {
-		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
+			Ti.API.debug('my video thumb is [' + _videoThumb + ']');
 
 			var postImageView = Ti.UI.createImageView({
 				image: _videoThumb,
@@ -275,13 +276,11 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 			tempItemRowCount = 0;
 			
 			Ti.API.info(" ####### STARTING DASHBOARD QUERY ##########");
-	
 			yqlQuery = "SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231)";
 		
 		} else {
 	
 			Ti.API.info(" ####### STARTING UPDATE 'PRA BAIXO' QUERY ##########");
-		
 			yqlQuery = "SELECT * from meme.user.dashboard where start_timestamp =" + (pTimestamp-1) + " | meme.functions.thumbs(width=307,height=231)";
 
 		}
@@ -322,7 +321,6 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 	// create THE TABLE ROWS
 	for (var k=0; k < posts.length; k++)
 	{
-
 		var post 		= posts[k];
 		var _caption 	= post.caption;
 		var _pubId 		= post.pubid;
@@ -340,16 +338,7 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 			{
 				case 'photo':
 				{	
-					// If Flick 
-					// if (post.content.content.indexOf("flickr") != -1)
-					// {
-					// 	var _content = post.content.content;
-					// 	//Ti.API.info('Content From Flickr:' + _content)
-					// 	
-					// } else {
-						var _content = post.content.thumb;
-					// }
-								
+					var _content = post.content.thumb;			
 					break;
 				}
 				case 'video':

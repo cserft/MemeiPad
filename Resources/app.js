@@ -18,23 +18,57 @@ var win1 = Titanium.UI.createWindow({
 
 var logoHeader = Titanium.UI.createImageView({
 	image:'images/logo_header.png',
-	top:-5,
-	left:3,
-	width:236,
-	height:106
+	top: 27,
+	left: 34,
+	width: 194,
+	height: 47
 });
 win1.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
 	backgroundImage:'images/btn_signin_top.png',
 	top: 5,
-	left: 803,
-	width:209, //actual: 163
-	height:83, //actual: 37
+	left: 795,
+	width:222, //actual: 176
+	height:89, //actual: 43
 	opacity:1,
 	visible: false
 });
 win1.add(btn_signin);
+
+var btn_signup = Titanium.UI.createButton({
+	backgroundImage:'images/btn_signup.png',
+	top: 5,
+	left: 450,
+	width: 352, //actual: 306
+	height: 89, //actual: 43
+	opacity:1,
+	visible: false
+});
+win1.add(btn_signup);
+
+//Alert to Open Safari for the Post Permalink
+var alertOpenSignUp = Titanium.UI.createAlertDialog({
+	title: 'Create your account',
+	message: 'We will open the SignUp page on Safari',
+	buttonNames: ['OK','Cancel'],
+	cancel: 1
+});
+
+btn_signup.addEventListener("click", function(e)
+{
+	alertOpenSignUp.show();
+});
+
+
+// Opens the Permalink page on Safari
+alertOpenSignUp.addEventListener('click',function(e)
+{
+	if (e.index == 0){
+		// Open Link to the Guidelines Page on Safari
+		Ti.Platform.openURL("http://meme.yahoo.com/confirm");	
+	}
+});
 
 // ====================
 // = LOGGED IN HEADER =
@@ -154,6 +188,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 		
 		// NOT LOGGED IN
 		btn_signin.visible = true;
+		btn_signup.visible = true;
 		headerView.hide();
 	}
 
@@ -210,8 +245,10 @@ var showDashboard = function(yql,pDashboardType) {
 	if (pDashboardType === "logged") {
 		showHeader(yql, pDashboardType, winDashboard);
 		btn_signin.visible = false;
+		btn_signup.visible = false;
 	} else {
 		btn_signin.visible = true;
+		btn_signup.visible = true;
 	}
 };
 

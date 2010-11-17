@@ -64,9 +64,9 @@ var queryText = "";
 
 var searchTextField = Titanium.UI.createTextField({
 	value: 			queryText,
-	hintText: 		'Do a search to illustrate your post',
+	hintText: 		'Paste YouTube links or make a search to illustrate your post',
 	textAlign: 		'left',
-	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
+	font: 			{fontSize:14,fontFamily:'Helvetica', fontWeight:'regular'},
 	width: 			446,
 	height: 		41,
 	top: 			14,
@@ -458,7 +458,7 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 	//        if ($flickr_match) {
 	//            return $flickr_match[1];
 	//        } else {
-	//            $farm_url = preg_match('/flickr\.com\/[0-9]+\/([0-9]+)_(./i', $url, $farm_match);
+	//            $farm_url = preg_match('/flickr\.com\/[0-9]+\/([0-9]+)_(.*)/i', $url, $farm_match);
 	
 	if (youtubeVideoArray != null && youtubeVideoArray != undefined) {
 		
