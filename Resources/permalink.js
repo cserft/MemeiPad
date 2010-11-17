@@ -255,7 +255,8 @@ var btn_repost = Titanium.UI.createButton({
 	width:36,
 	height:36,
 	bottom: 10,
-	right: 10
+	right: 10,
+	zIndex: 1
 });
 whiteBox.add(btn_repost);
 
@@ -285,9 +286,8 @@ if (myMemeInfo){
 // =============
 
 
-btn_repost.addEventListener("click", function(e)
-{
-	// repostActInd.show();
+btn_repost.addEventListener("click", function(e) {
+	
 	yqlQuery = "INSERT INTO meme.user.posts (guid, pubid) VALUES ('" + _guid + "', '" + _pubId + "')";
 		Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
 
@@ -296,16 +296,16 @@ btn_repost.addEventListener("click", function(e)
 	
 	if (response.message == "ok"){
 		
-		repostCountLabel.text = repost_countInt+=1 ;
-		btn_repost.enabled = false;
-		
+			repostCountLabel.text = repost_countInt+=1 ;
+			btn_repost.enabled = false;
+
+		// });
+			
 	} else {
-		
+
 		Ti.API.info("Error while reposting");
 		
 	}
-
-	// setTimeout(repostActInd.hide(),2000);
 
 });
 
@@ -345,17 +345,20 @@ var btn_openSafari = Titanium.UI.createButton({
 win.add(btn_openSafari);
 
 //Alert to Open Safari for the Post Permalink
-var alertOpenPermalink= Titanium.UI.createAlertDialog({
-
+var alertOpenPermalink = Titanium.UI.createAlertDialog({
+	title: 'Open Link',
+	message: 'Are you sure you want to leave this application to open this link?',
+	buttonNames: ['Yes','Cancel'],
+	cancel: 1
 });
 
 btn_openSafari.addEventListener("click", function(e)
 {
-	Ti.API.info('Permalink Open on Safari Fired');
-	alertOpenPermalink.title = 'Open link';
-	alertOpenPermalink.message = 'Are you sure you want to leave this application to open this link?';
-	alertOpenPermalink.buttonNames = ['Yes','Cancel'];
-	alertOpenPermalink.cancel = 1;
+	alertOpenPermalink.show();
+});
+
+LinkPermalinkLabel.addEventListener("click", function(e)
+{
 	alertOpenPermalink.show();
 });
 

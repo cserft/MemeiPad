@@ -8,6 +8,7 @@ Titanium.UI.LANDSCAPE_LEFT,
 Titanium.UI.LANDSCAPE_RIGHT
 ];
 
+
 var openingDetails = false; // controls multiple Permalinks Openned
 
 //Set current timestamp
@@ -226,15 +227,15 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	}
 	
 	var blackBoxLink = Ti.UI.createButton({
-		backgroundColor:'transparent',
-		width: 			317,
-		height: 		241,
-		top: 			0,
+		backgroundColor: 		'transparent',
+		width: 					317,
+		height: 				241,
+		top: 					0,
 		backgroundSelectedImage: 'images/btn_dashboard_link.png',
-		style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
-		pubId: 			pPubId,
-		guid: 			pGuid,
-		zindex: 		99
+		style: 					Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
+		pubId: 					pPubId,
+		guid: 					pGuid,
+		zindex: 				99
 	});
 	blackBoxView.add(blackBoxLink);
 	
@@ -535,7 +536,11 @@ tableView.addEventListener('click', function(e)
 		winPermalink.openingDetails = openingDetails;
 		winPermalink.open(a);	
 	}
-	// Open the permalink window with animation
+
+	setTimeout(function()
+	{
+		Ti.App.fireEvent('hide_indicator');
+	},10000);
 	
 });
 
