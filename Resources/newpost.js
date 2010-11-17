@@ -330,6 +330,40 @@ var disclaimerLabel2 = Titanium.UI.createLabel({
 });
 win.add(disclaimerLabel2);
 
+// =============================================
+// = DISCLAIMERS LISTENERS TO OPEN THE BROWSER =
+// =============================================
+
+//Alert to Open Safari for the Post Permalink
+var alertOpenPermalink = Titanium.UI.createAlertDialog({
+	title: 'Open Link',
+	message: 'Are you sure you want to leave this application to open this link?',
+	buttonNames: ['Yes','Cancel'],
+	cancel: 1
+});
+
+disclaimerLabel1.addEventListener("click", function(e)
+{
+	alertOpenPermalink.url = "http://meme.yahoo.com/help/guidelines/";
+	alertOpenPermalink.show();
+});
+
+disclaimerLabel2.addEventListener("click", function(e)
+{
+	alertOpenPermalink.url = "http://meme.yahoo.com/settings";
+	alertOpenPermalink.show();
+});
+
+
+// Opens the Permalink page on Safari
+alertOpenPermalink.addEventListener('click',function(e)
+{
+	if (e.index == 0){
+		// Open Link to the Guidelines Page on Safari
+		Ti.Platform.openURL(alertOpenPermalink.url);	
+	}
+});
+
 // Upload Progress Bar
 var progressView = Titanium.UI.createView({
 	top: 			300,

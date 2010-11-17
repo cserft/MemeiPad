@@ -36,7 +36,6 @@ _____ AFTER LAUNCH _____
 newpost.js
 ----------
 - BUG: Posting twice the content when an error occurs with YQL
-- Split the Legal Disclaimers allowing different clicks to open different Links
 _____ AFTER LAUNCH _____
 - add a clear button to the TextArea 
 - BUG: animation of the postBody goes crazy when selecting different images from local file and from Flashlight
