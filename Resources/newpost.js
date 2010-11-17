@@ -253,6 +253,8 @@ var btn_photo_close = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
 	width: 			22,
 	height: 		22,
+	top: 			0,
+	left: 			0,
 	zIndex: 		10
 });
 viewContainerPhoto.add(btn_photo_close);

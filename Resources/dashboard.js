@@ -225,18 +225,16 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		__id_bg_caption.add(__id_caption);
 	}
 	
-	//Creating the new 
-	//var blackBoxLink = "blackBoxLink_" + pPubId + "_" + pGuid;
-	//Ti.API.debug("blackBoxView: " + blackBoxView);
-	
-	var blackBoxLink = Ti.UI.createView({
+	var blackBoxLink = Ti.UI.createButton({
 		backgroundColor:'transparent',
-		width: 317,
-		height: 241,
-		top: 0,
-		pubId: pPubId,
-		guid: pGuid,
-		zindex: 99
+		width: 			317,
+		height: 		241,
+		top: 			0,
+		backgroundSelectedImage: 'images/btn_dashboard_link.png',
+		style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
+		pubId: 			pPubId,
+		guid: 			pGuid,
+		zindex: 		99
 	});
 	blackBoxView.add(blackBoxLink);
 	
