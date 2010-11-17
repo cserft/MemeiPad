@@ -28,9 +28,9 @@ win1.add(logoHeader);
 var btn_signin = Titanium.UI.createButton({
 	backgroundImage:'images/btn_signin_top.png',
 	top: 5,
-	left: 800,
-	width:207,
-	height:77,
+	left: 803,
+	width:209, //actual: 163
+	height:83, //actual: 37
 	opacity:1,
 	visible: false
 });
@@ -61,7 +61,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 		// = retrieving yql data =
 		// ========================
 
-		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=22,height=22)");
+		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=33,height=33)");
 
 		if (yqlMemeInfo){
 
@@ -71,119 +71,84 @@ var showHeader = function (yql, pType, pWinDashboard){
 			Ti.App.fireEvent('myMemeInfo',{myMemeInfo:meme});
 		}
 		
+		var btn_Username = Ti.UI.createButton({
+			backgroundImage: 	'images/btn_username.png',
+			height: 			41, //actual: 35
+			width: 				205, //actual: 199
+			left: 				268,
+			top: 				23,
+			zIndex:  			3
+		});
+		headerView.add(btn_Username);
+
+		var miniAvatarView = Titanium.UI.createImageView({
+			image: 			meme.avatar_url.thumb,
+			defaultImage: 	'images/default_img_avatar.png',
+			top: 			4,
+			left: 			5,
+			width: 			33,
+			height: 		33,
+			borderRadius: 	3,
+			zIndex:  		2
+		});
+		btn_Username.add(miniAvatarView);
+	
+		var memeTitleLabel = Titanium.UI.createLabel({
+			color: 		'#ffffff',
+			text:  		meme.title,
+			font: 		{fontSize:13, fontFamily:'Helvetica Neue', fontWeight:'bold'},
+			textAlign: 	'left',
+			shadowColor:'black',
+			shadowOffset:{x:-1,y:-1},
+			top: 		10,
+			left:  		50,
+			height: 	20,
+			width: 		150
+		});
+		btn_Username.add(memeTitleLabel);
+		
+		// ==================
+		// = signout button =
+		// ==================
+		
+		var btn_signout = Ti.UI.createButton({
+			backgroundImage: 	'images/btn_signout.png',
+			height: 			41, //actual: 35
+			width: 				66, //actual: 60
+			left: 				482,
+			top: 				23
+		});
+		headerView.add(btn_signout);
+		
+		// triggers the signout process
+		btn_signout.addEventListener('click', function()
+		{
+			Ti.API.info("Signout Button clicked");
+			oAuthAdapter.logout('meme');
+			Ti.App.fireEvent('remove_tableview');
+			headerView.hide();
+			oAuthAdapter.login(showSignIn, showDashboard);
+		});
+		
 		// ===============
 		// = post button =
 		// ===============
 		
 		var btn_StartPosting = Ti.UI.createButton({
-			//title:'Show Popover 1',
-			backgroundImage: 'images/btn_start_posting.png',
-			height:64,
-			width:240,
-			left: 245,
-			top:15
+			backgroundImage: 	'images/btn_start_posting.png',
+			height: 			89, //actual: 43
+			width: 				306, //actual: 260
+			left: 				710,
+			top: 				0
 		});
 		headerView.add(btn_StartPosting);
 		
+		// Opens the New Post Window
 		btn_StartPosting.addEventListener('click', function()
 		{
 			newPost(yql);
 		});
-
-		var miniAvatarView = Titanium.UI.createImageView({
-			image: meme.avatar_url.thumb,
-			borderColor: 'black',
-			defaultImage: 'images/default_img_avatar.png',
-			border: 2,
-			top:32,
-			left:810,
-			width:22,
-			height:22
-		});
-		headerView.add(miniAvatarView);
-
-		var hiYahooUserLabel = Titanium.UI.createLabel({
-			color:'#999999',
-			text: 'Hi, ' + meme.name + '    |',
-			font:{fontSize:12,fontFamily:'Helvetica Neue'},
-		    textAlign:'right',
-			top:29,
-			left:650,
-			height:30,
-			width:150
-		});
-		headerView.add(hiYahooUserLabel);
-	
-		var memeTitleLabel = Titanium.UI.createLabel({
-			color:'#ffffff',
-			text: meme.title,
-			font:{fontSize:14,fontFamily:'Helvetica Neue',fontWeight:'bold'},
-			textAlign:'left',
-			top:29	,
-			left:840,
-			height:30,
-			width:150
-		});
-		headerView.add(memeTitleLabel);
-
-
-		// ================
-		// = PopOver Menu =
-		// ================
-
-		// build User popover
-		memeTitleLabel.addEventListener('click', function()
-		{
-			
-			var popover = Titanium.UI.iPad.createPopover({ 
-				width:200, 
-				height:180,
-				borderWidth: 0,
-				title:'Your Stuff',
-				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
-			}); 
-
-			var settingsTableView = Ti.UI.createTableView({
-				top:0,
-				height:180,
-				data:[
-					{title:'Your Memes', 
-						font:{
-							fontFamily:'Helvetica Neue'
-						}
-					},
-					{title:'Explore'},
-					{title:'Invite your friends'},
-					{title:'sign out'}
-					],
-				color: '#9E4F9E'
-				//style: Ti.UI.iPhone.TableViewStyle.GROUPED
-			});
-			
-			settingsTableView.addEventListener('click', function(e) 
-			{
-				Ti.API.info("Table Row Clicked: " + e.index);
-				
-				if (e.index == 3){ // Sign Out
-					
-					Ti.API.info("Signout Link clicked");
-					popover.hide({animated:true});
-					oAuthAdapter.logout('meme');
-					Ti.App.fireEvent('remove_tableview');
-					headerView.hide();
-					oAuthAdapter.login(showSignIn, showDashboard);	
-				}
-				
-			});
-			
-			popover.add(settingsTableView);
-
-			popover.show({
-				view:memeTitleLabel,
-				animated:true,
-			}); 
-
-		});
+		
 
 	} else {
 		
@@ -202,7 +167,6 @@ var showSignIn = function(continuation) {
 	btn_signin.addEventListener("click",continuation);
 	
 	showHeader(null,"notlogged");
-
    	showDashboard(OAuthAdapter("meme"),"notlogged");
 
 };

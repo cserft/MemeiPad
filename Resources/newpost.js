@@ -788,11 +788,11 @@ var flashlight_show = function() {
 				break;
 				
 			case 'twitter':
-	    	//Removes whatever medias where ther ebefore
+	    	//Removes whatever medias where there ebefore
 			Ti.App.fireEvent("photoRemoved");
 		
 			textArea.value = e.source.username + '\n' + e.source.tweet;
-			postBody = '<blockquote><strong>' + e.source.username + '</strong><p>\n</p>' + e.source.tweet + '</blockquote>';
+			postBody = '<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '</blockquote>';
 			tempPostLabel.hide();
 			
 			break;
