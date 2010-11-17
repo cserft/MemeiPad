@@ -71,7 +71,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			Ti.App.fireEvent('myMemeInfo',{myMemeInfo:meme});
 		}
 		
-		var btn_Username = Ti.UI.createButton({
+		var btn_Username = Ti.UI.createView({
 			backgroundImage: 	'images/btn_username.png',
 			height: 			41, //actual: 35
 			width: 				205, //actual: 199
@@ -138,7 +138,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			backgroundImage: 	'images/btn_start_posting.png',
 			height: 			89, //actual: 43
 			width: 				306, //actual: 260
-			left: 				710,
+			left: 				708,
 			top: 				0
 		});
 		headerView.add(btn_StartPosting);

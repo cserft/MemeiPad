@@ -253,7 +253,6 @@ var btn_photo_close = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
 	width: 			22,
 	height: 		22,
-	top: 			2,
 	zIndex: 		10
 });
 viewContainerPhoto.add(btn_photo_close);
@@ -494,6 +493,7 @@ var flashlight_show = function() {
 
 					var title = Ti.UI.createLabel({
 						text: video.title,
+						color: '#863486',
 						height:50,
 						width: 192,
 						left:110,
@@ -559,6 +559,7 @@ var flashlight_show = function() {
 					var fullPhoto = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '.jpg';
 					var title = Ti.UI.createLabel({
 						text: photo.title,
+						color: '#863486',
 						height:55,
 						width: 200,
 						left:110,
@@ -615,6 +616,7 @@ var flashlight_show = function() {
 						height:15,
 						top: 10,
 						left:10,
+						color: '#863486',
 						textAlign:'left',
 						font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
 					});
@@ -624,6 +626,7 @@ var flashlight_show = function() {
 						var abstractStripped = abstractContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
 						var abstract = Ti.UI.createLabel({
 							text: abstractStripped,
+							color:'#333',
 							height:50,
 							width: 310,
 							top: 25,
@@ -688,6 +691,7 @@ var flashlight_show = function() {
 
 					var username = Ti.UI.createLabel({
 						text: '@' + item.from_user,
+						color: '#863486',
 						width: 250,
 						height:15,
 						top: 8,
@@ -699,6 +703,7 @@ var flashlight_show = function() {
 
 					var tweet = Ti.UI.createLabel({
 						text: item.text,
+						color: '#333',
 						height:52,
 						width: 270,
 						top: 23,
