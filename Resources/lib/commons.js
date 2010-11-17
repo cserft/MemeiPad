@@ -91,7 +91,7 @@ var getVideoData = function(pContent, callback) {
 			var data = JSON.parse(this.responseText);
 
 	        videoThumb = data.thumbnail_url;
-			Ti.API.debug('got thumbnail for vimeo: ' + videoThumb);
+		//	Ti.API.debug('got thumbnail for vimeo: ' + videoThumb);
 			
 			callback(videoThumb, data);
 	    };
@@ -101,11 +101,40 @@ var getVideoData = function(pContent, callback) {
 		xhr.setRequestHeader('X-Requested-With', '');
 		xhr.send();
 	} else {
-		
 		//ELSE YOUTUBE
-		videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
-        videoThumb = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
-		callback(videoThumb);
+		var xhr = Titanium.Network.createHTTPClient();
+	
+		xhr.onreadystatechange = function() {
+
+		    try {
+		      if (this.readyState == 4) {
+		           var results = JSON.stringify(this.responseText);
+		        }
+		    } catch(e) {
+		        Ti.API.debug("Error: " + e.error);
+		    }
+		};
+	
+	    xhr.onerror = function(e) {
+	        Ti.API.error("ERROR: " + e.error);
+	    };
+	
+	    xhr.onload = function(e) {
+			var data = JSON.parse(this.responseText);
+
+	        videoThumb = data.thumbnail_url;
+		//	Ti.API.debug('got thumbnail for YouTube: ' + videoThumb);
+			
+			callback(videoThumb, data);
+	    };
+	
+		eContent = encodeURIComponent(pContent);
+	    xhr.open('GET','http://www.youtube.com/oembed?format=json&maxwidth=640&maxheight=385&url=' + eContent);
+		xhr.setRequestHeader('X-Requested-With', '');
+		xhr.send();
+		
+		// http://www.youtube.com/oembed?url=http%3A//www.youtube.com/watch%3Fv%3DbDOYN-6gdRE&format=xml
+		callback(videoThumb, data);
 	}
 };
 

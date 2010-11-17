@@ -1,4 +1,5 @@
-Ti.include('lib/secrets.js')
+Ti.include('lib/secrets.js');
+Ti.include('lib/commons.js');
 
 var win 			= 	Ti.UI.currentWindow;
 
@@ -11,6 +12,7 @@ var postTitle 		= 	'';
 var postBody 		= 	'';
 var videoLink 		=   ''; 
 var videoId			=	'';
+// var youtubeVideoId  =	null;
 
 // Load post draft
 if (Ti.App.Properties.hasProperty('draft_post')) {
@@ -65,26 +67,16 @@ var searchTextField = Titanium.UI.createTextField({
 	hintText: 		'Do a search to illustrate your post',
 	textAlign: 		'left',
 	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
-	width: 			447,
+	width: 			446,
 	height: 		41,
 	top: 			14,
 	left: 			16,
 	borderRadius: 	4,
 	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
-	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT
-	// clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
+	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
+	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
 postHeaderView.add(searchTextField);
-
-// AJAX when using Flashlight
-var actIndFlashlight = Ti.UI.createActivityIndicator({
-	top: 			10, 
-	left: 			410,
-	height: 		20,
-	width: 			20,
-	style: 			Titanium.UI.iPhone.ActivityIndicatorStyle.DARK
-});
-searchTextField.add(actIndFlashlight);
 
 var btn_flashlight = Ti.UI.createButton({
 	backgroundImage: 'images/btn_flashlight.png',
@@ -96,6 +88,16 @@ var btn_flashlight = Ti.UI.createButton({
 	
 });
 postHeaderView.add(btn_flashlight);
+
+// AJAX when using Flashlight
+var actIndFlashlight = Ti.UI.createActivityIndicator({
+	top: 			10, 
+	left: 			20,
+	height: 		20,
+	width: 			20,
+	style: 			Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
+});
+btn_flashlight.add(actIndFlashlight);
 
 //creates the popover for the results
 var popoverSearchView = Titanium.UI.iPad.createPopover({ 
@@ -421,6 +423,7 @@ function showProgressView (pCommand, pMessage) {
 // = LISTENERS =
 // =============
 
+//Close Button
 btn_close_post.addEventListener('click', function() {
 
 	win.close(animeClose);
@@ -441,29 +444,63 @@ var monitor_started = false;
 var monitor_value;
 var last_monitor_value;
 
-var verifyMediaLink = function (pContent) {
-
-	// //CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
-	// var youtubeVideoId = searchTextField.value.match(/v=([a-zA-Z0-9_-]{11})&?/)[0];
-	// var youtube_short = searchTextField.value.match(/youtu.be\/([a-zA-Z0-9_-]{11})&?/)[0]);
-	// 
-}
-
 var flashlight_text_change_monitor = function(new_monitor_value) {
 	
-	Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
-	monitor_value = new_monitor_value;
-	if (!monitor_started) {
-		monitor_started = true;
-		Ti.API.debug('change monitor started');
-		setInterval(flashlight_monitor, 500);
+	//CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
+	var youtubeVideoArray = new_monitor_value.match(/v=([a-zA-Z0-9_-]{11})/);
+	var youtubeShortArray = new_monitor_value.match(/youtu.be\/([a-zA-Z0-9_-]{11})/);
+	var vimeoArray = new_monitor_value.match(/vimeo.com\/([\d]+)&?$/);
+	
+	// $flickr_url = preg_match(
+	//            '/flickr.com\/photos\/[^\/]+\/([0-9]+)/i', $url, $flickr_match
+	//        );
+	// 
+	//        if ($flickr_match) {
+	//            return $flickr_match[1];
+	//        } else {
+	//            $farm_url = preg_match('/flickr\.com\/[0-9]+\/([0-9]+)_(./i', $url, $farm_match);
+	
+	if (youtubeVideoArray != null && youtubeVideoArray != undefined) {
+		
+		getVideoData(new_monitor_value, function(_videoThumb, _data) {
+		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
+			editTitleField.value = _data.title;	
+			postTitle = _data.title;
+			
+			//Sets the Image to the Video Thumbnail
+			theImage = _data.thumbnail_url;
+			videoLink = new_monitor_value;
+			videoId = youtubeVideoArray[1];
+			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+
+		});
+		
+	} else if (youtubeShortArray != null && youtubeShortArray != undefined) {
+		
+	} else if (vimeoArray != null && vimeoArray != undefined) {
+		
+		Ti.API.info("Pasted link Vimeo ID: " + vimeoArray[1]);
+		
+	} else {
+		
+		//Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
+		monitor_value = new_monitor_value;
+		if (!monitor_started) {
+			monitor_started = true;
+			Ti.API.debug('change monitor started');
+			setInterval(flashlight_monitor, 500);
+		}
+		
 	}
+	
+
+	
 };
 
 var flashlight_monitor = function() {
 	if (monitor_value) {
 		if (monitor_value == last_monitor_value) {
-			Ti.API.debug('TIMEOUT reached with no changes, firing search!');
+			//Ti.API.debug('TIMEOUT reached with no changes, firing search!');
 			flashlight_show();
 			monitor_value = null;
 			last_monitor_value = null;
@@ -492,12 +529,12 @@ var searchTabs = Titanium.UI.createTabbedBar({
 var flashlight_show = function() {
 	queryText = searchTextField.value;
 	
-	var resultsTableView = Ti.UI.createTableView({
+	var flashlightTableView = Ti.UI.createTableView({
 		top:50,
 		height:204
 	});
 
-	popoverSearchView.add(resultsTableView);
+	popoverSearchView.add(flashlightTableView);
 
 	popoverSearchView.add(searchTabs);
 	
@@ -574,8 +611,8 @@ var flashlight_show = function() {
 					
 					results[c] = row;
 				}
-				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true});
+				flashlightTableView.setData(results);
+				flashlightTableView.scrollToIndex(0,{animated:true});
 				searchTabs.index = e.searchType;
 			
 				break;
@@ -630,8 +667,8 @@ var flashlight_show = function() {
 					// add row to result
 					results[c] = row;
 				}
-				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true});
+				flashlightTableView.setData(results);
+				flashlightTableView.scrollToIndex(0,{animated:true});
 				searchTabs.index = e.searchType;
 
 				break;
@@ -693,8 +730,8 @@ var flashlight_show = function() {
 					// add row to result
 					results[c] = row;
 				}
-				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true});
+				flashlightTableView.setData(results);
+				flashlightTableView.scrollToIndex(0,{animated:true});
 				searchTabs.index = e.searchType;
 				
 				break;
@@ -763,8 +800,8 @@ var flashlight_show = function() {
 			
 					results[c] = row;
 				}
-				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true});
+				flashlightTableView.setData(results);
+				flashlightTableView.scrollToIndex(0,{animated:true});
 				searchTabs.index = e.searchType;
 
 				break;
@@ -784,7 +821,7 @@ var flashlight_show = function() {
 		Ti.App.fireEvent("showAwesomeSearch", { searchType: e.index });
 	});
 	
-	resultsTableView.addEventListener('click', function(e) {
+	flashlightTableView.addEventListener('click', function(e) {
 		
 		// Ti.API.info("Full Photo:  [" + e.source.fullPhoto + "] and Title: [" + e.source.title + "]");
 		
@@ -859,7 +896,7 @@ btn_flashlight.addEventListener('click', function() {
 });
 
 searchTextField.addEventListener('change', function(e) {
-	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
+//	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
 	flashlight_text_change_monitor(searchTextField.value);
 });
 
