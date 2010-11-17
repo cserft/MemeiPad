@@ -8,8 +8,6 @@ _____ AFTER LAUNCH _____
 dashboard.js
 ------------
 - add a Label "Loading Dashboard..."
-- Application crashes when OAuth token expires
-
 _____ AFTER LAUNCH _____
 - BUG: When Opening newpost.js the Dashboard Rotates
 - Ajustar Header para ser Variavel posicao do Signout em relacao ao tamanho do Login Yahoo!
@@ -37,7 +35,6 @@ newpost.js
 ----------
 - BUG: Posting twice the content when an error occurs with YQL
 _____ AFTER LAUNCH _____
-- add a clear button to the TextArea 
 - BUG: animation of the postBody goes crazy when selecting different images from local file and from Flashlight
 - Draft Should save Media as well
 - When Clicks on Flashlight Button without content to search it should Alert that the user should type something

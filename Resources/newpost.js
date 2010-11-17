@@ -234,7 +234,10 @@ var webViewPreview = Ti.UI.createWebView({
 		height: 385,
         left:0,
 		// backgroundColor: 'green',
-        loading: true,
+        loading: false,
+		scalesPageToFit: false,
+		showVerticalScrollIndicator:false,
+		showHorizontalScrollIndicator:false,
 		visible: false
 });
 
@@ -283,7 +286,7 @@ var tempPostLabel = Titanium.UI.createLabel({
 	text: 		'write your post here',
 	align: 		'center',
 	color: 		'#CCC',
-	top: 		320,
+	top: 		300,
 	left: 		300,
 	width: 		800,
 	height: 	100,
@@ -865,22 +868,44 @@ searchTextField.addEventListener('change', function(e) {
 // ===========================
 // Hide Text hint on Text Area
 tempPostLabel.addEventListener('touchend', function(e) {
-	Ti.API.info('Touch End Gesture captured on Label Write your Post Here?');
 	tempPostLabel.hide(); // hide the hint text when touches the TEXT AREA bar
 	textArea.focus(); //Focus on the Text Area and bring up the Keyboard
 });
 
 //Captures the value on the textArea form and hide hintText
 textArea.addEventListener('change', function(e) {
-	//Ti.API.info('textArea form: you typed ' + e.value + ' act val ' + textArea.value);
 	tempPostLabel.hide(); // hide the hint text when starts using the keyboard
 	postBody = e.value;
 });
 
+//TextArea Clear Button
+var btn_text_clear = Titanium.UI.createButton({
+	backgroundImage:'images/btn_close_gray.png',
+	width: 			22,
+	height: 		22,
+	top: 			10,
+	right: 			0,
+	zIndex: 		10,
+	visible: 		true
+});
+//textArea.add(btn_text_clear);
+
 textArea.addEventListener('focus', function(e) {
    	Ti.API.info('TextArea: focus received');
 	tempPostLabel.hide(); // hide the hint text when textArea receives Focus
-	
+	textArea.add(btn_text_clear);
+});
+
+textArea.addEventListener('blur', function(e) {
+	textArea.remove(btn_text_clear);
+});
+
+btn_text_clear.addEventListener('click', function(e) {
+	tempPostLabel.show(); // hide the hint text when textArea receives Focus
+	textArea.remove(btn_text_clear);
+	textArea.blur();
+	postBody = '';
+	textArea.value = '';
 });
 
 //Captures the value on the Post Title

@@ -289,22 +289,15 @@ if (myMemeInfo){
 btn_repost.addEventListener("click", function(e) {
 	
 	yqlQuery = "INSERT INTO meme.user.posts (guid, pubid) VALUES ('" + _guid + "', '" + _pubId + "')";
-		Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
 
 	var yqlInsert = yql.query(yqlQuery);
 	var response = yqlInsert.query.results.status;
 	
 	if (response.message == "ok"){
-		
 			repostCountLabel.text = repost_countInt+=1 ;
-			btn_repost.enabled = false;
-
-		// });
-			
+			btn_repost.enabled = false;		
 	} else {
-
-		Ti.API.info("Error while reposting");
-		
+		Ti.API.info("Error while reposting");	
 	}
 
 });
