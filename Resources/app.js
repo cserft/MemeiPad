@@ -137,7 +137,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			top: 		10,
 			left:  		50,
 			height: 	20,
-			width: 		150
+			width: 		145
 		});
 		btn_Username.add(memeTitleLabel);
 		

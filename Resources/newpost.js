@@ -67,7 +67,7 @@ var searchTextField = Titanium.UI.createTextField({
 	value: 			queryText,
 	hintText: 		'Paste YouTube or Vimeo links or make a search to illustrate your post',
 	textAlign: 		'left',
-	font: 			{fontSize:14,fontFamily:'Helvetica', fontWeight:'regular'},
+	font: 			{fontSize:13,fontFamily:'Helvetica', fontWeight:'regular'},
 	width: 			446,
 	height: 		41,
 	top: 			14,
@@ -231,16 +231,14 @@ editView.add(viewContainerPhoto);
 
 // Create our Webview to render the Video Preview
 var webViewPreview = Ti.UI.createWebView({
-        html: '',
+        html: videoHtml,
 		top:0,
-		width: 640,
-		height: 385,
         left:0,
+		width: 680,
+		height: 430,
 		// backgroundColor: 'green',
-        loading: false,
+        loading: true,
 		scalesPageToFit: false,
-		showVerticalScrollIndicator:false,
-		showHorizontalScrollIndicator:false,
 		visible: false
 });
 
@@ -1128,11 +1126,11 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		viewContainerPhoto.visible = true;
 		
 		// Repositioned the TextArea below the chosen photo
-		var textArea_top =  img.size.height + 109;
+		var textArea_top =  img.size.height + 95;
 		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
-		tempPostLabel.animate({zIndex: 0, top: 120 + img.size.height});
+		tempPostLabel.animate({zIndex: 0, top: 100 + img.size.height});
 	}
 	
 	//adds the close button to the image
@@ -1145,13 +1143,13 @@ Ti.App.addEventListener("photoChosen", function(e) {
 // to remove the photo chosen
 Ti.App.addEventListener("photoRemoved", function(e) {
 	theImage = null;
-	webViewPreview.visible = false;
-	viewContainerPhoto.add(webViewPreview);
+	webViewPreview.html = '';
+	viewContainerPhoto.remove(webViewPreview);
 	viewContainerPhoto.hide();
 	viewContainerPhoto.width = 'auto';
 	btn_photo_close.visible = false;
 	textArea.animate({top: 79});
-	tempPostLabel.animate({top: 320});
+	tempPostLabel.animate({top: 300});
 });
 
 //Alert to remove the photo
