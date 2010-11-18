@@ -155,14 +155,14 @@ var showHeader = function (yql, pType, pWinDashboard){
 		// headerView.add(btn_signout);
 		// 
 		// // triggers the signout process
-		// btn_signout.addEventListener('click', function()
-		// {
-		// 	Ti.API.info("Signout Button clicked");
-		// 	oAuthAdapter.logout('meme');
-		// 	Ti.App.fireEvent('remove_tableview');
-		// 	headerView.hide();
-		// 	oAuthAdapter.login(showSignIn, showDashboard);
-		// });
+		btn_Username.addEventListener('click', function()
+		{
+			Ti.API.info("Signout Button clicked");
+			oAuthAdapter.logout('meme');
+			Ti.App.fireEvent('remove_tableview');
+			headerView.hide();
+			oAuthAdapter.login(showSignIn, showDashboard);
+		});
 		
 		// ===============
 		// = post button =

@@ -11,10 +11,10 @@ app.js
 
 dashboard.js
 ------------
-- add a Label "Loading Dashboard..."
+- BUG: The date on the last refresh from the PUll to Refresh Feature it is wrong
 - BUG: when loading permalink, if YQL fails, the app stops responding to touch
 _____ AFTER LAUNCH _____
-- BUG: When Opening newpost.js the Dashboard Rotates
+- add a Label "Loading Dashboard..."
 - Ajustar Header para ser Variavel posicao do Signout em relacao ao tamanho do Login Yahoo!
 - Quando nao Logado Mostrar Explore (usando a language do usuário logado)
 - ver esta resposta: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
