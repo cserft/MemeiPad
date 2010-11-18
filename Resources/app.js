@@ -141,6 +141,70 @@ var showHeader = function (yql, pType, pWinDashboard){
 		});
 		btn_Username.add(memeTitleLabel);
 		
+		// ================
+		// = PopOver Menu =
+		// ================
+
+		// build User popover
+		btn_Username.addEventListener('click', function()	{
+			
+			var popover = Titanium.UI.iPad.createPopover({
+				width:220,
+				height:200,
+				title: 'Settings',
+				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
+			});
+
+			var settingsTableView = Ti.UI.createTableView({
+				top:0,
+				height:200,
+				data:[
+					{title:'About this app', hasChild: true, url: 'about.js'},
+					{title:'Followers: ' + meme.followers, hasChild: true},
+					{title:'Following: ' + meme.following, hasChild: true},
+					{title:'Sign out'}
+				],
+				style: 1 //Ti.UI.iPhone.TableViewStyle.GROUP
+			});
+		
+			settingsTableView.addEventListener('click', function(e)	{
+			
+			Ti.API.info("Table Row Clicked: " + e.index);
+			
+			// if (e.rowData.url)
+			// {
+			// 	var winPopover = Titanium.UI.createView({
+			// 		top:0,
+			// 		left:0,
+			// 		backgroundColor: 'red',
+			// 		// url:e.rowData.url,
+			// 		title:e.rowData.title
+			// 	});
+			// 	settingsTableView.add(winPopover);
+			// 	// winPopover.open({animated:true});
+			// }
+
+				if (e.index == 3){ // Sign Out
+
+					Ti.API.info("Signout Link clicked");
+					popover.hide({animated:true});
+					oAuthAdapter.logout('meme');
+					Ti.App.fireEvent('remove_tableview');
+					headerView.hide();
+					oAuthAdapter.login(showSignIn, showDashboard);
+				}
+
+			});
+
+			popover.add(settingsTableView);
+
+			popover.show({
+				view:btn_Username,
+				animated:true,
+			});
+
+		});
+		
 		// ==================
 		// = signout button =
 		// ==================
@@ -155,14 +219,14 @@ var showHeader = function (yql, pType, pWinDashboard){
 		// headerView.add(btn_signout);
 		// 
 		// // triggers the signout process
-		btn_Username.addEventListener('click', function()
-		{
-			Ti.API.info("Signout Button clicked");
-			oAuthAdapter.logout('meme');
-			Ti.App.fireEvent('remove_tableview');
-			headerView.hide();
-			oAuthAdapter.login(showSignIn, showDashboard);
-		});
+		// btn_Username.addEventListener('click', function()
+		// 		{
+		// 			Ti.API.info("Signout Button clicked");
+		// 			oAuthAdapter.logout('meme');
+		// 			Ti.App.fireEvent('remove_tableview');
+		// 			headerView.hide();
+		// 			oAuthAdapter.login(showSignIn, showDashboard);
+		// 		});
 		
 		// ===============
 		// = post button =

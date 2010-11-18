@@ -27,6 +27,10 @@ yqlQuery = "SELECT * FROM meme.posts WHERE owner_guid='" + _guid + "' and pubid=
 Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
 
 var yqldata = yql.query(yqlQuery);
+
+if (yqldata == null) {
+	win.close();	
+}
 var post = yqldata.query.results.post;
 
 // ============================
