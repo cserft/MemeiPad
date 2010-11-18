@@ -472,7 +472,7 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			videoLink = new_monitor_value;
 			videoId = youtubeVideoArray[1];
 			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
-
+	
 		});
 		
 	} else if (youtubeShortArray != null && youtubeShortArray != undefined) {
@@ -483,24 +483,22 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		
 	} else {
 		
-		//Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
+		Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
 		monitor_value = new_monitor_value;
 		if (!monitor_started) {
 			monitor_started = true;
 			Ti.API.debug('change monitor started');
-			setInterval(flashlight_monitor, 500);
+			setInterval(flashlight_monitor, 1000);
 		}
 		
 	}
-	
-
 	
 };
 
 var flashlight_monitor = function() {
 	if (monitor_value) {
 		if (monitor_value == last_monitor_value) {
-			//Ti.API.debug('TIMEOUT reached with no changes, firing search!');
+			Ti.API.debug('TIMEOUT reached with no changes, firing search!');
 			flashlight_show();
 			monitor_value = null;
 			last_monitor_value = null;
@@ -925,7 +923,6 @@ var btn_text_clear = Titanium.UI.createButton({
 	zIndex: 		10,
 	visible: 		true
 });
-//textArea.add(btn_text_clear);
 
 textArea.addEventListener('focus', function(e) {
    	Ti.API.info('TextArea: focus received');

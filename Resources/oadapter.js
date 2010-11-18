@@ -18,6 +18,8 @@ var authorizationUI = function() {
 	// unloads the UI used to have the user authorize the application
     var destroyUI = function() {
         Ti.API.debug('destroyUI');
+
+		btn_signin.enabled = true;
         // if the window doesn't exist, exit
         if (authWindow == null) return;
         // remove the UI
@@ -41,6 +43,7 @@ var authorizationUI = function() {
     // currently works only with YAHOO!
     var lookupVerifier = function(pCallback) {
 		return(function(e) {
+			
 	        Ti.API.debug('authorizeUILoaded, looking for oAuth Verifier Code');
 	
 			// stores the page HTML source code
@@ -59,59 +62,91 @@ var authorizationUI = function() {
 
 	var showUI = function(pUrl, pCallback) {
 		if (signingIn != true) {
+			
+			btn_signin.enabled = false;
+			
 			gCallback  = pCallback;
+			
 			authWindow = Ti.UI.createWindow({
-				modal: false,
-			    fullscreen: false,
 				navBarHidden: true
 			});
+			
 	        authWebView = Ti.UI.createWebView({
 	            url: pUrl,
 				top: 40,
+				zIndex: 99,
 				scalesPageToFit: false,
-				autoDetect:[Ti.UI.AUTODETECT_NONE]
+				autoDetect:[Ti.UI.AUTODETECT_NONE] // does not detects Phone numbers and links them automatically
 	        });
 		
 			// Force Landscape mode only		
-			var transform = Ti.UI.create2DMatrix().scale(0);
+			var t = Ti.UI.create2DMatrix().scale(0);
+			
 	        var authView = Ti.UI.createView({
 	            top: 50,
 	            width: 550,
 	            height: 550,
 	            border: 5,
 	            backgroundColor: 'white',
-	            borderColor: 'gray',
-	            borderRadius: 10,
+	            borderColor: '#333',
+	            borderRadius: 5,
 	            borderWidth: 5,
 	            zIndex: -1,
-	            transform: transform
+	            transform: t
 	        });
-	        var closeLabel = Ti.UI.createLabel({
-	            textAlign: 'right',
-	            font: {
-	                fontWeight: 'bold',
-	                fontSize: '12pt'
-	            },
-	            text: '(X)',
-	            top: 10,
-	            right: 12,
-	            height: 14
-	        });
+			authWindow.add(authView);
+	
+			// Activity indicator AJAX
+			var actInd = Ti.UI.createActivityIndicator({
+				top: 250,
+				height: 50,
+				width: 10,
+				zIndex: 90,
+				style:Ti.UI.iPhone.ActivityIndicatorStyle.DARK
+			});
+			authWebView.add(actInd);
+	
+			//Close button
+			var btn_close = Titanium.UI.createButton({
+				backgroundImage:'images/btn_close_gray.png',
+				width: 			22,
+				height: 		22,
+				top: 			10,
+				right: 			10,
+				zIndex: 		10,
+				visible: 		true
+			});
+			authView.add(btn_close);
+			
 	        authWindow.open();
 		
-			Ti.API.debug('Setting:['+Ti.UI.AUTODETECT_NONE+']');
 	        authWebView.addEventListener('load', lookupVerifier(pCallback));
 	        authView.add(authWebView);
-		
-	        closeLabel.addEventListener('click', destroyUI);
-	        authView.add(closeLabel);
-	        authWindow.add(authView);
-		
-	        var animation = Ti.UI.createAnimation();
-	        animation.transform = Ti.UI.create2DMatrix();
-	        animation.duration = 300;
-	        authView.animate(animation);
+	
+			// Creating the Open Transition
+			// create first transform to go beyond normal size
+			var t1 = Titanium.UI.create2DMatrix();
+			t1 = t1.scale(1.1);
+
+			var a = Titanium.UI.createAnimation();
+			a.transform = t1;
+			a.duration = 200;
+
+			// when this animation completes, scale to normal size
+			a.addEventListener('complete', function()
+			{
+				var t2 = Titanium.UI.create2DMatrix();
+				t2 = t2.scale(1.0);
+				authView.animate({transform:t2, duration:200});
+			});
+			
+			// Starts the Animation
+	        authView.animate(a);
 			signingIn = true;
+			
+			
+			// Closes the Authentication Window
+	        btn_close.addEventListener('click', destroyUI);
 		}
     };
 

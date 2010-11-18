@@ -511,7 +511,6 @@ tableView.addEventListener('click', function(e)
 		var t2 = Titanium.UI.create2DMatrix();
 		t2 = t2.scale(1.0);
 		winPermalink.animate({transform:t2, duration:200});
-	
 	});
 	
 	if (openingDetails == false){
