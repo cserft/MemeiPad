@@ -105,10 +105,10 @@ var showHeader = function (yql, pType, pWinDashboard){
 			Ti.App.fireEvent('myMemeInfo',{myMemeInfo:meme});
 		}
 		
-		var btn_Username = Ti.UI.createView({
+		var btn_Username = Ti.UI.createButton({
 			backgroundImage: 	'images/btn_username.png',
 			height: 			41, //actual: 35
-			width: 				205, //actual: 199
+			width: 				220, //actual: 214
 			left: 				268,
 			top: 				23,
 			zIndex:  			3
@@ -145,24 +145,24 @@ var showHeader = function (yql, pType, pWinDashboard){
 		// = signout button =
 		// ==================
 		
-		var btn_signout = Ti.UI.createButton({
-			backgroundImage: 	'images/btn_signout.png',
-			height: 			41, //actual: 35
-			width: 				66, //actual: 60
-			left: 				482,
-			top: 				23
-		});
-		headerView.add(btn_signout);
-		
-		// triggers the signout process
-		btn_signout.addEventListener('click', function()
-		{
-			Ti.API.info("Signout Button clicked");
-			oAuthAdapter.logout('meme');
-			Ti.App.fireEvent('remove_tableview');
-			headerView.hide();
-			oAuthAdapter.login(showSignIn, showDashboard);
-		});
+		// var btn_signout = Ti.UI.createButton({
+		// 	backgroundImage: 	'images/btn_signout.png',
+		// 	height: 			41, //actual: 35
+		// 	width: 				66, //actual: 60
+		// 	left: 				482,
+		// 	top: 				23
+		// });
+		// headerView.add(btn_signout);
+		// 
+		// // triggers the signout process
+		// btn_signout.addEventListener('click', function()
+		// {
+		// 	Ti.API.info("Signout Button clicked");
+		// 	oAuthAdapter.logout('meme');
+		// 	Ti.App.fireEvent('remove_tableview');
+		// 	headerView.hide();
+		// 	oAuthAdapter.login(showSignIn, showDashboard);
+		// });
 		
 		// ===============
 		// = post button =

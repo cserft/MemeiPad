@@ -6,19 +6,21 @@ var win 			= 	Ti.UI.currentWindow;
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var yql 			= 	win.yql;
 var win1 			= 	win.win1; // Window Original created on app.js
-var theImage 		= 	null;
 var postText 		= 	""; 
 var postTitle 		= 	'';
 var postBody 		= 	'';
+var queryText		=	'';
+var theImage 		= 	null;
 var videoLink 		=   ''; 
 var videoId			=	'';
-// var youtubeVideoId  =	null;
+var videoHtml		= 	'';
 
 // Load post draft
 if (Ti.App.Properties.hasProperty('draft_post')) {
 	var draft = Ti.App.Properties.getList('draft_post');
 	postTitle = draft[0];
 	postBody = draft[1];
+	queryText = draft[2];
 	Ti.App.Properties.removeProperty('draft_post');
 }
 
@@ -60,11 +62,10 @@ postHeaderView.add(btn_close_post);
 // =========================
 // = Awesome bar TextField =
 // =========================
-var queryText = "";
 
 var searchTextField = Titanium.UI.createTextField({
 	value: 			queryText,
-	hintText: 		'Paste YouTube links or make a search to illustrate your post',
+	hintText: 		'Paste YouTube or Vimeo links or make a search to illustrate your post',
 	textAlign: 		'left',
 	font: 			{fontSize:14,fontFamily:'Helvetica', fontWeight:'regular'},
 	width: 			446,
@@ -433,8 +434,8 @@ btn_close_post.addEventListener('click', function() {
 	editTitleField.blur();
 	searchTextField.blur();
 	
-	Ti.API.debug('Saving post on properties: title[' + postTitle + '], body[' + postBody + ']');
-	Ti.App.Properties.setList('draft_post', [ postTitle, postBody ]);
+	Ti.API.debug('Saving post on properties: title[' + editTitleField.value + '], body[' + textArea.value + '], Flashlight [' + searchTextField.value + ']');
+	Ti.App.Properties.setList('draft_post', [ editTitleField.value, textArea.value, searchTextField.value ]);
 });
 
 // ======================
@@ -446,19 +447,15 @@ var last_monitor_value;
 
 var flashlight_text_change_monitor = function(new_monitor_value) {
 	
-	//CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
+	// CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
+	// Detects what type of YouTube link
 	var youtubeVideoArray = new_monitor_value.match(/v=([a-zA-Z0-9_-]{11})/);
 	var youtubeShortArray = new_monitor_value.match(/youtu.be\/([a-zA-Z0-9_-]{11})/);
 	var vimeoArray = new_monitor_value.match(/vimeo.com\/([\d]+)&?$/);
 	
-	// $flickr_url = preg_match(
-	//            '/flickr.com\/photos\/[^\/]+\/([0-9]+)/i', $url, $flickr_match
-	//        );
-	// 
-	//        if ($flickr_match) {
-	//            return $flickr_match[1];
-	//        } else {
-	//            $farm_url = preg_match('/flickr\.com\/[0-9]+\/([0-9]+)_(.*)/i', $url, $farm_match);
+	// Flickr REGEX
+	// $flickr_url = preg_match('/flickr.com\/photos\/[^\/]+\/([0-9]+)/i', $url, $flickr_match);
+	// $farm_url = preg_match('/flickr\.com\/[0-9]+\/([0-9]+)_(.*)/i', $url, $farm_match);
 	
 	if (youtubeVideoArray != null && youtubeVideoArray != undefined) {
 		
@@ -477,7 +474,34 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		
 	} else if (youtubeShortArray != null && youtubeShortArray != undefined) {
 		
+		getVideoData(new_monitor_value, function(_videoThumb, _data) {
+		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
+			editTitleField.value = _data.title;	
+			postTitle = _data.title;
+			
+			//Sets the Image to the Video Thumbnail
+			theImage = _data.thumbnail_url;
+			videoLink = new_monitor_value;
+			videoId = youtubeShortArray[1];
+			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+	
+		});
+		
 	} else if (vimeoArray != null && vimeoArray != undefined) {
+		
+		getVideoData(new_monitor_value, function(_videoThumb, _data) {
+		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
+			editTitleField.value = _data.title;	
+			postTitle = _data.title;
+			
+			//Sets the Image to the Video Thumbnail
+			theImage = _data.thumbnail_url;
+			videoHtml = _data.html;
+			videoLink = new_monitor_value;
+			videoId = vimeoArray[1];
+			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+	
+		});
 		
 		Ti.API.info("Pasted link Vimeo ID: " + vimeoArray[1]);
 		
@@ -526,7 +550,6 @@ var searchTabs = Titanium.UI.createTabbedBar({
 
 var flashlight_show = function() {
 	queryText = searchTextField.value;
-	
 	var flashlightTableView = Ti.UI.createTableView({
 		top:50,
 		height:204
@@ -889,7 +912,8 @@ var flashlight_show = function() {
 // Flashlight button listener
 btn_flashlight.addEventListener('click', function() {
 
-	Ti.App.fireEvent("showAwesomeSearch", {searchType: searchTabs.index});
+	//Ti.API.info('queryText when btn_flashlight clicked: ' + queryText);
+	flashlight_show();
 	
 });
 
@@ -1035,12 +1059,27 @@ Ti.App.addEventListener("photoChosen", function(e) {
 			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
 			img.image = null;
 			
+			videoHtml = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
+			
 			// Create our Webview to render the Video
-			webViewPreview.html = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
+			webViewPreview.html = videoHtml;
 			webViewPreview.visible = true;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
 			
+		} else if (theImage.indexOf("vimeo") != -1) { 
+			
+
+			webViewPreview.html = '';
+			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
+			img.image = null;
+
+			// Create our Webview to render the Video
+			webViewPreview.html = videoHtml;
+			webViewPreview.visible = true;
+			viewContainerPhoto.add(webViewPreview);
+			viewContainerPhoto.show();
+
 		} else {	
 			// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
 			webViewPreview.html = '';
@@ -1182,6 +1221,13 @@ Titanium.App.addEventListener("postClicked", function(e) {
 		Ti.API.info("The Image IndexOf Flickr: " + theImage.indexOf("flickr"));
 		
 	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("ytimg") != -1) {
+		Titanium.App.fireEvent("postOnMeme", {
+			postType: "video",
+			media_link: videoLink,
+			message: postText
+		});
+		Ti.API.info("The Image YouTube: " + theImage.indexOf("ytimg"));
+	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("vimeo") != -1) {
 		Titanium.App.fireEvent("postOnMeme", {
 			postType: "video",
 			media_link: videoLink,

@@ -126,7 +126,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	if (pType == "video") {	
 		
 		getVideoData(pContent, function(_videoThumb) {
-			Ti.API.debug('my video thumb is [' + _videoThumb + ']');
+			// Ti.API.debug('my video thumb is [' + _videoThumb + ']');
 
 			var postImageView = Ti.UI.createImageView({
 				image: _videoThumb,
