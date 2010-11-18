@@ -1,21 +1,35 @@
-Ti.include('lib/secrets.js')
+Ti.include('lib/secrets.js');
+Ti.include('lib/commons.js');
 
 var win 			= 	Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var yql 			= 	win.yql;
 var win1 			= 	win.win1; // Window Original created on app.js
-var theImage 		= 	null;
+var postText 		= 	""; 
 var postTitle 		= 	'';
 var postBody 		= 	'';
+var queryText		=	'';
+var theImage 		= 	null;
+var videoLink 		=   ''; 
+var videoId			=	'';
+var videoHtml		= 	'';
 
 // Load post draft
 if (Ti.App.Properties.hasProperty('draft_post')) {
 	var draft = Ti.App.Properties.getList('draft_post');
 	postTitle = draft[0];
 	postBody = draft[1];
+	queryText = draft[2];
 	Ti.App.Properties.removeProperty('draft_post');
 }
+
+// animation on close Window
+var animeClose = Titanium.UI.createAnimation({
+	duration: 300,
+	top: 749	
+});
+
 
 // ===============
 // = Header View =
@@ -36,39 +50,32 @@ win.add(postHeaderView);
 // ===============
 var btn_close_post = Ti.UI.createButton({
 	backgroundImage: 'images/btn_close_post.png',
-	height: 16,
-	width: 16,
+	height: 22,
+	width: 22,
 	left: 988,
-	top: 24,
+	top: 20,
 	style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 });
 postHeaderView.add(btn_close_post);
 
-btn_close_post.addEventListener('click', function() {
-	win.close();
-	
-	Ti.API.debug('Saving post on properties: title[' + postTitle + '], body[' + postBody + ']');
-	Ti.App.Properties.setList('draft_post', [ postTitle, postBody ]);
-});
 
 // =========================
 // = Awesome bar TextField =
 // =========================
-var queryText = "";
 
 var searchTextField = Titanium.UI.createTextField({
 	value: 			queryText,
-	hintText: 		'Do a search to illustrate your post',
+	hintText: 		'Paste YouTube or Vimeo links or make a search to illustrate your post',
 	textAlign: 		'left',
-	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
-	width: 			447,
+	font: 			{fontSize:13,fontFamily:'Helvetica', fontWeight:'regular'},
+	width: 			446,
 	height: 		41,
 	top: 			14,
 	left: 			16,
 	borderRadius: 	4,
 	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
-	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT
-	// clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
+	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
+	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
 postHeaderView.add(searchTextField);
 
@@ -82,6 +89,16 @@ var btn_flashlight = Ti.UI.createButton({
 	
 });
 postHeaderView.add(btn_flashlight);
+
+// AJAX when using Flashlight
+var actIndFlashlight = Ti.UI.createActivityIndicator({
+	top: 			10, 
+	left: 			20,
+	height: 		20,
+	width: 			20,
+	style: 			Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
+});
+btn_flashlight.add(actIndFlashlight);
 
 //creates the popover for the results
 var popoverSearchView = Titanium.UI.iPad.createPopover({ 
@@ -207,13 +224,29 @@ var viewContainerPhoto = Titanium.UI.createView({
 	height: 		'auto',
 	borderRadius: 	0,
 	visible: 		false,
+	// backgroundColor: 'red',
 	zIndex: 		2
 });
 editView.add(viewContainerPhoto);
 
+// Create our Webview to render the Video Preview
+var webViewPreview = Ti.UI.createWebView({
+        html: videoHtml,
+		top:0,
+        left:0,
+		width: 680,
+		height: 430,
+		// backgroundColor: 'green',
+        loading: true,
+		scalesPageToFit: false,
+		visible: false
+});
+
 //Create Image view to display Photo from Selection from the Gallery
 var img = Titanium.UI.createImageView({
-	img: 		theImage,
+	// image: 		theImage,
+	left: 		0,
+	top: 		0,
 	width: 		'auto',
 	height: 	'auto'
 });
@@ -224,14 +257,16 @@ var btn_photo_close = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
 	width: 			22,
 	height: 		22,
-	top: 			2
+	top: 			0,
+	left: 			0,
+	zIndex: 		10
 });
 viewContainerPhoto.add(btn_photo_close);
 
 //Main TextArea
 var textArea = Titanium.UI.createTextArea({
 	value: postBody,
-	height: 		200,
+	height: 		600,
 	width: 			954,
 	top: 			79,
 	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
@@ -240,7 +275,7 @@ var textArea = Titanium.UI.createTextArea({
 	textAlign: 		'left',
 	appearance: 	Titanium.UI.KEYBOARD_APPEARANCE_ALERT,	
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
-	//returnKeyType:Titanium.UI.RETURNKEY_EMERGENCY_CALL,
+	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS,
 	suppressReturn: false,
 	zIndex: 		0
 	
@@ -252,7 +287,7 @@ var tempPostLabel = Titanium.UI.createLabel({
 	text: 		'write your post here',
 	align: 		'center',
 	color: 		'#CCC',
-	top: 		320,
+	top: 		300,
 	left: 		300,
 	width: 		800,
 	height: 	100,
@@ -298,6 +333,40 @@ var disclaimerLabel2 = Titanium.UI.createLabel({
 	bottom: 	18
 });
 win.add(disclaimerLabel2);
+
+// =============================================
+// = DISCLAIMERS LISTENERS TO OPEN THE BROWSER =
+// =============================================
+
+//Alert to Open Safari for the Post Permalink
+var alertOpenPermalink = Titanium.UI.createAlertDialog({
+	title: 'Open Link',
+	message: 'Are you sure you want to leave this application to open this link?',
+	buttonNames: ['Yes','Cancel'],
+	cancel: 1
+});
+
+disclaimerLabel1.addEventListener("click", function(e)
+{
+	alertOpenPermalink.url = "http://meme.yahoo.com/help/guidelines/";
+	alertOpenPermalink.show();
+});
+
+disclaimerLabel2.addEventListener("click", function(e)
+{
+	alertOpenPermalink.url = "http://meme.yahoo.com/settings";
+	alertOpenPermalink.show();
+});
+
+
+// Opens the Permalink page on Safari
+alertOpenPermalink.addEventListener('click',function(e)
+{
+	if (e.index == 0){
+		// Open Link to the Guidelines Page on Safari
+		Ti.Platform.openURL(alertOpenPermalink.url);	
+	}
+});
 
 // Upload Progress Bar
 var progressView = Titanium.UI.createView({
@@ -353,6 +422,20 @@ function showProgressView (pCommand, pMessage) {
 // = LISTENERS =
 // =============
 
+//Close Button
+btn_close_post.addEventListener('click', function() {
+
+	win.close(animeClose);
+	
+	//Closes the Keyboard if open
+	textArea.blur();
+	editTitleField.blur();
+	searchTextField.blur();
+	
+	Ti.API.debug('Saving post on properties: title[' + editTitleField.value + '], body[' + textArea.value + '], Flashlight [' + searchTextField.value + ']');
+	Ti.App.Properties.setList('draft_post', [ editTitleField.value, textArea.value, searchTextField.value ]);
+});
+
 // ======================
 // = AWESOME SEARCH BAR =
 // ======================
@@ -361,13 +444,77 @@ var monitor_value;
 var last_monitor_value;
 
 var flashlight_text_change_monitor = function(new_monitor_value) {
-	Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
-	monitor_value = new_monitor_value;
-	if (!monitor_started) {
-		monitor_started = true;
-		Ti.API.debug('change monitor started');
-		setInterval(flashlight_monitor, 500);
+	
+	// CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
+	// Detects what type of YouTube link
+	var youtubeVideoArray = new_monitor_value.match(/v=([a-zA-Z0-9_-]{11})/);
+	var youtubeShortArray = new_monitor_value.match(/youtu.be\/([a-zA-Z0-9_-]{11})/);
+	var vimeoArray = new_monitor_value.match(/vimeo.com\/([\d]+)&?$/);
+	
+	// Flickr REGEX
+	// $flickr_url = preg_match('/flickr.com\/photos\/[^\/]+\/([0-9]+)/i', $url, $flickr_match);
+	// $farm_url = preg_match('/flickr\.com\/[0-9]+\/([0-9]+)_(.*)/i', $url, $farm_match);
+	
+	if (youtubeVideoArray != null && youtubeVideoArray != undefined) {
+		
+		getVideoData(new_monitor_value, function(_videoThumb, _data) {
+		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
+			editTitleField.value = _data.title;	
+			postTitle = _data.title;
+			
+			//Sets the Image to the Video Thumbnail
+			theImage = _data.thumbnail_url;
+			videoLink = new_monitor_value;
+			videoId = youtubeVideoArray[1];
+			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+	
+		});
+		
+	} else if (youtubeShortArray != null && youtubeShortArray != undefined) {
+		
+		getVideoData(new_monitor_value, function(_videoThumb, _data) {
+		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
+			editTitleField.value = _data.title;	
+			postTitle = _data.title;
+			
+			//Sets the Image to the Video Thumbnail
+			theImage = _data.thumbnail_url;
+			videoLink = new_monitor_value;
+			videoId = youtubeShortArray[1];
+			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+	
+		});
+		
+	} else if (vimeoArray != null && vimeoArray != undefined) {
+		
+		getVideoData(new_monitor_value, function(_videoThumb, _data) {
+		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
+			editTitleField.value = _data.title;	
+			postTitle = _data.title;
+			
+			//Sets the Image to the Video Thumbnail
+			theImage = _data.thumbnail_url;
+			videoHtml = _data.html;
+			videoLink = new_monitor_value;
+			videoId = vimeoArray[1];
+			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+	
+		});
+		
+		Ti.API.info("Pasted link Vimeo ID: " + vimeoArray[1]);
+		
+	} else {
+		
+		Ti.API.debug('text_change_monitor invoked for query = ' + new_monitor_value);
+		monitor_value = new_monitor_value;
+		if (!monitor_started) {
+			monitor_started = true;
+			Ti.API.debug('change monitor started');
+			setInterval(flashlight_monitor, 1000);
+		}
+		
 	}
+	
 };
 
 var flashlight_monitor = function() {
@@ -383,35 +530,36 @@ var flashlight_monitor = function() {
 	}
 };
 
+// Tabs
+var tabsButtons = [
+	{image:'images/tab_icon_video.png'},
+	{image:'images/tab_icon_foto.png'},
+	{image:'images/tab_icon_web.png'},	
+	{image:'images/tab_icon_twitter.png'}	
+];
+var searchTabs = Titanium.UI.createTabbedBar({
+	labels:tabsButtons,
+	backgroundColor:'#333',
+	top:0,
+	height:49,
+	style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
+	index:0,
+});
+
 var flashlight_show = function() {
 	queryText = searchTextField.value;
-	
-	var resultsTableView = Ti.UI.createTableView({
+	var flashlightTableView = Ti.UI.createTableView({
 		top:50,
 		height:204
 	});
 
-	popoverSearchView.add(resultsTableView);
-	
-	// Tabs
-	var tabsButtons = [
-		{image:'images/tab_icon_video.png'},
-		{image:'images/tab_icon_foto.png'},
-		{image:'images/tab_icon_web.png'},	
-		{image:'images/tab_icon_twitter.png'}	
-	];
-	var searchTabs = Titanium.UI.createTabbedBar({
-		labels:tabsButtons,
-		backgroundColor:'#333',
-		top:0,
-		height:49,
-		style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
-		index:0,
-	});
+	popoverSearchView.add(flashlightTableView);
 
 	popoverSearchView.add(searchTabs);
 	
 	Ti.App.addEventListener('showAwesomeSearch', function (e) {
+		
+		actIndFlashlight.show();
 
 		Ti.API.info("####### Type of search: " + e.searchType);
 
@@ -422,6 +570,8 @@ var flashlight_show = function() {
 
 				var yqlData = yql.query(yqlQuery);
 				var videos = yqlData.query.results.video;
+				
+				// Ti.API.info("Videos Results: " + JSON.stringify(videos));
 
 				//Loop to present the Search Results for YouTube
 				var results = [];
@@ -430,11 +580,14 @@ var flashlight_show = function() {
 					var video = videos[c];
 
 					var thumb = video.thumbnails.thumbnail[0].content;
-
+					var thumbFull = video.thumbnails.thumbnail[4].content;
+					
+					//Ti.API.info("Videos Link: " + JSON.stringify(videoLink));
 					var row = Ti.UI.createTableViewRow({height:78});
 
 					var title = Ti.UI.createLabel({
 						text: video.title,
+						color: '#863486',
 						height:50,
 						width: 192,
 						left:110,
@@ -462,10 +615,23 @@ var flashlight_show = function() {
 					row.add(image);
 			        row.add(img_play_btn);
 					row.add(title);
+					row.add(Ti.UI.createView({
+						height: 78,
+						width: 310,
+						zIndex: 2,
+						title: video.title,
+						content: video.content,
+						image: thumbFull,
+						videoId: video.id,
+						videoLink: video.url,
+						type: 'video'
+					}));
+					
 					results[c] = row;
 				}
-				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true})
+				flashlightTableView.setData(results);
+				flashlightTableView.scrollToIndex(0,{animated:true});
+				searchTabs.index = e.searchType;
 			
 				break;
 			
@@ -484,8 +650,10 @@ var flashlight_show = function() {
 				
 					// form the flickr url
 					var thumb = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '_t_d.jpg';
+					var fullPhoto = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '.jpg';
 					var title = Ti.UI.createLabel({
 						text: photo.title,
+						color: '#863486',
 						height:55,
 						width: 200,
 						left:110,
@@ -510,15 +678,16 @@ var flashlight_show = function() {
 						width: 310,
 						zIndex: 2,
 						title: photo.title,
-						image: thumb,
+						fullPhoto: fullPhoto,
 						type: 'photo'
 					}));
 					
 					// add row to result
 					results[c] = row;
 				}
-				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true})
+				flashlightTableView.setData(results);
+				flashlightTableView.scrollToIndex(0,{animated:true});
+				searchTabs.index = e.searchType;
 
 				break;
 			
@@ -541,6 +710,7 @@ var flashlight_show = function() {
 						height:15,
 						top: 10,
 						left:10,
+						color: '#863486',
 						textAlign:'left',
 						font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
 					});
@@ -550,6 +720,7 @@ var flashlight_show = function() {
 						var abstractStripped = abstractContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
 						var abstract = Ti.UI.createLabel({
 							text: abstractStripped,
+							color:'#333',
 							height:50,
 							width: 310,
 							top: 25,
@@ -577,8 +748,9 @@ var flashlight_show = function() {
 					// add row to result
 					results[c] = row;
 				}
-				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true})
+				flashlightTableView.setData(results);
+				flashlightTableView.scrollToIndex(0,{animated:true});
+				searchTabs.index = e.searchType;
 				
 				break;
 				
@@ -613,6 +785,7 @@ var flashlight_show = function() {
 
 					var username = Ti.UI.createLabel({
 						text: '@' + item.from_user,
+						color: '#863486',
 						width: 250,
 						height:15,
 						top: 8,
@@ -624,6 +797,7 @@ var flashlight_show = function() {
 
 					var tweet = Ti.UI.createLabel({
 						text: item.text,
+						color: '#333',
 						height:52,
 						width: 270,
 						top: 23,
@@ -633,11 +807,20 @@ var flashlight_show = function() {
 					});
 					
 					row.add(tweet);
+					row.add(Ti.UI.createView({
+						height: 78,
+						width: 310,
+						zIndex: 2,
+						username: '@' + item.from_user,
+						tweet: item.text,
+						type: 'twitter'
+					}));
 			
 					results[c] = row;
 				}
-				resultsTableView.setData(results);
-				resultsTableView.scrollToIndex(0,{animated:true})
+				flashlightTableView.setData(results);
+				flashlightTableView.scrollToIndex(0,{animated:true});
+				searchTabs.index = e.searchType;
 
 				break;
 		}
@@ -645,8 +828,10 @@ var flashlight_show = function() {
 		//show the Popover
 		popoverSearchView.show({
 			view:btn_flashlight,
-			animated:true,
+			animated:true
 		});
+		
+		actIndFlashlight.hide();
 	});
 	
 	//Tabs listeners
@@ -654,17 +839,64 @@ var flashlight_show = function() {
 		Ti.App.fireEvent("showAwesomeSearch", { searchType: e.index });
 	});
 	
-	resultsTableView.addEventListener('click', function(e) {
+	flashlightTableView.addEventListener('click', function(e) {
+		
+		// Ti.API.info("Full Photo:  [" + e.source.fullPhoto + "] and Title: [" + e.source.title + "]");
+		
 		switch (e.source.type) {
 			case 'photo':
-				textArea.value = e.source.title;
-				//handleImageEvent({ media: image });
+				if (e.source.title != "") {
+					editTitleField.value = e.source.title;	
+					postTitle = e.source.title;
+				}
+				postBody = '';
+				textArea.value = '';
+				tempPostLabel.show();
+				theImage = e.source.fullPhoto;
+				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 				break;
+				
 			case 'text':
-				editTitleField.value = e.source.title;
-				textArea.value = e.source.abstract;
+		    	//Removes whatever medias where ther ebefore
+				Ti.App.fireEvent("photoRemoved");
+				if (e.source.abstract != "") {
+					textArea.value = e.source.abstract;
+					postBody = e.source.abstract;
+					tempPostLabel.hide();
+				}
+				editTitleField.value = e.source.title;	
+				postTitle = e.source.title;
 				break;
+				
+			case 'video':
+				if (e.source.content != "") {
+					textArea.value = e.source.content;
+					postBody = e.source.content;
+					tempPostLabel.hide();
+				}
+				editTitleField.value = e.source.title;	
+				postTitle = e.source.title;
+				
+				//Sets the Image to the Videos Thumbnail
+				theImage = e.source.image;
+				
+				videoLink = e.source.videoLink;
+				videoId = e.source.videoId;
+				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+
+				break;
+				
+			case 'twitter':
+	    	//Removes whatever medias where there ebefore
+			Ti.App.fireEvent("photoRemoved");
+		
+			textArea.value = e.source.username + '\n' + e.source.tweet;
+			postBody = '<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '</blockquote>';
+			tempPostLabel.hide();
+			
+			break;
 		}
+		
 		popoverSearchView.hide();
 	});
 	
@@ -674,8 +906,16 @@ var flashlight_show = function() {
 // ================================
 // = AWESOME BAR SEARCH LISTENERS =
 // ================================
+// Flashlight button listener
+btn_flashlight.addEventListener('click', function() {
+
+	//Ti.API.info('queryText when btn_flashlight clicked: ' + queryText);
+	flashlight_show();
+	
+});
+
 searchTextField.addEventListener('change', function(e) {
-	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
+//	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
 	flashlight_text_change_monitor(searchTextField.value);
 });
 
@@ -684,22 +924,43 @@ searchTextField.addEventListener('change', function(e) {
 // ===========================
 // Hide Text hint on Text Area
 tempPostLabel.addEventListener('touchend', function(e) {
-	Ti.API.info('Touch End Gesture captured on Label Write your Post Here?');
 	tempPostLabel.hide(); // hide the hint text when touches the TEXT AREA bar
 	textArea.focus(); //Focus on the Text Area and bring up the Keyboard
 });
 
 //Captures the value on the textArea form and hide hintText
 textArea.addEventListener('change', function(e) {
-	//Ti.API.info('textArea form: you typed ' + e.value + ' act val ' + textArea.value);
 	tempPostLabel.hide(); // hide the hint text when starts using the keyboard
 	postBody = e.value;
+});
+
+//TextArea Clear Button
+var btn_text_clear = Titanium.UI.createButton({
+	backgroundImage:'images/btn_close_gray.png',
+	width: 			22,
+	height: 		22,
+	top: 			10,
+	right: 			0,
+	zIndex: 		10,
+	visible: 		true
 });
 
 textArea.addEventListener('focus', function(e) {
    	Ti.API.info('TextArea: focus received');
 	tempPostLabel.hide(); // hide the hint text when textArea receives Focus
-	
+	textArea.add(btn_text_clear);
+});
+
+textArea.addEventListener('blur', function(e) {
+	textArea.remove(btn_text_clear);
+});
+
+btn_text_clear.addEventListener('click', function(e) {
+	tempPostLabel.show(); // hide the hint text when textArea receives Focus
+	textArea.remove(btn_text_clear);
+	textArea.blur();
+	postBody = '';
+	textArea.value = '';
 });
 
 //Captures the value on the Post Title
@@ -713,7 +974,6 @@ editTitleField.addEventListener('change', function(e) {
 // =======================
 
 // This is the FULL Post variable: Title + Body
-var postText = ""; 
 
 btn_post.addEventListener('click', function() {
 	//Closes the Keyboard if open
@@ -781,51 +1041,120 @@ var getImagePreviewSizes = function(max_side_size, original_img) {
 };
 
 Ti.App.addEventListener("photoChosen", function(e) {
-	if ((theImage.width > 3000) || (theImage.height > 3000)) {
-		Titanium.UI.createAlertDialog({ 
-			title: 'Oops...', 
-			message: 'The chosen image is too large to post. Please pick another one.' 
-		}).show();
-		theImage = null;
-		return;
+	//Closes the Keyboard if open
+	textArea.blur();
+	editTitleField.blur();
+	searchTextField.blur();
+
+	if (e.typePhoto == 'flashlight') {
+		//FlashLight Content was clicked
+	
+		// If the content from FlashLight is a Video then presents a Video Player
+		if (theImage.indexOf("ytimg") != -1){
+			
+			webViewPreview.html = '';
+			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
+			img.image = null;
+			
+			videoHtml = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
+			
+			// Create our Webview to render the Video
+			webViewPreview.html = videoHtml;
+			webViewPreview.visible = true;
+			viewContainerPhoto.add(webViewPreview);
+			viewContainerPhoto.show();
+			
+		} else if (theImage.indexOf("vimeo") != -1) { 
+			
+
+			webViewPreview.html = '';
+			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
+			img.image = null;
+
+			// Create our Webview to render the Video
+			webViewPreview.html = videoHtml;
+			webViewPreview.visible = true;
+			viewContainerPhoto.add(webViewPreview);
+			viewContainerPhoto.show();
+
+		} else {	
+			// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
+			webViewPreview.html = '';
+			viewContainerPhoto.remove(webViewPreview);
+			
+			//DEFINES THE BASIC IMAGE VIEW FOR THE PREVIEW
+			// TODO: DETECT THE IMAGE SIZE AND DESIGN PROPERLY
+			img.width = 400;
+			img.height = 400;
+			img.defaultImage = 'images/default_img_white.png';
+			img.image = theImage;
+			viewContainerPhoto.show();
+		}
+		
+		// Repositioned the TextArea below the chosen photo
+		var textArea_top =  viewContainerPhoto.size.height + 109;
+		textArea.animate({zIndex: 0, top: textArea_top});
+
+		//Repositioned the Temp Caption on top of the TextArea
+		tempPostLabel.animate({zIndex: 0, top: 120 + viewContainerPhoto.size.height});
+
+	} else {
+		// IF IT IS A LOCAL FILE THEN
+		
+		// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
+		webViewPreview.html = '';
+		viewContainerPhoto.remove(webViewPreview);
+		
+		// If it is a local image
+		if ((theImage.width > 3000) || (theImage.height > 3000)) {
+			Titanium.UI.createAlertDialog({ 
+				title: 'Oops...', 
+				message: 'The chosen image is too large to post. Please pick another one.' 
+			}).show();
+			theImage = null;
+			return;
+		}
+	
+		// set smaller size for preview (max 250px for the biggest side)
+		preview_sizes = getImagePreviewSizes(400, theImage);
+	
+		// img properties
+		img.image = theImage;
+		img.height = preview_sizes.height;
+		img.width = preview_sizes.width;
+		viewContainerPhoto.visible = true;
+		
+		// Repositioned the TextArea below the chosen photo
+		var textArea_top =  img.size.height + 95;
+		textArea.animate({zIndex: 0, top: textArea_top});
+
+		//Repositioned the Temp Caption on top of the TextArea
+		tempPostLabel.animate({zIndex: 0, top: 100 + img.size.height});
 	}
 	
-	// set smaller size for preview (max 250px for the biggest side)
-	preview_sizes = getImagePreviewSizes(400, theImage);
-	
-	// img properties
-	img.image = theImage;
-	img.height = preview_sizes.height + 'px';
-	img.width = preview_sizes.width + 'px';
-	viewContainerPhoto.visible = true;
-	
 	//adds the close button to the image
-	var photo_close_x = img.size.width - 24;
-	btn_photo_close.left = photo_close_x;
+	var photo_close_x = 0;
+	btn_photo_close.left = 0;
 	btn_photo_close.visible = true;
-	
-	// Repositioned the TextArea below the chosen photo
-	var textArea_top =  img.size.height + 109;
-	textArea.animate({zIndex: 0, top: textArea_top});
-	
-	//Repositioned the Temp Caption on top of the TextArea
-	tempPostLabel.animate({zIndex: 0, top : 120 + img.size.height});
+
 });
 
 // to remove the photo chosen
 Ti.App.addEventListener("photoRemoved", function(e) {
 	theImage = null;
-	viewContainerPhoto.visible = false;
+	webViewPreview.html = '';
+	viewContainerPhoto.remove(webViewPreview);
+	viewContainerPhoto.hide();
 	viewContainerPhoto.width = 'auto';
 	btn_photo_close.visible = false;
 	textArea.animate({top: 79});
-	tempPostLabel.animate({top: 320});
+	tempPostLabel.animate({top: 300});
 });
 
 //Alert to remove the photo
 var alertCloseImage = Titanium.UI.createAlertDialog({
 	title: 'Remove',
-	message: 'Are you sure you want to remove the photo?',
+	message: 'Are you sure you want to remove this media from your post?',
 	buttonNames: ['Yes','No'],
 	cancel: 1
 });
@@ -859,7 +1188,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	//Shows the Upload Progress bar
 	showProgressView('show', 'Preparing to post...');
 	
-	if (theImage != null) {
+	if (theImage != null && typeof(theImage) == 'object') {
 		// IF there is a Image to Upload
 		var xhr = Titanium.Network.createHTTPClient();
 	
@@ -880,6 +1209,28 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	 	xhr.open('GET', 'http://meme-ios-backend.appspot.com/img/upload/url');
 	  	xhr.send();
 	
+	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("flickr") != -1) {
+		Titanium.App.fireEvent("postOnMeme", {
+			postType: "photo",
+			media_link: theImage,
+			message: postText
+		});
+		Ti.API.info("The Image IndexOf Flickr: " + theImage.indexOf("flickr"));
+		
+	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("ytimg") != -1) {
+		Titanium.App.fireEvent("postOnMeme", {
+			postType: "video",
+			media_link: videoLink,
+			message: postText
+		});
+		Ti.API.info("The Image YouTube: " + theImage.indexOf("ytimg"));
+	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("vimeo") != -1) {
+		Titanium.App.fireEvent("postOnMeme", {
+			postType: "video",
+			media_link: videoLink,
+			message: postText
+		});
+		Ti.API.info("The Image YouTube: " + theImage.indexOf("ytimg"));
 	} else {
 		// Else is Only Text
 		Titanium.App.fireEvent("postOnMeme", {
@@ -909,7 +1260,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 		var uploadResult = JSON.parse(this.responseText);
 	
 		Titanium.App.fireEvent("postOnMeme", {
-				postType: "photo",
+			   postType: "photo",
 			   media_link: uploadResult.url,
 			   message: postText
 		});
@@ -939,9 +1290,17 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	// Verifies the Type of Post and selects the Proper YQL Query
 	if (e.postType == "photo") {
 		yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('"+ e.postType +"', '" + e.media_link + "', '" + e.message + "')";
+		
 	} else if (e.postType == "text"){
 		yqlQuery = "INSERT INTO meme.user.posts (type, content) VALUES ('"+ e.postType +"', '" + e.message + "')";
 		
+		// updates the Message in the Progress Bar
+		showProgressView('show', 'Publishing your post on Meme');
+		ind.value = 10;
+		
+	} else if (e.postType == "video"){
+		yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('"+ e.postType +"', '" + e.media_link + "', '" + e.message + "')";
+
 		// updates the Message in the Progress Bar
 		showProgressView('show', 'Publishing your post on Meme');
 		ind.value = 10;
@@ -972,7 +1331,7 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	var alert = Titanium.UI.createAlertDialog(alertInfo);
   	alert.show();
 	alert.addEventListener('click',function(e) {
-		win.close();
+		win.close(animeClose);
 		btn_post.enabled = true;
 		Ti.App.fireEvent('reloadDashboard');
 	});

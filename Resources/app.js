@@ -1,5 +1,3 @@
-Ti.API.info('APAOKSPAOKSPOAKSPKASPASOASKPAOPKSKPO' + Ti.userAgent);
-
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 
@@ -20,23 +18,57 @@ var win1 = Titanium.UI.createWindow({
 
 var logoHeader = Titanium.UI.createImageView({
 	image:'images/logo_header.png',
-	top:-5,
-	left:3,
-	width:236,
-	height:106
+	top: 27,
+	left: 34,
+	width: 194,
+	height: 47
 });
 win1.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
 	backgroundImage:'images/btn_signin_top.png',
 	top: 5,
-	left: 800,
-	width:207,
-	height:77,
+	left: 795,
+	width:222, //actual: 176
+	height:89, //actual: 43
 	opacity:1,
 	visible: false
 });
 win1.add(btn_signin);
+
+var btn_signup = Titanium.UI.createButton({
+	backgroundImage:'images/btn_signup.png',
+	top: 5,
+	left: 450,
+	width: 352, //actual: 306
+	height: 89, //actual: 43
+	opacity:1,
+	visible: false
+});
+win1.add(btn_signup);
+
+//Alert to Open Safari for the Post Permalink
+var alertOpenSignUp = Titanium.UI.createAlertDialog({
+	title: 'Create your account',
+	message: 'We will open the SignUp page on Safari',
+	buttonNames: ['OK','Cancel'],
+	cancel: 1
+});
+
+btn_signup.addEventListener("click", function(e)
+{
+	alertOpenSignUp.show();
+});
+
+
+// Opens the Permalink page on Safari
+alertOpenSignUp.addEventListener('click',function(e)
+{
+	if (e.index == 0){
+		// Open Link to the Guidelines Page on Safari
+		Ti.Platform.openURL("http://meme.yahoo.com/confirm");	
+	}
+});
 
 // ====================
 // = LOGGED IN HEADER =
@@ -63,7 +95,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 		// = retrieving yql data =
 		// ========================
 
-		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=22,height=22)");
+		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=33,height=33)");
 
 		if (yqlMemeInfo){
 
@@ -73,124 +105,90 @@ var showHeader = function (yql, pType, pWinDashboard){
 			Ti.App.fireEvent('myMemeInfo',{myMemeInfo:meme});
 		}
 		
+		var btn_Username = Ti.UI.createButton({
+			backgroundImage: 	'images/btn_username.png',
+			height: 			41, //actual: 35
+			width: 				220, //actual: 214
+			left: 				268,
+			top: 				23,
+			zIndex:  			3
+		});
+		headerView.add(btn_Username);
+
+		var miniAvatarView = Titanium.UI.createImageView({
+			image: 			meme.avatar_url.thumb,
+			defaultImage: 	'images/default_img_avatar.png',
+			top: 			4,
+			left: 			5,
+			width: 			33,
+			height: 		33,
+			borderRadius: 	3,
+			zIndex:  		2
+		});
+		btn_Username.add(miniAvatarView);
+	
+		var memeTitleLabel = Titanium.UI.createLabel({
+			color: 		'#ffffff',
+			text:  		meme.title,
+			font: 		{fontSize:13, fontFamily:'Helvetica Neue', fontWeight:'bold'},
+			textAlign: 	'left',
+			shadowColor:'black',
+			shadowOffset:{x:-1,y:-1},
+			top: 		10,
+			left:  		50,
+			height: 	20,
+			width: 		145
+		});
+		btn_Username.add(memeTitleLabel);
+		
+		// ==================
+		// = signout button =
+		// ==================
+		
+		// var btn_signout = Ti.UI.createButton({
+		// 	backgroundImage: 	'images/btn_signout.png',
+		// 	height: 			41, //actual: 35
+		// 	width: 				66, //actual: 60
+		// 	left: 				482,
+		// 	top: 				23
+		// });
+		// headerView.add(btn_signout);
+		// 
+		// // triggers the signout process
+		btn_Username.addEventListener('click', function()
+		{
+			Ti.API.info("Signout Button clicked");
+			oAuthAdapter.logout('meme');
+			Ti.App.fireEvent('remove_tableview');
+			headerView.hide();
+			oAuthAdapter.login(showSignIn, showDashboard);
+		});
+		
 		// ===============
 		// = post button =
 		// ===============
 		
 		var btn_StartPosting = Ti.UI.createButton({
-			//title:'Show Popover 1',
-			backgroundImage: 'images/btn_start_posting.png',
-			height:64,
-			width:240,
-			left: 245,
-			top:15
+			backgroundImage: 	'images/btn_start_posting.png',
+			height: 			89, //actual: 43
+			width: 				306, //actual: 260
+			left: 				708,
+			top: 				0
 		});
 		headerView.add(btn_StartPosting);
 		
+		// Opens the New Post Window
 		btn_StartPosting.addEventListener('click', function()
 		{
 			newPost(yql);
 		});
-
-		var miniAvatarView = Titanium.UI.createImageView({
-			image: meme.avatar_url.thumb,
-			borderColor: 'black',
-			defaultImage: 'images/default_img_avatar.png',
-			border: 2,
-			top:32,
-			left:810,
-			width:22,
-			height:22
-		});
-		headerView.add(miniAvatarView);
-
-		var hiYahooUserLabel = Titanium.UI.createLabel({
-			color:'#999999',
-			text: 'Hi, ' + meme.name + '    |',
-			font:{fontSize:12,fontFamily:'Helvetica Neue'},
-		    textAlign:'right',
-			top:29,
-			left:650,
-			height:30,
-			width:150
-		});
-		headerView.add(hiYahooUserLabel);
-	
-		var memeTitleLabel = Titanium.UI.createLabel({
-			color:'#ffffff',
-			text: meme.title,
-			font:{fontSize:14,fontFamily:'Helvetica Neue',fontWeight:'bold'},
-			textAlign:'left',
-			top:29	,
-			left:840,
-			height:30,
-			width:150
-		});
-		headerView.add(memeTitleLabel);
-
-
-		// ================
-		// = PopOver Menu =
-		// ================
-
-		// build User popover
-		memeTitleLabel.addEventListener('click', function()
-		{
-			
-			var popover = Titanium.UI.iPad.createPopover({ 
-				width:200, 
-				height:180,
-				borderWidth: 0,
-				title:'Your Stuff',
-				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
-			}); 
-
-			var settingsTableView = Ti.UI.createTableView({
-				top:0,
-				height:180,
-				data:[
-					{title:'Your Memes', 
-						font:{
-							fontFamily:'Helvetica Neue'
-						}
-					},
-					{title:'Explore'},
-					{title:'Invite your friends'},
-					{title:'sign out'}
-					],
-				color: '#9E4F9E'
-				//style: Ti.UI.iPhone.TableViewStyle.GROUPED
-			});
-			
-			settingsTableView.addEventListener('click', function(e) 
-			{
-				Ti.API.info("Table Row Clicked: " + e.index);
-				
-				if (e.index == 3){ // Sign Out
-					
-					Ti.API.info("Signout Link clicked");
-					popover.hide({animated:true});
-					oAuthAdapter.logout('meme');
-					Ti.App.fireEvent('remove_tableview');
-					headerView.hide();
-					oAuthAdapter.login(showSignIn, showDashboard);	
-				}
-				
-			});
-			
-			popover.add(settingsTableView);
-
-			popover.show({
-				view:memeTitleLabel,
-				animated:true,
-			}); 
-
-		});
+		
 
 	} else {
 		
 		// NOT LOGGED IN
 		btn_signin.visible = true;
+		btn_signup.visible = true;
 		headerView.hide();
 	}
 
@@ -204,7 +202,6 @@ var showSignIn = function(continuation) {
 	btn_signin.addEventListener("click",continuation);
 	
 	showHeader(null,"notlogged");
-
    	showDashboard(OAuthAdapter("meme"),"notlogged");
 
 };
@@ -248,34 +245,36 @@ var showDashboard = function(yql,pDashboardType) {
 	if (pDashboardType === "logged") {
 		showHeader(yql, pDashboardType, winDashboard);
 		btn_signin.visible = false;
+		btn_signup.visible = false;
 	} else {
 		btn_signin.visible = true;
+		btn_signup.visible = true;
 	}
 };
 
 // ==========================
 // = CREATE THE POST WINDOW =
 // ==========================
+// 
+// tempPostLabel.animate({zIndex: 0, top : 120 + img.size.height});
+// 
+var a = Titanium.UI.createAnimation();
+a.duration = 200;
+a.top = 0;
+
 var newPost = function(yql) {
 	Ti.UI.createWindow({
 		url: 'newpost.js',
 		title: 'New Post',
 		backgroundColor: 'white',
 		left: 0,
-		top: 0,
+		top: 749,
 		height: 748,
 		width: 1024,
 		yql: yql,
 		zIndex: 3,
-		modal: true,
-		modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
-		modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FULLSCREEN,
-		navBarHidden: true,
-		orientationModes: [
-			Titanium.UI.LANDSCAPE_LEFT,
-			Titanium.UI.LANDSCAPE_RIGHT
-		]
-	}).open();
+		navBarHidden: true
+	}).open(a);
 };
 	
 //  CREATE CUSTOM LOADING INDICATOR
