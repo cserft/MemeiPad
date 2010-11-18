@@ -7,8 +7,7 @@ _____ AFTER LAUNCH _____
 
 app.js
 ------------
-- add loading AJAX when clicking on the SignIn Button
-- add loading AJAX in the OAuth Login while loading the Auth pages
+- add popOver on Header Logged In to allow Signout
 
 dashboard.js
 ------------
@@ -43,8 +42,6 @@ newpost.js
 - BUG: multiple searches when typing on FlashLight
 _____ AFTER LAUNCH _____
 - Save Video/Photo on Drafts
-- When Saves a Tweet on Draft Property and retrieves the data ater on, it brings HTML code <blockquote>
-- Save the value of the Flashlight search when closing and retrieve it back
 - BUG: animation of the postBody goes crazy when selecting different images from local file and from Flashlight
 - Draft Should save Media as well
 - When Clicks on Flashlight Button without content to search it should Alert that the user should type something
