@@ -2,6 +2,7 @@ etc
 ---
 - Tratar error 0 nas calls do YQL
 - icons and descriptions on YDN Site
+- Migrar domain name do backend de appspot para memeapp.net (ou qq outra coisa)
 _____ AFTER LAUNCH _____
 - Create a Website for the App
 

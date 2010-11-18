@@ -668,21 +668,17 @@ tableView.addEventListener('scroll',function(e)
 // ===================
 // = PULL TO REFRESH =
 // ===================
-function formatDate()
-{
-	var date = new Date;
-	var datestr = date.getMonth()+'/'+date.getDate()+'/'+date.getFullYear();
-	if (date.getHours()>=12)
-	{
-		datestr+=' '+(date.getHours()==12 ? date.getHours() : date.getHours()-12)+':'+date.getMinutes()+' PM';
+function formatDate() {
+	var date = new Date,
+		datestr = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+		hourstr = ' ' + date.getHours() + ':' + date.getMinutes() + ' AM';
+		
+	if (date.getHours() >= 12) {
+		hourstr = ' ' + (date.getHours() == 12 ? date.getHours() : date.getHours() - 12) + ':' + date.getMinutes() + ' PM';
 	}
-	else
-	{
-		datestr+=' '+date.getHours()+':'+date.getMinutes()+' AM';
-	}
-	return datestr;
+	
+	return datestr + hourstr;
 }
-
 
 var border = Ti.UI.createView({
 	backgroundColor:"black",
@@ -714,7 +710,6 @@ var actInd = Titanium.UI.createActivityIndicator({
 	width:30,
 	height:30
 });
-
 
 var statusLabel = Ti.UI.createLabel({
 	text:"Pull to reload",
