@@ -227,6 +227,10 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		__id_bg_caption.add(__id_caption);
 	}
 	
+	
+	// Debugging Parameters Received
+	Ti.API.info(">>>>>> parameters recieved on createPost(): GUID [" + pGuid + "], pubId [" + pPubId + "]");
+	
 	var blackBoxLink = Ti.UI.createButton({
 		backgroundColor: 		'transparent',
 		width: 					317,
@@ -390,7 +394,7 @@ var getDashboardData = function (pTimestamp, pDashboardType){
 		// Adds the post view to a ROW 	
 		// Verifying the variables for each post
 		
-		Ti.API.debug(">>>>>>>>>>>>>>>>>>> Debugging Post's data: GUID [" + _guid + "], PubID [" + _pubId + "]");
+		Ti.API.debug(">>>>>> parameters sent to createPost(): GUID [" + _guid + "], PubID [" + _pubId + "]");
 		
 		var postView = createPost(_content, _caption, _pubId, _postUrl, _type, itemPerRowCount, _guid);
 		
