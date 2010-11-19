@@ -66,79 +66,43 @@ function humane_date(date_str){
 var getVideoData = function(pContent, callback) {
 
 	//Loop to present the Search Results for YouTube
-	var results = [];
+	var results = [], request_url;
 	
-	var videoId, videoThumb, videoLink;
-	
-	if (pContent.indexOf("vimeo") != -1){
-	//	Ti.API.debug("Found Vimeo Video: " + pContent);
-		// If VIMEO VIDEO
-		
-		var xhr = Titanium.Network.createHTTPClient();
-	
-		xhr.onreadystatechange = function() {
-
-		    try {
-		      if (this.readyState == 4) {
-		           var results = JSON.stringify(this.responseText);
-		        }
-		    } catch(e) {
-		        Ti.API.debug("Error: " + e.error);
-		    }
-		};
-	
-	    xhr.onerror = function(e) {
-	        Ti.API.error("ERROR: " + e.error);
-	    };
-	
-	    xhr.onload = function(e) {
-			var data = JSON.parse(this.responseText);
-
-	        videoThumb = data.thumbnail_url;
-		//	Ti.API.debug('got thumbnail for vimeo: ' + videoThumb);
-			
-			callback(videoThumb, data);
-	    };
-	
-		//eContent = encodeURIComponent(pContent);
-	    xhr.open('GET','http://vimeo.com/api/oembed.json?maxwidth=640&maxheight=385&url=' + pContent);
-		xhr.setRequestHeader('X-Requested-With', '');
-		xhr.send();
-		
+	if (pContent.indexOf("vimeo") != -1) {
+		// vimeo
+		request_url = 'http://vimeo.com/api/oembed.json?maxwidth=640&maxheight=385&url=' + pContent;
 	} else {
-		
-		videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
-		videoLink = "http://youtube.com/watch?v=" + videoId;
-		
-		//ELSE YOUTUBE
-		var xhr = Titanium.Network.createHTTPClient();
-	
-		xhr.onreadystatechange = function() {
-
-		    try {
-		      if (this.readyState == 4) {
-		           var results = JSON.stringify(this.responseText);
-		        }
-		    } catch(e) {
-		        Ti.API.debug("Error: " + e.error);
-		    }
-		};
-	
-	    xhr.onerror = function(e) {
-	        Ti.API.error("ERROR: " + e.error);
-	    };
-	
-	    xhr.onload = function(e) {
-			var data = JSON.parse(this.responseText);
-	        videoThumb = data.thumbnail_url;
-			callback(videoThumb, data);
-	    };
-	
-		//eContent = encodeURIComponent(pContent);
-	    xhr.open('GET','http://www.youtube.com/oembed?format=json&url=' + videoLink);
-		xhr.setRequestHeader('X-Requested-With', '');
-		xhr.send();
+		// youtube
+		var videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
+		var videoLink = "http://youtube.com/watch?v=" + videoId;
+		request_url = 'http://www.youtube.com/oembed?format=json&url=' + videoLink;
 	}
+	
+	var xhr = Titanium.Network.createHTTPClient();
+	xhr.onreadystatechange = function() {
+	    try {
+	      if (this.readyState == 4) {
+	           var results = JSON.stringify(this.responseText);
+	        }
+	    } catch(e) {
+	        Ti.API.debug("Error: " + e.error);
+	    }
+	};
+
+    xhr.onerror = function(e) {
+        Ti.API.error("ERROR: " + e.error);
+    };
+
+    xhr.onload = function(e) {
+		var data = JSON.parse(this.responseText);
+        var videoThumb = data.thumbnail_url;
+		callback(videoThumb, data);
+    };
+
+	//eContent = encodeURIComponent(pContent);
+    xhr.open('GET', request_url);
+	xhr.setRequestHeader('X-Requested-With', '');
+	xhr.send();
 };
 
 var getPhotoData = function(pContent, pWidth, pHeight, yql, callback) {
