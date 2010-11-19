@@ -110,7 +110,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			height: 			41, //actual: 35
 			width: 				220, //actual: 214
 			left: 				290,
-			top: 				20,
+			top: 				25,
 			zIndex:  			3
 		});
 				headerView.add(btn_Username);
