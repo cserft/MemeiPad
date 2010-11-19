@@ -12,7 +12,6 @@ app.js
 
 dashboard.js
 ------------
-- BUG: The date on the last refresh from the PUll to Refresh Feature it is wrong
 - BUG: when loading permalink, if YQL fails, the app stops responding to touch
 _____ AFTER LAUNCH _____
 - add a Label "Loading Dashboard..."
