@@ -26,6 +26,7 @@ permalink.js
 ------------
 - Bug When opening some Vimeo Videos: http://vimeo.com/11436985
 - When opening permalink from Dashboard, if an error occurs with YQL, the app stops responding (verify if yqldata is null and close permalink window)
+- Arrumar um jeito de ver se o video youtube tem versao h264, caso contrario mostrar um placeholder
 
 _____ AFTER LAUNCH _____
 - Animation when reposting
@@ -39,8 +40,7 @@ _____ AFTER LAUNCH _____
 
 newpost.js
 ----------
-- BUG: Posting twice the content when an error occurs with YQL
-- BUG: multiple searches when typing on FlashLight
+- BUG: Inserting twice the content when an error occurs with YQL
 _____ AFTER LAUNCH _____
 - Save Video/Photo on Drafts
 - BUG: animation of the postBody goes crazy when selecting different images from local file and from Flashlight
