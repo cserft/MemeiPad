@@ -186,11 +186,28 @@ var OAuthAdapter = function(pService, authorize) {
 		var client = Ti.Network.createHTTPClient();
 		var myUrl  = OAuth.addToURL(pUrl, message.parameters);
 
-		Ti.API.debug("Sending request with parameters: ");
-		Ti.API.debug("url: "+ myUrl);
-        client.open(message.method, myUrl, false);
+		client.open(message.method, myUrl, false);
         client.send();
-		Ti.API.debug("Request done, code: "+ client.status);
+
+		Ti.API.debug(">>>>> _______________");
+		Ti.API.debug(">>>>> | YQL REQUEST |");
+		Ti.API.debug(">>>>> |_____________|");
+		Ti.API.debug(">>>>> parameters: [" + pParameters + "]");
+		Ti.API.debug(">>>>> url: " + myUrl);
+		Ti.API.debug(">>>>> ________________");
+		Ti.API.debug(">>>>> | YQL RESPONSE |");
+		Ti.API.debug(">>>>> |______________|");
+		Ti.API.debug(">>>>> client data: [" + JSON.stringify(client) + "]");
+		Ti.API.debug(">>>>> HTTP status code: " + client.status);
+		Ti.API.debug(">>>>> HTTP response header [Date]: " + client.getResponseHeader('Date'));
+		Ti.API.debug(">>>>> HTTP response header [Server]: " + client.getResponseHeader('Server'));
+		Ti.API.debug(">>>>> HTTP response header [Content-Type]: " + client.getResponseHeader('Content-Type'));
+		Ti.API.debug(">>>>> HTTP response header [Content-Length]: " + client.getResponseHeader('Content-Length'));
+		Ti.API.debug(">>>>> response: " + client.responseText);
+		Ti.API.debug(">>>>> ____________");
+		Ti.API.debug(">>>>> | END YQL! |");
+		Ti.API.debug(">>>>> |__________|");
+
 		return(client.responseText);
 	};
 	
@@ -298,7 +315,7 @@ var OAuthAdapter = function(pService, authorize) {
 			}
 			request();
 		};
-		if (tries >= MAX_RETRIES) {
+		if ((!yqldata || !yqldata.query || !yqldata.query.results) && (tries >= MAX_RETRIES)) {
 			Ti.API.error('App crashed (cannot connect to YQL)');
 			Titanium.UI.createAlertDialog({ 
 				title: 'Error',
