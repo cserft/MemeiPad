@@ -122,7 +122,15 @@ var searchTabs = Titanium.UI.createTabbedBar({
 });
 
 var flashlight_show = function() {
-	flashlight_create();
+	if (searchTextField.value == '') {
+		Ti.UI.createAlertDialog({
+			title: 'Oops...',
+			message: 'You need to write something before hitting the search button.',
+		}).show();
+	} else {
+		flashlight_create();
+	}
+	
 	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
 };
 

@@ -530,7 +530,7 @@ btn_post.addEventListener('click', function() {
 		if ( postText == null || postText == "" ) {
 			Ti.UI.createAlertDialog({ 
 				title: 'Oops...',
-			    message: 'Write something before you hit the post button',
+			    message: 'Write something before you hit the post button.',
 				buttonNames: ['OK']
 			}).show();
 		} else {
