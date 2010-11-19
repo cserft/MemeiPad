@@ -137,7 +137,8 @@ var showHeader = function (yql, pType, pWinDashboard){
 			top: 		10,
 			left:  		50,
 			height: 	20,
-			width: 		145
+			width: 		145,
+			zIndex: 2
 		});
 		btn_Username.add(memeTitleLabel);
 		
@@ -151,6 +152,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			var popover = Titanium.UI.iPad.createPopover({
 				width:220,
 				height:200,
+				navBarHidden: true,
 				title: 'Settings',
 				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
 			});

@@ -28,9 +28,9 @@ Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
 
 var yqldata = yql.query(yqlQuery);
 
-if (yqldata == null) {
-	win.close();	
-}
+// if (yqldata == null) {
+// 	win.close();	
+// }
 var post = yqldata.query.results.post;
 
 // ============================
