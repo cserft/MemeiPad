@@ -63,14 +63,15 @@ baseView.add(tableView);
 // ===================================================
 // = CREATING POST VIEW TO EMBED IN THE TABLEVIEW =
 // ===================================================
-var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, pGuid)
-{
+var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, pGuid) {
 	var __id_img;
 	var __id_bg_caption;
 	var __id_caption;
 	
-	//create a black box view with a unique name including the PubId
+	// Debugging Parameters Received
+	Ti.API.info(">>>>>> parameters recieved on createPost(): GUID [" + pGuid + "], pubId [" + pPubId + "]");
 	
+	//create a black box view with a unique name
 	var blackBoxView = Ti.UI.createView({
 		backgroundColor:'black',
 		width: 317,
@@ -78,24 +79,29 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		top: 5
 	});
 	
+	var blackBoxLink = Ti.UI.createView({
+		backgroundColor: 		'transparent',
+		width: 					317,
+		height: 				241,
+		top: 					0,
+		//backgroundSelectedImage: 'images/btn_dashboard_link.png',
+		//style: 					Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
+		pubId: 					pPubId,
+		guid: 					pGuid,
+		zindex: 				99
+	});
+	
 	// Sets the proper Column Left position
-	if (pColumn == 0){
-		
+	if (pColumn == 0) {
 		blackBoxView.left = 35;	
-	}
-	else if (pColumn == 1){
-		
+	} else if (pColumn == 1) {
 		blackBoxView.left = 355;
-		
-	} else if (pColumn == 2){
-		
+	} else if (pColumn == 2) {
 		blackBoxView.left = 675;
 	}
 	
-	
-	// create an post view
-	if (pType == "photo"){	
-				
+	// create a post view
+	if (pType == "photo") {
 		var postImageView = Ti.UI.createImageView({
 			image: pContent,
 			top:5,
@@ -117,14 +123,11 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	            height:38
 	        });
 	        blackBoxView.add(img_play_btn);
-
 		}
-		
 	}
 	
-	// create an Video view
-	if (pType == "video") {	
-		
+	// create a Video view
+	if (pType == "video") {
 		getVideoData(pContent, function(_videoThumb) {
 			// Ti.API.debug('my video thumb is [' + _videoThumb + ']');
 
@@ -146,53 +149,50 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	            height:37
 	        });
 	        blackBoxView.add(img_play_btn);
+			
+			// add blackboxview again to ensure it is on top of everything
+			// this is necessary because this function is executed assynchronously
+			blackBoxView.add(blackBoxLink);
 		});
 	}
 	
-	// create an Text view
-	
-	if(pType == "text"){
+	// create a Text view
+	if(pType == "text") {
 
-        var img_quote = Ti.UI.createImageView({
-            image:'images/quote_icon.png',
-            top:25,
-            left:15,
-            width:25,
-            height:20
-        });
-        blackBoxView.add(img_quote);
+		var img_quote = Ti.UI.createImageView({
+		    image:'images/quote_icon.png',
+		    top:25,
+		    left:15,
+		    width:25,
+		    height:20
+		});
+		blackBoxView.add(img_quote);
 
-       var pContentStripado = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+		var pContentStripado = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
 
-	   // var pContentStripado = strip_tags(pContent);
+		// var pContentStripado = strip_tags(pContent);
 
-       var minipost_text = Ti.UI.createLabel({
-           color:'#FFF',
-           text: pContentStripado,
-           textAlign:'left',
-           top:20,
-           left:50,
-           width:217,
-           height:181
-       });
+		var minipost_text = Ti.UI.createLabel({
+		    color:'#FFF',
+		    text: pContentStripado,
+		    textAlign:'left',
+		    top:20,
+		    left:50,
+		    width:217,
+		    height:181
+		});
 
 		// Applying different Font Sizes depending on the Size of the Text Post
 		if (pContentStripado.length < 30){
-			
 			minipost_text.font = {fontSize:30,fontFamily:'Helvetica Neue'};
-			
 		} else if (pContentStripado.length < 60) {
-			
 			minipost_text.font = {fontSize:25,fontFamily:'Helvetica Neue'};
-			
 		} else {
-			
 			minipost_text.font = {fontSize:18,fontFamily:'Helvetica Neue'};
 		}
 
-       blackBoxView.add(minipost_text);
-   }
-	
+   		blackBoxView.add(minipost_text);
+	}
 
 	// add the Caption to the BlackBox
 	if (pCaption != undefined && pCaption.length >0 && pCaption != "") {
@@ -227,23 +227,8 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		__id_bg_caption.add(__id_caption);
 	}
 	
-	
-	// Debugging Parameters Received
-	Ti.API.info(">>>>>> parameters recieved on createPost(): GUID [" + pGuid + "], pubId [" + pPubId + "]");
-	
-	var blackBoxLink = Ti.UI.createButton({
-		backgroundColor: 		'transparent',
-		width: 					317,
-		height: 				241,
-		top: 					0,
-		backgroundSelectedImage: 'images/btn_dashboard_link.png',
-		style: 					Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
-		pubId: 					pPubId,
-		guid: 					pGuid,
-		zindex: 				99
-	});
+	// last but not least, add blackbox on top of everything
 	blackBoxView.add(blackBoxLink);
-	
 	
 	//Returns the BlackBoxView Obj with the complete design
 	return(blackBoxView);
@@ -262,9 +247,7 @@ var tempRow = null;
 var tempItemRowCount = 0;
 var data = [];
 
-var getDashboardData = function (pTimestamp, pDashboardType){
-
-	
+var getDashboardData = function (pTimestamp, pDashboardType) {
 	Ti.API.info("DashboardType from getDashboardData Function: " + pDashboardType);
 
 	if (pDashboardType === "logged") {
@@ -477,6 +460,8 @@ Titanium.App.addEventListener('openingDetailsFalse', function(e)
 
 tableView.addEventListener('click', function(e)
 {
+	Ti.API.info('event fired was ' + JSON.stringify(e));
+	Ti.API.info('event source is ' + JSON.stringify(e.source));
 	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	
 	// Sets the Permalink Animation startup settings
