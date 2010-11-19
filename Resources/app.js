@@ -18,10 +18,10 @@ var win1 = Titanium.UI.createWindow({
 
 var logoHeader = Titanium.UI.createImageView({
 	image:'images/logo_header.png',
-	top: 27,
-	left: 34,
-	width: 194,
-	height: 47
+	top: 0,
+	left: 20,
+	width: 217, //actual: 194
+	height: 93 // actual: 47
 });
 win1.add(logoHeader);
 
@@ -109,11 +109,11 @@ var showHeader = function (yql, pType, pWinDashboard){
 			backgroundImage: 	'images/btn_username.png',
 			height: 			41, //actual: 35
 			width: 				220, //actual: 214
-			left: 				268,
-			top: 				23,
+			left: 				290,
+			top: 				20,
 			zIndex:  			3
 		});
-		headerView.add(btn_Username);
+				headerView.add(btn_Username);
 
 		var miniAvatarView = Titanium.UI.createImageView({
 			image: 			meme.avatar_url.thumb,
@@ -141,6 +141,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			zIndex: 2
 		});
 		btn_Username.add(memeTitleLabel);
+	
 		
 		// ================
 		// = PopOver Menu =
