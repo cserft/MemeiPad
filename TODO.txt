@@ -8,25 +8,25 @@ _____ AFTER LAUNCH _____
 
 app.js
 ------------
-- add popOver on Header Logged In to allow Signout
+- add About Window, explaining the app and linking to its source code on GitHub
 
 dashboard.js
 ------------
 - BUG: when loading permalink, if YQL fails, the app stops responding to touch
+- BUG: (visual) When loaind Videos, no the caption box stays behind the photo
+
 _____ AFTER LAUNCH _____
+- better handling of the Loading 'prabaixo', only hide the loading message after the rows are displayed
 - add a Label "Loading Dashboard..."
-- Ajustar Header para ser Variavel posicao do Signout em relacao ao tamanho do Login Yahoo!
-- Quando nao Logado Mostrar Explore (usando a language do usuário logado)
-- ver esta resposta: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
-- Styles for the rows in the User Popover Menu
+- check this page: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
 - flip with 2 fingers on a post on dashboard reveals post informations (Author, Number of Reposts and Number of Comments)
-- Play Audio
+- Play Audio Posts
 
 permalink.js
 ------------
 - Bug When opening some Vimeo Videos: http://vimeo.com/11436985
 - When opening permalink from Dashboard, if an error occurs with YQL, the app stops responding (verify if yqldata is null and close permalink window)
-- Arrumar um jeito de ver se o video youtube tem versao h264, caso contrario mostrar um placeholder
+- Find out a way to check if a youtube video has H264 version, if not present a better error handling.
 
 _____ AFTER LAUNCH _____
 - Animation when reposting
@@ -41,6 +41,7 @@ _____ AFTER LAUNCH _____
 newpost.js
 ----------
 - BUG: Inserting twice the content when an error occurs with YQL
+- BUG: When retrieving 
 _____ AFTER LAUNCH _____
 - Save Video/Photo on Drafts
 - BUG: animation of the postBody goes crazy when selecting different images from local file and from Flashlight

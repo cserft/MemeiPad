@@ -115,7 +115,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 		});
 				headerView.add(btn_Username);
 
-		var miniAvatarView = Titanium.UI.createImageView({
+		var miniAvatarView = Ti.UI.createImageView({
 			image: 			meme.avatar_url.thumb,
 			defaultImage: 	'images/default_img_avatar.png',
 			top: 			4,
@@ -127,7 +127,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 		});
 		btn_Username.add(miniAvatarView);
 	
-		var memeTitleLabel = Titanium.UI.createLabel({
+		var memeTitleLabel = Ti.UI.createLabel({
 			color: 		'#ffffff',
 			text:  		meme.title,
 			font: 		{fontSize:13, fontFamily:'Helvetica Neue', fontWeight:'bold'},
@@ -150,26 +150,142 @@ var showHeader = function (yql, pType, pWinDashboard){
 		// build User popover
 		btn_Username.addEventListener('click', function()	{
 			
-			var popover = Titanium.UI.iPad.createPopover({
-				width:220,
-				height:200,
+			var popover = Ti.UI.iPad.createPopover({
+				width:341,
+				height:160,
+				// borderRadius: 5,
 				navBarHidden: true,
-				title: 'Settings',
 				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
 			});
-
-			var settingsTableView = Ti.UI.createTableView({
-				top:0,
-				height:200,
-				data:[
-					{title:'About this app', hasChild: true, url: 'about.js'},
-					{title:'Followers: ' + meme.followers, hasChild: true},
-					{title:'Following: ' + meme.following, hasChild: true},
-					{title:'Sign out'}
-				],
-				style: 1 //Ti.UI.iPhone.TableViewStyle.GROUP
+			
+			var data = [];
+			
+			// ROW 1 LINK TO MEME AND SIGNOUT BUTTON
+			var row1 = Ti.UI.createTableViewRow({
+				selectionStyle:'none', // no color when clicking in the row
+				height: 60
 			});
-		
+			
+			var linkMeme = Ti.UI.createLabel({
+ 				color: 			'#7D0670',
+				text: 			'me.me/' + meme.name,
+				textAlign: 		'left',
+				font: 			{fontSize:18, fontWeight:'regular'},
+				top: 			16,
+				left: 			14,
+				height: 		30,
+				width: 			224
+			});	
+			row1.add(linkMeme);
+			
+			//Open Link on Safari
+			//Alert to Open Safari for the Post Permalink
+			var alertOpenSignUp = Titanium.UI.createAlertDialog({
+				title: 'Open Link',
+				message: 'We will open this link on Safari',
+				buttonNames: ['OK','Cancel'],
+				cancel: 1
+			});
+
+			linkMeme.addEventListener("click", function(e)
+			{
+				alertOpenSignUp.show();
+			});
+
+
+			// Opens the Permalink page on Safari
+			alertOpenSignUp.addEventListener('click',function(e)
+			{
+				if (e.index == 0){
+					// Open Link to the Guidelines Page on Safari
+					Ti.Platform.openURL(meme.url);	
+				}
+			});
+
+			var btn_signout = Ti.UI.createButton({
+				top:14,
+				left:256,
+				width:64,
+				height:31,
+				title: 'sign out',
+				color: '#666666',
+				font:{fontSize:11, fontWeight:'regular'},
+				backgroundImage: 'images/btn_signout.png',
+				style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
+				borderRadius: 5
+			});
+			row1.add(btn_signout);
+			
+			//Sign Out listener
+			btn_signout.addEventListener('click', function()
+			{
+				Ti.API.info("Signout Link clicked");
+				popover.hide({animated:true});
+				oAuthAdapter.logout('meme');
+				Ti.App.fireEvent('remove_tableview');
+				headerView.hide();
+				oAuthAdapter.login(showSignIn, showDashboard);
+			});
+			data[0] = row1;
+			
+			// ROW 2 FOLLOWERS
+			var row2 = Ti.UI.createTableViewRow({
+				height: 40,
+				selectionStyle:'none',
+			});
+			
+			var iconGraphic = Ti.UI.createImageView({
+				image: 			'images/icon_graphic.png',
+				top: 			10,
+				left: 			14,
+				width: 			23,
+				height: 		16
+			});
+			row2.add(iconGraphic);
+			
+			var followLabel = Ti.UI.createLabel({
+ 				color: 			'#666',
+				text: 			'followers ' + meme.followers + '    following ' + meme.following	,
+				textAlign: 		'left',
+				font: 			{fontSize:14, fontWeight:'regular'},
+				left: 			50,
+				height: 		34,
+				width: 			260
+			});	
+			row2.add(followLabel);
+			
+			data[1] = row2;
+			
+			// ROW 3: ABOUT
+			var row3 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 60,
+				hasChild: true,
+				url: 'about.js'
+			});
+			
+			var aboutApp = Ti.UI.createLabel({
+ 				color: 			'#333',
+				text: 			'about Meme for iPad',
+				textAlign: 		'left',
+				font: 			{fontSize:18, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			row3.add(aboutApp);
+			
+			data[2] = row3;
+			
+			
+			var settingsTableView = Ti.UI.createTableView({
+				data:data,
+				width: 329,
+				height:160,
+				separatorColor: '#CCC',
+				style: 0 //Ti.UI.iPhone.TableViewStyle.PLAIN
+			});
+			
 			settingsTableView.addEventListener('click', function(e)	{
 			
 			Ti.API.info("Table Row Clicked: " + e.index);
@@ -187,15 +303,15 @@ var showHeader = function (yql, pType, pWinDashboard){
 			// 	// winPopover.open({animated:true});
 			// }
 
-				if (e.index == 3){ // Sign Out
-
-					Ti.API.info("Signout Link clicked");
-					popover.hide({animated:true});
-					oAuthAdapter.logout('meme');
-					Ti.App.fireEvent('remove_tableview');
-					headerView.hide();
-					oAuthAdapter.login(showSignIn, showDashboard);
-				}
+				// if (e.index == 3){ // Sign Out
+				// 
+				// 	Ti.API.info("Signout Link clicked");
+				// 	popover.hide({animated:true});
+				// 	oAuthAdapter.logout('meme');
+				// 	Ti.App.fireEvent('remove_tableview');
+				// 	headerView.hide();
+				// 	oAuthAdapter.login(showSignIn, showDashboard);
+				// }
 
 			});
 
@@ -208,28 +324,6 @@ var showHeader = function (yql, pType, pWinDashboard){
 
 		});
 		
-		// ==================
-		// = signout button =
-		// ==================
-		
-		// var btn_signout = Ti.UI.createButton({
-		// 	backgroundImage: 	'images/btn_signout.png',
-		// 	height: 			41, //actual: 35
-		// 	width: 				66, //actual: 60
-		// 	left: 				482,
-		// 	top: 				23
-		// });
-		// headerView.add(btn_signout);
-		// 
-		// // triggers the signout process
-		// btn_Username.addEventListener('click', function()
-		// 		{
-		// 			Ti.API.info("Signout Button clicked");
-		// 			oAuthAdapter.logout('meme');
-		// 			Ti.App.fireEvent('remove_tableview');
-		// 			headerView.hide();
-		// 			oAuthAdapter.login(showSignIn, showDashboard);
-		// 		});
 		
 		// ===============
 		// = post button =
@@ -353,37 +447,37 @@ function showIndicator(pMessage, pColor, pSize)
 {
 	// window container
 	indWin = Titanium.UI.createWindow({
-		height: pSize,
-		width: pSize
+		height: 		pSize,
+		width: 			pSize
 	});
 
 	// black view
 	var indView = Titanium.UI.createView({
-		height: pSize,
-		width: pSize,
-		backgroundColor: pColor,
-		borderRadius:10,
-		opacity:0.8
+		height: 			pSize,
+		width: 				pSize,
+		backgroundColor: 	pColor,
+		borderRadius: 		10,
+		opacity: 			0.8
 	});
 	indWin.add(indView);
 
 	// loading indicator
 	actInd = Titanium.UI.createActivityIndicator({
-		style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
-		top: pSize/3,
-		height:30,
-		width:30
+		style: 			Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
+		top: 			pSize/3,
+		height: 		30,
+		width: 			30
 	});
 	indWin.add(actInd);
 
 	// message
 	var message = Titanium.UI.createLabel({
-		text: pMessage,
-		color:'#fff',
-		width:'auto',
-		height:'auto',
-		font:{fontSize:22,fontWeight:'bold'},
-		bottom: pSize/4
+		text: 			pMessage,
+		color: 			'#fff',
+		width: 			'auto',
+		height: 		'auto',
+		font: 			{fontSize:22,fontWeight:'bold'},
+		bottom: 		pSize/4
 	});
 	indWin.add(message);
 	indWin.open();
