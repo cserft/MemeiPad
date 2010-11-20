@@ -308,12 +308,10 @@ var showHeader = function (yql, pType, pWinDashboard){
 			
 			var aboutView = Ti.UI.createScrollView({
 				top: 				0,
-				width: 				330, 
-				height: 			390,
-				borderRadius: 		6,
-				borderColor: 		'#333',
+				width: 				340, 
+				height: 			400,
 				contentWidth: 		330,
-				contentHeight: 		'auto',
+				contentHeight: 		401,
 				showVerticalScrollIndicator:true,
 				showHorizontalScrollIndicator:false
 			});
@@ -321,10 +319,11 @@ var showHeader = function (yql, pType, pWinDashboard){
 			
 			
 			var aboutLabel = Ti.UI.createLabel({
-				text: 'Meme for iPad was a pet project from the Yahoo! Meme Team originated in one internal Yahoo! Hack Days.\n\nIt was developed by Antonio Carlos Silveira (@acarlos1000) and Guilherme Chapiewski (@gchapiewski) with Design by Guilherme Neumann (@gneumann) on top of the Open Source Titanium SDK.\n\nThe Source sode of this app is freely available at GitHub, fill free to download and learn from that.',
+				text: 'Meme for iPad was a pet project from the Yahoo! Meme Team originated in one of the internal Hack Days.\n\nIt was developed by Antonio Carlos Silveira (@acarlos1000) and Guilherme Chapiewski (@gchapiewski) with Design/UI by Guilherme Neumann (@gneumann).\n\nThis app was totally developed on top of the Open Source Titanium SDK.\n\nThe Source code of this app is freely available at GitHub, fill free to download and learn from that.',
+				font: 			{fontSize:16,fontFamily:'Helvetica Neue', fontWeight:'regular'},
 				top: 				20,	
-				width: 				'90%',
-				height: 			350,
+				width: 				325,
+				height: 			'auto',
 				backgroundColor: 	'#FFF',
 				color: 				'black',
 				title: 				aboutApp.text,
