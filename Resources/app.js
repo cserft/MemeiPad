@@ -150,12 +150,23 @@ var showHeader = function (yql, pType, pWinDashboard){
 		// build User popover
 		btn_Username.addEventListener('click', function()	{
 			
+			//PopOver 
 			var popover = Ti.UI.iPad.createPopover({
 				width:341,
-				height:160,
-				// borderRadius: 5,
+				height:160, 
+				backgroundColor: 'white',
 				navBarHidden: true,
 				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
+			});
+			
+			var main = Ti.UI.createWindow({
+				top: 0,
+				backgroundColor:"#FFF",
+				navBarHidden: true
+			});
+			
+			var navGroup = Ti.UI.iPhone.createNavigationGroup({
+			  window:main
 			});
 			
 			var data = [];
@@ -260,13 +271,12 @@ var showHeader = function (yql, pType, pWinDashboard){
 			var row3 = Ti.UI.createTableViewRow({
 				selectedBackgroundColor: '#CCC',
 				height: 60,
-				hasChild: true,
-				url: 'about.js'
+				hasChild: true
 			});
 			
 			var aboutApp = Ti.UI.createLabel({
  				color: 			'#333',
-				text: 			'about Meme for iPad',
+				text: 			'About Meme for iPad',
 				textAlign: 		'left',
 				font: 			{fontSize:18, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
@@ -277,46 +287,77 @@ var showHeader = function (yql, pType, pWinDashboard){
 			
 			data[2] = row3;
 			
-			
 			var settingsTableView = Ti.UI.createTableView({
-				data:data,
-				width: 329,
-				height:160,
+				data: 			data,
+				width: 			340,
+				height: 		160,
 				separatorColor: '#CCC',
-				style: 0 //Ti.UI.iPhone.TableViewStyle.PLAIN
+				style: 			0 //Ti.UI.iPhone.TableViewStyle.PLAIN
 			});
+			
+			
+			main.add(settingsTableView);
+			
+			//ABOUT WINDOW
+			var aboutWindow = Ti.UI.createWindow({
+				backgroundColor: 	"white",
+				barColor: 			'#333',
+				title: 				aboutApp.text,
+				navBarHidden: 		false
+			});
+			
+			var aboutView = Ti.UI.createScrollView({
+				top: 				0,
+				width: 				330, 
+				height: 			390,
+				borderRadius: 		6,
+				borderColor: 		'#333',
+				contentWidth: 		330,
+				contentHeight: 		'auto',
+				showVerticalScrollIndicator:true,
+				showHorizontalScrollIndicator:false
+			});
+			aboutWindow.add(aboutView);
+			
+			
+			var aboutLabel = Ti.UI.createLabel({
+				text: 'Meme for iPad was a pet project from the Yahoo! Meme Team originated in one internal Yahoo! Hack Days.\n\nIt was developed by Antonio Carlos Silveira (@acarlos1000) and Guilherme Chapiewski (@gchapiewski) with Design by Guilherme Neumann (@gneumann) on top of the Open Source Titanium SDK.\n\nThe Source sode of this app is freely available at GitHub, fill free to download and learn from that.',
+				top: 				20,	
+				width: 				'90%',
+				height: 			350,
+				backgroundColor: 	'#FFF',
+				color: 				'black',
+				title: 				aboutApp.text,
+				navBarHidden: 		false
+			});
+			
+			aboutView.add(aboutLabel);
+			
+			var backButton = Ti.UI.createButton({
+			    title:'Back',
+				style:Titanium.UI.iPhone.SystemButtonStyle.BORDERED
+			});
+			
+			aboutWindow.leftNavButton = backButton;
+			
+			aboutWindow.addEventListener('blur', function (){
+				 popover.height = 160;
+			});
+			
+			backButton.addEventListener('click', function (){
+				navGroup.close(aboutWindow, {animated: true, duration: 100});
+			});
+
 			
 			settingsTableView.addEventListener('click', function(e)	{
-			
-			Ti.API.info("Table Row Clicked: " + e.index);
-			
-			// if (e.rowData.url)
-			// {
-			// 	var winPopover = Titanium.UI.createView({
-			// 		top:0,
-			// 		left:0,
-			// 		backgroundColor: 'red',
-			// 		// url:e.rowData.url,
-			// 		title:e.rowData.title
-			// 	});
-			// 	settingsTableView.add(winPopover);
-			// 	// winPopover.open({animated:true});
-			// }
-
-				// if (e.index == 3){ // Sign Out
-				// 
-				// 	Ti.API.info("Signout Link clicked");
-				// 	popover.hide({animated:true});
-				// 	oAuthAdapter.logout('meme');
-				// 	Ti.App.fireEvent('remove_tableview');
-				// 	headerView.hide();
-				// 	oAuthAdapter.login(showSignIn, showDashboard);
-				// }
-
+				if (e.index == 2) {
+					navGroup.open(aboutWindow, {animated: true, duration: 100});
+					popover.height = 400; 
+				}
 			});
-
-			popover.add(settingsTableView);
-
+			
+			popover.add(navGroup);
+			
 			popover.show({
 				view:btn_Username,
 				animated:true,
