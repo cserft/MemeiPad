@@ -368,7 +368,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			aboutGitButton.add(githubIcon);
 			
 			var aboutGitLabel = Ti.UI.createLabel({
-				text: 				'Meme for iPad on GitHub:\nhttp://bit.ly/memeapp-github',
+				text: 				'Meme for iPad on GitHub:\nhttp://memeapp.net/source',
 				font: 				{fontSize:14,fontFamily:'Helvetica Neue', fontWeight:'bold'},	
 				left: 				githubIcon.left + githubIcon.width + 10,
 				width: 				220,
