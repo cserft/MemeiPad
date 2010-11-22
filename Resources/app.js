@@ -353,7 +353,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			alertOpenSignUp.addEventListener('click',function(e)
 			{
 				if (e.index == 0){
-					Ti.Platform.openURL('http://bit.ly/memeapp-github');	
+					Ti.Platform.openURL('http://memeapp.net/source');
 				}
 			});
 			
