@@ -227,7 +227,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	}
 
 	// add the Caption to the BlackBox
-	createPostCaption(blackBoxView);
+	createPostCaption(blackBoxView, pCaption);
 	
 	// last but not least, add blackbox on top of everything
 	blackBoxView.add(blackBoxLink);
