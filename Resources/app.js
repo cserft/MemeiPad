@@ -177,21 +177,8 @@ var showHeader = function (yql, pType, pWinDashboard){
 				height: 60
 			});
 			
-			// var linkMeme = Ti.UI.createButton({
-			// 	top: 			16,
-			// 	left: 			14,
-			// 	height: 		30,
-			// 	width: 			224,
-			// 	title: 			'me.me/' + meme.name,
-			// 	textAlign: 		'left',
-			// 	color: 			'#7D0670',
-			// 	font: 			{fontSize:18, fontWeight:'regular'},
-			// 	style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
-			// 	borderRadius: 4
-			// });
-			
 			var linkMeme = Ti.UI.createLabel({
-			 				color: 			'#7D0670',
+			 	color: 			'#7D0670',
 				text: 			'me.me/' + meme.name,
 				textAlign: 		'left',
 				font: 			{fontSize:18, fontWeight:'regular'},
@@ -203,7 +190,6 @@ var showHeader = function (yql, pType, pWinDashboard){
 			row1.add(linkMeme);
 			
 			//Open Link on Safari
-			//Alert to Open Safari for the Post Permalink
 			var alertOpenSignUp = Titanium.UI.createAlertDialog({
 				title: 'Open Link',
 				message: 'We will open this link on Safari',
@@ -216,12 +202,9 @@ var showHeader = function (yql, pType, pWinDashboard){
 				alertOpenSignUp.show();
 			});
 
-
-			// Opens the Permalink page on Safari
 			alertOpenSignUp.addEventListener('click',function(e)
 			{
 				if (e.index == 0){
-					// Open Link to the Guidelines Page on Safari
 					Ti.Platform.openURL(meme.url);	
 				}
 			});
@@ -322,28 +305,80 @@ var showHeader = function (yql, pType, pWinDashboard){
 			var aboutView = Ti.UI.createScrollView({
 				top: 				0,
 				width: 				340, 
-				height: 			400,
+				height: 			420,
 				contentWidth: 		330,
-				contentHeight: 		401,
+				contentHeight: 		480,
 				showVerticalScrollIndicator:true,
 				showHorizontalScrollIndicator:false
 			});
 			aboutWindow.add(aboutView);
 			
-			
 			var aboutLabel = Ti.UI.createLabel({
-				text: 'Meme for iPad was a pet project from the Yahoo! Meme Team originated in one of the internal Hack Days.\n\nIt was developed by Antonio Carlos Silveira (@acarlos1000) and Guilherme Chapiewski (@gchapiewski) with Design/UI by Guilherme Neumann (@gneumann).\n\nThis app was totally developed on top of the Open Source Titanium SDK.\n\nThe Source code of this app is freely available at GitHub, fill free to download and learn from that.',
-				font: 			{fontSize:16,fontFamily:'Helvetica Neue', fontWeight:'regular'},
-				top: 				20,	
+				text: 'Meme for iPad was a pet project from the Yahoo! Meme Team originated in one of our internal Hack Days.\n\nIt was developed by Antonio Carlos Silveira (@acarlos1000) and Guilherme Chapiewski (@gchapiewski) with Design/UI by Guilherme Neumann (@gneumann).\n\nThis app was totally developed on top of the Open Source Titanium SDK and Yahoo\'s YQL.\n\nThe source code of this app is freely available at GitHub, fill free to download and learn from it.',
+				font: 			{fontSize:15,fontFamily:'Helvetica Neue', fontWeight:'regular'},
+				top: 				10,	
 				width: 				325,
 				height: 			'auto',
 				backgroundColor: 	'#FFF',
-				color: 				'black',
-				title: 				aboutApp.text,
-				navBarHidden: 		false
+				color: 				'black'
+			});
+			aboutView.add(aboutLabel);
+			
+			var aboutGitButton = Ti.UI.createButton({
+				top: 				aboutLabel.top + aboutLabel.height + 20,
+				image: 				'images/btn_about.png',
+				width: 				335, //real 329
+				height: 			91, //real: 85
+				style: Ti.UI.iPhone.SystemButtonStyle.PLAIN
+			});
+			aboutView.add(aboutGitButton);
+			
+			//Open Link on Safari
+			//Alert to Open Safari for the GitHub Link
+			var alertOpenSignUp = Titanium.UI.createAlertDialog({
+				title: 'Open Link',
+				message: 'We will open GitHub page on Safari',
+				buttonNames: ['OK','Cancel'],
+				cancel: 1
+			});
+
+			aboutGitButton.addEventListener("click", function(e)
+			{
+				alertOpenSignUp.show();
+			});
+
+
+			// Opens the GitHub page on Safari
+			alertOpenSignUp.addEventListener('click',function(e)
+			{
+				if (e.index == 0){
+					Ti.Platform.openURL('http://bit.ly/memeapp-github');	
+				}
 			});
 			
-			aboutView.add(aboutLabel);
+			var githubIcon = Ti.UI.createImageView({
+				image: 			'images/github.png',
+				left: 			20,
+				width: 			60,
+				height: 		60,
+				borderRadius: 	4
+				// borderColor: 	'#CCC'
+			});
+			aboutGitButton.add(githubIcon);
+			
+			var aboutGitLabel = Ti.UI.createLabel({
+				text: 				'Meme for iPad on GitHub:\nhttp://bit.ly/memeapp-github',
+				font: 				{fontSize:14,fontFamily:'Helvetica Neue', fontWeight:'bold'},	
+				left: 				githubIcon.left + githubIcon.width + 10,
+				width: 				220,
+				height: 			70,
+				backgroundColor: 	'transparent',
+				color: 				'white',
+				shadowColor: 		'black',
+				shadowOffset: 		{x:1,y:1}
+			});
+			aboutGitButton.add(aboutGitLabel);
+			
 			
 			var backButton = Ti.UI.createButton({
 			    title:'Back',
@@ -364,7 +399,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			settingsTableView.addEventListener('click', function(e)	{
 				if (e.index == 2) {
 					navGroup.open(aboutWindow, {animated: true, duration: 100});
-					popover.height = 400; 
+					popover.height = 420; 
 				}
 			});
 			
