@@ -59,10 +59,42 @@ var tableView = Titanium.UI.createTableView({
 
 baseView.add(tableView);
 
-
 // ===================================================
 // = CREATING POST VIEW TO EMBED IN THE TABLEVIEW =
 // ===================================================
+var createPostCaption = function(blackBoxView, pCaption) {
+	if (pCaption != undefined && pCaption.length >0 && pCaption != "") {
+		var __id_bg_caption = Titanium.UI.createView({
+			backgroundColor: 	'#000',
+			top: 				177,
+			left: 				5,
+			width: 				307,
+			height: 			64,
+			opacity: 			0.8,
+			zIndex: 			50
+		});
+		blackBoxView.add(__id_bg_caption);
+
+		//Strips HTML Entities and Tags from the Caption
+		var pCaptionStripped = strip_tags(pCaption);
+
+		var __id_caption = Titanium.UI.createLabel({
+			color: 		'#FFF',
+			text: 		pCaptionStripped,
+			font: 		{
+							fontSize:12,
+							fontFamily:'Helvetica Neue'
+						},
+		    textAlign:  'left',
+			top: 		14,
+			left: 		14,
+			width: 		274,
+			height: 	34
+		});
+		__id_bg_caption.add(__id_caption);
+	}
+};
+
 var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, pGuid) {
 	var __id_img;
 	var __id_bg_caption;
@@ -150,6 +182,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			// add blackboxview again to ensure it is on top of everything
 			// this is necessary because this function is executed assynchronously
 			blackBoxView.add(blackBoxLink);
+			
+			// same thing for post caption
+			createPostCaption(blackBoxView, pCaption);
 		});
 	}
 	
@@ -192,37 +227,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	}
 
 	// add the Caption to the BlackBox
-	if (pCaption != undefined && pCaption.length >0 && pCaption != "") {
-
-		var __id_bg_caption = Titanium.UI.createView({
-			backgroundColor: 	'#000',
-			top: 				177,
-			left: 				5,
-			width: 				307,
-			height: 			64,
-			opacity: 			0.8,
-			zIndex: 			50
-		});
-		blackBoxView.add(__id_bg_caption);
-
-		//Strips HTML Entities and Tags from the Caption
-		var pCaptionStripped = strip_tags(pCaption);
-
-		var __id_caption = Titanium.UI.createLabel({
-			color: 		'#FFF',
-			text: 		pCaptionStripped,
-			font: 		{
-							fontSize:12,
-							fontFamily:'Helvetica Neue'
-						},
-		    textAlign:  'left',
-			top: 		14,
-			left: 		14,
-			width: 		274,
-			height: 	34
-		});
-		__id_bg_caption.add(__id_caption);
-	}
+	createPostCaption(blackBoxView);
 	
 	// last but not least, add blackbox on top of everything
 	blackBoxView.add(blackBoxLink);

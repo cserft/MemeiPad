@@ -8,14 +8,12 @@ _____ AFTER LAUNCH _____
 
 app.js
 ------------
-- add About Window, explaining the app and linking to its source code on GitHub
 - add Error Window with error occurs when starting the app. With a Button to refresh
 - Review all RegExp
 
 dashboard.js
 ------------
 - BUG: when loading permalink, if YQL fails, the app stops responding to touch
-- BUG: (visual) When loading Videos, the caption box stays behind the photo
 
 _____ AFTER LAUNCH _____
 - better handling of the Loading 'prabaixo', only hide the loading message after the rows are displayed
