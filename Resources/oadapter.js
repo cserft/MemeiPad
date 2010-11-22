@@ -303,6 +303,12 @@ var OAuthAdapter = function(pService, authorize) {
 	
 	var doQuery = function(yql_base_url, parameters, token) {
 		var MAX_RETRIES = 3;
+		var MODIFY_QUERY = /^insert|delete/i;
+		
+		if (MODIFY_QUERY.test(parameters[2][1].trim())) {
+			MAX_RETRIES = 1;
+		}
+		
 		var json, yqldata, tries = 0;
 		var request = function() {
 			json = serviceRequest(yql_base_url, parameters.slice(0), token);
