@@ -479,7 +479,9 @@ var flashlight_create = function() {
 				case 'twitter':
 		    	//Removes whatever medias where there ebefore
 				Ti.App.fireEvent("photoRemoved");
-		
+				
+				editTitleField.value = "";	
+				postTitle = "";
 				textArea.value = e.source.username + '\n' + e.source.tweet;
 				postBody = '<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '</blockquote>';
 				tempPostLabel.hide();

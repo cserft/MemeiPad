@@ -177,8 +177,21 @@ var showHeader = function (yql, pType, pWinDashboard){
 				height: 60
 			});
 			
+			// var linkMeme = Ti.UI.createButton({
+			// 	top: 			16,
+			// 	left: 			14,
+			// 	height: 		30,
+			// 	width: 			224,
+			// 	title: 			'me.me/' + meme.name,
+			// 	textAlign: 		'left',
+			// 	color: 			'#7D0670',
+			// 	font: 			{fontSize:18, fontWeight:'regular'},
+			// 	style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
+			// 	borderRadius: 4
+			// });
+			
 			var linkMeme = Ti.UI.createLabel({
- 				color: 			'#7D0670',
+			 				color: 			'#7D0670',
 				text: 			'me.me/' + meme.name,
 				textAlign: 		'left',
 				font: 			{fontSize:18, fontWeight:'regular'},

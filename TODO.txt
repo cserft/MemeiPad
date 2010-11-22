@@ -9,11 +9,13 @@ _____ AFTER LAUNCH _____
 app.js
 ------------
 - add About Window, explaining the app and linking to its source code on GitHub
+- add Error Window with error occurs when starting the app. With a Button to refresh
+- Review all RegExp
 
 dashboard.js
 ------------
 - BUG: when loading permalink, if YQL fails, the app stops responding to touch
-- BUG: (visual) When loaind Videos, no the caption box stays behind the photo
+- BUG: (visual) When loading Videos, the caption box stays behind the photo
 
 _____ AFTER LAUNCH _____
 - better handling of the Loading 'prabaixo', only hide the loading message after the rows are displayed
@@ -26,7 +28,7 @@ permalink.js
 ------------
 - Bug When opening some Vimeo Videos: http://vimeo.com/11436985
 - When opening permalink from Dashboard, if an error occurs with YQL, the app stops responding (verify if yqldata is null and close permalink window)
-- Find out a way to check if a youtube video has H264 version, if not present a better error handling.
+- Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
 
 _____ AFTER LAUNCH _____
 - Animation when reposting
