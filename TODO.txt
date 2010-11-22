@@ -27,7 +27,6 @@ permalink.js
 - Bug When opening some Vimeo Videos: http://vimeo.com/11436985
 - When opening permalink from Dashboard, if an error occurs with YQL, the app stops responding (verify if yqldata is null and close permalink window)
 - Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
-
 _____ AFTER LAUNCH _____
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)
@@ -41,7 +40,6 @@ _____ AFTER LAUNCH _____
 newpost.js
 ----------
 - BUG: Inserting twice the content when an error occurs with YQL
-- BUG: When retrieving 
 _____ AFTER LAUNCH _____
 - Save Video/Photo on Drafts
 - BUG: animation of the postBody goes crazy when selecting different images from local file and from Flashlight
