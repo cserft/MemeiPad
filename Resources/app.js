@@ -619,3 +619,11 @@ if (!Titanium.Network.online) {
 	var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 	oAuthAdapter.login(showSignIn, showDashboard);
 };
+
+Ti.addEventListener('yqlerror', function(e) {
+	Ti.API.error('App crashed (cannot connect to YQL). Query: ' + e.query);
+	Titanium.UI.createAlertDialog({ 
+		title: 'Error',
+		message: 'There was an error connecting to Yahoo! APIs. Please try again later.'
+	}).show();
+});

@@ -172,7 +172,7 @@ var OAuthAdapter = function(pService, authorize) {
 		return(OAuth.getParameterMap(serviceRequest(pUrl, pParameters, accessor)));
 	};
 
-	var serviceRequest = function(pUrl, pParameters, accessor, options) {
+	var serviceRequest = function(pUrl, pParameters, accessor) {
 		pParameters.push( ["oauth_consumer_key", consumerKey ] );
 		pParameters.push( ["oauth_signature_method", "HMAC-SHA1"] );
 		
@@ -187,14 +187,6 @@ var OAuthAdapter = function(pService, authorize) {
 		var myUrl  = OAuth.addToURL(pUrl, message.parameters);
 
 		client.open(message.method, myUrl, false);
-		if (options) {
-			if (options.successCallback) {
-				client.onload = options.successCallback;
-			}
-			if (options.errorCallback) {
-				client.onerror = options.errorCallback;
-			}
-		}
         client.send();
 
 		Ti.API.debug(">>>>> _______________");
@@ -286,7 +278,7 @@ var OAuthAdapter = function(pService, authorize) {
         Ti.API.debug('Saving token done: '+ JSON.stringify(token));
 	};
 
-	var query = function(pQuery, options) {
+	var query = function(pQuery) {
 		Ti.API.debug("Function Query Called");
 		var token = maybeRefreshToken(loadToken());
 		var parameters = [ ["format", "json"],
@@ -295,10 +287,10 @@ var OAuthAdapter = function(pService, authorize) {
 						   ["oauth_token", token.oauth_token],
 						   ["env", "http://datatables.org/alltables.env"]
 						 ];
-		return doQuery(yql_base_url, parameters, accessorFromToken(token), options);
+		return doQuery(yql_base_url, parameters, accessorFromToken(token));
 	};
 
-	var query2legg = function(pQuery, options) {
+	var query2legg = function(pQuery) {
 		Ti.API.debug("Function Query2Legg Called");
 		var accessor = { consumerSecret: consumerSecret };
 		var parameters = [ ["format", "json"],
@@ -306,20 +298,21 @@ var OAuthAdapter = function(pService, authorize) {
 		 				   ["q", pQuery],
 						   ["env", "http://datatables.org/alltables.env"]
 						 ];
-		return doQuery(yql_base_url, parameters, accessor, options);
+		return doQuery(yql_base_url, parameters, accessor);
 	};
 	
-	var doQuery = function(yql_base_url, parameters, token, options) {
+	var doQuery = function(yql_base_url, parameters, token) {
 		var MAX_RETRIES = 3;
 		var MODIFY_QUERY = /^insert|delete/i;
+		var yql_query = parameters[2][1];
 		
-		if (MODIFY_QUERY.test(parameters[2][1].trim())) {
+		if (MODIFY_QUERY.test(yql_query.trim())) {
 			MAX_RETRIES = 1;
 		}
 		
 		var json, yqldata, tries = 0;
 		var request = function() {
-			json = serviceRequest(yql_base_url, parameters.slice(0), token, options);
+			json = serviceRequest(yql_base_url, parameters.slice(0), token);
 			yqldata = JSON.parse(json);
 			tries++;
 		};
@@ -330,11 +323,7 @@ var OAuthAdapter = function(pService, authorize) {
 			request();
 		};
 		if ((!yqldata || !yqldata.query || !yqldata.query.results) && (tries >= MAX_RETRIES)) {
-			Ti.API.error('App crashed (cannot connect to YQL)');
-			Titanium.UI.createAlertDialog({ 
-				title: 'Error',
-				message: 'There was an error connecting to Yahoo! APIs. Please try again later.'
-			}).show();
+			Ti.fireEvent('yqlerror', { query: yql_query });
 		}
 		return yqldata;
 	};
