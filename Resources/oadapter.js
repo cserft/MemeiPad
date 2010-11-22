@@ -172,7 +172,7 @@ var OAuthAdapter = function(pService, authorize) {
 		return(OAuth.getParameterMap(serviceRequest(pUrl, pParameters, accessor)));
 	};
 
-	var serviceRequest = function(pUrl, pParameters, accessor) {
+	var serviceRequest = function(pUrl, pParameters, accessor, options) {
 		pParameters.push( ["oauth_consumer_key", consumerKey ] );
 		pParameters.push( ["oauth_signature_method", "HMAC-SHA1"] );
 		
@@ -187,6 +187,14 @@ var OAuthAdapter = function(pService, authorize) {
 		var myUrl  = OAuth.addToURL(pUrl, message.parameters);
 
 		client.open(message.method, myUrl, false);
+		if (options) {
+			if (options.successCallback) {
+				client.onload = options.successCallback;
+			}
+			if (options.errorCallback) {
+				client.onerror = options.errorCallback;
+			}
+		}
         client.send();
 
 		Ti.API.debug(">>>>> _______________");
@@ -278,7 +286,7 @@ var OAuthAdapter = function(pService, authorize) {
         Ti.API.debug('Saving token done: '+ JSON.stringify(token));
 	};
 
-	var query = function(pQuery) {
+	var query = function(pQuery, options) {
 		Ti.API.debug("Function Query Called");
 		var token = maybeRefreshToken(loadToken());
 		var parameters = [ ["format", "json"],
@@ -287,10 +295,10 @@ var OAuthAdapter = function(pService, authorize) {
 						   ["oauth_token", token.oauth_token],
 						   ["env", "http://datatables.org/alltables.env"]
 						 ];
-		return doQuery(yql_base_url, parameters, accessorFromToken(token));
+		return doQuery(yql_base_url, parameters, accessorFromToken(token), options);
 	};
 
-	var query2legg = function(pQuery) {
+	var query2legg = function(pQuery, options) {
 		Ti.API.debug("Function Query2Legg Called");
 		var accessor = { consumerSecret: consumerSecret };
 		var parameters = [ ["format", "json"],
@@ -298,10 +306,10 @@ var OAuthAdapter = function(pService, authorize) {
 		 				   ["q", pQuery],
 						   ["env", "http://datatables.org/alltables.env"]
 						 ];
-		return doQuery(yql_base_url, parameters, accessor);
+		return doQuery(yql_base_url, parameters, accessor, options);
 	};
 	
-	var doQuery = function(yql_base_url, parameters, token) {
+	var doQuery = function(yql_base_url, parameters, token, options) {
 		var MAX_RETRIES = 3;
 		var MODIFY_QUERY = /^insert|delete/i;
 		
@@ -311,7 +319,7 @@ var OAuthAdapter = function(pService, authorize) {
 		
 		var json, yqldata, tries = 0;
 		var request = function() {
-			json = serviceRequest(yql_base_url, parameters.slice(0), token);
+			json = serviceRequest(yql_base_url, parameters.slice(0), token, options);
 			yqldata = JSON.parse(json);
 			tries++;
 		};
