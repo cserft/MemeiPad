@@ -200,9 +200,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		});
 		blackBoxView.add(img_quote);
 
-		var pContentStripado = pContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
-
-		// var pContentStripado = strip_tags(pContent);
+		var pContentStripado = strip_html_entities(pContent);
 
 		var minipost_text = Ti.UI.createLabel({
 		    color:'#FFF',
