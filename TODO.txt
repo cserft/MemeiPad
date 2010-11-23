@@ -10,6 +10,9 @@ app.js
 ------------	
 - Review all RegExp
 
+_____ AFTER LAUNCH _____
+- Global Settings App Page on the iPhone/iPad - http://developer.appcelerator.com/question/39381/application-settings
+
 dashboard.js
 ------------
 
