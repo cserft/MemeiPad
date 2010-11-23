@@ -1,7 +1,7 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 
-// var winDashboardExist;
+var myMemeInfo = null;
 
 
 //base Window
@@ -76,6 +76,14 @@ alertOpenSignUp.addEventListener('click',function(e)
 
 var showHeader = function (yql, pType, pWinDashboard){
 	
+	// Ti.App.fireEvent('show_indicator', {
+	// 	message: "Loading...",
+	// 	color: "transparent",
+	// 	size: 150,
+	// 	top: -10,
+	// 	left: 530
+	// });
+	
 	Ti.API.info("showHeader function Called with pType = " + pType);
 
 	var headerView = Ti.UI.createView({
@@ -100,9 +108,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 		if (yqlMemeInfo){
 
 			var meme = yqlMemeInfo.query.results.meme;	
-			
-			// Sets a FireEvent passing the Meme Object Fwd
-			Ti.App.fireEvent('myMemeInfo',{myMemeInfo:meme});
+			myMemeInfo = meme;
 		}
 		
 		var btn_Username = Ti.UI.createButton({
@@ -433,6 +439,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			newPost(yql);
 		});
 		
+		Ti.App.fireEvent('hide_indicator');
 
 	} else {
 		
@@ -440,6 +447,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 		btn_signin.visible = true;
 		btn_signup.visible = true;
 		headerView.hide();
+		Ti.App.fireEvent('hide_indicator');
 	}
 
 };
@@ -476,6 +484,7 @@ var showDashboard = function(yql,pDashboardType) {
 		navBarHidden: true,
 		yql: yql,
 		pDashboardType: pDashboardType,
+		myMemeInfo: myMemeInfo,
 		win1: win1,
 		zIndex: 2,
 		orientationModes: [
@@ -532,13 +541,21 @@ var newPost = function(yql) {
 var indWin = null;
 var actInd = null;
 
-function showIndicator(pMessage, pColor, pSize)
+function showIndicator(pMessage, pColor, pSize, pTop, pLeft)
 {
+	
 	// window container
 	indWin = Titanium.UI.createWindow({
 		height: 		pSize,
-		width: 			pSize
+		width: 			pSize,
+		zIndex: 		995
 	});
+	
+	//IF POSITION IS DEFINED
+	if (pTop){
+		indWin.top = pTop;
+		indWin.left = pLeft;
+	}
 
 	// black view
 	var indView = Titanium.UI.createView({
@@ -565,7 +582,7 @@ function showIndicator(pMessage, pColor, pSize)
 		color: 			'#fff',
 		width: 			'auto',
 		height: 		'auto',
-		font: 			{fontSize:22,fontWeight:'bold'},
+		font: 			{fontSize:18,fontWeight:'bold'},
 		bottom: 		pSize/4
 	});
 	indWin.add(message);
@@ -583,12 +600,12 @@ function hideIndicator()
 //
 // Add global event handlers to hide/show custom indicator
 //
-Titanium.App.addEventListener('show_indicator', function(e)
+Ti.App.addEventListener('show_indicator', function(e)
 {
 	Ti.API.info("SHOW INDICATOR");
-	showIndicator(e.message, e.color, e.size);
+	showIndicator(e.message, e.color, e.size, e.top, e.left);
 });
-Titanium.App.addEventListener('hide_indicator', function(e)
+Ti.App.addEventListener('hide_indicator', function(e)
 {
 	Ti.API.info("HIDE INDICATOR");
 	hideIndicator();
@@ -623,15 +640,10 @@ if (!Titanium.Network.online) {
 // =====================
 // = YQL ERROR MESSAGE =
 // =====================
-Ti.addEventListener('yqlerror', function(e) {
+Ti.App.addEventListener('yqlerror', function(e) {
 	Ti.API.error('App crashed (cannot connect to YQL). Query: ' + e.query);
-	// Titanium.UI.createAlertDialog({ 
-	// 	title: 'Error',
-	// 	message: 'There was an error connecting to Yahoo! APIs. Please try again later.'
-	// }).show();
-	
 	//Closes the Keyboard if open
-	Ti.fireEvent('hide_keyboard');
+	Ti.App.fireEvent('hide_keyboard');
 	
 	var errorWin = Ti.UI.createWindow({
 		title: 'Error YQL',
@@ -696,7 +708,14 @@ Ti.addEventListener('yqlerror', function(e) {
 	// Opens the New Post Window
 	btn_error_refresh.addEventListener('click', function()
 	{
-		errorWin.close();
+		//Closes NewPost if Open
+		Ti.App.fireEvent('close_newpost');
+		
+		//Closes Permalink if Open
+		Ti.App.fireEvent('close_permalink');
+		
+		errorWin.close({opacity:0,duration:200});
+		// Starts Authentication
 		var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 		oAuthAdapter.login(showSignIn, showDashboard);
 	});

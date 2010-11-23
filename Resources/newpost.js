@@ -429,9 +429,7 @@ btn_close_post.addEventListener('click', function() {
 	win.close(animeClose);
 	
 	//Closes the Keyboard if open
-	textArea.blur();
-	editTitleField.blur();
-	searchTextField.blur();
+	Ti.App.fireEvent('hide_keyboard');
 	
 	Ti.API.debug('Saving post on properties: title[' + editTitleField.value + '], body[' + textArea.value + '], Flashlight [' + searchTextField.value + ']');
 	Ti.App.Properties.setList('draft_post', [ editTitleField.value, textArea.value, searchTextField.value ]);
@@ -511,9 +509,7 @@ editTitleField.addEventListener('change', function(e) {
 
 btn_post.addEventListener('click', function() {
 	//Closes the Keyboard if open
-	textArea.blur();
-	editTitleField.blur();
-	searchTextField.blur();
+	Ti.App.fireEvent('hide_keyboard');
 	
 	//merging Post Body + Post Title
 	if (postTitle != ""){
@@ -576,9 +572,7 @@ var getImagePreviewSizes = function(max_side_size, original_img) {
 
 Ti.App.addEventListener("photoChosen", function(e) {
 	//Closes the Keyboard if open
-	textArea.blur();
-	editTitleField.blur();
-	searchTextField.blur();
+	Ti.App.fireEvent('hide_keyboard');
 
 	if (e.typePhoto == 'flashlight') {
 		//FlashLight Content was clicked
@@ -877,6 +871,19 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 
 Ti.App.addEventListener('hide_keyboard', function(e)
 {
-	Ti.API.info("HIDE INDICATOR");
-	hideIndicator();
+	//Closes the Keyboard if open
+	textArea.blur();
+	editTitleField.blur();
+	searchTextField.blur();
+
+});
+
+// ===========================
+// = CLOSE NEW POST LISTENER =
+// ===========================
+Ti.App.addEventListener('close_newpost', function(e)
+{
+	//Closes New Post Window
+	win.close({opacity:0,duration:200})
+
 });

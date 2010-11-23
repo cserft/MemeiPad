@@ -22,13 +22,7 @@ var now = timestamp();
 var yql = win.yql; // Holds YQL Object to make queries
 var win1 = win.win1; // Window Original created on app.js
 var pDashboardType = win.pDashboardType;
-var myMemeInfo = 0;
-
-Ti.App.addEventListener('myMemeInfo', function(data) 
-{ 
-     myMemeInfo = data.myMemeInfo; 
-});
-
+var myMemeInfo = win.myMemeInfo; 
 
 // Creating the List Post Table View
 
@@ -251,7 +245,7 @@ var data = [];
 
 var getDashboardData = function (pTimestamp, pDashboardType) {
 	Ti.API.info("DashboardType from getDashboardData Function: " + pDashboardType);
-
+	
 	if (pDashboardType === "logged") {
 		
 		if (pTimestamp == null)
@@ -428,6 +422,7 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 		return(posts);
 	}
 	
+	
 	// open Main Window from app.js with Transition
 	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
 	
@@ -457,9 +452,9 @@ Ti.App.addEventListener('openingDetailsFalse', function(e)
 
 tableView.addEventListener('click', function(e)
 {
-	Ti.API.info('event fired was ' + JSON.stringify(e));
-	Ti.API.info('event source is ' + JSON.stringify(e.source));
-	Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
+	// Ti.API.info('event fired was ' + JSON.stringify(e));
+	// Ti.API.info('event source is ' + JSON.stringify(e.source));
+	// Ti.API.info('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	
 	// Sets the Permalink Animation startup settings
 	var t = Ti.UI.create2DMatrix();
@@ -624,6 +619,7 @@ function endUpdate()
     //tableView.scrollToIndex(lastRow,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
 	
 	bellowActInd.hide();
+	// Ti.App.fireEvent('hide_indicator');
 	
 }
 
@@ -804,13 +800,15 @@ tableView.addEventListener('scrollEnd',function(e)
 //variable that configs the number of Dashboard pages that loads when the app starts
 
 if (pDashboardType === "logged") {
+	// Ti.API.debug("Mounting Dashboard Logged: pDashboardType= " + pDashboardType);
 	getDashboardData(null, pDashboardType);
 	beginUpdate();
 } else {
-	Ti.API.debug("Mounting Dashboard Not Logged: pDashboardType= " + pDashboardType);
+	// Ti.API.debug("Mounting Dashboard Not Logged: pDashboardType= " + pDashboardType);
 	getDashboardData(null, pDashboardType);
 }
 
 Ti.App.addEventListener('reloadDashboard', function(e) {
+	// Ti.API.debug("Reloading Dashboard");
 	beginReloading();
 });

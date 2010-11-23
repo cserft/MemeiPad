@@ -323,7 +323,7 @@ var OAuthAdapter = function(pService, authorize) {
 			request();
 		};
 		if ((!yqldata || !yqldata.query || !yqldata.query.results) && (tries >= MAX_RETRIES)) {
-			Ti.fireEvent('yqlerror', { query: yql_query });
+			Ti.App.fireEvent('yqlerror', { query: yql_query });
 		}
 		return yqldata;
 	};
