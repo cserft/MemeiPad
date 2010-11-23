@@ -112,7 +112,7 @@ var getPhotoData = function(pContent, pWidth, pHeight, yql, callback) {
 };
 
 var strip_html_entities = function(string) {
-	if (string) {
+	if (string && typeof string == 'string') {
 		var new_string = string.replace(/(<([^>]+)>)/ig, ' ');
 		new_string = new_string.replace(/&.+;/, ' ');
 		new_string = new_string.replace(/^\s/, '');
