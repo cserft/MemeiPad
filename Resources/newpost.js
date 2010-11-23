@@ -875,7 +875,7 @@ Ti.App.addEventListener('hide_keyboard', function(e)
 	textArea.blur();
 	editTitleField.blur();
 	searchTextField.blur();
-
+	popoverSearchView.hide();
 });
 
 // ===========================
