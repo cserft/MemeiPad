@@ -7,9 +7,9 @@ _____ AFTER LAUNCH _____
 - Create a Website for the App
 
 app.js
-------------
-- add Error Window with error occurs when starting the app. With a Button to refresh
+------------	
 - Review all RegExp
+- ErrorYQL needs to blur Keyboards
 
 dashboard.js
 ------------

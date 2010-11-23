@@ -620,10 +620,85 @@ if (!Titanium.Network.online) {
 	oAuthAdapter.login(showSignIn, showDashboard);
 };
 
+// =====================
+// = YQL ERROR MESSAGE =
+// =====================
 Ti.addEventListener('yqlerror', function(e) {
 	Ti.API.error('App crashed (cannot connect to YQL). Query: ' + e.query);
-	Titanium.UI.createAlertDialog({ 
-		title: 'Error',
-		message: 'There was an error connecting to Yahoo! APIs. Please try again later.'
-	}).show();
+	// Titanium.UI.createAlertDialog({ 
+	// 	title: 'Error',
+	// 	message: 'There was an error connecting to Yahoo! APIs. Please try again later.'
+	// }).show();
+	
+	//Closes the Keyboard if open
+	Ti.fireEvent('hide_keyboard');
+	
+	var errorWin = Ti.UI.createWindow({
+		title: 'Error YQL',
+		backgroundColor: 'transparent',
+		left: 0,
+		top: 0,
+		height: '100%',
+		width: '100%',
+		zIndex: 999,
+		navBarHidden: true
+	});
+	
+	var errorView = Ti.UI.createView({
+	 backgroundColor: 	'transparent',
+		backgroundImage: 	'images/bg_error_msg.png',
+		width: 				'100%',
+		height: 			'100%',
+		zIndex: 			999
+	});
+	errorWin.add(errorView);
+	
+	var icon_exclamation = Ti.UI.createImageView({
+		image: 'images/icon_exclamation.png',
+		top: 310,
+		left: 58,
+		width: 100,
+		height: 86,
+		opacity: 0.3
+	});
+	errorView.add(icon_exclamation);
+	
+	var errorLabel = Ti.UI.createLabel({
+		text: 				'Ops, it seems we had a problem...',
+		font: 				{fontSize:36, fontFamily:'Helvetica', fontWeight:'bold'},
+		textAlign: 			'left',
+		top: 				330,
+		left: 				177,	
+		width: 				660,
+		height: 			'auto',
+		backgroundColor: 	'transparent',
+		color: 				'#666'
+	});
+	errorView.add(errorLabel);
+	
+	var btn_error_refresh = Ti.UI.createButton({
+		title: 				'refresh',
+		color: 				'#7D0670',
+		font: 				{fontSize:22, fontFamily:'Helvetica', fontWeight:'regular'},
+		backgroundImage: 	'images/btn_error_refresh.png',
+		backgroundColor: 	'transparent',
+		selectedColor: 		'gray',
+		height: 			53,
+		width: 				160,
+		left: 				782,
+		top: 				330,
+		style: 				Ti.UI.iPhone.SystemButtonStyle.PLAIN
+	});
+	errorView.add(btn_error_refresh);
+	
+	errorWin.open();
+	
+	// Opens the New Post Window
+	btn_error_refresh.addEventListener('click', function()
+	{
+		errorWin.close();
+		var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
+		oAuthAdapter.login(showSignIn, showDashboard);
+	});
+	
 });

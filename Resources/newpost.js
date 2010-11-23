@@ -870,3 +870,13 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 		Ti.App.fireEvent('reloadDashboard');
 	});
 });
+
+// ======================
+// = HIDE ALL KEYBOARDS =
+// ======================
+
+Ti.App.addEventListener('hide_keyboard', function(e)
+{
+	Ti.API.info("HIDE INDICATOR");
+	hideIndicator();
+});

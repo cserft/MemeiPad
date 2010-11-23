@@ -450,7 +450,7 @@ win.add(dashboardShadow);
 // ==================
 
 // Avoiding multiple Permalinks Opening
-Titanium.App.addEventListener('openingDetailsFalse', function(e)
+Ti.App.addEventListener('openingDetailsFalse', function(e)
 {
 	openingDetails = false;
 });
