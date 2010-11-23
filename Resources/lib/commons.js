@@ -120,5 +120,4 @@ var strip_html_entities = function(string) {
 		Ti.API.debug('strip_html, was [' + string + '] and now is [' + new_string + ']');
 		return new_string;
 	}
-	return string;
 };
