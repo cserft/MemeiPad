@@ -125,7 +125,7 @@ var flashlight_show = function() {
 	if (searchTextField.value == '') {
 		Ti.UI.createAlertDialog({
 			title: 'Oops...',
-			message: 'You need to write something before hitting the search button.',
+			message: 'You need to write something before hitting the Flashlight button.',
 		}).show();
 	} else {
 		flashlight_create();
@@ -153,10 +153,10 @@ var flashlight_create = function() {
 		});
 		notFoundRow.add(notFoundTitle);
 		
-		// main flashlight view
+		// flashlight Results Tableview
 		var flashlightTableView = Ti.UI.createTableView({
 			top:50,
-			height:204
+			height:228
 		});
 		popoverSearchView.add(flashlightTableView);
 		popoverSearchView.add(searchTabs);

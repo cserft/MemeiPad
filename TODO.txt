@@ -8,14 +8,14 @@ _____ AFTER LAUNCH _____
 
 app.js
 ------------	
-- Review all RegExp
+- BUG: when signing in, the Dashboard doesn't load (ERROR oadapter.js line 233)
 
 _____ AFTER LAUNCH _____
 - Global Settings App Page on the iPhone/iPad - http://developer.appcelerator.com/question/39381/application-settings
 
 dashboard.js
 ------------
-- BUG: when loading permalink, if YQL fails, the app stops responding to touch
+
 _____ AFTER LAUNCH _____
 - better handling of the Loading 'prabaixo', only hide the loading message after the rows are displayed
 - add a Label "Loading Dashboard..."
@@ -25,9 +25,10 @@ _____ AFTER LAUNCH _____
 
 permalink.js
 ------------
-- Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
+
 
 _____ AFTER LAUNCH _____
+- Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)
 - add popover when click on Users'Name showing options like: follow/unfollow - See Posts from that user
@@ -39,13 +40,12 @@ _____ AFTER LAUNCH _____
 
 newpost.js
 ----------
-- BUG: when Flashlight doesn't find a result it calls an YQL error.
+
+
 _____ AFTER LAUNCH _____
 - improve the link paste on Flashlight, replacing the MATCH method with TEST
 - Save Video/Photo on Drafts
-- BUG: animation of the postBody goes crazy when selecting different images from local file and from Flashlight
 - Draft Should save Media as well
-- When Clicks on Flashlight Button without content to search it should Alert that the user should type something
 - When changing tabs on FlashLight Search, should keep the table and not perform another search
 - Better treatment of Web Results when abstract is empty
 - Use Place maker to detect places on a given Post and Show them on the Map.

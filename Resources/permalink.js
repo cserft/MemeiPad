@@ -117,6 +117,16 @@ var postWebView = Ti.UI.createWebView({
 });
 whiteBox.add(postWebView);
 
+// Loader
+var actAjax = Ti.UI.createActivityIndicator({
+	top: 			0,
+	message: 		'',
+	zIndex: 		90,
+	visible: 		false,
+	style: 			Ti.UI.iPhone.ActivityIndicatorStyle.DARK
+});
+whiteBox.add(actAjax);
+
 //Border from the WebView to the User Information bottom bar
 var border = Ti.UI.createView({
 	backgroundColor:'#EBEBEB',
@@ -159,7 +169,13 @@ if (post.type == "photo"){
 
 if (innerMedia || innerCaption) {
 	postWebView.html = getPostHtml(innerMedia, innerCaption);
+	actAjax.show({opacity:1,duration:100});
+	
 }
+
+postWebView.addEventListener('load', function(){
+	actAjax.hide({opacity:0,duration:200});
+});
 
 
 // ====================================

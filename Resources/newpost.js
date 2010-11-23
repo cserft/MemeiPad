@@ -104,9 +104,10 @@ btn_flashlight.add(actIndFlashlight);
 //creates the popover for the results
 var popoverSearchView = Titanium.UI.iPad.createPopover({ 
 	width:330, 
-	height:260,
+	height:280,
 	borderWidth: 0,
 	title:'Suggested Content',
+	navBarHidden: true,
 	arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
 });
 
@@ -480,7 +481,7 @@ var btn_text_clear = Titanium.UI.createButton({
 	width: 			22,
 	height: 		22,
 	top: 			10,
-	right: 			0,
+	right: 			-10,
 	zIndex: 		10,
 	visible: 		true
 });
