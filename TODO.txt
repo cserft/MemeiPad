@@ -50,3 +50,5 @@ _____ AFTER LAUNCH _____
 - Better treatment of Web Results when abstract is empty
 - Use Place maker to detect places on a given Post and Show them on the Map.
 - Handle post later
+- Monitor this bug: https://appcelerator.lighthouseapp.com/projects/32238-titanium-mobile/tickets/2408-application-crashes-when-typing-html-special-characters-on-textarea
+
