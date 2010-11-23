@@ -316,13 +316,13 @@ var OAuthAdapter = function(pService, authorize) {
 			yqldata = JSON.parse(json);
 			tries++;
 		};
-		while ((!yqldata || !yqldata.query || !yqldata.query.results) && (tries < MAX_RETRIES)) {
+		while ((!yqldata || !yqldata.query) && (tries < MAX_RETRIES)) {
 			if (tries > 0) {
 				Ti.API.warn('*** BAD *** Retrying YQL query - tried already ' + tries + ' time(s)');
 			}
 			request();
 		};
-		if ((!yqldata || !yqldata.query || !yqldata.query.results) && (tries >= MAX_RETRIES)) {
+		if ((!yqldata || !yqldata.query) && (tries >= MAX_RETRIES)) {
 			Ti.App.fireEvent('yqlerror', { query: yql_query });
 		}
 		return yqldata;

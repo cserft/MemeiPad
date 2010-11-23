@@ -140,6 +140,20 @@ var flashlight_create = function() {
 	if (!flashlight_created) {
 		Ti.API.info('building flashlight (this must be done only once)');
 		
+		// row for results not found
+		var notFoundRow = Ti.UI.createTableViewRow({height:78});
+		var notFoundTitle = Ti.UI.createLabel({
+			text: 'No results were found.',
+			color: '#863486',
+			height:50,
+			width: 192,
+			left:110,
+			textAlign:'left',
+			font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
+		});
+		notFoundRow.add(notFoundTitle);
+		
+		// main flashlight view
 		var flashlightTableView = Ti.UI.createTableView({
 			top:50,
 			height:204
@@ -148,10 +162,10 @@ var flashlight_create = function() {
 		popoverSearchView.add(searchTabs);
 		
 		Ti.App.addEventListener('showAwesomeSearch', function (e) {
-		
-			actIndFlashlight.show();
-
 			Ti.API.debug("####### Type of search: " + e.searchType);
+			
+			actIndFlashlight.show();
+			var results = [];
 
 			switch(e.searchType) {
 				case 0: // Video 
@@ -159,70 +173,70 @@ var flashlight_create = function() {
 					yqlQuery = 'select * from youtube.search where query="' + queryText + '"';
 
 					var yqlData = yql.query(yqlQuery);
-					var videos = yqlData.query.results.video;
-				
-					// Ti.API.info("Videos Results: " + JSON.stringify(videos));
-
-					//Loop to present the Search Results for YouTube
-					var results = [];
-					for (var c=0 ; c < videos.length ; c++)	
-					{
-						var video = videos[c];
-
-						var thumb = video.thumbnails.thumbnail[0].content;
-						var thumbFull = video.thumbnails.thumbnail[4].content;
 					
-						//Ti.API.info("Videos Link: " + JSON.stringify(videoLink));
-						var row = Ti.UI.createTableViewRow({height:78});
+					if (yqlData.query.results) {
+						var videos = yqlData.query.results.video;
 
-						var title = Ti.UI.createLabel({
-							text: video.title,
-							color: '#863486',
-							height:50,
-							width: 192,
-							left:110,
-							textAlign:'left',
-							font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
-						});
+						//Loop to present the Search Results for YouTube
+						for (var c=0 ; c < videos.length ; c++)	
+						{
+							var video = videos[c];
 
-						var image = Ti.UI.createImageView({
-							image : thumb,
-							backgroundColor: 'black',
-							height:75,
-							width:100,
-							left:2,
-							defaultImage:'images/default_img.png'
-						});
-				
-						var img_play_btn = Titanium.UI.createImageView({
-				            image:'images/play.png',
-				            top:20,
-				            left:30,
-				            width:37,
-				            height:37
-				        });
+							var thumb = video.thumbnails.thumbnail[0].content;
+							var thumbFull = video.thumbnails.thumbnail[4].content;
 
-						row.add(image);
-				        row.add(img_play_btn);
-						row.add(title);
-						row.add(Ti.UI.createView({
-							height: 78,
-							width: 310,
-							zIndex: 2,
-							title: video.title,
-							content: video.content,
-							image: thumbFull,
-							videoId: video.id,
-							videoLink: video.url,
-							type: 'video'
-						}));
-					
-						results[c] = row;
+							//Ti.API.info("Videos Link: " + JSON.stringify(videoLink));
+							var row = Ti.UI.createTableViewRow({height:78});
+
+							var title = Ti.UI.createLabel({
+								text: video.title,
+								color: '#863486',
+								height:50,
+								width: 192,
+								left:110,
+								textAlign:'left',
+								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
+							});
+
+							var image = Ti.UI.createImageView({
+								image : thumb,
+								backgroundColor: 'black',
+								height:75,
+								width:100,
+								left:2,
+								defaultImage:'images/default_img.png'
+							});
+
+							var img_play_btn = Titanium.UI.createImageView({
+					            image:'images/play.png',
+					            top:20,
+					            left:30,
+					            width:37,
+					            height:37
+					        });
+
+							row.add(image);
+					        row.add(img_play_btn);
+							row.add(title);
+							row.add(Ti.UI.createView({
+								height: 78,
+								width: 310,
+								zIndex: 2,
+								title: video.title,
+								content: video.content,
+								image: thumbFull,
+								videoId: video.id,
+								videoLink: video.url,
+								type: 'video'
+							}));
+
+							results[c] = row;
+						}
+						
+					} else {
+						results[0] = notFoundRow;
 					}
-					flashlightTableView.setData(results);
-					flashlightTableView.scrollToIndex(0,{animated:true});
-					searchTabs.index = e.searchType;
-			
+					
 					break;
 			
 				case 1: // Flickr
@@ -230,55 +244,55 @@ var flashlight_create = function() {
 					yqlQuery = "SELECT * FROM flickr.photos.search WHERE text='" + queryText + "' AND license='4'";
 
 					var yqlData = yql.query(yqlQuery);
-					var photos = yqlData.query.results.photo;
+					
+					if (yqlData.query.results) {
+						var photos = yqlData.query.results.photo;
 
-					//Loop to present the Search Results for Flickr
-					var results = [];
-				
-					for (var c=0 ; c < photos.length ; c++)	{
-						var photo = photos[c];
-				
-						// form the flickr url
-						var thumb = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '_t_d.jpg';
-						var fullPhoto = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '.jpg';
-						var title = Ti.UI.createLabel({
-							text: photo.title,
-							color: '#863486',
-							height:55,
-							width: 200,
-							left:110,
-							textAlign:'left',
-							font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
-						});
-						var image = Ti.UI.createImageView({
-							image: thumb,
-							backgroundColor: 'black',
-							height:75,
-							width:100,
-							left:2,
-							defaultImage:'images/default_img.png'
-						});
-					
-						// create new row
-						var row = Ti.UI.createTableViewRow({height:78});
-						row.add(image);
-						row.add(title);
-						row.add(Ti.UI.createView({
-							height: 78,
-							width: 310,
-							zIndex: 2,
-							title: photo.title,
-							fullPhoto: fullPhoto,
-							type: 'photo'
-						}));
-					
-						// add row to result
-						results[c] = row;
+						//Loop to present the Search Results for Flickr
+						for (var c=0 ; c < photos.length ; c++)	{
+							var photo = photos[c];
+
+							// form the flickr url
+							var thumb = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '_t_d.jpg';
+							var fullPhoto = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '.jpg';
+							var title = Ti.UI.createLabel({
+								text: photo.title,
+								color: '#863486',
+								height:55,
+								width: 200,
+								left:110,
+								textAlign:'left',
+								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
+							});
+							var image = Ti.UI.createImageView({
+								image: thumb,
+								backgroundColor: 'black',
+								height:75,
+								width:100,
+								left:2,
+								defaultImage:'images/default_img.png'
+							});
+
+							// create new row
+							var row = Ti.UI.createTableViewRow({height:78});
+							row.add(image);
+							row.add(title);
+							row.add(Ti.UI.createView({
+								height: 78,
+								width: 310,
+								zIndex: 2,
+								title: photo.title,
+								fullPhoto: fullPhoto,
+								type: 'photo'
+							}));
+
+							// add row to result
+							results[c] = row;
+						}
+					} else {
+						results[0] = notFoundRow;
 					}
-					flashlightTableView.setData(results);
-					flashlightTableView.scrollToIndex(0,{animated:true});
-					searchTabs.index = e.searchType;
-
+					
 					break;
 			
 				case 2: // Web Search
@@ -286,62 +300,62 @@ var flashlight_create = function() {
 					yqlQuery = "SELECT title, abstract FROM search.web WHERE query='" + queryText + "'";
 				
 					var yqlData = yql.query(yqlQuery);
-					var items = yqlData.query.results.result;
-				
-					//Loop to present the Search Results from the Web
-					var results = [];
-				
-					for (var c=0 ; c < items.length ; c++) {
-						var item = items[c];
-						var titleStripped = strip_html_entities(item.title);
-						var title = Ti.UI.createLabel({
-							text: titleStripped,
-							width: 310,
-							height:15,
-							top: 10,
-							left:10,
-							color: '#863486',
-							textAlign:'left',
-							font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
-						});
 					
-						if (item.abstract != null) {
-							var abstractContent = item.abstract;
-							var abstractStripped = strip_html_entities(abstractContent);
-							var abstract = Ti.UI.createLabel({
-								text: abstractStripped,
-								color:'#333',
-								height:50,
+					if (yqlData.query.results) {
+						var items = yqlData.query.results.result;
+
+						//Loop to present the Search Results from the Web
+						for (var c=0 ; c < items.length ; c++) {
+							var item = items[c];
+							var titleStripped = strip_html_entities(item.title);
+							var title = Ti.UI.createLabel({
+								text: titleStripped,
 								width: 310,
-								top: 25,
-								left: 10,
+								height:15,
+								top: 10,
+								left:10,
+								color: '#863486',
 								textAlign:'left',
-								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
+								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
 							});
+
+							if (item.abstract != null) {
+								var abstractContent = item.abstract;
+								var abstractStripped = strip_html_entities(abstractContent);
+								var abstract = Ti.UI.createLabel({
+									text: abstractStripped,
+									color:'#333',
+									height:50,
+									width: 310,
+									top: 25,
+									left: 10,
+									textAlign:'left',
+									font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
+								});
+							}
+
+							// create new row
+							var row = Ti.UI.createTableViewRow({
+								height: 78
+							});
+							row.add(title);
+							row.add(abstract);
+							row.add(Ti.UI.createView({
+								height: 78,
+								width: 310,
+								zIndex: 2,
+								title: titleStripped,
+								abstract: abstractStripped,
+								type: 'text'
+							}));
+
+							// add row to result
+							results[c] = row;
 						}
-					
-						// create new row
-						var row = Ti.UI.createTableViewRow({
-							height: 78
-						});
-						row.add(title);
-						row.add(abstract);
-						row.add(Ti.UI.createView({
-							height: 78,
-							width: 310,
-							zIndex: 2,
-							title: titleStripped,
-							abstract: abstractStripped,
-							type: 'text'
-						}));
-					
-						// add row to result
-						results[c] = row;
+					} else {
+						results[0] = notFoundRow;
 					}
-					flashlightTableView.setData(results);
-					flashlightTableView.scrollToIndex(0,{animated:true});
-					searchTabs.index = e.searchType;
-				
+					
 					break;
 				
 				case 3: // Twitter Search
@@ -351,69 +365,73 @@ var flashlight_create = function() {
 					yqlQuery = "SELECT * FROM twitter.search WHERE q='" + queryText + "'";
 
 					var yqlData = yql.query(yqlQuery);
-					var items = yqlData.query.results.results;
-
-					//Loop to present the Search Results from the Web
-					var results = [];
-
-					for (var c=0 ; c < items.length ; c++) {
-						var item = items[c];
-
-						var row = Ti.UI.createTableViewRow({height:78});
 					
-						var avatar = Ti.UI.createImageView({
-							image : item.profile_image_url,
-							backgroundColor: 'black',
-							height:48,
-							width:48,
-							top:10,
-							left:2,
-							defaultImage:'images/default_img_avatar.png'
-						});
+					if (yqlData.query.results) {
+						var items = yqlData.query.results.results;
 
-						row.add(avatar);
+						//Loop to present the Search Results from the Web
+						for (var c=0 ; c < items.length ; c++) {
+							var item = items[c];
 
-						var username = Ti.UI.createLabel({
-							text: '@' + item.from_user,
-							color: '#863486',
-							width: 250,
-							height:15,
-							top: 8,
-							left:55,
-							textAlign:'left',
-							font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
-						});
-						row.add(username);
+							var row = Ti.UI.createTableViewRow({height:78});
 
-						var tweet = Ti.UI.createLabel({
-							text: item.text,
-							color: '#333',
-							height:52,
-							width: 270,
-							top: 23,
-							left: 55,
-							textAlign:'left',
-							font:{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'}
-						});
-					
-						row.add(tweet);
-						row.add(Ti.UI.createView({
-							height: 78,
-							width: 310,
-							zIndex: 2,
-							username: '@' + item.from_user,
-							tweet: item.text,
-							type: 'twitter'
-						}));
-			
-						results[c] = row;
+							var avatar = Ti.UI.createImageView({
+								image : item.profile_image_url,
+								backgroundColor: 'black',
+								height:48,
+								width:48,
+								top:10,
+								left:2,
+								defaultImage:'images/default_img_avatar.png'
+							});
+
+							row.add(avatar);
+
+							var username = Ti.UI.createLabel({
+								text: '@' + item.from_user,
+								color: '#863486',
+								width: 250,
+								height:15,
+								top: 8,
+								left:55,
+								textAlign:'left',
+								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
+							});
+							row.add(username);
+
+							var tweet = Ti.UI.createLabel({
+								text: item.text,
+								color: '#333',
+								height:52,
+								width: 270,
+								top: 23,
+								left: 55,
+								textAlign:'left',
+								font:{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'}
+							});
+
+							row.add(tweet);
+							row.add(Ti.UI.createView({
+								height: 78,
+								width: 310,
+								zIndex: 2,
+								username: '@' + item.from_user,
+								tweet: item.text,
+								type: 'twitter'
+							}));
+
+							results[c] = row;
+						}	
+					} else {
+						results[0] = notFoundRow;
 					}
-					flashlightTableView.setData(results);
-					flashlightTableView.scrollToIndex(0,{animated:true});
-					searchTabs.index = e.searchType;
-
+					
 					break;
 			}
+			
+			flashlightTableView.setData(results);
+			flashlightTableView.scrollToIndex(0,{animated:true});
+			searchTabs.index = e.searchType;
 	
 			//show the Popover
 			popoverSearchView.show({
