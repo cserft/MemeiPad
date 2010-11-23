@@ -293,7 +293,7 @@ var flashlight_create = function() {
 				
 					for (var c=0 ; c < items.length ; c++) {
 						var item = items[c];
-						var titleStripped = item.title.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+						var titleStripped = strip_html_entities(item.title);
 						var title = Ti.UI.createLabel({
 							text: titleStripped,
 							width: 310,
@@ -307,7 +307,7 @@ var flashlight_create = function() {
 					
 						if (item.abstract != null) {
 							var abstractContent = item.abstract;
-							var abstractStripped = abstractContent.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+							var abstractStripped = strip_html_entities(abstractContent.replace);
 							var abstract = Ti.UI.createLabel({
 								text: abstractStripped,
 								color:'#333',

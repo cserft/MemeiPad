@@ -1,4 +1,5 @@
 Ti.include('lib/commons.js');
+Ti.include('lib/strip_tags.js');
 
 var win = Ti.UI.currentWindow;
 
@@ -134,10 +135,8 @@ if (post.type == "photo"){
 	
 	innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
 	innerCaption = post.caption;
-	captionStripped = post.caption.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+	captionStripped = strip_html_entities(post.caption);
 	// getGeoPlaces(captionStripped);
-
-	
 	
 } else if (post.type == "video"){
 	
@@ -187,7 +186,7 @@ var guidAvatar = Titanium.UI.createImageView({
 });
 whiteBox.add(guidAvatar);
 
-var titleStripped = meme.title.replace(/(<([^>]+)>)/ig,"").replace(/&.+;/,"");
+var titleStripped = strip_html_entities(meme.title);
 
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
