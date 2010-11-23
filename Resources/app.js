@@ -708,7 +708,7 @@ Ti.App.addEventListener('yqlerror', function(e) {
 // ==================================
 // = Checks if the Device is Online =
 // ==================================
-if (Titanium.Network.online) {
+if (!Titanium.Network.online) {
 	displayErrorMessage('Network Error', 'You need to be online to use Meme for iPad. Please, check your network connection and try again.', 40);
 } else {
 	// =========================================
