@@ -580,6 +580,9 @@ var getImagePreviewSizes = function(max_side_size, original_img) {
 };
 
 Ti.App.addEventListener("photoChosen", function(e) {
+	
+	var textArea_top, photo_close_x;
+	
 	//Closes the Keyboard if open
 	Ti.App.fireEvent('hide_keyboard');
 
@@ -618,6 +621,8 @@ Ti.App.addEventListener("photoChosen", function(e) {
 
 		} else {
 			// IS A PHOTO
+			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
+			img.image = null;
 				
 			webViewPreview.html = '';
 			// HTML for the Photo
@@ -626,31 +631,23 @@ Ti.App.addEventListener("photoChosen", function(e) {
 			
 			// Create our Webview to render the Photo
 			webViewPreview.html = photoHtml;
-			// webViewPreview.borderRadius = 4;
-			// webViewPreview.borderColor = "#CCC";
-			// webViewPreview.backgroundImage = 'images/default_img_white.png';
 			webViewPreview.visible = true;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
 			actAjax.show();
 		}
 		
-		// Activity indicator AJAX
-		
-		
 		webViewPreview.addEventListener('load', function(){
 			actAjax.hide();
 			
 			//adds the close button to the image
-			var photo_close_x = 0;
+			photo_close_x = 0;
 			btn_photo_close.left = 0;
 			btn_photo_close.visible = true;
-			
-
 		});
 		
 		// Repositioned the TextArea below the chosen photo
-		var textArea_top =  viewContainerPhoto.height + 95;
+		textArea_top =  viewContainerPhoto.height + 95;
 		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
@@ -684,12 +681,17 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		img.width = preview_sizes.width;
 		viewContainerPhoto.visible = true;
 		
+		//adds the close button to the image
+		photo_close_x = 0;
+		btn_photo_close.left = 0;
+		btn_photo_close.visible = true;
+		
 		// Repositioned the TextArea below the chosen photo
-		var textArea_top =  img.height + 95;
+		textArea_top =  img.height + 105;
 		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
-		tempPostLabel.animate({zIndex: 0, top: 100 + img.height});
+		tempPostLabel.animate({zIndex: 0, top: 120 + img.height});
 		
 	}
 	
