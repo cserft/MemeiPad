@@ -235,9 +235,9 @@ var webViewPreview = Ti.UI.createWebView({
         html: videoHtml,
 		top:0,
         left:0,
-		width: 680,
-		height: 430,
-		// backgroundColor: 'green',
+		width: 650,
+		height: 420,
+		backgroundColor: 'transparent',
         loading: true,
 		scalesPageToFit: false,
 		visible: false
@@ -263,6 +263,13 @@ var btn_photo_close = Titanium.UI.createButton({
 	zIndex: 		10
 });
 viewContainerPhoto.add(btn_photo_close);
+
+var actAjax = Ti.UI.createActivityIndicator({
+	zIndex: 		90,
+	visible: 		false,
+	style: 			Ti.UI.iPhone.ActivityIndicatorStyle.DARK
+});
+viewContainerPhoto.add(actAjax);
 
 //Main TextArea
 var textArea = Titanium.UI.createTextArea({
@@ -592,6 +599,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 			webViewPreview.visible = true;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
+			actAjax.show();
 			
 		} else if (theImage.indexOf("vimeo") != -1) { 
 			
@@ -605,27 +613,47 @@ Ti.App.addEventListener("photoChosen", function(e) {
 			webViewPreview.visible = true;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
+			actAjax.show();
 
-		} else {	
-			// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
+		} else {
+			// IS A PHOTO
+				
 			webViewPreview.html = '';
-			viewContainerPhoto.remove(webViewPreview);
+			// HTML for the Photo
 			
-			//DEFINES THE BASIC IMAGE VIEW FOR THE PREVIEW
-			// TODO: DETECT THE IMAGE SIZE AND DESIGN PROPERLY
-			img.width = 400;
-			img.height = 400;
-			img.defaultImage = 'images/default_img_white.png';
-			img.image = theImage;
+			photoHtml = '<img src="' + theImage + '">';
+			
+			// Create our Webview to render the Photo
+			webViewPreview.html = photoHtml;
+			// webViewPreview.borderRadius = 4;
+			// webViewPreview.borderColor = "#CCC";
+			// webViewPreview.backgroundImage = 'images/default_img_white.png';
+			webViewPreview.visible = true;
+			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
+			actAjax.show();
 		}
 		
+		// Activity indicator AJAX
+		
+		
+		webViewPreview.addEventListener('load', function(){
+			actAjax.hide();
+			
+			//adds the close button to the image
+			var photo_close_x = 0;
+			btn_photo_close.left = 0;
+			btn_photo_close.visible = true;
+			
+
+		});
+		
 		// Repositioned the TextArea below the chosen photo
-		var textArea_top =  viewContainerPhoto.size.height + 109;
+		var textArea_top =  viewContainerPhoto.height + 95;
 		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
-		tempPostLabel.animate({zIndex: 0, top: 120 + viewContainerPhoto.size.height});
+		tempPostLabel.animate({zIndex: 0, top: 100 + viewContainerPhoto.height});
 
 	} else {
 		// IF IT IS A LOCAL FILE THEN
@@ -645,26 +673,26 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		}
 	
 		// set smaller size for preview (max 250px for the biggest side)
-		preview_sizes = getImagePreviewSizes(400, theImage);
+		preview_sizes = getImagePreviewSizes(500, theImage);
 	
 		// img properties
 		img.image = theImage;
+		img.top = 10;
+		img.left = 10;
 		img.height = preview_sizes.height;
 		img.width = preview_sizes.width;
 		viewContainerPhoto.visible = true;
 		
 		// Repositioned the TextArea below the chosen photo
-		var textArea_top =  img.size.height + 95;
+		var textArea_top =  img.height + 95;
 		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
-		tempPostLabel.animate({zIndex: 0, top: 100 + img.size.height});
+		tempPostLabel.animate({zIndex: 0, top: 100 + img.height});
+		
 	}
 	
-	//adds the close button to the image
-	var photo_close_x = 0;
-	btn_photo_close.left = 0;
-	btn_photo_close.visible = true;
+
 
 });
 

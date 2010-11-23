@@ -1,8 +1,8 @@
 etc
 ---
-- Tratar error 0 nas calls do YQL
 - icons and descriptions on YDN Site
-- migrate Domain to App Engine
+- Cadastrar no GetJar depois de submeter no iTunes App Store
+
 _____ AFTER LAUNCH _____
 - Create a Website for the App
 
