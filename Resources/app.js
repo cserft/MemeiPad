@@ -617,7 +617,7 @@ Ti.App.addEventListener('hide_indicator', function(e)
 // ============================
 // = Fullscreen error message =
 // ============================
-var displayErrorMessage = function(title, message, relativeTop) {
+var displayErrorMessage = function(title, message, relativeTop, pFontSize) {
 	//Closes the Keyboard if open
 	Ti.App.fireEvent('hide_keyboard');
 	
@@ -644,7 +644,7 @@ var displayErrorMessage = function(title, message, relativeTop) {
 	var icon_exclamation = Ti.UI.createImageView({
 		image: 'images/icon_exclamation.png',
 		top: 310,
-		left: 58,
+		left: 50,
 		width: 100,
 		height: 86,
 		opacity: 0.3
@@ -653,7 +653,7 @@ var displayErrorMessage = function(title, message, relativeTop) {
 	
 	var errorLabel = Ti.UI.createLabel({
 		text: 				message,
-		font: 				{fontSize:36, fontFamily:'Helvetica', fontWeight:'bold'},
+		font: 				{fontSize: pFontSize, fontFamily:'Helvetica', fontWeight:'bold'},
 		textAlign: 			'left',
 		top: 				250 + relativeTop,
 		left: 				177,	
@@ -701,14 +701,14 @@ var displayErrorMessage = function(title, message, relativeTop) {
 // =====================
 Ti.App.addEventListener('yqlerror', function(e) {
 	Ti.API.error('App crashed (cannot connect to YQL). Query: ' + e.query);
-	displayErrorMessage('YQL Error', 'Ops, it seems we had a problem...', 80);
+	displayErrorMessage('YQL Error', 'Ops, it seems we had a problem...', 80, 36);
 });
 
 // ==================================
 // = Checks if the Device is Online =
 // ==================================
 if (!Titanium.Network.online) {
-	displayErrorMessage('Network Error', 'You need to be online to use Meme for iPad. Please, check your network connection and try again.', 40);
+	displayErrorMessage('Network Error', 'You need to be online to use Meme for iPad. Please, check your network connection and try again.', 45, 30);
 } else {
 	// =========================================
 	// =  // Initialize oAuthAdapter process   =
