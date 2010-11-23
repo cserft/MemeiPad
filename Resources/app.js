@@ -593,8 +593,10 @@ function showIndicator(pMessage, pColor, pSize, pTop, pLeft)
 
 function hideIndicator()
 {
-	actInd.hide();
-	indWin.close({opacity:0,duration:500});	
+	if (actInd && indWin) {
+		actInd.hide();
+		indWin.close({opacity:0,duration:500});
+	}
 };
 
 //

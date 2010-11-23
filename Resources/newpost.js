@@ -463,8 +463,8 @@ tempPostLabel.addEventListener('touchend', function(e) {
 //Captures the value on the textArea form and hide hintText
 textArea.addEventListener('change', function(e) {
 	tempPostLabel.hide(); // hide the hint text when starts using the keyboard
-	Ti.API.warn('text is: ' + strip_html_entities(e.value));
-	postBody = strip_html_entities(e.value);
+	Ti.API.debug('text is: ' + e.value);
+	postBody = e.value;
 });
 
 //TextArea Clear Button
