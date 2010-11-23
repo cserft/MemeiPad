@@ -51,10 +51,10 @@ win.add(postHeaderView);
 // ===============
 var btn_close_post = Ti.UI.createButton({
 	backgroundImage: 'images/btn_close_post.png',
-	height: 22,
-	width: 22,
-	left: 988,
-	top: 20,
+	height: 50,
+	width: 49,
+	left: 970,
+	top: 10,
 	style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 });
 postHeaderView.add(btn_close_post);
