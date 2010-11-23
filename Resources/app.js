@@ -320,7 +320,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			aboutWindow.add(aboutView);
 			
 			var aboutLabel = Ti.UI.createLabel({
-				text: 'Meme for iPad is a pet project from the Yahoo! Meme Team, originated in one of our internal Hack Events.\n\nIt was developed by Antonio Carlos Silveira (@acarlos1000) and Guilherme Chapiewski (@gchapiewski) with Design/UI by Guilherme Neumann (@gneumann).\n\nThis app is totally developed on top of the Open Source Titanium SDK and Yahoo\'s YQL.\n\nThe source code of this app is freely available at GitHub, fill free to download and learn from it.',
+				text: 'Meme for iPad is a pet project from the Yahoo! Meme Team, originated in one of our internal Hack Events.\n\nIt was developed by Antonio Carlos Silveira (@acarlos1000) and Guilherme Chapiewski (@gchapiewski) with Design/UI by Guilherme Neumann (@gneumann).\n\nThis app is totally developed on top of the Open Source Titanium SDK and Yahoo\'s YQL.\n\nThe source code of this app is freely available at GitHub, feel free to download and learn from it.',
 				font: 			{fontSize:15,fontFamily:'Helvetica Neue', fontWeight:'regular'},
 				top: 				10,	
 				width: 				325,
