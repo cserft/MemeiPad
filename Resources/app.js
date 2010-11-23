@@ -618,6 +618,9 @@ Ti.App.addEventListener('hide_indicator', function(e)
 // = Fullscreen error message =
 // ============================
 var displayErrorMessage = function(title, message, relativeTop) {
+	//Closes the Keyboard if open
+	Ti.App.fireEvent('hide_keyboard');
+	
 	var errorWin = Ti.UI.createWindow({
 		title: title,
 		backgroundColor: 'transparent',
@@ -698,10 +701,6 @@ var displayErrorMessage = function(title, message, relativeTop) {
 // =====================
 Ti.App.addEventListener('yqlerror', function(e) {
 	Ti.API.error('App crashed (cannot connect to YQL). Query: ' + e.query);
-	
-	//Closes the Keyboard if open
-	Ti.App.fireEvent('hide_keyboard');
-	
 	displayErrorMessage('YQL Error', 'Ops, it seems we had a problem...', 80);
 });
 
