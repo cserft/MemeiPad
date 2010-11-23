@@ -1,4 +1,3 @@
-Ti.include('lib/strip_tags.js');
 Ti.include('lib/commons.js');
 
 var win = Ti.UI.currentWindow;
@@ -70,7 +69,7 @@ var createPostCaption = function(blackBoxView, pCaption) {
 		blackBoxView.add(__id_bg_caption);
 
 		//Strips HTML Entities and Tags from the Caption
-		var pCaptionStripped = strip_tags(pCaption);
+		var pCaptionStripped = strip_html_entities(pCaption);
 
 		var __id_caption = Titanium.UI.createLabel({
 			color: 		'#FFF',

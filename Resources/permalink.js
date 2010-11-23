@@ -1,5 +1,4 @@
 Ti.include('lib/commons.js');
-Ti.include('lib/strip_tags.js');
 
 var win = Ti.UI.currentWindow;
 
