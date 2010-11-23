@@ -307,7 +307,7 @@ var flashlight_create = function() {
 					
 						if (item.abstract != null) {
 							var abstractContent = item.abstract;
-							var abstractStripped = strip_html_entities(abstractContent.replace);
+							var abstractStripped = strip_html_entities(abstractContent);
 							var abstract = Ti.UI.createLabel({
 								text: abstractStripped,
 								color:'#333',

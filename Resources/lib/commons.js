@@ -112,12 +112,10 @@ var getPhotoData = function(pContent, pWidth, pHeight, yql, callback) {
 };
 
 var strip_html_entities = function(string) {
-	if (string && typeof string == 'string') {
-		var new_string = string.replace(/(<([^>]+)>)/ig, ' ');
-		new_string = new_string.replace(/&.+;/, ' ');
-		new_string = new_string.replace(/^\s/, '');
-		new_string = new_string.replace(/\s+/g, ' ');
-		Ti.API.debug('strip_html, was [' + string + '] and now is [' + new_string + ']');
-		return new_string;
-	}
+	var new_string = string.replace(/(<([^>]+)>)/ig, ' ');
+	new_string = new_string.replace(/&.+;/, ' ');
+	new_string = new_string.replace(/^\s/, '');
+	new_string = new_string.replace(/\s+/g, ' ');
+	Ti.API.debug('strip_html, was [' + string + '] and now is [' + new_string + ']');
+	return new_string;
 };
