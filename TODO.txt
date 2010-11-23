@@ -7,9 +7,11 @@ _____ AFTER LAUNCH _____
 - Create a Website for the App
 
 app.js
-------------
-- add Error Window with error occurs when starting the app. With a Button to refresh
+------------	
 - Review all RegExp
+
+_____ AFTER LAUNCH _____
+- Global Settings App Page on the iPhone/iPad - http://developer.appcelerator.com/question/39381/application-settings
 
 dashboard.js
 ------------
@@ -23,9 +25,8 @@ _____ AFTER LAUNCH _____
 
 permalink.js
 ------------
-- Bug When opening some Vimeo Videos: http://vimeo.com/11436985
-- When opening permalink from Dashboard, if an error occurs with YQL, the app stops responding (verify if yqldata is null and close permalink window)
 - Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
+
 _____ AFTER LAUNCH _____
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)
@@ -38,7 +39,9 @@ _____ AFTER LAUNCH _____
 
 newpost.js
 ----------
+- BUG: when Flashlight doesn't find a result it calls an YQL error.
 _____ AFTER LAUNCH _____
+- improve the link paste on Flashlight, replacing the MATCH method with TEST
 - Save Video/Photo on Drafts
 - BUG: animation of the postBody goes crazy when selecting different images from local file and from Flashlight
 - Draft Should save Media as well

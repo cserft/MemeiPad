@@ -368,3 +368,14 @@ alertOpenPermalink.addEventListener('click',function(e)
 		Ti.Platform.openURL(post.url);	
 	}
 });
+
+
+// ============================
+// = CLOSE PERMALINK LISTENER =
+// ============================
+Ti.App.addEventListener('close_permalink', function(e)
+{
+	//Closes New Post Window
+	win.close({opacity:0,duration:200})
+
+});

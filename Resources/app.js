@@ -1,7 +1,7 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 
-// var winDashboardExist;
+var myMemeInfo = null;
 
 
 //base Window
@@ -76,6 +76,14 @@ alertOpenSignUp.addEventListener('click',function(e)
 
 var showHeader = function (yql, pType, pWinDashboard){
 	
+	// Ti.App.fireEvent('show_indicator', {
+	// 	message: "Loading...",
+	// 	color: "transparent",
+	// 	size: 150,
+	// 	top: -10,
+	// 	left: 530
+	// });
+	
 	Ti.API.info("showHeader function Called with pType = " + pType);
 
 	var headerView = Ti.UI.createView({
@@ -100,9 +108,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 		if (yqlMemeInfo){
 
 			var meme = yqlMemeInfo.query.results.meme;	
-			
-			// Sets a FireEvent passing the Meme Object Fwd
-			Ti.App.fireEvent('myMemeInfo',{myMemeInfo:meme});
+			myMemeInfo = meme;
 		}
 		
 		var btn_Username = Ti.UI.createButton({
@@ -433,6 +439,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 			newPost(yql);
 		});
 		
+		Ti.App.fireEvent('hide_indicator');
 
 	} else {
 		
@@ -440,6 +447,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 		btn_signin.visible = true;
 		btn_signup.visible = true;
 		headerView.hide();
+		Ti.App.fireEvent('hide_indicator');
 	}
 
 };
@@ -476,6 +484,7 @@ var showDashboard = function(yql,pDashboardType) {
 		navBarHidden: true,
 		yql: yql,
 		pDashboardType: pDashboardType,
+		myMemeInfo: myMemeInfo,
 		win1: win1,
 		zIndex: 2,
 		orientationModes: [
@@ -532,13 +541,21 @@ var newPost = function(yql) {
 var indWin = null;
 var actInd = null;
 
-function showIndicator(pMessage, pColor, pSize)
+function showIndicator(pMessage, pColor, pSize, pTop, pLeft)
 {
+	
 	// window container
 	indWin = Titanium.UI.createWindow({
 		height: 		pSize,
-		width: 			pSize
+		width: 			pSize,
+		zIndex: 		995
 	});
+	
+	//IF POSITION IS DEFINED
+	if (pTop){
+		indWin.top = pTop;
+		indWin.left = pLeft;
+	}
 
 	// black view
 	var indView = Titanium.UI.createView({
@@ -565,7 +582,7 @@ function showIndicator(pMessage, pColor, pSize)
 		color: 			'#fff',
 		width: 			'auto',
 		height: 		'auto',
-		font: 			{fontSize:22,fontWeight:'bold'},
+		font: 			{fontSize:18,fontWeight:'bold'},
 		bottom: 		pSize/4
 	});
 	indWin.add(message);
@@ -583,12 +600,12 @@ function hideIndicator()
 //
 // Add global event handlers to hide/show custom indicator
 //
-Titanium.App.addEventListener('show_indicator', function(e)
+Ti.App.addEventListener('show_indicator', function(e)
 {
 	Ti.API.info("SHOW INDICATOR");
-	showIndicator(e.message, e.color, e.size);
+	showIndicator(e.message, e.color, e.size, e.top, e.left);
 });
-Titanium.App.addEventListener('hide_indicator', function(e)
+Ti.App.addEventListener('hide_indicator', function(e)
 {
 	Ti.API.info("HIDE INDICATOR");
 	hideIndicator();
@@ -620,10 +637,87 @@ if (!Titanium.Network.online) {
 	oAuthAdapter.login(showSignIn, showDashboard);
 };
 
-Ti.addEventListener('yqlerror', function(e) {
+// =====================
+// = YQL ERROR MESSAGE =
+// =====================
+Ti.App.addEventListener('yqlerror', function(e) {
 	Ti.API.error('App crashed (cannot connect to YQL). Query: ' + e.query);
-	Titanium.UI.createAlertDialog({ 
-		title: 'Error',
-		message: 'There was an error connecting to Yahoo! APIs. Please try again later.'
-	}).show();
+	//Closes the Keyboard if open
+	Ti.App.fireEvent('hide_keyboard');
+	
+	var errorWin = Ti.UI.createWindow({
+		title: 'Error YQL',
+		backgroundColor: 'transparent',
+		left: 0,
+		top: 0,
+		height: '100%',
+		width: '100%',
+		zIndex: 999,
+		navBarHidden: true
+	});
+	
+	var errorView = Ti.UI.createView({
+	 backgroundColor: 	'transparent',
+		backgroundImage: 	'images/bg_error_msg.png',
+		width: 				'100%',
+		height: 			'100%',
+		zIndex: 			999
+	});
+	errorWin.add(errorView);
+	
+	var icon_exclamation = Ti.UI.createImageView({
+		image: 'images/icon_exclamation.png',
+		top: 310,
+		left: 58,
+		width: 100,
+		height: 86,
+		opacity: 0.3
+	});
+	errorView.add(icon_exclamation);
+	
+	var errorLabel = Ti.UI.createLabel({
+		text: 				'Ops, it seems we had a problem...',
+		font: 				{fontSize:36, fontFamily:'Helvetica', fontWeight:'bold'},
+		textAlign: 			'left',
+		top: 				330,
+		left: 				177,	
+		width: 				660,
+		height: 			'auto',
+		backgroundColor: 	'transparent',
+		color: 				'#666'
+	});
+	errorView.add(errorLabel);
+	
+	var btn_error_refresh = Ti.UI.createButton({
+		title: 				'refresh',
+		color: 				'#7D0670',
+		font: 				{fontSize:22, fontFamily:'Helvetica', fontWeight:'regular'},
+		backgroundImage: 	'images/btn_error_refresh.png',
+		backgroundColor: 	'transparent',
+		selectedColor: 		'gray',
+		height: 			53,
+		width: 				160,
+		left: 				782,
+		top: 				330,
+		style: 				Ti.UI.iPhone.SystemButtonStyle.PLAIN
+	});
+	errorView.add(btn_error_refresh);
+	
+	errorWin.open();
+	
+	// Opens the New Post Window
+	btn_error_refresh.addEventListener('click', function()
+	{
+		//Closes NewPost if Open
+		Ti.App.fireEvent('close_newpost');
+		
+		//Closes Permalink if Open
+		Ti.App.fireEvent('close_permalink');
+		
+		errorWin.close({opacity:0,duration:200});
+		// Starts Authentication
+		var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
+		oAuthAdapter.login(showSignIn, showDashboard);
+	});
+	
 });
