@@ -32,6 +32,11 @@ var yqldata = yql.query(yqlQuery);
 // if (yqldata == null) {
 // 	win.close();	
 // }
+
+if (!yqldata.query.results) {
+	Ti.App.fireEvent('yqlerror');
+}
+
 var post = yqldata.query.results.post;
 
 // ============================
