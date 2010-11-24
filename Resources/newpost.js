@@ -202,7 +202,7 @@ var editTitleField = Titanium.UI.createTextField({
 	width: 			950,
 	height: 		55,
 	top: 			0,
-	left: 			35,
+	left: 			38,
 	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_NONE,
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
 	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
