@@ -494,6 +494,7 @@ textArea.addEventListener('focus', function(e) {
 
 textArea.addEventListener('blur', function(e) {
 	textArea.remove(btn_text_clear);
+	editView.scrollTo(0, {animated:true});
 });
 
 btn_text_clear.addEventListener('click', function(e) {
@@ -550,8 +551,6 @@ btn_post.addEventListener('click', function() {
 			});
 		}
 	} else {
-		// Scroll to Top
-		// editView.scrollTo(0,{animated:true})
 		Titanium.App.fireEvent("postClicked", {
 			   message: postText
 		});
