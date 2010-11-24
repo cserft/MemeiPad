@@ -47,27 +47,12 @@ var btn_signup = Titanium.UI.createButton({
 });
 win1.add(btn_signup);
 
-//Alert to Open Safari for the Post Permalink
-var alertOpenSignUp = Titanium.UI.createAlertDialog({
-	title: 'Create your account',
-	message: 'We will open the SignUp page on Safari',
-	buttonNames: ['OK','Cancel'],
-	cancel: 1
-});
-
-btn_signup.addEventListener("click", function(e)
-{
-	alertOpenSignUp.show();
-});
-
-
-// Opens the Permalink page on Safari
-alertOpenSignUp.addEventListener('click',function(e)
-{
-	if (e.index == 0){
-		// Open Link to the Guidelines Page on Safari
-		Ti.Platform.openURL("http://meme.yahoo.com/confirm");	
-	}
+btn_signup.addEventListener("click", function(e) {
+	Ti.App.fireEvent('openLinkOnSafari', { 
+		title: 'Create your account',
+		message: 'We will open the SignUp page on Safari',
+		url: 'http://meme.yahoo.com/confirm'
+	});
 });
 
 // ====================
@@ -186,25 +171,13 @@ var showHeader = function (yql, pType, successCallback) {
 				width: 			224
 			});	
 			row1.add(linkMeme);
-			
-			//Open Link on Safari
-			var alertOpenSignUp = Titanium.UI.createAlertDialog({
-				title: 'Open Link',
-				message: 'We will open this link on Safari',
-				buttonNames: ['OK','Cancel'],
-				cancel: 1
-			});
 
-			linkMeme.addEventListener("click", function(e)
-			{
-				alertOpenSignUp.show();
-			});
-
-			alertOpenSignUp.addEventListener('click',function(e)
-			{
-				if (e.index == 0){
-					Ti.Platform.openURL(meme.url);	
-				}
+			linkMeme.addEventListener("click", function(e) {
+				Ti.App.fireEvent('openLinkOnSafari', {
+					url: meme.url,
+					title: 'Open Link',
+					message: 'We will open this link on Safari'
+				});
 			});
 
 			var btn_signout = Ti.UI.createButton({
@@ -300,59 +273,40 @@ var showHeader = function (yql, pType, successCallback) {
 				navBarHidden: 		false
 			});
 			
-			var aboutView = Ti.UI.createScrollView({
-				top: 				0,
-				width: 				340, 
-				height: 			420,
-				contentWidth: 		330,
-				contentHeight: 		480,
-				showVerticalScrollIndicator:true,
-				showHorizontalScrollIndicator:false
+			var aboutHTML = '<html><head><script language="javascript">var link = function(url) { Ti.App.fireEvent("openLinkOnSafari", { url: url }); }</script></head><body>';
+			aboutHTML += '<font face="Helvetica Neue" style="font-size:14px;"><p>Meme for iPad is a pet project from the Yahoo! Meme Team, originated in one of our internal Hack Events.</p><p>It was developed by Antonio Carlos Silveira (<a href="javascript:link(\'http://twitter.com/acarlos1000\');">@acarlos1000</a>) and Guilherme Chapiewski (<a href="javascript:link(\'http://twitter.com/gchapiewski\');">@gchapiewski</a>) with Design/UI by Guilherme Neumann (<a href="javascript:link(\'http://twitter.com/gneumann\');">@gneumann</a>).</p><p>This app is totally developed on top of the Open Source Titanium SDK and Yahoo\'s YQL.</p><p>The source code of this app is freely available at GitHub, feel free to download and learn from it.</p></font>';
+			aboutHTML += '</body></html>'
+			
+			var aboutView = Ti.UI.createWebView({
+				html: 				aboutHTML,
+				top: 				5,	
+				width: 				325,
+				height: 			275,
+				backgroundColor: 	'#FFF'
 			});
 			aboutWindow.add(aboutView);
 			
-			var aboutLabel = Ti.UI.createLabel({
-				text: 'Meme for iPad is a pet project from the Yahoo! Meme Team, originated in one of our internal Hack Events.\n\nIt was developed by Antonio Carlos Silveira (@acarlos1000) and Guilherme Chapiewski (@gchapiewski) with Design/UI by Guilherme Neumann (@gneumann).\n\nThis app is totally developed on top of the Open Source Titanium SDK and Yahoo\'s YQL.\n\nThe source code of this app is freely available at GitHub, feel free to download and learn from it.',
-				font: 			{fontSize:15,fontFamily:'Helvetica Neue', fontWeight:'regular'},
-				top: 				10,	
-				width: 				325,
-				height: 			'auto',
-				backgroundColor: 	'#FFF',
-				color: 				'black'
+			var aboutGitView = Ti.UI.createView({
+				top: 				283,
+				width: 				340, 
+				height: 			100
 			});
-			aboutView.add(aboutLabel);
+			aboutWindow.add(aboutGitView);
 			
 			var aboutGitButton = Ti.UI.createButton({
-				top: 				aboutLabel.top + aboutLabel.height + 20,
+				top: 				0,
 				image: 				'images/btn_about.png',
 				width: 				335, //real 329
 				height: 			91, //real: 85
 				style: 				Ti.UI.iPhone.SystemButtonStyle.PLAIN,
 				zIndex: 			3
 			});
-			aboutView.add(aboutGitButton);
-			
-			//Open Link on Safari
-			//Alert to Open Safari for the GitHub Link
-			var alertOpenSignUp2 = Titanium.UI.createAlertDialog({
-				title: 'Open Link',
-				message: 'We will open GitHub page on Safari',
-				buttonNames: ['OK','Cancel'],
-				cancel: 1
-			});
+			aboutGitView.add(aboutGitButton);
 
-			aboutGitButton.addEventListener("click", function(e)
-			{
-				alertOpenSignUp2.show();
-			});
-
-
-			// Opens the GitHub page on Safari
-			alertOpenSignUp2.addEventListener('click',function(e)
-			{
-				if (e.index == 0){
-					Ti.Platform.openURL('http://memeapp.net/source');
-				}
+			aboutGitButton.addEventListener("click", function(e) {
+				Ti.App.fireEvent('openLinkOnSafari', {
+					url: 'http://memeapp.net/source'
+				});
 			});
 			
 			var githubIcon = Ti.UI.createImageView({
@@ -611,6 +565,36 @@ Ti.App.addEventListener('hide_indicator', function(e)
 {
 	Ti.API.info("HIDE INDICATOR");
 	hideIndicator();
+});
+
+//
+// Opens a link on Safari
+//
+Ti.App.addEventListener('openLinkOnSafari', function(data) {
+	var title = 'Open Link',
+		message = 'We will open a page on Safari';
+	
+	if (data.title) {
+		title = data.title;
+	}
+	if (data.message) {
+		message = data.message;
+	}
+	
+	var alert = Titanium.UI.createAlertDialog({
+		title: title,
+		message: message,
+		buttonNames: ['OK','Cancel'],
+		cancel: 1
+	});
+	
+	alert.addEventListener('click', function(e) {
+		if (e.index == 0){
+			Ti.Platform.openURL(data.url);
+		}
+	});
+	
+	alert.show();
 });
 
 // ============================
