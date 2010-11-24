@@ -74,7 +74,7 @@ alertOpenSignUp.addEventListener('click',function(e)
 // = LOGGED IN HEADER =
 // ====================
 
-var showHeader = function (yql, pType, pWinDashboard){
+var showHeader = function (yql, pType){
 	
 	// Ti.App.fireEvent('show_indicator', {
 	// 	message: "Loading...",
@@ -462,11 +462,12 @@ var signInButtonClick = function(continuation) {
 var startApplication = function() {
 	if (oAuthAdapter.isLoggedIn()) {
 		// logged in, shows logged dashboard and header
+		showHeader(oAuthAdapter.getYql(), "logged");
 		showDashboard(oAuthAdapter.getYql(), "logged");
 	} else {
 		// not logged in, shows unlogged screens
-		showHeader(null,"notlogged");
-	   	showDashboard(OAuthAdapter("meme"),"notlogged");
+		showHeader(null, "notlogged");
+	   	showDashboard(OAuthAdapter("meme"), "notlogged");
 		
 		oAuthAdapter.attachLogin(signInButtonClick, startApplication);
 	}
@@ -510,7 +511,6 @@ var showDashboard = function(yql,pDashboardType) {
 	
 	// Builds the LoggedIn Header or the SignIn one
 	if (pDashboardType === "logged") {
-		showHeader(yql, pDashboardType, winDashboard);
 		btn_signin.visible = false;
 		btn_signup.visible = false;
 	} else {
