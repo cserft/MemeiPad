@@ -2,7 +2,7 @@
 Ti.include('oadapter.js');
 
 var myMemeInfo = null;
-
+var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 
 //base Window
 var win1 = Titanium.UI.createWindow({  
@@ -237,7 +237,7 @@ var showHeader = function (yql, pType, pWinDashboard){
 				oAuthAdapter.logout('meme');
 				Ti.App.fireEvent('remove_tableview');
 				headerView.hide();
-				oAuthAdapter.login(showSignIn, showDashboard);
+				startApplication();
 			});
 			data[0] = row1;
 			
@@ -454,15 +454,23 @@ var showHeader = function (yql, pType, pWinDashboard){
 
 
 // If not authenticated then Show SignIn Window
-var showSignIn = function(continuation) {
-	
+var signInButtonClick = function(continuation) {
 	// Sign In Button Listener
 	btn_signin.addEventListener("click",continuation);
-	
-	showHeader(null,"notlogged");
-   	showDashboard(OAuthAdapter("meme"),"notlogged");
-
 };
+
+var startApplication = function() {
+	if (oAuthAdapter.isLoggedIn()) {
+		// logged in, shows logged dashboard and header
+		showDashboard(oAuthAdapter.getYql(), "logged");
+	} else {
+		// not logged in, shows unlogged screens
+		showHeader(null,"notlogged");
+	   	showDashboard(OAuthAdapter("meme"),"notlogged");
+		
+		oAuthAdapter.attachLogin(signInButtonClick, startApplication);
+	}
+}
 
 // If Authentication OK the Show Dashboard
 var showDashboard = function(yql,pDashboardType) {
@@ -690,9 +698,8 @@ var displayErrorMessage = function(title, message, relativeTop, pFontSize) {
 		Ti.App.fireEvent('close_permalink');
 		
 		errorWin.close({opacity:0,duration:200});
-		// Starts Authentication
-		var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
-		oAuthAdapter.login(showSignIn, showDashboard);
+		
+		startApplication();
 	});
 }
 
@@ -710,9 +717,5 @@ Ti.App.addEventListener('yqlerror', function(e) {
 if (!Titanium.Network.online) {
 	displayErrorMessage('Network Error', 'You need to be online to use Meme for iPad. Please, check your network connection and try again.', 45, 30);
 } else {
-	// =========================================
-	// =  // Initialize oAuthAdapter process   =
-	// =========================================
-	var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
-	oAuthAdapter.login(showSignIn, showDashboard);
+	startApplication();
 };

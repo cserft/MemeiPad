@@ -328,25 +328,29 @@ var OAuthAdapter = function(pService, authorize) {
 		return yqldata;
 	};
 	
-	// will check if access tokens are stored in the config file
-    var login = function(signin, callback) {	
-		var self  = { query: query };
-		var token = loadToken();
-        if (! token) {
-			signin(function() {
-				Ti.API.debug('File not found, executing oauth flow');
-				var rtoken = requestToken();
-				authorize(rtoken["xoauth_request_auth_url"], function(pVerifier) {
-					var atoken = accessToken(rtoken, pVerifier);
-					saveToken(atoken);
-					Ti.API.debug('Oauth flow done, calling callback');
-					callback(self, "logged");
-				});	
-			});
-		} else {
-			Ti.API.debug('Loading token from file!');
-			callback(self, "logged");
+	var isLoggedIn = function() {
+        if (loadToken()) {
+			return true;
 		}
+		return false;
+	}
+	
+	var getYql = function() {
+		return { query: query };
+	}
+	
+	// will check if access tokens are stored in the config file
+    var attachLogin = function(attachFunction, callback) {
+		attachFunction(function() {
+			Ti.API.debug('File not found, executing oauth flow');
+			var rtoken = requestToken();
+			authorize(rtoken["xoauth_request_auth_url"], function(pVerifier) {
+				var atoken = accessToken(rtoken, pVerifier);
+				saveToken(atoken);
+				Ti.API.debug('Oauth flow done, calling callback');
+				callback();
+			});	
+		});
     };
 	
 	// Logs out from Yahoo! deleting the config file
@@ -357,8 +361,10 @@ var OAuthAdapter = function(pService, authorize) {
 	};
 	
 	return({
-		login: login,
+		attachLogin: attachLogin,
 		logout: logout,
-		query: query2legg
+		query: query2legg,
+		isLoggedIn: isLoggedIn,
+		getYql: getYql
 	});
 };
