@@ -196,8 +196,8 @@ win.add(editView);
 
 var editTitleField = Titanium.UI.createTextField({
 	value: 			postTitle,
-	hintText: 		'Add Title',
-	textAlign: 		'center',
+	hintText: 		'add title',
+	textAlign: 		'left',
 	font: 			{fontSize:26,fontFamily:'Helvetica', fontWeight:'bold'},
 	width: 			970,
 	height: 		55,

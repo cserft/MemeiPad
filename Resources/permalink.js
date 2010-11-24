@@ -278,24 +278,43 @@ var btn_repost = Titanium.UI.createButton({
 });
 whiteBox.add(btn_repost);
 
-var repostActInd = Titanium.UI.createActivityIndicator({
+// var repostActInd = Titanium.UI.createActivityIndicator({
+// 	width:36,
+// 	height:36,
+// 	bottom: 10,
+// 	right: 10,
+// 	style: Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
+// 	backgroundColor: 'white',
+// 	zIndex: 2
+// });
+// whiteBox.add(repostActInd);
+
+var btn_delete = Titanium.UI.createButton({
+	backgroundImage:'images/btn_trash.png',
 	width:36,
-	height:36,
-	bottom: 10,
-	right: 10,
-	style: Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
-	backgroundColor: 'white',
-	zIndex: 2
+	height:33,
+	bottom: 12,
+	right: 120,
+	zIndex: 1,
+	visible: false,
+	enabled: false
 });
-whiteBox.add(repostActInd);
+whiteBox.add(btn_delete);
 
 
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
 if (myMemeInfo){
-	if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_guid == myMemeInfo.guid){
+	if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_guid == myMemeInfo.guid) {
 		btn_repost.enabled = false;	
 	} else {
 		btn_repost.enabled = true;	
+	}
+}
+
+if (myMemeInfo){
+	if (_guid == myMemeInfo.guid) {
+		btn_delete.enabled = true;
+		btn_delete.visible = true;
 	}
 }
 
@@ -303,7 +322,7 @@ if (myMemeInfo){
 // = LISTENERS =
 // =============
 
-
+// REPOST
 btn_repost.addEventListener("click", function(e) {
 	
 	yqlQuery = "INSERT INTO meme.user.posts (guid, pubid) VALUES ('" + _guid + "', '" + _pubId + "')";
@@ -316,6 +335,25 @@ btn_repost.addEventListener("click", function(e) {
 			btn_repost.enabled = false;		
 	} else {
 		Ti.API.info("Error while reposting");	
+	}
+
+});
+
+// DELETE POST
+btn_delete.addEventListener("click", function(e) {
+	
+	yqlQuery = "DELETE FROM meme.user.posts WHERE pubid = " + _pubId;
+	var yqlInsert = yql.query(yqlQuery);
+	var response = yqlInsert.query.results.status;
+	
+	if (response.message == "ok"){
+		var t3 = Titanium.UI.create2DMatrix();
+		t3 = t3.scale(0);
+		win.close({transform:t3,duration:200});
+		Ti.App.fireEvent('openingDetailsFalse');
+	
+	} else {
+		Ti.API.info("Error while deleting");	
 	}
 
 });

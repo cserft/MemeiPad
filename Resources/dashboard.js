@@ -653,11 +653,12 @@ tableView.addEventListener('scroll',function(e)
 // ===================
 function formatDate() {
 	var date = new Date,
+		minstr = date.getMinutes(); if (minstr<10) {minstr="0"+minstr;} 		// fixes minutes when less than 10
 		datestr = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
-		hourstr = ' ' + date.getHours() + ':' + date.getMinutes() + ' AM';
+		hourstr = ' ' + date.getHours() + ':' + minstr + ' AM'; 
 		
 	if (date.getHours() >= 12) {
-		hourstr = ' ' + (date.getHours() == 12 ? date.getHours() : date.getHours() - 12) + ':' + date.getMinutes() + ' PM';
+		hourstr = ' ' + (date.getHours() == 12 ? date.getHours() : date.getHours() - 12) + ':' + minstr + ' PM';
 	}
 	
 	return datestr + hourstr;
