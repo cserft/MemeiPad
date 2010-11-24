@@ -334,7 +334,7 @@ var showHeader = function (yql, pType, successCallback) {
 			
 			//Open Link on Safari
 			//Alert to Open Safari for the GitHub Link
-			var alertOpenSignUp = Titanium.UI.createAlertDialog({
+			var alertOpenSignUp2 = Titanium.UI.createAlertDialog({
 				title: 'Open Link',
 				message: 'We will open GitHub page on Safari',
 				buttonNames: ['OK','Cancel'],
@@ -343,12 +343,12 @@ var showHeader = function (yql, pType, successCallback) {
 
 			aboutGitButton.addEventListener("click", function(e)
 			{
-				alertOpenSignUp.show();
+				alertOpenSignUp2.show();
 			});
 
 
 			// Opens the GitHub page on Safari
-			alertOpenSignUp.addEventListener('click',function(e)
+			alertOpenSignUp2.addEventListener('click',function(e)
 			{
 				if (e.index == 0){
 					Ti.Platform.openURL('http://memeapp.net/source');
