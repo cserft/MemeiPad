@@ -199,10 +199,10 @@ var editTitleField = Titanium.UI.createTextField({
 	hintText: 		'add title',
 	textAlign: 		'left',
 	font: 			{fontSize:26,fontFamily:'Helvetica', fontWeight:'bold'},
-	width: 			970,
+	width: 			950,
 	height: 		55,
 	top: 			0,
-	left: 			16,
+	left: 			35,
 	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_NONE,
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
 	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
