@@ -7,6 +7,7 @@ var yql = win.yql;
 var _guid = win.pGuid;
 var _pubId = win.pPubId;
 var myMemeInfo = win.myMemeInfo;
+var pDashboardType = win.pDashboardType;
 var openingDetails = win.openingDetails;
 
 // =======================
@@ -289,21 +290,16 @@ whiteBox.add(btn_repost);
 // });
 // whiteBox.add(repostActInd);
 
-var btn_delete = Titanium.UI.createButton({
-	backgroundImage:'images/btn_trash.png',
-	width:36,
-	height:33,
-	bottom: 12,
-	right: 120,
-	zIndex: 1,
-	visible: false,
-	enabled: false
-});
-whiteBox.add(btn_delete);
-
 
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
-if (myMemeInfo){
+
+Ti.API.info("### myMemeInfo: " + JSON.stringify(myMemeInfo) + "\n Post: " + JSON.stringify(post));
+if (pDashboardType === 'notlogged') {
+	
+	btn_repost.enabled = false;	
+	
+} else {
+	
 	if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_guid == myMemeInfo.guid) {
 		btn_repost.enabled = false;	
 	} else {
@@ -311,12 +307,6 @@ if (myMemeInfo){
 	}
 }
 
-if (myMemeInfo){
-	if (_guid == myMemeInfo.guid) {
-		btn_delete.enabled = true;
-		btn_delete.visible = true;
-	}
-}
 
 // =============
 // = LISTENERS =
@@ -340,30 +330,29 @@ btn_repost.addEventListener("click", function(e) {
 });
 
 // DELETE POST
-btn_delete.addEventListener("click", function(e) {
-	
-	yqlQuery = "DELETE FROM meme.user.posts WHERE pubid = " + _pubId;
-	var yqlInsert = yql.query(yqlQuery);
-	var response = yqlInsert.query.results.status;
-	
-	if (response.message == "ok"){
-		var t3 = Titanium.UI.create2DMatrix();
-		t3 = t3.scale(0);
-		win.close({transform:t3,duration:200});
-		Ti.App.fireEvent('openingDetailsFalse');
-	
-	} else {
-		Ti.API.info("Error while deleting");	
-	}
-
-});
+// btn_delete.addEventListener("click", function(e) {
+// 	
+// 	yqlQuery = "DELETE FROM meme.user.posts WHERE pubid = " + _pubId;
+// 	var yqlInsert = yql.query(yqlQuery);
+// 	var response = yqlInsert.query.results.status;
+// 	
+// 	if (response.message == "ok"){
+// 		var t3 = Titanium.UI.create2DMatrix();
+// 		t3 = t3.scale(0);
+// 		win.close({transform:t3,duration:200});
+// 		Ti.App.fireEvent('openingDetailsFalse');
+// 	
+// 	} else {
+// 		Ti.API.info("Error while deleting");	
+// 	}
+// 
+// });
 
 		
 // Hides the loading indicator indicator
 Ti.App.fireEvent('hide_indicator');
 
-//link to Permalink Page on the Web in the bottom
-
+//link to Open Permalink Web Page in the bottom
 pos_BtnOpenSafari = 80 + (post.url.length * 8) + 30;
 
 var LinkPermalinkLabel = Titanium.UI.createLabel({

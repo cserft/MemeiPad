@@ -468,7 +468,7 @@ tableView.addEventListener('click', function(e)
 		navBarHidden: true,
 		zIndex: 6,
 		transform: t,
-		dashboardType: pDashboardType,
+		pDashboardType: pDashboardType,
 		yql: yql, //passing Variables to this Window
 		pGuid: e.source.guid,
 		pPubId: e.source.pubId
