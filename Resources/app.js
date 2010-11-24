@@ -74,15 +74,7 @@ alertOpenSignUp.addEventListener('click',function(e)
 // = LOGGED IN HEADER =
 // ====================
 
-var showHeader = function (yql, pType){
-	
-	// Ti.App.fireEvent('show_indicator', {
-	// 	message: "Loading...",
-	// 	color: "transparent",
-	// 	size: 150,
-	// 	top: -10,
-	// 	left: 530
-	// });
+var showHeader = function (yql, pType, successCallback) {
 	
 	Ti.API.info("showHeader function Called with pType = " + pType);
 
@@ -438,8 +430,6 @@ var showHeader = function (yql, pType){
 		{
 			newPost(yql);
 		});
-		
-		Ti.App.fireEvent('hide_indicator');
 
 	} else {
 		
@@ -447,31 +437,10 @@ var showHeader = function (yql, pType){
 		btn_signin.visible = true;
 		btn_signup.visible = true;
 		headerView.hide();
-		Ti.App.fireEvent('hide_indicator');
 	}
-
+	
+	successCallback();
 };
-
-
-// If not authenticated then Show SignIn Window
-var signInButtonClick = function(continuation) {
-	// Sign In Button Listener
-	btn_signin.addEventListener("click",continuation);
-};
-
-var startApplication = function() {
-	if (oAuthAdapter.isLoggedIn()) {
-		// logged in, shows logged dashboard and header
-		showHeader(oAuthAdapter.getYql(), "logged");
-		showDashboard(oAuthAdapter.getYql(), "logged");
-	} else {
-		// not logged in, shows unlogged screens
-		showHeader(null, "notlogged");
-	   	showDashboard(OAuthAdapter("meme"), "notlogged");
-		
-		oAuthAdapter.attachLogin(signInButtonClick, startApplication);
-	}
-}
 
 // If Authentication OK the Show Dashboard
 var showDashboard = function(yql,pDashboardType) {
@@ -518,6 +487,28 @@ var showDashboard = function(yql,pDashboardType) {
 		btn_signup.visible = true;
 	}
 };
+
+var signInButtonClick = function(continuation) {
+	// Sign In Button Listener
+	btn_signin.addEventListener("click",continuation);
+};
+
+var startApplication = function() {
+	if (oAuthAdapter.isLoggedIn()) {
+		// logged in, shows logged dashboard and header
+		showHeader(oAuthAdapter.getYql(), "logged", function() {
+			showDashboard(oAuthAdapter.getYql(), "logged");
+		});
+		
+	} else {
+		// not logged in, shows unlogged screens
+		showHeader(null, "notlogged", function() {
+			showDashboard(OAuthAdapter("meme"), "notlogged");
+		});
+	   	
+		oAuthAdapter.attachLogin(signInButtonClick, startApplication);
+	}
+}
 
 // ==========================
 // = CREATE THE POST WINDOW =
