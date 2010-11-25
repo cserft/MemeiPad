@@ -8,7 +8,7 @@ var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 var win1 = Titanium.UI.createWindow({  
     title:'Meme for iPad',
     // backgroundColor:'#333',
-    backgroundImage: 'images/bg.jpg',
+    backgroundImage: 'images/bg.png',
 	orientationModes : [
 	Titanium.UI.LANDSCAPE_LEFT,
 	Titanium.UI.LANDSCAPE_RIGHT
@@ -117,10 +117,11 @@ destaquePrincipal.addEventListener('click', function(e)
 
 var logoHeader = Titanium.UI.createImageView({
 	image:'images/logo_meme_white.png',
-	top: 3,
-	left: 5,
-	width: 228, //actual: 182
-	height: 125 // actual: 79
+	top: 		3,
+	left: 		5,
+	width: 		228, //actual: 182
+	height: 	125, // actual: 79
+	zIndex: 	30
 });
 win1.add(logoHeader);
 

@@ -116,11 +116,11 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	// Sets the proper Column Left position
 	if (pColumn == 0) {
-		blackBoxView.left = 35;	
+		blackBoxView.left = 21;	
 	} else if (pColumn == 1) {
-		blackBoxView.left = 355;
+		blackBoxView.left = 354;
 	} else if (pColumn == 2) {
-		blackBoxView.left = 675;
+		blackBoxView.left = 688;
 	}
 	
 	// create a post view
@@ -363,7 +363,7 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 			
 			if (itemPerRowCount == 0) {
 				var row = Ti.UI.createTableViewRow();
-				row.height = 245;
+				row.height = 256;
 			}
 			
 		}
