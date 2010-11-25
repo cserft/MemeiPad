@@ -1,3 +1,23 @@
+/***************************************************
+Simple Cache implementation for Titanium.
+
+Usage:
+	// in your application startup
+	Cache.init();
+	
+	// returns null
+	Cache.get('my_data');
+	
+	// cache object for 30 seconds
+	Cache.put('my_data', { property: 'value' });
+	
+	 // returns cached object
+	Cache.get('my_data');
+	
+	// cache another object for 1 hour
+	Cache.put('another_data', xml_document, 3600);
+***************************************************/
+
 var Cache = {
 	
 	// Cache initialization
