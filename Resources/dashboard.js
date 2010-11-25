@@ -3,10 +3,9 @@ Ti.include('lib/commons.js');
 var win = Ti.UI.currentWindow;
 
 win.orientationModes =  [
-Titanium.UI.LANDSCAPE_LEFT,
-Titanium.UI.LANDSCAPE_RIGHT
+	Titanium.UI.LANDSCAPE_LEFT,
+	Titanium.UI.LANDSCAPE_RIGHT
 ];
-
 
 var openingDetails = false; // controls multiple Permalinks Opened
 
