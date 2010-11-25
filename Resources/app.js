@@ -90,15 +90,26 @@ var destaquePrincipal = Titanium.UI.createScrollableView({
 	top: 					0,
 	left: 					0,
 	width: 					1024,
-	height: 				340,
+	height: 				323,
 	showPagingControl: 		true,
-	pagingControlHeight: 	20,
+	pagingControlHeight: 	24,
 	pagingControlColor: 	'black',
 	// maxZoomScale: 			2.0,
 	currentPage: 			0,
 	zIndex: 				2
 });
 win1.add(destaquePrincipal);
+
+var topShadow = Titanium.UI.createImageView({
+	image:'images/shadow_top.png',
+	backgroundColor: "transparent",
+	top:0,
+	left:0,
+	width:1024,
+	height:26,
+	zIndex:3
+});
+destaquePrincipal.add(topShadow);
 
 var i=0;
 var activeView = view1;
@@ -127,12 +138,13 @@ win1.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
 	backgroundImage:'images/btn_signin_top_2.png',
-	top: -7,
+	top: -1,
 	left: 952,
-	width:72,
-	height:33, 
-	opacity:1,
-	visible: false
+	width: 72,
+	height: 27, 
+	opacity: 1,
+	visible: false,
+	zIndex: 5
 });
 win1.add(btn_signin);
 
@@ -143,7 +155,8 @@ var btn_signup = Titanium.UI.createButton({
 	width: 303, //actual: 303
 	height: 33, //actual: 33
 	opacity:1,
-	visible: false
+	visible: false,
+	zIndex: 5
 });
 win1.add(btn_signup);
 
@@ -510,8 +523,8 @@ var showDashboard = function(yql,pDashboardType) {
 		name: 'Dashboard',
 		backgroundColor: 'transparent',
 		left: 0,
-		top: 341,
-		height: 658,
+		// top: 341,
+		// height: 658,
 		width: 1024,
 		navBarHidden: true,
 		yql: yql,
@@ -520,6 +533,7 @@ var showDashboard = function(yql,pDashboardType) {
 		win1: win1,
 		zIndex: 2
 	});
+	
 	// scrollView.add(winDashboard);
 	winDashboard.open();
 	
@@ -536,6 +550,9 @@ var showDashboard = function(yql,pDashboardType) {
 	} else {
 		btn_signin.visible = true;
 		btn_signup.visible = true;
+		
+		winDashboard.height = 417;
+		winDashboard.top = 331;
 	}
 };
 
