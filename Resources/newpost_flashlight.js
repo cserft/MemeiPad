@@ -124,8 +124,8 @@ var searchTabs = Titanium.UI.createTabbedBar({
 var flashlight_show = function() {
 	if (searchTextField.value == '') {
 		Ti.UI.createAlertDialog({
-			title: 'Oops...',
-			message: 'You need to write something before hitting the Flashlight button.',
+			title: 'Flashlight',
+			message: 'The Flashlight is empty, just type something to get suggested content',
 		}).show();
 	} else {
 		flashlight_create();
