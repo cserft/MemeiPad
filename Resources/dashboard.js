@@ -22,13 +22,11 @@ var yql = win.yql; // Holds YQL Object to make queries
 var win1 = win.win1; // Window Original created on app.js
 var pDashboardType = win.pDashboardType;
 var myMemeInfo = win.myMemeInfo; 
-var destaquePrincipal = win.destaquePrincipal;
 
 // Creating the List Post Table View
 
 var baseView = Ti.UI.createView({
     backgroundColor:'transparent',
-	//backgroundImage: 'images/bg.jpg',
 	width:'100%',
 	height: '100%',
 	top:0
@@ -48,7 +46,8 @@ var tableView = Titanium.UI.createTableView({
 	top:0,
 	backgroundColor: "transparent",
 	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
-	selectionStyle:'none'
+	selectionStyle:'none',
+	zIndex: 3
 });
 
 baseView.add(tableView);

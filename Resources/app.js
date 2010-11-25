@@ -123,18 +123,8 @@ destaquePrincipal.addEventListener('scroll', function(e)
 
 destaquePrincipal.addEventListener('click', function(e)
 {
-    // Ti.App.fireEvent('destaque_show');
+    Ti.App.fireEvent('destaque_show');
 });
-
-var logoHeader = Titanium.UI.createImageView({
-	image:'images/logo_meme_white.png',
-	top: 		3,
-	left: 		5,
-	width: 		228, //actual: 182
-	height: 	125, // actual: 79
-	zIndex: 	30
-});
-win1.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
 	backgroundImage:'images/btn_signin_top_2.png',
@@ -167,6 +157,17 @@ btn_signup.addEventListener("click", function(e) {
 		url: 'http://meme.yahoo.com/confirm'
 	});
 });
+
+var logoHeader = Titanium.UI.createImageView({
+       image:'images/logo_meme_white.png',
+       top:            3,
+       left:           5,
+       width:          228, //actual: 182
+       height:         125, // actual: 79
+       zIndex:         30
+});
+win1.add(logoHeader);
+
 
 // ====================
 // = LOGGED IN HEADER =
@@ -523,8 +524,8 @@ var showDashboard = function(yql,pDashboardType) {
 		name: 'Dashboard',
 		backgroundColor: 'transparent',
 		left: 0,
-		// top: 341,
-		// height: 658,
+		top: 331,
+		height: 417,
 		width: 1024,
 		navBarHidden: true,
 		yql: yql,
@@ -547,6 +548,11 @@ var showDashboard = function(yql,pDashboardType) {
 	if (pDashboardType === "logged") {
 		btn_signin.visible = false;
 		btn_signup.visible = false;
+		
+		// winDashboard.height = 713;
+		// winDashboard.top = 35;
+		// destaquePrincipal.top = 0;
+		
 	} else {
 		btn_signin.visible = true;
 		btn_signup.visible = true;
@@ -607,14 +613,14 @@ var newPost = function(yql) {
 // LISTENER FOR THE DESTAQUE PRINCIPAL HIDE/SHOW
 Ti.App.addEventListener('destaque_hide', function(e)
 {
-	destaquePrincipal.animate({top:-200,duration:200});
-	winDashboard.animate({top: 80, height: 	668, duration: 200})
+	destaquePrincipal.animate({top:-323, duration:200});
+	winDashboard.animate({top: 35, height: 	713, duration: 200})
 });
 
 Ti.App.addEventListener('destaque_show', function(e)
 {
 	destaquePrincipal.animate({top:0,duration:200});
-	winDashboard.animate({top: 328, height: 420, duration: 200})
+	winDashboard.animate({top: 331, height: 417, duration: 200})
 });
 
 	
