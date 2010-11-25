@@ -82,11 +82,12 @@ var showHeader = function (yql, pType, successCallback) {
 
 		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=33,height=33)");
 
-		if (yqlMemeInfo){
-
-			var meme = yqlMemeInfo.query.results.meme;	
-			myMemeInfo = meme;
+		if (!yqlMemeInfo.query.results) {
+			Ti.App.fireEvent('yqlerror');
 		}
+
+		var meme = yqlMemeInfo.query.results.meme;
+		myMemeInfo = meme;
 		
 		var btn_Username = Ti.UI.createButton({
 			backgroundImage: 	'images/btn_username.png',
