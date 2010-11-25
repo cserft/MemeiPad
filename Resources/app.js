@@ -1,5 +1,6 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
+Ti.include('lib/cache.js');
 
 var myMemeInfo = null;
 var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
@@ -196,11 +197,12 @@ var showHeader = function (yql, pType, successCallback) {
 
 		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=35,height=35)");
 
-		if (yqlMemeInfo){
-
-			var meme = yqlMemeInfo.query.results.meme;	
-			myMemeInfo = meme;
+		if (!yqlMemeInfo.query.results) {
+			Ti.App.fireEvent('yqlerror');
 		}
+
+		var meme = yqlMemeInfo.query.results.meme;
+		myMemeInfo = meme;
 		
 		var btn_Username = Ti.UI.createButton({
 			backgroundImage: 	'images/btn_username_2.png',
