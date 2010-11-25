@@ -1,5 +1,8 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
+Ti.include('lib/cache.js');
+
+Cache.init();
 
 var myMemeInfo = null;
 var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
