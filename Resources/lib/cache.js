@@ -2,9 +2,6 @@
 Simple Cache implementation for Titanium.
 
 Usage:
-	// in your application startup
-	Cache.init();
-	
 	// returns null
 	Cache.get('my_data');
 	
@@ -18,15 +15,22 @@ Usage:
 	Cache.put('another_data', xml_document, 3600);
 ***************************************************/
 
+// ##################################################
+// TODO:
+// - Cache expiration
+// - Encode cache keys (?)
+// - Support blob caching
+// ##################################################
+
 var Cache = {
 	
 	// Cache initialization
-	// Must be done only once in application startup
+	// Need to be done only once in application startup
 	init: function() {
 		var db = Titanium.Database.open('cache');
-		db.execute('DROP TABLE IF EXISTS cache');
 		db.execute('CREATE TABLE IF NOT EXISTS cache (key TEXT UNIQUE, value TEXT, expiration INTEGER)');
 		db.close();
+		Ti.API.info('CACHE INITIALIZED');
 	},
 	
 	get: function(key) {
@@ -34,7 +38,7 @@ var Cache = {
 		var rs = db.execute('SELECT value, expiration FROM cache WHERE key = ?', key);
 		var result = null;
 		if (rs.isValidRow()) {
-			Ti.API.info('CACHE HIT! [' + key + '][' + JSON.parse(rs.fieldByName('value')) + ']');
+			Ti.API.info('CACHE HIT! key[' + key + '], value[' + JSON.parse(rs.fieldByName('value')) + ']');
 			result = JSON.parse(rs.fieldByName('value'));
 		}
 		rs.close();
@@ -52,3 +56,6 @@ var Cache = {
 		db.close();
 	}
 }
+
+// Cache is automatically initialized when module is imported
+Cache.init();

@@ -2,8 +2,6 @@
 Ti.include('oadapter.js');
 Ti.include('lib/cache.js');
 
-Cache.init();
-
 var myMemeInfo = null;
 var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 
