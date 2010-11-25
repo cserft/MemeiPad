@@ -35,9 +35,11 @@ var yqldata = yql.query(yqlQuery);
 
 if (!yqldata.query.results) {
 	Ti.App.fireEvent('yqlerror');
+} else {
+	var post = yqldata.query.results.post;
 }
 
-var post = yqldata.query.results.post;
+
 
 // ============================
 // = BULDING PERMALINK LAYOUT =
