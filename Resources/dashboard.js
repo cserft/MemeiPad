@@ -21,6 +21,7 @@ var yql = win.yql; // Holds YQL Object to make queries
 var win1 = win.win1; // Window Original created on app.js
 var pDashboardType = win.pDashboardType;
 var myMemeInfo = win.myMemeInfo; 
+var destaquePrincipal = win.destaquePrincipal;
 
 // Creating the List Post Table View
 
@@ -298,9 +299,9 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 
 
 	// create THE TABLE ROWS
-	for (var k=0; k < posts.length; k++)
+	for (var k=1; k < posts.length; k++)
 	{
-		var post 		= posts[k];
+		var post 		= posts[k-1];
 		var _caption 	= post.caption;
 		var _pubId 		= post.pubid;
 		var _postUrl 	= post.url;
@@ -555,8 +556,6 @@ tableView.addEventListener('click', function(e)
 // 	
 // });
 
-
-
 // =======================
 // = SCROLL DOWN LOADING =
 // =======================
@@ -624,6 +623,11 @@ var lastDistance = 0; // calculate location to determine direction
 
 tableView.addEventListener('scroll',function(e)
 {
+	
+	Ti.App.fireEvent('destaque_hide');
+	
+	// Used for the Pull to Refresh
+	Ti.API.warn("scroll activated");
 	var offset = e.contentOffset.y;
 	var height = e.size.height;
 	var total = offset + height;

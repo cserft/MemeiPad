@@ -10,7 +10,7 @@ var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 //base Window
 var win1 = Titanium.UI.createWindow({  
     title:'Meme for iPad',
-    backgroundColor:'#141414',
+    // backgroundColor:'#333',
     backgroundImage: 'images/bg.jpg',
 	orientationModes : [
 	Titanium.UI.LANDSCAPE_LEFT,
@@ -19,32 +19,131 @@ var win1 = Titanium.UI.createWindow({
 
 });
 
+// var scrollView = Titanium.UI.createScrollView({
+// 	left: 								0,
+// 	top: 								0,
+// 	backgroundColor: 					'transparent',
+// 	width:      						'100%',
+// 	height:     						748,
+// 	contentWidth: 						1024,
+// 	contentHeight: 						'auto',
+// 	showVerticalScrollIndicator: 		true,
+// 	showHorizontalScrollIndicator: 		false
+// });
+// win1.add(scrollView);
+
+var view1 = Ti.UI.createImageView({
+	image: 'images/destaque1.png',
+	backgroundColor:'black',
+	width: 1024,
+	height: 320
+});
+
+var captionBgView = Ti.UI.createView({
+	backgroundColor:'black',
+	opacity: 0.9,
+	top: 208,
+	left: 634,
+	width: 390,
+	height: 87
+});
+view1.add(captionBgView);
+
+var featuredLabel = Ti.UI.createLabel({
+	color: 			'#ffffff',
+	text:  			'FEATURED CONTENT',
+	font: 			{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
+	opacity: 		0.5,
+	textAlign: 		'left',
+	top: 			10,
+	left:  			15,
+	height: 		20,
+	width: 			150,
+	zIndex: 		3
+});
+captionBgView.add(featuredLabel);
+
+var captionLabel = Ti.UI.createLabel({
+	color: 			'#ffffff',
+	text:  			'Rolling Stones are back on the road with a brand new show',
+	font: 			{fontSize:18, fontFamily:'Helvetica', fontWeight:'bold'},
+	textAlign: 		'left',
+	top: 			30,
+	left:  			15,
+	height: 		50,
+	width: 			361,
+	zIndex: 		3
+});
+captionBgView.add(captionLabel);
+
+var view2 = Ti.UI.createView({
+	backgroundColor:'yellow',
+	width:'100%',
+	height:'100%'
+});
+
+var view3 = Ti.UI.createView({
+	backgroundColor:'red',
+	width:'100%',
+	height:'100%'
+});
+
+var destaquePrincipal = Titanium.UI.createScrollableView({
+	views: 					[view1,view2,view3],
+	top: 					0,
+	left: 					0,
+	width: 					1024,
+	height: 				340,
+	showPagingControl: 		true,
+	pagingControlHeight: 	20,
+	pagingControlColor: 	'black',
+	// maxZoomScale: 			2.0,
+	currentPage: 			0,
+	zIndex: 				2
+});
+win1.add(destaquePrincipal);
+
+var i=0;
+var activeView = view1;
+
+destaquePrincipal.addEventListener('scroll', function(e)
+{
+    activeView = e.view  // the object handle to the view that is about to become visible
+	i = e.currentPage;
+	Titanium.API.info("scroll called - current index " + i + ' active view ' + activeView);
+});
+
+destaquePrincipal.addEventListener('click', function(e)
+{
+    // Ti.App.fireEvent('destaque_show');
+});
+
 var logoHeader = Titanium.UI.createImageView({
-	image:'images/logo_header.png',
-	top: 0,
-	left: 20,
-	width: 217, //actual: 194
-	height: 93 // actual: 47
+	image:'images/logo_meme_white.png',
+	top: 3,
+	left: 5,
+	width: 228, //actual: 182
+	height: 125 // actual: 79
 });
 win1.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
-	backgroundImage:'images/btn_signin_top.png',
-	top: 5,
-	left: 795,
-	width:222, //actual: 176
-	height:89, //actual: 43
+	backgroundImage:'images/btn_signin_top_2.png',
+	top: -7,
+	left: 952,
+	width:72,
+	height:33, 
 	opacity:1,
 	visible: false
 });
 win1.add(btn_signin);
 
 var btn_signup = Titanium.UI.createButton({
-	backgroundImage:'images/btn_signup.png',
-	top: 5,
-	left: 450,
-	width: 352, //actual: 306
-	height: 89, //actual: 43
+	backgroundImage:'images/btn_signup2.png',
+	top: -7,
+	left: 632,
+	width: 303, //actual: 303
+	height: 33, //actual: 33
 	opacity:1,
 	visible: false
 });
@@ -83,7 +182,7 @@ var showHeader = function (yql, pType, successCallback) {
 		// = retrieving yql data =
 		// ========================
 
-		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=33,height=33)");
+		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=35,height=35)");
 
 		if (!yqlMemeInfo.query.results) {
 			Ti.App.fireEvent('yqlerror');
@@ -93,41 +192,40 @@ var showHeader = function (yql, pType, successCallback) {
 		myMemeInfo = meme;
 		
 		var btn_Username = Ti.UI.createButton({
-			backgroundImage: 	'images/btn_username.png',
-			height: 			41, //actual: 35
-			width: 				220, //actual: 214
-			left: 				290,
-			top: 				25,
-			zIndex:  			3
+			backgroundImage: 	'images/btn_username_2.png',
+			height: 			55,
+			width: 				69,
+			left: 				955,
+			top: 				-11,
+			zIndex:  			2
 		});
 				headerView.add(btn_Username);
 
 		var miniAvatarView = Ti.UI.createImageView({
 			image: 			meme.avatar_url.thumb,
 			defaultImage: 	'images/default_img_avatar.png',
-			top: 			4,
-			left: 			5,
-			width: 			33,
-			height: 		33,
-			borderRadius: 	3,
-			zIndex:  		2
+			top: 			15,
+			left: 			4,
+			width: 			35,
+			height: 		35,
+			zIndex:  		3
 		});
 		btn_Username.add(miniAvatarView);
 	
-		var memeTitleLabel = Ti.UI.createLabel({
-			color: 		'#ffffff',
-			text:  		meme.title,
-			font: 		{fontSize:13, fontFamily:'Helvetica Neue', fontWeight:'bold'},
-			textAlign: 	'left',
-			shadowColor:'black',
-			shadowOffset:{x:-1,y:-1},
-			top: 		10,
-			left:  		50,
-			height: 	20,
-			width: 		145,
-			zIndex: 2
-		});
-		btn_Username.add(memeTitleLabel);
+		// var memeTitleLabel = Ti.UI.createLabel({
+		// 	color: 		'#ffffff',
+		// 	text:  		meme.title,
+		// 	font: 		{fontSize:13, fontFamily:'Helvetica Neue', fontWeight:'bold'},
+		// 	textAlign: 	'left',
+		// 	shadowColor:'black',
+		// 	shadowOffset:{x:-1,y:-1},
+		// 	top: 		10,
+		// 	left:  		50,
+		// 	height: 	20,
+		// 	width: 		145,
+		// 	zIndex: 2
+		// });
+		// btn_Username.add(memeTitleLabel);
 	
 		
 		// ================
@@ -375,11 +473,11 @@ var showHeader = function (yql, pType, successCallback) {
 		// ===============
 		
 		var btn_StartPosting = Ti.UI.createButton({
-			backgroundImage: 	'images/btn_start_posting.png',
-			height: 			89, //actual: 43
-			width: 				306, //actual: 260
-			left: 				708,
-			top: 				0
+			backgroundImage: 	'images/btn_start_posting_2.png',
+			height: 			61,
+			width: 				315, 
+			left: 				629,
+			top: 				-17
 		});
 		headerView.add(btn_StartPosting);
 		
@@ -401,6 +499,7 @@ var showHeader = function (yql, pType, successCallback) {
 };
 
 // If Authentication OK the Show Dashboard
+var winDashboard;
 var showDashboard = function(yql,pDashboardType) {
 	
 	Ti.API.info('pDashboardType from showDashboard function on app.js = ' + pDashboardType);
@@ -409,12 +508,12 @@ var showDashboard = function(yql,pDashboardType) {
 	// = CREATING DASHBOARD VIEW =
 	// ===========================
 
-	var winDashboard = Ti.UI.createWindow({
+	winDashboard = Ti.UI.createWindow({
 		url: 'dashboard.js',
 		name: 'Dashboard',
 		backgroundColor: 'transparent',
 		left: 0,
-		top: 90,
+		top: 341,
 		height: 658,
 		width: 1024,
 		navBarHidden: true,
@@ -422,12 +521,9 @@ var showDashboard = function(yql,pDashboardType) {
 		pDashboardType: pDashboardType,
 		myMemeInfo: myMemeInfo,
 		win1: win1,
-		zIndex: 2,
-		orientationModes: [
-			Titanium.UI.LANDSCAPE_LEFT,
-			Titanium.UI.LANDSCAPE_RIGHT
-		]
+		zIndex: 2
 	});
+	// scrollView.add(winDashboard);
 	winDashboard.open();
 	
 	//Removes the TableView so it can start fresh
@@ -455,7 +551,7 @@ var startApplication = function() {
 	if (oAuthAdapter.isLoggedIn()) {
 		// logged in, shows logged dashboard and header
 		showHeader(oAuthAdapter.getYql(), "logged", function() {
-			showDashboard(oAuthAdapter.getYql(), "logged");
+		showDashboard(oAuthAdapter.getYql(), "logged");
 		});
 		
 	} else {
@@ -492,14 +588,28 @@ var newPost = function(yql) {
 		navBarHidden: true
 	}).open(a);
 };
+
+
+// LISTENER FOR THE DESTAQUE PRINCIPAL HIDE/SHOW
+Ti.App.addEventListener('destaque_hide', function(e)
+{
+	destaquePrincipal.animate({top:-200,duration:200});
+	winDashboard.animate({top: 80, height: 	668, duration: 200})
+});
+
+Ti.App.addEventListener('destaque_show', function(e)
+{
+	destaquePrincipal.animate({top:0,duration:200});
+	winDashboard.animate({top: 328, height: 420, duration: 200})
+});
+
 	
 //  CREATE CUSTOM LOADING INDICATOR
 //
 var indWin = null;
 var actInd = null;
 
-function showIndicator(pMessage, pColor, pSize, pTop, pLeft)
-{
+function showIndicator(pMessage, pColor, pSize, pTop, pLeft) {
 	
 	// window container
 	indWin = Titanium.UI.createWindow({
@@ -548,8 +658,7 @@ function showIndicator(pMessage, pColor, pSize, pTop, pLeft)
 
 };
 
-function hideIndicator()
-{
+function hideIndicator() {
 	if (actInd && indWin) {
 		actInd.hide();
 		indWin.close({opacity:0,duration:500});
