@@ -28,7 +28,7 @@ if (Ti.App.Properties.hasProperty('draft_post')) {
 // animation on close Window
 var animeClose = Titanium.UI.createAnimation({
 	duration: 300,
-	top: 749	
+	top: -749	
 });
 
 

@@ -578,7 +578,7 @@ var newPost = function(yql) {
 		title: 'New Post',
 		backgroundColor: 'white',
 		left: 0,
-		top: 749,
+		top: -749,
 		height: 748,
 		width: 1024,
 		yql: yql,
