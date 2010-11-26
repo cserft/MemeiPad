@@ -1,6 +1,7 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 Ti.include('lib/cache.js');
+Ti.include('app_highlight.js');
 
 var myMemeInfo = null;
 var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
@@ -16,64 +17,8 @@ var win1 = Titanium.UI.createWindow({
 
 });
 
-var highlight1 = Ti.UI.createImageView({
-	image: 'images/destaque1.png',
-	backgroundColor:'black',
-	width: 1024,
-	height: 273
-});
-
-var captionBgView = Ti.UI.createView({
-	backgroundColor:'black',
-	opacity: 0.9,
-	top: 150,
-	left: 634,
-	width: 390,
-	height: 87
-});
-highlight1.add(captionBgView);
-
-var featuredLabel = Ti.UI.createLabel({
-	color: 			'#ffffff',
-	text:  			'FEATURED CONTENT',
-	font: 			{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
-	opacity: 		0.5,
-	textAlign: 		'left',
-	top: 			10,
-	left:  			15,
-	height: 		20,
-	width: 			150,
-	zIndex: 		2
-});
-captionBgView.add(featuredLabel);
-
-var captionLabel = Ti.UI.createLabel({
-	color: 			'#ffffff',
-	text:  			'Rolling Stones are back on the road with a brand new show',
-	font: 			{fontSize:18, fontFamily:'Helvetica', fontWeight:'bold'},
-	textAlign: 		'left',
-	top: 			30,
-	left:  			15,
-	height: 		50,
-	width: 			361,
-	zIndex: 		2
-});
-captionBgView.add(captionLabel);
-
-var view2 = Ti.UI.createView({
-	backgroundColor:'yellow',
-	width:'100%',
-	height:'100%'
-});
-
-var view3 = Ti.UI.createView({
-	backgroundColor:'red',
-	width:'100%',
-	height:'100%'
-});
-
 var highlightView = Titanium.UI.createScrollableView({
-	views: 					[highlight1,view2,view3],
+	views: 					[],
 	top: 					51,
 	left: 					0,
 	width: 					1024,
@@ -87,7 +32,6 @@ var highlightView = Titanium.UI.createScrollableView({
 	zIndex: 				1
 });
 win1.add(highlightView);
-
 
 var appNavBarView = Ti.UI.createView({
 	backgroundImage: 		'images/bg_app_navbar.png',
@@ -549,12 +493,14 @@ var signInButtonClick = function(continuation) {
 var startApplication = function() {
 	if (oAuthAdapter.isLoggedIn()) {
 		// logged in, shows logged dashboard and header
+		getHighlights(oAuthAdapter.getYql(), highlightView);
 		showHeader(oAuthAdapter.getYql(), "logged", function() {
-		showDashboard(oAuthAdapter.getYql(), "logged");
+			showDashboard(oAuthAdapter.getYql(), "logged");
 		});
 		
 	} else {
 		// not logged in, shows unlogged screens
+		getHighlights(OAuthAdapter("meme").getYql(), highlightView);
 		showHeader(null, "notlogged", function() {
 			showDashboard(OAuthAdapter("meme"), "notlogged");
 		});
