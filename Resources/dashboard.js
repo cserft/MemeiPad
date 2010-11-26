@@ -424,17 +424,6 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 	
 }
 
-var dashboardShadow = Titanium.UI.createImageView({
-	image:'images/shadow.png',
-	backgroundColor: "transparent",
-	top:632,
-	left:0,
-	width:1024,
-	height:26,
-	zIndex:999
-});
-win.add(dashboardShadow);
-
 
 // ==================
 // = CLICK LISTENER =

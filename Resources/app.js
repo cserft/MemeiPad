@@ -159,15 +159,7 @@ btn_signup.addEventListener("click", function(e) {
 	});
 });
 
-var logoHeader = Titanium.UI.createImageView({
-       image:'images/logo_meme_white.png',
-       top:            3,
-       left:           5,
-       width:          228, //actual: 182
-       height:         125, // actual: 79
-       zIndex:         30
-});
-win1.add(logoHeader);
+
 
 
 // ====================
@@ -551,9 +543,9 @@ var showDashboard = function(yql,pDashboardType) {
 		btn_signin.visible = false;
 		btn_signup.visible = false;
 		
-		// winDashboard.height = 713;
-		// winDashboard.top = 35;
-		// destaquePrincipal.top = 0;
+		winDashboard.height = 700;
+		winDashboard.top = 48;
+		destaquePrincipal.top = 0;
 		
 	} else {
 		btn_signin.visible = true;
@@ -563,6 +555,28 @@ var showDashboard = function(yql,pDashboardType) {
 		winDashboard.top = 331;
 	}
 };
+
+
+var logoHeader = Titanium.UI.createImageView({
+       image:'images/logo_meme_white.png',
+       top:            3,
+       left:           5,
+       width:          228, //actual: 182
+       height:         125, // actual: 79
+       zIndex:         1000
+});
+win1.add(logoHeader);
+
+var dashboardShadow = Titanium.UI.createImageView({
+	image:'images/shadow.png',
+	backgroundColor: "transparent",
+	bottom:998,
+	left:0,
+	width:1024,
+	height:26,
+	zIndex:999
+});
+win1.add(dashboardShadow);
 
 var signInButtonClick = function(continuation) {
 	// Sign In Button Listener
