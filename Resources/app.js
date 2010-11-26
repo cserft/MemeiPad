@@ -16,7 +16,7 @@ var win1 = Titanium.UI.createWindow({
 
 });
 
-var view1 = Ti.UI.createImageView({
+var highlight1 = Ti.UI.createImageView({
 	image: 'images/destaque1.png',
 	backgroundColor:'black',
 	width: 1024,
@@ -31,7 +31,7 @@ var captionBgView = Ti.UI.createView({
 	width: 390,
 	height: 87
 });
-view1.add(captionBgView);
+highlight1.add(captionBgView);
 
 var featuredLabel = Ti.UI.createLabel({
 	color: 			'#ffffff',
@@ -72,12 +72,13 @@ var view3 = Ti.UI.createView({
 	height:'100%'
 });
 
-var highlight = Titanium.UI.createScrollableView({
-	views: 					[view1,view2,view3],
+var highlightView = Titanium.UI.createScrollableView({
+	views: 					[highlight1,view2,view3],
 	top: 					51,
 	left: 					0,
 	width: 					1024,
 	height: 				273,
+	backgroundColor: 		'black',
 	showPagingControl: 		true,
 	pagingControlHeight: 	24,
 	pagingControlColor: 	'black',
@@ -85,7 +86,7 @@ var highlight = Titanium.UI.createScrollableView({
 	currentPage: 			0,
 	zIndex: 				1
 });
-win1.add(highlight);
+win1.add(highlightView);
 
 
 var appNavBarView = Ti.UI.createView({
