@@ -251,14 +251,16 @@ var showHeader = function (yql, pType, successCallback) {
 			
 			var main = Ti.UI.createWindow({
 				top: 0,
+				left: 0,
+				width: 340,
+				height: 420,
 				backgroundColor:"#FFF",
 				navBarHidden: true
 			});
 			
-			var navGroup = Ti.UI.iPhone.createNavigationGroup({
-			  window:main
-			});
+			popover.add(main);
 			
+			// BUILDING THE TABLE VIEW
 			var data = [];
 			
 			// ROW 1 LINK TO MEME AND SIGNOUT BUTTON
@@ -363,6 +365,8 @@ var showHeader = function (yql, pType, successCallback) {
 			
 			var settingsTableView = Ti.UI.createTableView({
 				data: 			data,
+				top: 			0,
+				left: 			0,
 				width: 			340,
 				height: 		160,
 				separatorColor: '#CCC',
@@ -373,11 +377,45 @@ var showHeader = function (yql, pType, successCallback) {
 			main.add(settingsTableView);
 			
 			//ABOUT WINDOW
-			var aboutWindow = Ti.UI.createWindow({
+			var aboutWindow = Ti.UI.createView({
 				backgroundColor: 	"white",
-				barColor: 			'#333',
-				title: 				aboutApp.text,
-				navBarHidden: 		false
+				top: 				0,
+				left: 				341,
+				width: 				340,
+				height: 			420,
+				visible: 			true
+			});
+			main.add(aboutWindow);
+			
+			//ABOUT WINDOW
+			var navBar = Ti.UI.createView({
+				backgroundImage: 	'images/bg_navbar_black.png',
+				left: 				0,
+				top: 				0,
+				width: 				341,
+				height: 			44,
+				visible: 			true
+			});
+			aboutWindow.add(navBar);
+			
+			var backButton = Ti.UI.createButton({
+				backgroundImage: 	'images/btn_back.png',
+				left: 				0,
+				top: 				-5,
+				height: 			52, //29
+				width: 				73, // 50
+			    title: 				'back',
+				color: 				'white',
+				textAlign: 			'center',
+				font: 				{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'},
+				style: 				Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+			});
+			navBar.add(backButton);
+
+			backButton.addEventListener('click', function (){
+				settingsTableView.animate({left: 0, duration: 200});
+				aboutWindow.animate({left: 341, duration: 200});
+				popover.height = 160; 
 			});
 			
 			var aboutHTML = '<html><head><script language="javascript">var link = function(url) { Ti.App.fireEvent("openLinkOnSafari", { url: url }); }</script></head><body>';
@@ -386,29 +424,22 @@ var showHeader = function (yql, pType, successCallback) {
 			
 			var aboutView = Ti.UI.createWebView({
 				html: 				aboutHTML,
-				top: 				5,	
-				width: 				325,
-				height: 			275,
+				top: 				50,	
+				width: 				335,
+				height: 			270,
 				backgroundColor: 	'#FFF'
 			});
 			aboutWindow.add(aboutView);
 			
-			var aboutGitView = Ti.UI.createView({
-				top: 				283,
-				width: 				340, 
-				height: 			100
-			});
-			aboutWindow.add(aboutGitView);
-			
 			var aboutGitButton = Ti.UI.createButton({
-				top: 				0,
+				top: 				325,
 				image: 				'images/btn_about.png',
 				width: 				335, //real 329
 				height: 			91, //real: 85
 				style: 				Ti.UI.iPhone.SystemButtonStyle.PLAIN,
 				zIndex: 			3
 			});
-			aboutGitView.add(aboutGitButton);
+			aboutWindow.add(aboutGitButton);
 
 			aboutGitButton.addEventListener("click", function(e) {
 				Ti.App.fireEvent('openLinkOnSafari', {
@@ -422,7 +453,6 @@ var showHeader = function (yql, pType, successCallback) {
 				width: 			60,
 				height: 		60,
 				borderRadius: 	4
-				// borderColor: 	'#CCC'
 			});
 			aboutGitButton.add(githubIcon);
 			
@@ -439,31 +469,16 @@ var showHeader = function (yql, pType, successCallback) {
 			});
 			aboutGitButton.add(aboutGitLabel);
 			
-			
-			var backButton = Ti.UI.createButton({
-			    title:'Back',
-				style:Titanium.UI.iPhone.SystemButtonStyle.BORDERED
-			});
-			
-			aboutWindow.leftNavButton = backButton;
-			
-			aboutWindow.addEventListener('blur', function (){
-				 popover.height = 160;
-			});
-			
-			backButton.addEventListener('click', function (){
-				navGroup.close(aboutWindow, {animated: true, duration: 100});
-			});
-
-			
 			settingsTableView.addEventListener('click', function(e)	{
 				if (e.index == 2) {
-					navGroup.open(aboutWindow, {animated: true, duration: 100});
 					popover.height = 420; 
+					settingsTableView.animate({left: -341, duration: 200});
+					aboutWindow.animate({left: 0, duration: 200});
+					
+					// navGroup.open(aboutWindow, {animated: true, duration: 100});
+					
 				}
 			});
-			
-			popover.add(navGroup);
 			
 			popover.show({
 				view:btn_Username,
