@@ -765,7 +765,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 			Ti.App.fireEvent("postClickedReadyToUpload", { url: result.url });
 		};
 	
-	 	xhr.open('GET', 'http://api.memeapp.net/img/upload/url');
+	 	xhr.open('GET', 'http://api.memeapp.net/v1/img/upload/url');
 	  	xhr.send();
 	
 	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("flickr") != -1) {
