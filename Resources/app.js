@@ -20,13 +20,13 @@ var view1 = Ti.UI.createImageView({
 	image: 'images/destaque1.png',
 	backgroundColor:'black',
 	width: 1024,
-	height: 320
+	height: 273
 });
 
 var captionBgView = Ti.UI.createView({
 	backgroundColor:'black',
 	opacity: 0.9,
-	top: 208,
+	top: 150,
 	left: 634,
 	width: 390,
 	height: 87
@@ -72,12 +72,12 @@ var view3 = Ti.UI.createView({
 	height:'100%'
 });
 
-var destaquePrincipal = Titanium.UI.createScrollableView({
+var highlight = Titanium.UI.createScrollableView({
 	views: 					[view1,view2,view3],
-	top: 					0,
+	top: 					51,
 	left: 					0,
 	width: 					1024,
-	height: 				323,
+	height: 				273,
 	showPagingControl: 		true,
 	pagingControlHeight: 	24,
 	pagingControlColor: 	'black',
@@ -85,7 +85,7 @@ var destaquePrincipal = Titanium.UI.createScrollableView({
 	currentPage: 			0,
 	zIndex: 				1
 });
-win1.add(destaquePrincipal);
+win1.add(highlight);
 
 
 var appNavBarView = Ti.UI.createView({
@@ -124,7 +124,7 @@ win1.add(btn_signin);
 
 var btn_signup = Titanium.UI.createButton({
 	backgroundImage:'images/btn_signup2.png',
-	top: -27,
+	top: -26,
 	left: 599,
 	width: 369, //actual: 303	
 	height: 106, //actual: 54
