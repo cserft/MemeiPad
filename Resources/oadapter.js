@@ -10,7 +10,6 @@
 Ti.include('lib/sha1.js');
 Ti.include('lib/oauth.js');
 Ti.include('lib/secrets.js');
-Ti.include('lib/yql_queries.js');
 
 var authorizationUI = function() {
 	var authWindow, oauthWebView, signingIn;
