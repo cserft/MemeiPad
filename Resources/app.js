@@ -7,28 +7,14 @@ var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 
 //base Window
 var win1 = Titanium.UI.createWindow({  
-    title:'Meme for iPad',
-    // backgroundColor:'#333',
-    backgroundImage: 'images/bg.png',
+    title: 				'Meme for iPad',
+    backgroundImage: 	'images/bg.png',
 	orientationModes : [
 	Titanium.UI.LANDSCAPE_LEFT,
 	Titanium.UI.LANDSCAPE_RIGHT
 	]
 
 });
-
-// var scrollView = Titanium.UI.createScrollView({
-// 	left: 								0,
-// 	top: 								0,
-// 	backgroundColor: 					'transparent',
-// 	width:      						'100%',
-// 	height:     						748,
-// 	contentWidth: 						1024,
-// 	contentHeight: 						'auto',
-// 	showVerticalScrollIndicator: 		true,
-// 	showHorizontalScrollIndicator: 		false
-// });
-// win1.add(scrollView);
 
 var view1 = Ti.UI.createImageView({
 	image: 'images/destaque1.png',
@@ -57,7 +43,7 @@ var featuredLabel = Ti.UI.createLabel({
 	left:  			15,
 	height: 		20,
 	width: 			150,
-	zIndex: 		3
+	zIndex: 		2
 });
 captionBgView.add(featuredLabel);
 
@@ -70,7 +56,7 @@ var captionLabel = Ti.UI.createLabel({
 	left:  			15,
 	height: 		50,
 	width: 			361,
-	zIndex: 		3
+	zIndex: 		2
 });
 captionBgView.add(captionLabel);
 
@@ -97,57 +83,54 @@ var destaquePrincipal = Titanium.UI.createScrollableView({
 	pagingControlColor: 	'black',
 	// maxZoomScale: 			2.0,
 	currentPage: 			0,
-	zIndex: 				2
+	zIndex: 				1
 });
 win1.add(destaquePrincipal);
 
-var topShadow = Titanium.UI.createImageView({
-	image:'images/shadow_top.png',
-	backgroundColor: "transparent",
-	top:0,
-	left:0,
-	width:1024,
-	height:26,
-	zIndex:3
-});
-destaquePrincipal.add(topShadow);
 
-var i=0;
-var activeView = view1;
-
-destaquePrincipal.addEventListener('scroll', function(e)
-{
-    activeView = e.view  // the object handle to the view that is about to become visible
-	i = e.currentPage;
-	Titanium.API.info("scroll called - current index " + i + ' active view ' + activeView);
+var appNavBarView = Ti.UI.createView({
+	backgroundImage: 		'images/bg_app_navbar.png',
+	backgroundColor: 		'black',
+	opacity: 				1,
+	top: 					0,
+	left: 					0,
+	width: 					1024,
+	height: 				50,
+	zIndex: 				1
 });
+win1.add(appNavBarView);
 
-destaquePrincipal.addEventListener('click', function(e)
-{
-    Ti.App.fireEvent('destaque_show');
+var logoHeader = Titanium.UI.createImageView({
+       	image:'images/logo_meme_white.png',
+       	top:            9,
+       	left:           15,
+       	width:          163,
+       	height:         33,
+		zIndex: 		2
 });
+appNavBarView.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
 	backgroundImage:'images/btn_signin_top_2.png',
-	top: -1,
-	left: 952,
-	width: 72,
-	height: 27, 
+	top: -22,
+	left: 940,
+	width: 96, // 72
+	height: 97,  // 54
 	opacity: 1,
 	visible: false,
-	zIndex: 5
+	zIndex: 3
 });
 win1.add(btn_signin);
 
 var btn_signup = Titanium.UI.createButton({
 	backgroundImage:'images/btn_signup2.png',
-	top: -7,
-	left: 632,
-	width: 303, //actual: 303
-	height: 33, //actual: 33
+	top: -27,
+	left: 599,
+	width: 369, //actual: 303	
+	height: 106, //actual: 54
 	opacity:1,
 	visible: false,
-	zIndex: 5
+	zIndex: 3
 });
 win1.add(btn_signup);
 
@@ -160,8 +143,6 @@ btn_signup.addEventListener("click", function(e) {
 });
 
 
-
-
 // ====================
 // = LOGGED IN HEADER =
 // ====================
@@ -169,15 +150,15 @@ btn_signup.addEventListener("click", function(e) {
 var showHeader = function (yql, pType, successCallback) {
 	
 	Ti.API.info("showHeader function Called with pType = " + pType);
-
+	
 	var headerView = Ti.UI.createView({
 		backgroundColor:'transparent',
 		left:0,
 		top:0,
-		height:88,
+		height:54,
 		width:1024,
-		zIndex: 2
-
+		zIndex: 4,
+		visible: true
 	});
 	win1.add(headerView);
 
@@ -198,41 +179,28 @@ var showHeader = function (yql, pType, successCallback) {
 		
 		var btn_Username = Ti.UI.createButton({
 			backgroundImage: 	'images/btn_username_2.png',
-			height: 			55,
-			width: 				69,
-			left: 				955,
-			top: 				-11,
-			zIndex:  			2
+			backgroundSelectedImage: 'images/btn_username_selected.png',
+			height: 			49,
+			width: 				243,
+			left: 				207,
+			top: 				0,
+			zIndex:  			3
 		});
-				headerView.add(btn_Username);
-
-		var miniAvatarView = Ti.UI.createImageView({
-			image: 			meme.avatar_url.thumb,
-			defaultImage: 	'images/default_img_avatar.png',
-			top: 			15,
-			left: 			4,
-			width: 			35,
-			height: 		35,
-			zIndex:  		3
+		headerView.add(btn_Username);
+	
+		var memeTitleLabel = Ti.UI.createLabel({
+			color: 		'#ffffff',
+			text:  		meme.title,
+			font: 		{fontSize:14, fontFamily:'Helvetica Neue', fontWeight:'bold'},
+			textAlign: 	'left',		
+			top: 		14,
+			left:  		12,
+			height: 	20,
+			width: 		200,
+			zIndex: 2
 		});
-		btn_Username.add(miniAvatarView);
+		btn_Username.add(memeTitleLabel);
 	
-		// var memeTitleLabel = Ti.UI.createLabel({
-		// 	color: 		'#ffffff',
-		// 	text:  		meme.title,
-		// 	font: 		{fontSize:13, fontFamily:'Helvetica Neue', fontWeight:'bold'},
-		// 	textAlign: 	'left',
-		// 	shadowColor:'black',
-		// 	shadowOffset:{x:-1,y:-1},
-		// 	top: 		10,
-		// 	left:  		50,
-		// 	height: 	20,
-		// 	width: 		145,
-		// 	zIndex: 2
-		// });
-		// btn_Username.add(memeTitleLabel);
-	
-		
 		// ================
 		// = PopOver Menu =
 		// ================
@@ -494,10 +462,10 @@ var showHeader = function (yql, pType, successCallback) {
 		
 		var btn_StartPosting = Ti.UI.createButton({
 			backgroundImage: 	'images/btn_start_posting_2.png',
-			height: 			61,
-			width: 				315, 
-			left: 				629,
-			top: 				-17
+			height: 			79, //55
+			width: 				407, //395
+			left: 				623,
+			top: 				-13
 		});
 		headerView.add(btn_StartPosting);
 		
@@ -555,29 +523,11 @@ var showDashboard = function(yql,pDashboardType) {
 		btn_signin.visible = false;
 		btn_signup.visible = false;
 		
-		winDashboard.height = 700;
-		winDashboard.top = 48;
-		destaquePrincipal.top = 0;
-		
 	} else {
 		btn_signin.visible = true;
 		btn_signup.visible = true;
-		
-		winDashboard.height = 417;
-		winDashboard.top = 331;
 	}
 };
-
-
-var logoHeader = Titanium.UI.createImageView({
-       image:'images/logo_meme_white.png',
-       top:            3,
-       left:           5,
-       width:          228, //actual: 182
-       height:         125, // actual: 79
-       zIndex:         1000
-});
-win1.add(logoHeader);
 
 var dashboardShadow = Titanium.UI.createImageView({
 	image:'images/shadow.png',
@@ -636,21 +586,6 @@ var newPost = function(yql) {
 		navBarHidden: true
 	}).open(a);
 };
-
-
-// LISTENER FOR THE DESTAQUE PRINCIPAL HIDE/SHOW
-Ti.App.addEventListener('destaque_hide', function(e)
-{
-	destaquePrincipal.animate({top:-323, duration:200});
-	winDashboard.animate({top: 35, height: 	713, duration: 200})
-});
-
-Ti.App.addEventListener('destaque_show', function(e)
-{
-	destaquePrincipal.animate({top:0,duration:200});
-	winDashboard.animate({top: 331, height: 417, duration: 200})
-});
-
 	
 //  CREATE CUSTOM LOADING INDICATOR
 //

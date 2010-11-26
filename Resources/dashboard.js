@@ -613,12 +613,7 @@ function endUpdate()
 var lastDistance = 0; // calculate location to determine direction
 
 tableView.addEventListener('scroll',function(e)
-{
-	if (pDashboardType == 'logged') {
-		
-		Ti.App.fireEvent('destaque_hide');
-	}
-	
+{	
 	// Used for the Pull to Refresh
 	Ti.API.warn("scroll activated");
 	var offset = e.contentOffset.y;
