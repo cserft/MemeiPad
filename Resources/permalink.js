@@ -35,8 +35,6 @@ if (!yqldata.query.results) {
 	var post = yqldata.query.results.post;
 }
 
-
-
 // ============================
 // = BULDING PERMALINK LAYOUT =
 // ============================

@@ -28,7 +28,6 @@ var getHighlightQuery = function(callback) {
 	xhr.send();
 };
 
-
 var getHighlights = function (yql, highlightView) {
 	
 	getHighlightQuery(function (data) {
@@ -41,61 +40,69 @@ var getHighlights = function (yql, highlightView) {
 		
 		for ( var i=0 ; i< posts.length ; i++ ) {
 			
-			var highlight = Ti.UI.createImageView({
+			var highlight = Ti.UI.createView({
+				backgroundColor:'black',
+				width: 1024,
+				height: 273,
+				zIndex: 0
+			});
+			
+			// photo
+			var highlightPhoto = Ti.UI.createImageView({
 				image: 				posts[i].content,
 				backgroundColor: 	'black',
 				width: 				1024,
 				height: 			'auto',
 				zIndex: 			0
 			});
+			highlight.add(highlightPhoto);
 
-			var captionBgView = Ti.UI.createView({
-				backgroundColor:'black',
-				opacity: 0.9,
-				top: 150,
-				left: 634,
-				width: 390,
-				height: 87,
-				zIndex: 2
-			});
-			highlight.add(captionBgView);
+			// caption
+			if (posts[i].caption && (posts[i].caption != '')) {
+				var captionBgView = Ti.UI.createView({
+					backgroundColor:'black',
+					opacity: 0.9,
+					top: 150,
+					left: 634,
+					width: 390,
+					height: 87,
+					zIndex: 2
+				});
 
-			var featuredLabel = Ti.UI.createLabel({
-				color: 			'#ffffff',
-				text:  			'FEATURED CONTENT',
-				font: 			{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
-				opacity: 		0.5,
-				textAlign: 		'left',
-				top: 			10,
-				left:  			15,
-				height: 		20,
-				width: 			150,
-				zIndex: 		3
-			});
-			captionBgView.add(featuredLabel);
+				var featuredLabel = Ti.UI.createLabel({
+					color: 			'#ffffff',
+					text:  			'FEATURED CONTENT',
+					font: 			{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
+					opacity: 		0.5,
+					textAlign: 		'left',
+					top: 			10,
+					left:  			15,
+					height: 		20,
+					width: 			150,
+					zIndex: 		3
+				});
+				captionBgView.add(featuredLabel);
 
-			Ti.API.info("Caption: " + posts[i].caption);
+				var captionLabel = Ti.UI.createLabel({
+					color: 			'#ffffff',
+					text:  			strip_html_entities(posts[i].caption),
+					font: 			{fontSize:18, fontFamily:'Helvetica', fontWeight:'bold'},
+					textAlign: 		'left',
+					top: 			30,
+					left:  			15,
+					height: 		50,
+					width: 			361,
+					zIndex: 		3
+				});
+				captionBgView.add(captionLabel);
+
+				highlight.add(captionBgView);
+			}
 			
-			var captionLabel = Ti.UI.createLabel({
-				color: 			'#ffffff',
-				text:  			strip_html_entities(posts[i].caption),
-				font: 			{fontSize:18, fontFamily:'Helvetica', fontWeight:'bold'},
-				textAlign: 		'left',
-				top: 			30,
-				left:  			15,
-				height: 		50,
-				width: 			361,
-				zIndex: 		3
-			});
-			captionBgView.add(captionLabel);
-
+			// add to the scrollableview
 			highlightView.addView(highlight);
-			
 		}
-			
 	});
-	
-	
 };
 
 
