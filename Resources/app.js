@@ -534,9 +534,6 @@ var showDashboard = function(yql,pDashboardType) {
 	
 	//Removes the TableView so it can start fresh
     Ti.App.fireEvent('remove_tableview');
-
-	//PASSES THE YQL OBJECT fwd
-    Ti.App.fireEvent('yql', {yql:yql});
 	
 	// Builds the LoggedIn Header or the SignIn one
 	if (pDashboardType === "logged") {

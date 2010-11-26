@@ -295,8 +295,6 @@ whiteBox.add(btn_repost);
 
 
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
-
-Ti.API.info("### myMemeInfo: " + JSON.stringify(myMemeInfo) + "\n Post: " + JSON.stringify(post));
 if (pDashboardType === 'notlogged') {
 	
 	btn_repost.enabled = false;	
