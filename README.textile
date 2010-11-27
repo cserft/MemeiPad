@@ -9,15 +9,28 @@ Development powered by Titanium Mobile framework that allows development for iOS
 h2. Requirements
 
 - iOS 4.1 SDK
-- Titanium Mobile SDK 1.4.1.1
+- Titanium Developer SDK 1.2.1
+- Titanium Mobile SDK nightly build 1.5
 
 h2. Features
 
-- oAuth Authentication
+- oAuth 1.1 Authentication
 - Navigate on Meme's dashboard
-- Repost and Comment from within the App
+- Create new posts with Flashlight suggested content and live preview of links
+- Repost any Post from within the App
 
 h2. Legal
+
+h3. Meme from Yahoo! 
+
+Yahoo!, Meme from Yahoo! and associated marks and logos are 
+trademarks of Yahoo! Inc.
+
+Meme from Yahoo! Terms of Service: http://meme.yahoo.com/help/utos/
+Meme from Yahoo! Additional Terms of Service: http://meme.yahoo.com/help/atos/
+Meme from Yahoo! Guideline: http://meme.yahoo.com/help/guidelines/
+
+h3. Titanium and Appcelerator
 
 Appcelerator, Appcelerator Titanium and associated marks and logos are 
 trademarks of Appcelerator, Inc. 
@@ -26,4 +39,6 @@ Titanium is Copyright (c) 2009-2010 by Appcelerator, Inc. All Rights Reserved.
 
 Titanium is licensed under the Apache Public License (Version 2). Please
 see the LICENSE file for the full license.
+
+
 
