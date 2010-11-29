@@ -7,8 +7,6 @@ win.orientationModes =  [
 	Titanium.UI.LANDSCAPE_RIGHT
 ];
 
-var openingDetails = false; // controls multiple Permalinks Opened
-
 //Set current timestamp
 var timestamp = function() {
 	return((new Date()).getTime());
@@ -423,80 +421,13 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 	
 }
 
-
 // ==================
 // = CLICK LISTENER =
 // ==================
-
-// Avoiding multiple Permalinks Opening
-Ti.App.addEventListener('openingDetailsFalse', function(e) {
-	openingDetails = false;
-});
-
 tableView.addEventListener('click', function(e) {
 	Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
 	Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId });
 });
-
-Ti.App.addEventListener('openPermalink', function(e) {
-	// permalink should open only when click was on the blackBox
-	// otherwise there will be no guid and pubid data and the app will crash
-	if (e.guid && e.pubId) {
-		// Sets the Permalink Animation startup settings
-		var t = Ti.UI.create2DMatrix();
-		t = t.scale(0);
-
-		var winPermalink = Ti.UI.createWindow({
-		    url: 'permalink.js',
-		    name: 'Permalink Window',
-		    backgroundColor:'transparent',
-			left:0,
-			top:0,
-			height:'100%',
-			width:'100%',
-			navBarHidden: true,
-			zIndex: 6,
-			transform: t,
-			pGuid: e.guid,
-			pPubId: e.pubId
-		});
-
-		// Creating the Open Permalink Transition
-		// create first transform to go beyond normal size
-		var t1 = Titanium.UI.create2DMatrix();
-		t1 = t1.scale(1.1);
-
-		var a = Titanium.UI.createAnimation();
-		a.transform = t1;
-		a.duration = 200;
-
-		// when this animation completes, scale to normal size
-		a.addEventListener('complete', function()
-		{
-			var t2 = Titanium.UI.create2DMatrix();
-			t2 = t2.scale(1.0);
-			winPermalink.animate({transform:t2, duration:200});
-		});
-
-		if (openingDetails == false){
-
-			Ti.App.fireEvent('show_indicator', {
-				message: "Loading...",
-				color: "#AB0899",
-				size: 200
-			});
-			openingDetails = true;
-			winPermalink.openingDetails = openingDetails;
-			winPermalink.open(a);
-		}
-
-		setTimeout(function()
-		{
-			Ti.App.fireEvent('hide_indicator');
-		},10000);
-	}
-});
-
 
 // var startTouchX;
 // 

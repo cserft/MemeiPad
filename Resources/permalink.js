@@ -7,7 +7,6 @@ var yql = Ti.App.oAuthAdapter.getYql();
 var _guid = win.pGuid;
 var _pubId = win.pPubId;
 var pDashboardType = Ti.App.oAuthAdapter.isLoggedIn() ? 'logged' : 'notlogged';
-var openingDetails = win.openingDetails;
 
 // =======================
 // = DASHBOARD TABLEVIEW =
@@ -73,7 +72,7 @@ btn_close.addEventListener("click", function(e)
 	var t3 = Titanium.UI.create2DMatrix();
 	t3 = t3.scale(0);
 	win.close({transform:t3,duration:200});
-	Ti.App.fireEvent('openingDetailsFalse');
+	Ti.App.fireEvent('permalinkIsOpenedFalse');
     // allows for other Permalinks to Open
 	
 });
@@ -338,7 +337,7 @@ btn_repost.addEventListener("click", function(e) {
 // 		var t3 = Titanium.UI.create2DMatrix();
 // 		t3 = t3.scale(0);
 // 		win.close({transform:t3,duration:200});
-// 		Ti.App.fireEvent('openingDetailsFalse');
+// 		Ti.App.fireEvent('permalinkIsOpenedFalse');
 // 	
 // 	} else {
 // 		Ti.API.info("Error while deleting");	
