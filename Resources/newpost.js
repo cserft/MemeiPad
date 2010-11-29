@@ -433,7 +433,7 @@ function showProgressView (pCommand, pMessage) {
 
 //Close Button
 btn_close_post.addEventListener('click', function() {
-
+	
 	win.close(animeClose);
 	
 	//Closes the Keyboard if open
@@ -916,6 +916,5 @@ Ti.App.addEventListener('hide_keyboard', function(e)
 Ti.App.addEventListener('close_newpost', function(e)
 {
 	//Closes New Post Window
-	win.close({opacity:0,duration:200})
-
+	win.close({opacity:0,duration:200});
 });

@@ -3,11 +3,10 @@ Ti.include('lib/commons.js');
 var win = Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
-var yql = win.yql;
+var yql = Ti.App.oAuthAdapter.getYql();
 var _guid = win.pGuid;
 var _pubId = win.pPubId;
-var myMemeInfo = win.myMemeInfo;
-var pDashboardType = win.pDashboardType;
+var pDashboardType = Ti.App.oAuthAdapter.isLoggedIn() ? 'logged' : 'notlogged';
 var openingDetails = win.openingDetails;
 
 // =======================
@@ -299,7 +298,7 @@ if (pDashboardType === 'notlogged') {
 	
 } else {
 	
-	if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_guid == myMemeInfo.guid) {
+	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || post.origin_guid == Ti.App.myMemeInfo.guid) {
 		btn_repost.enabled = false;	
 	} else {
 		btn_repost.enabled = true;	

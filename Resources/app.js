@@ -3,8 +3,8 @@ Ti.include('oadapter.js');
 Ti.include('lib/cache.js');
 Ti.include('app_highlight.js');
 
-var myMemeInfo = null;
-var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
+Ti.App.myMemeInfo = null;
+Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 
 //base Window
 var win1 = Titanium.UI.createWindow({  
@@ -120,7 +120,7 @@ var showHeader = function (yql, pType, successCallback) {
 		}
 
 		var meme = yqlMemeInfo.query.results.meme;
-		myMemeInfo = meme;
+		Ti.App.myMemeInfo = meme;
 		
 		var btn_Username = Ti.UI.createButton({
 			backgroundImage: 	'images/btn_username_2.png',
@@ -221,7 +221,7 @@ var showHeader = function (yql, pType, successCallback) {
 			{
 				Ti.API.info("Signout Link clicked");
 				popover.hide({animated:true});
-				oAuthAdapter.logout('meme');
+				Ti.App.oAuthAdapter.logout('meme');
 				Ti.App.fireEvent('remove_tableview');
 				headerView.hide();
 				startApplication();
@@ -452,7 +452,6 @@ var showDashboard = function(yql,pDashboardType) {
 		navBarHidden: true,
 		yql: yql,
 		pDashboardType: pDashboardType,
-		myMemeInfo: myMemeInfo,
 		win1: win1,
 		zIndex: 2
 	});
@@ -491,21 +490,21 @@ var signInButtonClick = function(continuation) {
 };
 
 var startApplication = function() {
-	if (oAuthAdapter.isLoggedIn()) {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		// logged in, shows logged dashboard and header
-		getHighlights(oAuthAdapter.getYql(), highlightView);
-		showHeader(oAuthAdapter.getYql(), "logged", function() {
-			showDashboard(oAuthAdapter.getYql(), "logged");
+		getHighlights(Ti.App.oAuthAdapter.getYql(), highlightView);
+		showHeader(Ti.App.oAuthAdapter.getYql(), "logged", function() {
+			showDashboard(Ti.App.oAuthAdapter.getYql(), "logged");
 		});
 		
 	} else {
 		// not logged in, shows unlogged screens
-		getHighlights(oAuthAdapter.getYql(), highlightView);
+		getHighlights(Ti.App.oAuthAdapter.getYql(), highlightView);
 		showHeader(null, "notlogged", function() {
-			showDashboard(oAuthAdapter.getYql(), "notlogged");
+			showDashboard(Ti.App.oAuthAdapter.getYql(), "notlogged");
 		});
 	   	
-		oAuthAdapter.attachLogin(signInButtonClick, startApplication);
+		Ti.App.oAuthAdapter.attachLogin(signInButtonClick, startApplication);
 	}
 }
 

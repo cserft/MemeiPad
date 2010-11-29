@@ -20,7 +20,6 @@ var now = timestamp();
 var yql = win.yql; // Holds YQL Object to make queries
 var win1 = win.win1; // Window Original created on app.js
 var pDashboardType = win.pDashboardType;
-var myMemeInfo = win.myMemeInfo; 
 
 // Creating the List Post Table View
 
@@ -430,20 +429,19 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 // ==================
 
 // Avoiding multiple Permalinks Opening
-Ti.App.addEventListener('openingDetailsFalse', function(e)
-{
+Ti.App.addEventListener('openingDetailsFalse', function(e) {
 	openingDetails = false;
 });
 
-tableView.addEventListener('click', function(e)
-{
-	// Ti.API.info('event fired was ' + JSON.stringify(e));
-	// Ti.API.info('event source is ' + JSON.stringify(e.source));
+tableView.addEventListener('click', function(e) {
 	Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
-	
+	Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId });
+});
+
+Ti.App.addEventListener('openPermalink', function(e) {
 	// permalink should open only when click was on the blackBox
 	// otherwise there will be no guid and pubid data and the app will crash
-	if (e.source.guid && e.source.pubId) {
+	if (e.guid && e.pubId) {
 		// Sets the Permalink Animation startup settings
 		var t = Ti.UI.create2DMatrix();
 		t = t.scale(0);
@@ -459,16 +457,9 @@ tableView.addEventListener('click', function(e)
 			navBarHidden: true,
 			zIndex: 6,
 			transform: t,
-			pDashboardType: pDashboardType,
-			yql: yql, //passing Variables to this Window
-			pGuid: e.source.guid,
-			pPubId: e.source.pubId
+			pGuid: e.guid,
+			pPubId: e.pubId
 		});
-
-		if (myMemeInfo) {
-			winPermalink.myMemeInfo = myMemeInfo;
-		}
-
 
 		// Creating the Open Permalink Transition
 		// create first transform to go beyond normal size
@@ -496,7 +487,7 @@ tableView.addEventListener('click', function(e)
 			});
 			openingDetails = true;
 			winPermalink.openingDetails = openingDetails;
-			winPermalink.open(a);	
+			winPermalink.open(a);
 		}
 
 		setTimeout(function()
