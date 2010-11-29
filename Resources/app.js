@@ -471,7 +471,7 @@ var startApplication = function() {
 	} else {
 		// not logged in, shows unlogged screens
 		showHeader(null, "notlogged", function() {
-			showDashboard(OAuthAdapter("meme"), "notlogged");
+			showDashboard(oAuthAdapter.getYql(), "notlogged");
 		});
 	   	
 		oAuthAdapter.attachLogin(signInButtonClick, startApplication);

@@ -334,6 +334,7 @@ var OAuthAdapter = function(pService, authorize) {
 		return false;
 	}
 	
+	// returns proper YQL (2 or 3 legged)
 	var getYql = function() {
 		if (isLoggedIn()) {
 			return { query: query };
@@ -365,7 +366,6 @@ var OAuthAdapter = function(pService, authorize) {
 	return({
 		attachLogin: attachLogin,
 		logout: logout,
-		query: query2legg,
 		isLoggedIn: isLoggedIn,
 		getYql: getYql
 	});
