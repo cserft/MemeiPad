@@ -11,10 +11,9 @@ var win1 = Titanium.UI.createWindow({
     title: 				'Meme for iPad',
     backgroundImage: 	'images/bg.png',
 	orientationModes : [
-	Titanium.UI.LANDSCAPE_LEFT,
-	Titanium.UI.LANDSCAPE_RIGHT
+		Titanium.UI.LANDSCAPE_LEFT,
+		Titanium.UI.LANDSCAPE_RIGHT
 	]
-
 });
 
 var highlightView = Titanium.UI.createScrollableView({
@@ -92,9 +91,7 @@ btn_signup.addEventListener("click", function(e) {
 // = LOGGED IN HEADER =
 // ====================
 
-var showHeader = function (yql, pType, successCallback) {
-	
-	Ti.API.info("showHeader function Called with pType = " + pType);
+var showHeader = function (successCallback) {
 	
 	var headerView = Ti.UI.createView({
 		backgroundColor:'transparent',
@@ -107,13 +104,13 @@ var showHeader = function (yql, pType, successCallback) {
 	});
 	win1.add(headerView);
 
-	if (pType === "logged") {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 
 		// ========================
 		// = retrieving yql data =
 		// ========================
 
-		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=35,height=35)");
+		var yqlMemeInfo = Ti.App.oAuthAdapter.getYql().query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=35,height=35)");
 
 		if (!yqlMemeInfo.query.results) {
 			Ti.App.fireEvent('yqlerror');
@@ -417,7 +414,7 @@ var showHeader = function (yql, pType, successCallback) {
 		// Opens the New Post Window
 		btn_StartPosting.addEventListener('click', function()
 		{
-			newPost(yql);
+			newPost();
 		});
 
 	} else {
@@ -433,9 +430,7 @@ var showHeader = function (yql, pType, successCallback) {
 
 // If Authentication OK the Show Dashboard
 var winDashboard;
-var showDashboard = function(yql,pDashboardType) {
-	
-	Ti.API.info('pDashboardType from showDashboard function on app.js = ' + pDashboardType);
+var showDashboard = function() {
 	
 	// ===========================
 	// = CREATING DASHBOARD VIEW =
@@ -450,8 +445,6 @@ var showDashboard = function(yql,pDashboardType) {
 		height: 417,
 		width: 1024,
 		navBarHidden: true,
-		yql: yql,
-		pDashboardType: pDashboardType,
 		win1: win1,
 		zIndex: 2
 	});
@@ -463,10 +456,9 @@ var showDashboard = function(yql,pDashboardType) {
     Ti.App.fireEvent('remove_tableview');
 	
 	// Builds the LoggedIn Header or the SignIn one
-	if (pDashboardType === "logged") {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		btn_signin.visible = false;
 		btn_signup.visible = false;
-		
 	} else {
 		btn_signin.visible = true;
 		btn_signup.visible = true;
@@ -490,20 +482,12 @@ var signInButtonClick = function(continuation) {
 };
 
 var startApplication = function() {
-	if (Ti.App.oAuthAdapter.isLoggedIn()) {
-		// logged in, shows logged dashboard and header
-		getHighlights(Ti.App.oAuthAdapter.getYql(), highlightView);
-		showHeader(Ti.App.oAuthAdapter.getYql(), "logged", function() {
-			showDashboard(Ti.App.oAuthAdapter.getYql(), "logged");
-		});
-		
-	} else {
-		// not logged in, shows unlogged screens
-		getHighlights(Ti.App.oAuthAdapter.getYql(), highlightView);
-		showHeader(null, "notlogged", function() {
-			showDashboard(Ti.App.oAuthAdapter.getYql(), "notlogged");
-		});
-	   	
+	getHighlights(highlightView);
+	showHeader(function() {
+		showDashboard();
+	});
+	
+	if (! Ti.App.oAuthAdapter.isLoggedIn()) {   	
 		Ti.App.oAuthAdapter.attachLogin(signInButtonClick, startApplication);
 	}
 }
@@ -518,7 +502,7 @@ var a = Titanium.UI.createAnimation();
 a.duration = 200;
 a.top = 0;
 
-var newPost = function(yql) {
+var newPost = function() {
 	Ti.UI.createWindow({
 		url: 'newpost.js',
 		title: 'New Post',
@@ -527,7 +511,6 @@ var newPost = function(yql) {
 		top: -749,
 		height: 748,
 		width: 1024,
-		yql: yql,
 		zIndex: 3,
 		navBarHidden: true
 	}).open(a);

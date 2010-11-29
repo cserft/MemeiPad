@@ -28,15 +28,13 @@ var getHighlightQuery = function(callback) {
 	xhr.send();
 };
 
-var getHighlights = function (yql, highlightView) {
+var getHighlights = function (highlightView) {
 	
 	getHighlightQuery(function (data) {
 		
-		var yql_data = yql.query("SELECT * FROM meme.search(" + data.amount + ") WHERE query='" + data.query + "'" );
+		var yql_data = Ti.App.oAuthAdapter.getYql().query("SELECT * FROM meme.search(" + data.amount + ") WHERE query='" + data.query + "'" );
 		
 		var posts = yql_data.query.results.post;
-		
-		Ti.API.info("YQL SEARCH HIGHTLIGHT: " + JSON.stringify(posts));
 		
 		for ( var i=0 ; i< posts.length ; i++ ) {
 			

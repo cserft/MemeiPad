@@ -5,7 +5,7 @@ Ti.include('newpost_flashlight.js');
 var win 			= 	Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
-var yql 			= 	win.yql;
+var yql 			= 	Ti.App.oAuthAdapter.getYql();
 var win1 			= 	win.win1; // Window Original created on app.js
 var postText 		= 	""; 
 var postTitle 		= 	'';

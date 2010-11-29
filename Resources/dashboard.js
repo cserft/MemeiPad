@@ -15,9 +15,7 @@ var timestamp = function() {
 var now = timestamp();
 
 //RETRIEVING YQL OBJECT
-var yql = win.yql; // Holds YQL Object to make queries
 var win1 = win.win1; // Window Original created on app.js
-var pDashboardType = win.pDashboardType;
 
 // Creating the List Post Table View
 
@@ -236,10 +234,8 @@ var tempRow = null;
 var tempItemRowCount = 0;
 var data = [];
 
-var getDashboardData = function (pTimestamp, pDashboardType) {
-	Ti.API.info("DashboardType from getDashboardData Function: " + pDashboardType);
-	
-	if (pDashboardType === "logged") {
+var getDashboardData = function (pTimestamp) {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		
 		if (pTimestamp == null)
 		{
@@ -282,7 +278,7 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 	
 	Ti.API.info(" ####### YQL Query executed: " + yqlQuery);
 
-	var yqldata = yql.query(yqlQuery);
+	var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
 	var posts = yqldata.query.results.post;
 	
 	// Ti.API.debug(" ####### YQL Query POSTS RESULT: " + JSON.stringify(posts));
@@ -522,7 +518,7 @@ function endUpdate()
 	tableView.deleteRow(lastRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.FADE});
 	
 	// Get posts from Dashboard
-	getDashboardData(lastTimestamp, pDashboardType);
+	getDashboardData(lastTimestamp);
 
 	// just scroll down a bit to the new rows to bring them into view
     //tableView.scrollToIndex(lastRow,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
@@ -552,7 +548,7 @@ tableView.addEventListener('scroll',function(e)
 		// adjust the % of rows scrolled before we decide to start fetching
 		var nearEnd = theEnd * 0.2; 
 		
-		if (!updating && pDashboardType === "logged" && (total >= nearEnd))
+		if (!updating && Ti.App.oAuthAdapter.isLoggedIn() && (total >= nearEnd))
 		{
 			beginUpdate();
 		}
@@ -638,8 +634,7 @@ tableHeader.add(lastUpdatedLabel);
 tableHeader.add(actInd);
 
 // if User is logged in then it will show the Pull to Refresh Feature
-if (pDashboardType === "logged"){
-	
+if (Ti.App.oAuthAdapter.isLoggedIn()) {
 	tableView.headerPullView = tableHeader;
 }
 
@@ -653,7 +648,7 @@ function beginReloading()
 	//tableView.setData([]);
 	setTimeout(function()
 	{	
-		getDashboardData(null, pDashboardType);
+		getDashboardData(null);
 		beginUpdate();
 
 	},1000)
@@ -674,7 +669,7 @@ function endReloading()
 
 tableView.addEventListener('scroll',function(e)
 {
-	if (pDashboardType === "logged") {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		
 		var offset = e.contentOffset.y;
 		if (offset <= -65.0 && !pulling)
@@ -697,7 +692,7 @@ tableView.addEventListener('scroll',function(e)
 
 tableView.addEventListener('scrollEnd',function(e)
 {
-	if (pDashboardType === "logged" && pulling && !reloading && e.contentOffset.y <= -65.0)
+	if (Ti.App.oAuthAdapter.isLoggedIn() && pulling && !reloading && e.contentOffset.y <= -65.0)
 	{
 		reloading = true;
 		pulling = false;
@@ -711,14 +706,10 @@ tableView.addEventListener('scrollEnd',function(e)
 });
 //variable that configs the number of Dashboard pages that loads when the app starts
 
-if (pDashboardType === "logged") {
-	// Ti.API.debug("Mounting Dashboard Logged: pDashboardType= " + pDashboardType);
-	getDashboardData(null, pDashboardType);
+if (Ti.App.oAuthAdapter.isLoggedIn()) {
 	beginUpdate();
-} else {
-	// Ti.API.debug("Mounting Dashboard Not Logged: pDashboardType= " + pDashboardType);
-	getDashboardData(null, pDashboardType);
 }
+getDashboardData(null);
 
 Ti.App.addEventListener('reloadDashboard', function(e) {
 	// Ti.API.debug("Reloading Dashboard");
