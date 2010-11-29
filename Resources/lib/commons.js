@@ -113,9 +113,10 @@ var getPhotoData = function(pContent, pWidth, pHeight, yql, callback) {
 
 var strip_html_entities = function(string) {
 	var new_string = string.replace(/(<([^>]+)>)/ig, ' ');
-	new_string = new_string.replace(/&.+;/, ' ');
-	new_string = new_string.replace(/^\s/, '');
+	new_string = new_string.replace(/&[\w\#]+;/g, ' ');
+	new_string = new_string.replace(/\n/g, ' ');
 	new_string = new_string.replace(/\s+/g, ' ');
+	new_string = new_string.trim();
 	Ti.API.debug('strip_html, was [' + string + '] and now is [' + new_string + ']');
 	return new_string;
 };
