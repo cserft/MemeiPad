@@ -500,9 +500,9 @@ var startApplication = function() {
 		
 	} else {
 		// not logged in, shows unlogged screens
-		getHighlights(OAuthAdapter("meme"), highlightView);
+		getHighlights(oAuthAdapter.getYql(), highlightView);
 		showHeader(null, "notlogged", function() {
-			showDashboard(OAuthAdapter("meme"), "notlogged");
+			showDashboard(oAuthAdapter.getYql(), "notlogged");
 		});
 	   	
 		oAuthAdapter.attachLogin(signInButtonClick, startApplication);
