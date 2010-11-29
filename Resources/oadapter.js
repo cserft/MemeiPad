@@ -335,7 +335,10 @@ var OAuthAdapter = function(pService, authorize) {
 	}
 	
 	var getYql = function() {
-		return { query: query };
+		if (isLoggedIn()) {
+			return { query: query };
+		}
+		return { query: query2legg };
 	}
 	
 	// will check if access tokens are stored in the config file
