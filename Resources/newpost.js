@@ -831,14 +831,15 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 		Ti.API.debug('ONSENDSTREAM - PROGRESS: ' + e.progress);
 	};
 	
-	// "type:image/jpeg|800x600|secret:xxx"
-	var auth = Ti.Utils.md5HexDigest('type:' + theImage.mimetype + '|' + theImage.width + 'x' + theImage.height + '|secret:' + meme_be_secret);
+	// "type:image/jpeg|size:800x600|secret:xxx"
+	var auth = Ti.Utils.md5HexDigest('type:' + theImage.mimetype + '|size:' + theImage.width + 'x' + theImage.height + '|secret:' + meme_be_secret);
 	
 	Ti.API.debug('Starting upload to URL [' + e.url + ']');
 	xhr.open('POST', e.url);
 	xhr.setRequestHeader('X-MemeApp-AppId', 'MemeAppiPad');
+	xhr.setRequestHeader('X-MemeApp-ServiceType', 'img');
 	xhr.setRequestHeader('X-MemeApp-Auth', auth);
-	xhr.setRequestHeader('X-MemeApp-Type', theImage.mimetype);
+	xhr.setRequestHeader('X-MemeApp-MimeType', theImage.mimetype);
 	xhr.setRequestHeader('X-MemeApp-Size', theImage.width + 'x' + theImage.height);
   	xhr.send({
 		file: theImage
