@@ -255,14 +255,15 @@ var OAuthAdapter = function(pService, authorize) {
 			if (token) {
 				if ( ! token.token.oauth_token || token.token.oauth_token === 'undefined'){
 					// IF Token Dict is empty then Starts the Sign Process Again
-					Ti.API.debug("Token{} Empty " + JSON.stringify(token.token));
+					Ti.API.debug("Token{} Empty (will authenticate again): " + JSON.stringify(token.token));
 				} else {
-					Ti.API.debug("Loading token from file done: " + JSON.stringify(token));
+					//Ti.API.debug("Loading token from file done: " + JSON.stringify(token));
 					return(token);
 				}
 			}
         } catch(e) {
-			Ti.API.debug("Loading token failed. Reason=" + e.message);
+			//Ti.API.debug("Loading token failed. Reason=" + e.message);
+			return null;
 		}
 	};
 	
