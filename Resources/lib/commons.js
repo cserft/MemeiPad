@@ -117,7 +117,7 @@ var strip_html_entities = function(string) {
 	new_string = new_string.replace(/\n/g, ' ');
 	new_string = new_string.replace(/\s+/g, ' ');
 	new_string = new_string.trim();
-	Ti.API.debug('strip_html, was [' + string + '] and now is [' + new_string + ']');
+	//Ti.API.debug('strip_html_entities, was [' + string + '] and now is [' + new_string + ']');
 	return new_string;
 };
 

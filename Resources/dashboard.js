@@ -219,7 +219,6 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	//Returns the BlackBoxView Obj with the complete design
 	return(blackBoxView);
-	
 };
 
 // ===============================
@@ -276,82 +275,56 @@ var getDashboardData = function (pTimestamp) {
 
 	var itemPerRowCount = 0;
 	
-	Ti.API.info(" ####### YQL Query executed: " + yqlQuery);
+	Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
 
 	var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
 	var posts = yqldata.query.results.post;
-	
-	// Ti.API.debug(" ####### YQL Query POSTS RESULT: " + JSON.stringify(posts));
 
 	//Defines the last post timestamp so we can paginate the Dashboard
 	lastTimestamp = posts[(posts.length - 1)].timestamp;
 	lastTimestamp = parseInt(lastTimestamp);
 	
 	//Ti.API.debug("last Time Stamp: " + lastTimestamp );
-
-
+	
 	// create THE TABLE ROWS
-	for (var k=1; k < posts.length; k++)
-	{
-		var post 		= posts[k-1];
+	for (var i=0; i<posts.length; i++) {
+		var post 		= posts[i];
 		var _caption 	= post.caption;
 		var _pubId 		= post.pubid;
 		var _postUrl 	= post.url;
 		var _type 		= post.type;
 		var _guid 		= post.guid;
 		var _originPubId = post.origin_pubid;
-		
-		// Checks the types of posts and then sets the proper content
-		// We don't render Video Videos and Comments
 
-		if (_type != "comment"){
-
-			switch(_type)
-			{
-				case 'photo':
-				{	
-					var _content = post.content.thumb;			
-					break;
-				}
-				case 'video':
-				{
-					var _content = post.content;
-					break;
-				}
-				case 'text':
-				{
-					var _content = post.content;
-					break;
-				}
-				case 'audio':
-				{				
-					continue; 
-				}
-
+		switch(_type) {
+			case 'photo': {	
+				var _content = post.content.thumb;			
+				break;
+			} case 'video': {
+				var _content = post.content;
+				break;
+			} case 'text': {
+				var _content = post.content;
+				break;
+			} case 'audio': {
+				Ti.API.debug('Skipping audio post (cannot be displayed on dashboard)');	
+				continue; 
+			} case 'comment': {
+				Ti.API.debug('Skipping comment (cannot be displayed on dashboard)');	
+				continue;
 			}
-
-		} else {
-
-			//IF Type == Comment then break the current Loop and move to the next post item.
-			continue;
-
 		}
 		
 		// verifies if there is any incomplete row and continues from there.
 		if (tempRow != null) {
 			
-		//	Ti.API.info("Temp Row Found, number of items in this Row: " + tempItemRowCount);
-			
+			// Ti.API.info("Temp Row Found, number of items in this Row: " + tempItemRowCount);
 			itemPerRowCount = tempItemRowCount;
-			
-			//itemPerRowCount++;
-			
 			var row = tempRow;
 			
 		} else {
 			
-		//	Ti.API.info("Temp Row NOT Found. Creating a new Row");
-			
+			// Ti.API.info("Temp Row NOT Found. Creating a new Row");
 			if (itemPerRowCount == 0) {
 				var row = Ti.UI.createTableViewRow();
 				row.height = 256;
@@ -359,8 +332,7 @@ var getDashboardData = function (pTimestamp) {
 			
 		}
 		
-		// Adds the post view to a ROW 	
-		// Verifying the variables for each post
+		// Adds the post view to a ROW
 		row.add(createPost(_content, _caption, _pubId, _postUrl, _type, itemPerRowCount, _guid));
 
 		itemPerRowCount++;
@@ -373,18 +345,13 @@ var getDashboardData = function (pTimestamp) {
 				lastRow += 1;
 				tempItemRowCount = 0;
 
-				if (pTimestamp == null)
-				{
-					data.push(row);
-										
-				//	Ti.API.info("###### Just ADDED row number: " + lastRow );
+				if (pTimestamp == null) {
+					data.push(row);			
+					// Ti.API.info("###### Just ADDED row number: " + lastRow );
 			
 				} else {
 					
-					// Ti.API.info("###### Appending ROW ");
-				
 					tableView.appendRow(row,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.NONE});
-
 					//	Ti.API.info("###### APPENDING Row number: " + lastRow );
 				}
 			
@@ -401,20 +368,15 @@ var getDashboardData = function (pTimestamp) {
 	} //End FOR loop
 
 	//Sets the new Table rows with updated Posts
-	if (pTimestamp == null)
-	{
+	if (pTimestamp == null) {
 		Ti.API.debug("reseting TableView data");
 		tableView.setData(data);
-		
 	} else {
-		
 		return(posts);
 	}
 	
-	
 	// open Main Window from app.js with Transition
 	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
-	
 }
 
 // ==================
@@ -425,50 +387,9 @@ tableView.addEventListener('click', function(e) {
 	Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId });
 });
 
-// var startTouchX;
-// 
-// tableView.addEventListener('touchstart', function(e)
-// {
-// 	Ti.API.info('Table TouchStarted - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId + ' Xstart: ' + e.x);
-// 	startTouchX = e.x;
-// 	
-// 	// Ti.UI.createAlertDialog({
-// 	// 	        title: 'SWIPED',
-// 	// 	        message: "Great you swipped"
-// 	// 	    }).show();
-// 	// 
-// 	
-// });
-// 
-// tableView.addEventListener('touchend', function(e)
-// {
-// 	Ti.API.info('Table TouchEnded - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId + ' Xend: ' + e.x);
-// 	
-// 	var endTouchX = e.x;
-// 	var swipe_delta = startTouchX - endTouchX;
-// 	
-// 	if (swipe_delta >= 70) {
-// 	
-// 		Ti.API.info('Flip This Object');
-// 		
-// 	} else {
-// 				
-// 
-// 				
-// 	}
-// 	
-// 	// Ti.UI.createAlertDialog({
-// 	// 	        title: 'SWIPED',
-// 	// 	        message: "Great you swipped"
-// 	// 	    }).show();
-// 	// 
-// 	
-// });
-
 // =======================
 // = SCROLL DOWN LOADING =
 // =======================
-
 var updating = false;
 
 var loadingRow = Ti.UI.createTableViewRow({
@@ -533,7 +454,7 @@ var lastDistance = 0; // calculate location to determine direction
 tableView.addEventListener('scroll',function(e)
 {	
 	// Used for the Pull to Refresh
-	Ti.API.warn("scroll activated");
+	//Ti.API.debug("scroll activated");
 	var offset = e.contentOffset.y;
 	var height = e.size.height;
 	var total = offset + height;
