@@ -341,23 +341,40 @@ btn_repost.addEventListener("click", function(e) {
 });
 
 // DELETE POST
-// btn_delete.addEventListener("click", function(e) {
-// 	
-// 	yqlQuery = "DELETE FROM meme.user.posts WHERE pubid = " + _pubId;
-// 	var yqlInsert = yql.query(yqlQuery);
-// 	var response = yqlInsert.query.results.status;
-// 	
-// 	if (response.message == "ok"){
-// 		var t3 = Titanium.UI.create2DMatrix();
-// 		t3 = t3.scale(0);
-// 		win.close({transform:t3,duration:200});
-// 		Ti.App.fireEvent('permalinkIsOpenedFalse');
-// 	
-// 	} else {
-// 		Ti.API.info("Error while deleting");	
-// 	}
-// 
-// });
+btn_delete.addEventListener("click", function(e) {
+	
+	//Alert to Open Safari for the Post Permalink
+	var alertOpenPermalink = Titanium.UI.createAlertDialog({
+		title: 'Delete Post',
+		message: 'Are you sure you want to delete this Post?',
+		buttonNames: ['Yes','No'],
+		cancel: 1
+	});	
+	alertOpenPermalink.show();
+
+	// Opens the Permalink page on Safari
+	alertOpenPermalink.addEventListener('click',function(e)
+	{
+		if (e.index == 0){
+			yqlQuery = "DELETE FROM meme.user.posts WHERE pubid = '" + _pubId + "'";
+			var yql_data = yql.query(yqlQuery);
+			var response = yql_data.query.results.status;
+
+			if (response.message == "ok"){
+				var t3 = Titanium.UI.create2DMatrix();
+				t3 = t3.scale(0);
+				win.close({transform:t3,duration:200, opacity:0});
+				Ti.App.fireEvent('permalinkIsOpenedFalse');
+				Ti.App.fireEvent('reloadDashboard');
+
+			} else {
+				Ti.API.error("Error while deleting Post: " + JSON.stringify(response));	
+			}	
+		}
+	});
+	
+
+});
 
 		
 // Hides the loading indicator indicator
