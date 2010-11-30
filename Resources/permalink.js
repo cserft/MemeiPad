@@ -134,48 +134,43 @@ var getPostHtml = function(innerMedia, innerCaption) {
 	return '<html><head><title></title><style type="text/css">#wrapper {padding: 20px;width: 700px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px} .post blockquote {background:url("images/quote_innerhtml.png") no-repeat scroll 7px 3px transparent; border-left:2px solid #CCCCCC; font-size:16px; margin:8px 0; padding-left:30px;}</style></head><body><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '<br/><br/></div></div></div></body></html>';
 };
 
-if (post.type == "photo"){
+if (post.type == "photo") {
 	
 	innerMedia= '<img src="' + post.content.content + '" class="block_clear">';
-	innerCaption = post.caption;
-	captionStripped = strip_html_entities(post.caption);
-	// getGeoPlaces(captionStripped);
+	innerCaption = add_html_entities(post.caption);
 	
-} else if (post.type == "video"){
+} else if (post.type == "video") {
 	
-	if (post.content.indexOf("vimeo") != -1){
+	if (post.content.indexOf("vimeo") != -1) {
 		getVideoData(post.content, function(thumb, data) {
 			innerMedia = data.html;
-			innerCaption = post.caption;
 			postWebView.html = getPostHtml(innerMedia, innerCaption);
 		});
 	} else {
 		var youtubeid = post.content.match(/v=([a-zA-Z0-9_-]{11})&?/)[1];
 		innerMedia = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + youtubeid + '" frameborder="0"></iframe>';
-		innerCaption = post.caption;
 	}
+	innerCaption = add_html_entities(post.caption);
 	
 } else if (post.type == "text"){
+	
 	innerMedia = "";
-
-	innerCaption = post.content;
+	innerCaption = add_html_entities(post.content);
+	
 }
 
 if (innerMedia || innerCaption) {
 	postWebView.html = getPostHtml(innerMedia, innerCaption);
 	actAjax.show({opacity:1,duration:100});
-	
 }
 
 postWebView.addEventListener('load', function(){
 	actAjax.hide({opacity:0,duration:200});
 });
 
-
 // ====================================
 // = OWNER GUID INFORMATION RETRIEVAL =
 // ====================================
-
 yqlQuery = "SELECT * FROM meme.info where owner_guid='" + _guid + "' | meme.functions.thumbs(width=40,height=40)";
 
 Ti.API.debug("####### YQL Query executed: " + yqlQuery);
@@ -195,12 +190,10 @@ var guidAvatar = Titanium.UI.createImageView({
 });
 whiteBox.add(guidAvatar);
 
-var titleStripped = strip_html_entities(meme.title);
-
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
 	color:'#A9379C',
-	text: titleStripped,
+	text: strip_html_entities(meme.title),
 	textAlign:'left',
 	font: {
 		fontSize: 18,
