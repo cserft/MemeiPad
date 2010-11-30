@@ -60,6 +60,7 @@ var getHighlights = function (highlightView) {
 					backgroundColor: 	'black',
 					width: 				1024,
 					height: 			'auto',
+					defaultImage: 		'images/bg_image_highlight.png',
 					zIndex: 			0
 				});
 				highlight.add(highlightPhoto);
