@@ -664,7 +664,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		preview_sizes = getImageResizedSizes(500, 500, theImage);
 	
 		// img properties
-		img.image = theImage;
+		img.image = theImage.imageAsResized(preview_sizes.width, preview_sizes.height);
 		img.top = 10;
 		img.left = 10;
 		img.height = preview_sizes.height;
