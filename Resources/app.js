@@ -5,6 +5,7 @@ Ti.include('app_highlight.js');
 
 Ti.App.myMemeInfo = null;
 Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
+Ti.App.cache = Cache({ cache_expiration_interval: 60 });
 
 //base Window
 var win1 = Titanium.UI.createWindow({  
@@ -109,15 +110,22 @@ var showHeader = function (successCallback) {
 		// ========================
 		// = retrieving yql data =
 		// ========================
+		var info_cache_key = 'myMemeInfo' + Ti.App.oAuthAdapter.getUserGuid();
+		
+		Ti.App.myMemeInfo = Ti.App.cache.get(info_cache_key);
+		
+		if (!Ti.App.myMemeInfo) {
+			var yqlMemeInfo = Ti.App.oAuthAdapter.getYql().query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=35,height=35)");
 
-		var yqlMemeInfo = Ti.App.oAuthAdapter.getYql().query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=35,height=35)");
+			if (!yqlMemeInfo.query.results) {
+				Ti.App.fireEvent('yqlerror');
+			}
 
-		if (!yqlMemeInfo.query.results) {
-			Ti.App.fireEvent('yqlerror');
+			Ti.App.myMemeInfo = yqlMemeInfo.query.results.meme;
+			
+			// cache results for 12 hours
+			Ti.App.cache.put(info_cache_key, yqlMemeInfo.query.results.meme, 43200);
 		}
-
-		var meme = yqlMemeInfo.query.results.meme;
-		Ti.App.myMemeInfo = meme;
 		
 		var btn_Username = Ti.UI.createButton({
 			backgroundImage: 	'images/btn_username.png',
@@ -132,7 +140,7 @@ var showHeader = function (successCallback) {
 	
 		var memeTitleLabel = Ti.UI.createLabel({
 			color: 		'#ffffff',
-			text:  		meme.title,
+			text:  		Ti.App.myMemeInfo.title,
 			font: 		{fontSize:14, fontFamily:'Helvetica Neue', fontWeight:'bold'},
 			textAlign: 	'left',		
 			top: 		14,
@@ -181,7 +189,7 @@ var showHeader = function (successCallback) {
 			
 			var linkMeme = Ti.UI.createLabel({
 			 	color: 			'#7D0670',
-				text: 			'me.me/' + meme.name,
+				text: 			'me.me/' + Ti.App.myMemeInfo.name,
 				textAlign: 		'left',
 				font: 			{fontSize:18, fontWeight:'regular'},
 				top: 			16,
@@ -193,7 +201,7 @@ var showHeader = function (successCallback) {
 
 			linkMeme.addEventListener("click", function(e) {
 				Ti.App.fireEvent('openLinkOnSafari', {
-					url: meme.url,
+					url: Ti.App.myMemeInfo.url,
 					title: 'Open Link',
 					message: 'We will open this link on Safari'
 				});
@@ -242,7 +250,7 @@ var showHeader = function (successCallback) {
 			
 			var followLabel = Ti.UI.createLabel({
  				color: 			'#666',
-				text: 			'followers ' + meme.followers + '    following ' + meme.following	,
+				text: 			'followers ' + Ti.App.myMemeInfo.followers + '    following ' + Ti.App.myMemeInfo.following	,
 				textAlign: 		'left',
 				font: 			{fontSize:14, fontWeight:'regular'},
 				left: 			50,

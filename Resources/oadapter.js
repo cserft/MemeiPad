@@ -366,9 +366,18 @@ var OAuthAdapter = function(pService, authorize) {
 		file.deleteFile();
 	};
 	
+	var getUserGuid = function() {
+		var token = loadToken();
+		if (token && token.token && token.token.xoauth_yahoo_guid) {
+			return token.token.xoauth_yahoo_guid;
+		}
+		return null;
+	}
+	
 	return({
 		attachLogin: attachLogin,
 		logout: logout,
+		getUserGuid: getUserGuid,
 		isLoggedIn: isLoggedIn,
 		getYql: getYql
 	});

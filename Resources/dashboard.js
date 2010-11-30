@@ -8,11 +8,7 @@ win.orientationModes =  [
 ];
 
 //Set current timestamp
-var timestamp = function() {
-	return((new Date()).getTime());
-};
-
-var now = timestamp();
+var now = new Date().getTime();
 
 //RETRIEVING YQL OBJECT
 var win1 = win.win1; // Window Original created on app.js
