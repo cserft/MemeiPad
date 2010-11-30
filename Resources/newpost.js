@@ -794,13 +794,6 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 		showProgressView('hide', null);
 		
 		Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
-		
-		Ti.API.debug(">>>>> upload response: [" + this.responseText + "]");
-		Ti.API.debug(">>>>> HTTP status code: " + xhr.status);
-		Ti.API.debug(">>>>> HTTP response header [Date]: " + xhr.getResponseHeader('Date'));
-		Ti.API.debug(">>>>> HTTP response header [Server]: " + xhr.getResponseHeader('Server'));
-		Ti.API.debug(">>>>> HTTP response header [Content-Type]: " + xhr.getResponseHeader('Content-Type'));
-		Ti.API.debug(">>>>> HTTP response header [Content-Length]: " + xhr.getResponseHeader('Content-Length'));
 	};
 	
 	xhr.onload = function(e) {
