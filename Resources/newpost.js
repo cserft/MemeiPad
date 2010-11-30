@@ -828,6 +828,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	
 	Ti.API.debug('Starting upload to URL [' + e.url + ']');
 	xhr.open('POST', e.url);
+	xhr.setTimeout(300000); // timeout to upload is 5 minutes
 	xhr.setRequestHeader('X-MemeApp-AppId', 'MemeAppiPad');
 	xhr.setRequestHeader('X-MemeApp-ServiceType', 'img');
 	xhr.setRequestHeader('X-MemeApp-Auth', auth);
