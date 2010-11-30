@@ -1,50 +1,80 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 Ti.include('lib/cache.js');
+Ti.include('app_highlight.js');
 
-var myMemeInfo = null;
-var oAuthAdapter = OAuthAdapter('meme', authorizationUI());
+Ti.App.myMemeInfo = null;
+Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 
 //base Window
 var win1 = Titanium.UI.createWindow({  
-    title:'Meme for iPad',
-    backgroundColor:'#141414',
-    backgroundImage: 'images/bg.jpg',
+    title: 				'Meme for iPad',
+    backgroundImage: 	'images/bg.png',
 	orientationModes : [
-	Titanium.UI.LANDSCAPE_LEFT,
-	Titanium.UI.LANDSCAPE_RIGHT
+		Titanium.UI.LANDSCAPE_LEFT,
+		Titanium.UI.LANDSCAPE_RIGHT
 	]
-
 });
+
+var highlightView = Titanium.UI.createScrollableView({
+	views: 					[],
+	top: 					51,
+	left: 					0,
+	width: 					1024,
+	height: 				273,
+	backgroundColor: 		'black',
+	showPagingControl: 		true,
+	pagingControlHeight: 	24,
+	pagingControlColor: 	'black',
+	// maxZoomScale: 			2.0,
+	currentPage: 			0,
+	zIndex: 				1
+});
+win1.add(highlightView);
+
+var appNavBarView = Ti.UI.createView({
+	backgroundImage: 		'images/bg_app_navbar.png',
+	backgroundColor: 		'black',
+	opacity: 				1,
+	top: 					0,
+	left: 					0,
+	width: 					1024,
+	height: 				50,
+	zIndex: 				1
+});
+win1.add(appNavBarView);
 
 var logoHeader = Titanium.UI.createImageView({
-	image:'images/logo_header.png',
-	top: 0,
-	left: 20,
-	width: 217, //actual: 194
-	height: 93 // actual: 47
+       	image:'images/logo_meme_white.png',
+       	top:            9,
+       	left:           15,
+       	width:          163,
+       	height:         33,
+		zIndex: 		2
 });
-win1.add(logoHeader);
+appNavBarView.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
-	backgroundImage:'images/btn_signin_top.png',
-	top: 5,
-	left: 795,
-	width:222, //actual: 176
-	height:89, //actual: 43
-	opacity:1,
-	visible: false
+	backgroundImage:'images/btn_signin_top_2.png',
+	top: -22,
+	left: 940,
+	width: 96, // 72
+	height: 97,  // 54
+	opacity: 1,
+	visible: false,
+	zIndex: 3
 });
 win1.add(btn_signin);
 
 var btn_signup = Titanium.UI.createButton({
-	backgroundImage:'images/btn_signup.png',
-	top: 5,
-	left: 450,
-	width: 352, //actual: 306
-	height: 89, //actual: 43
+	backgroundImage:'images/btn_signup2.png',
+	top: -26,
+	left: 599,
+	width: 369, //actual: 303	
+	height: 106, //actual: 54
 	opacity:1,
-	visible: false
+	visible: false,
+	zIndex: 3
 });
 win1.add(btn_signup);
 
@@ -56,78 +86,63 @@ btn_signup.addEventListener("click", function(e) {
 	});
 });
 
+
 // ====================
 // = LOGGED IN HEADER =
 // ====================
 
-var showHeader = function (yql, pType, successCallback) {
+var showHeader = function (successCallback) {
 	
-	Ti.API.info("showHeader function Called with pType = " + pType);
-
 	var headerView = Ti.UI.createView({
 		backgroundColor:'transparent',
 		left:0,
 		top:0,
-		height:88,
+		height:54,
 		width:1024,
-		zIndex: 2
-
+		zIndex: 4,
+		visible: true
 	});
 	win1.add(headerView);
 
-	if (pType === "logged") {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 
 		// ========================
 		// = retrieving yql data =
 		// ========================
 
-		var yqlMemeInfo = yql.query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=33,height=33)");
+		var yqlMemeInfo = Ti.App.oAuthAdapter.getYql().query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=35,height=35)");
 
 		if (!yqlMemeInfo.query.results) {
 			Ti.App.fireEvent('yqlerror');
 		}
 
 		var meme = yqlMemeInfo.query.results.meme;
-		myMemeInfo = meme;
+		Ti.App.myMemeInfo = meme;
 		
 		var btn_Username = Ti.UI.createButton({
-			backgroundImage: 	'images/btn_username.png',
-			height: 			41, //actual: 35
-			width: 				220, //actual: 214
-			left: 				290,
-			top: 				25,
+			backgroundImage: 	'images/btn_username_2.png',
+			backgroundSelectedImage: 'images/btn_username_selected.png',
+			height: 			49,
+			width: 				243,
+			left: 				207,
+			top: 				0,
 			zIndex:  			3
 		});
-				headerView.add(btn_Username);
-
-		var miniAvatarView = Ti.UI.createImageView({
-			image: 			meme.avatar_url.thumb,
-			defaultImage: 	'images/default_img_avatar.png',
-			top: 			4,
-			left: 			5,
-			width: 			33,
-			height: 		33,
-			borderRadius: 	3,
-			zIndex:  		2
-		});
-		btn_Username.add(miniAvatarView);
+		headerView.add(btn_Username);
 	
 		var memeTitleLabel = Ti.UI.createLabel({
 			color: 		'#ffffff',
 			text:  		meme.title,
-			font: 		{fontSize:13, fontFamily:'Helvetica Neue', fontWeight:'bold'},
-			textAlign: 	'left',
-			shadowColor:'black',
-			shadowOffset:{x:-1,y:-1},
-			top: 		10,
-			left:  		50,
+			font: 		{fontSize:14, fontFamily:'Helvetica Neue', fontWeight:'bold'},
+			textAlign: 	'left',		
+			top: 		14,
+			left:  		12,
 			height: 	20,
-			width: 		145,
+			width: 		200,
 			zIndex: 2
 		});
 		btn_Username.add(memeTitleLabel);
 	
-		
 		// ================
 		// = PopOver Menu =
 		// ================
@@ -203,7 +218,7 @@ var showHeader = function (yql, pType, successCallback) {
 			{
 				Ti.API.info("Signout Link clicked");
 				popover.hide({animated:true});
-				oAuthAdapter.logout('meme');
+				Ti.App.oAuthAdapter.logout('meme');
 				Ti.App.fireEvent('remove_tableview');
 				headerView.hide();
 				startApplication();
@@ -388,18 +403,18 @@ var showHeader = function (yql, pType, successCallback) {
 		// ===============
 		
 		var btn_StartPosting = Ti.UI.createButton({
-			backgroundImage: 	'images/btn_start_posting.png',
-			height: 			89, //actual: 43
-			width: 				306, //actual: 260
-			left: 				708,
-			top: 				0
+			backgroundImage: 	'images/btn_start_posting_2.png',
+			height: 			79, //55
+			width: 				407, //395
+			left: 				623,
+			top: 				-13
 		});
 		headerView.add(btn_StartPosting);
 		
 		// Opens the New Post Window
 		btn_StartPosting.addEventListener('click', function()
 		{
-			newPost(yql);
+			newPost();
 		});
 
 	} else {
@@ -414,40 +429,34 @@ var showHeader = function (yql, pType, successCallback) {
 };
 
 // If Authentication OK the Show Dashboard
-var showDashboard = function(yql,pDashboardType) {
-	
-	Ti.API.info('pDashboardType from showDashboard function on app.js = ' + pDashboardType);
+var winDashboard;
+var showDashboard = function() {
 	
 	// ===========================
 	// = CREATING DASHBOARD VIEW =
 	// ===========================
 
-	var winDashboard = Ti.UI.createWindow({
+	winDashboard = Ti.UI.createWindow({
 		url: 'dashboard.js',
 		name: 'Dashboard',
 		backgroundColor: 'transparent',
 		left: 0,
-		top: 90,
-		height: 658,
+		top: 331,
+		height: 417,
 		width: 1024,
 		navBarHidden: true,
-		yql: yql,
-		pDashboardType: pDashboardType,
-		myMemeInfo: myMemeInfo,
 		win1: win1,
-		zIndex: 2,
-		orientationModes: [
-			Titanium.UI.LANDSCAPE_LEFT,
-			Titanium.UI.LANDSCAPE_RIGHT
-		]
+		zIndex: 2
 	});
+	
+	// scrollView.add(winDashboard);
 	winDashboard.open();
 	
 	//Removes the TableView so it can start fresh
     Ti.App.fireEvent('remove_tableview');
 	
 	// Builds the LoggedIn Header or the SignIn one
-	if (pDashboardType === "logged") {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		btn_signin.visible = false;
 		btn_signup.visible = false;
 	} else {
@@ -456,25 +465,30 @@ var showDashboard = function(yql,pDashboardType) {
 	}
 };
 
+var dashboardShadow = Titanium.UI.createImageView({
+	image:'images/shadow.png',
+	backgroundColor: "transparent",
+	bottom:998,
+	left:0,
+	width:1024,
+	height:26,
+	zIndex:999
+});
+win1.add(dashboardShadow);
+
 var signInButtonClick = function(continuation) {
 	// Sign In Button Listener
 	btn_signin.addEventListener("click",continuation);
 };
 
 var startApplication = function() {
-	if (oAuthAdapter.isLoggedIn()) {
-		// logged in, shows logged dashboard and header
-		showHeader(oAuthAdapter.getYql(), "logged", function() {
-			showDashboard(oAuthAdapter.getYql(), "logged");
-		});
-		
-	} else {
-		// not logged in, shows unlogged screens
-		showHeader(null, "notlogged", function() {
-			showDashboard(oAuthAdapter.getYql(), "notlogged");
-		});
-	   	
-		oAuthAdapter.attachLogin(signInButtonClick, startApplication);
+	getHighlights(highlightView);
+	showHeader(function() {
+		showDashboard();
+	});
+	
+	if (! Ti.App.oAuthAdapter.isLoggedIn()) {   	
+		Ti.App.oAuthAdapter.attachLogin(signInButtonClick, startApplication);
 	}
 }
 
@@ -488,16 +502,15 @@ var a = Titanium.UI.createAnimation();
 a.duration = 200;
 a.top = 0;
 
-var newPost = function(yql) {
+var newPost = function() {
 	Ti.UI.createWindow({
 		url: 'newpost.js',
 		title: 'New Post',
 		backgroundColor: 'white',
 		left: 0,
-		top: 749,
+		top: -749,
 		height: 748,
 		width: 1024,
-		yql: yql,
 		zIndex: 3,
 		navBarHidden: true
 	}).open(a);
@@ -508,8 +521,7 @@ var newPost = function(yql) {
 var indWin = null;
 var actInd = null;
 
-function showIndicator(pMessage, pColor, pSize, pTop, pLeft)
-{
+function showIndicator(pMessage, pColor, pSize, pTop, pLeft) {
 	
 	// window container
 	indWin = Titanium.UI.createWindow({
@@ -558,8 +570,7 @@ function showIndicator(pMessage, pColor, pSize, pTop, pLeft)
 
 };
 
-function hideIndicator()
-{
+function hideIndicator() {
 	if (actInd && indWin) {
 		actInd.hide();
 		indWin.close({opacity:0,duration:500});
@@ -708,3 +719,71 @@ if (!Titanium.Network.online) {
 } else {
 	startApplication();
 };
+
+// =====================
+// = Permalink opening =
+// =====================
+var permalinkIsOpened = false; // controls multiple Permalinks Opened
+
+// Avoiding multiple Permalinks Opening
+Ti.App.addEventListener('permalinkIsOpenedFalse', function(e) {
+	permalinkIsOpened = false;
+});
+
+Ti.App.addEventListener('openPermalink', function(e) {
+	// permalink should open only when click was on the blackBox
+	// otherwise there will be no guid and pubid data and the app will crash
+	if (e.guid && e.pubId) {
+		// Sets the Permalink Animation startup settings
+		var t = Ti.UI.create2DMatrix();
+		t = t.scale(0);
+
+		var winPermalink = Ti.UI.createWindow({
+		    url: 'permalink.js',
+		    name: 'Permalink Window',
+		    backgroundColor:'transparent',
+			left:0,
+			top:0,
+			height:'100%',
+			width:'100%',
+			navBarHidden: true,
+			zIndex: 6,
+			transform: t,
+			pGuid: e.guid,
+			pPubId: e.pubId
+		});
+
+		// Creating the Open Permalink Transition
+		// create first transform to go beyond normal size
+		var t1 = Titanium.UI.create2DMatrix();
+		t1 = t1.scale(1.1);
+
+		var a = Titanium.UI.createAnimation();
+		a.transform = t1;
+		a.duration = 200;
+
+		// when this animation completes, scale to normal size
+		a.addEventListener('complete', function()
+		{
+			var t2 = Titanium.UI.create2DMatrix();
+			t2 = t2.scale(1.0);
+			winPermalink.animate({transform:t2, duration:200});
+		});
+
+		if (permalinkIsOpened == false){
+
+			Ti.App.fireEvent('show_indicator', {
+				message: "Loading...",
+				color: "#AB0899",
+				size: 200
+			});
+			permalinkIsOpened = true;
+			winPermalink.open(a);
+		}
+
+		setTimeout(function()
+		{
+			Ti.App.fireEvent('hide_indicator');
+		},10000);
+	}
+});

@@ -3,12 +3,9 @@ Ti.include('lib/commons.js');
 var win = Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
-var yql = win.yql;
+var yql = Ti.App.oAuthAdapter.getYql();
 var _guid = win.pGuid;
 var _pubId = win.pPubId;
-var myMemeInfo = win.myMemeInfo;
-var pDashboardType = win.pDashboardType;
-var openingDetails = win.openingDetails;
 
 // =======================
 // = DASHBOARD TABLEVIEW =
@@ -31,9 +28,9 @@ var yqldata = yql.query(yqlQuery);
 
 if (!yqldata.query.results) {
 	Ti.App.fireEvent('yqlerror');
+} else {
+	var post = yqldata.query.results.post;
 }
-
-var post = yqldata.query.results.post;
 
 // ============================
 // = BULDING PERMALINK LAYOUT =
@@ -41,31 +38,31 @@ var post = yqldata.query.results.post;
 
 var blackBG = Ti.UI.createView({
 	backgroundColor:'black',
-	width: '100%',
-	height: '100%',
-	opacity:0.85,
-	zIndex: 0,
-	touchEnabled: false
+	width:  		'100%',
+	height: 		'100%',
+	opacity: 		0.85,
+	zIndex: 		0,
+	touchEnabled: 	false
 });
 win.add(blackBG);
 
 var whiteBox = Ti.UI.createView({
 	backgroundColor:'white',
-	width: 878,
-	height: 626,
-	top:52,
-	left:73,
-	zIndex: 2
+	width: 		900,
+	height: 	632,
+	top: 		46,
+	left: 		61,
+	zIndex: 	2
 });
 win.add(whiteBox);
 
 var btn_close = Titanium.UI.createButton({
-	backgroundImage: 'images/btn_close.png',
-	top:32,
-	left:931,
-	width:36,
-	height:36,
-	zIndex:3
+	backgroundImage: 	'images/btn_close.png',
+	top: 				32,
+	left: 				942,
+	width: 				36,
+	height: 			36,
+	zIndex: 			3
 });
 win.add(btn_close);
 
@@ -74,11 +71,10 @@ btn_close.addEventListener("click", function(e)
 	var t3 = Titanium.UI.create2DMatrix();
 	t3 = t3.scale(0);
 	win.close({transform:t3,duration:200});
-	Ti.App.fireEvent('openingDetailsFalse');
+	Ti.App.fireEvent('permalinkIsOpenedFalse');
     // allows for other Permalinks to Open
 	
 });
-
 
 // ========================
 // = geo places retrieval =
@@ -96,10 +92,6 @@ btn_close.addEventListener("click", function(e)
 // 	
 // }
 
-// =========================
-// = WEBVIEW WITH THE POST =
-// =========================
-
 // =============================================
 // = DEFINITION OF LAYOUT TYPE IN THE WEB VIEW =
 // =============================================
@@ -113,7 +105,7 @@ var postWebView = Ti.UI.createWebView({
 		backgroundImage: 'images/bg.jpg',
 		top:0,
 		width: '100%',
-		height: 565,
+		height: 567,
         left:0,
         loading: true
 });
@@ -133,7 +125,7 @@ whiteBox.add(actAjax);
 var border = Ti.UI.createView({
 	backgroundColor:'#EBEBEB',
 	height:1,
-	bottom:60,
+	bottom:65,
 	width: '100%'	
 });
 whiteBox.add(border);
@@ -195,7 +187,7 @@ var meme = yqlMemeInfo.query.results.meme;
 var guidAvatar = Titanium.UI.createImageView({
 	image: meme.avatar_url.thumb,
 	defaultImage: 'images/default_img_avatar.png',
-	bottom:10,
+	bottom:14,
 	left:10,
 	width:40,
 	height:40,
@@ -207,7 +199,7 @@ var titleStripped = strip_html_entities(meme.title);
 
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
-	color:'#853885',
+	color:'#A9379C',
 	text: titleStripped,
 	textAlign:'left',
 	font: {
@@ -215,7 +207,7 @@ var guidNameLabel = Titanium.UI.createLabel({
 		fontFamily:'Helvetica',
 		fontWeight: 'bold'
 	},
-	bottom: 22,
+	bottom: 28,
 	left: 60,
 	width: 400,
 	height: 29,
@@ -237,8 +229,8 @@ var postUpdatedTimeLabel = Titanium.UI.createLabel({
 		fontFamily: 'Georgia',
 		fontStyle: 'italic'
 	},
-	bottom: 6,
-	left: 60,
+	bottom: 11,
+	left: 59,
 	width: 150,
 	height: 29,
 	zIndex: 2
@@ -250,57 +242,72 @@ whiteBox.add(postUpdatedTimeLabel);
 // = REPOST BUTTON AND COUNT =
 // ===========================
 
+var btn_repost = Titanium.UI.createButton({
+	backgroundImage:'images/btn_repost2.png',
+	width:147,
+	height:65,
+	bottom: 1,
+	right: 0,
+	zIndex: 1
+});
+whiteBox.add(btn_repost);
+
+// Already Reposted Icon
+var icon_reposted = Titanium.UI.createImageView({
+	image: 'images/icon_reposted.png',
+	top:18,
+	left:26,
+	width:30,
+	height:30,
+	zIndex:3
+});
+
 var repost_countInt = parseInt(post.repost_count);
 
 var repostCountLabel = Titanium.UI.createLabel({
 	color:'#666',
 	text: repost_countInt,
-	textAlign:'right',
+	textAlign:'left',
 	font: {
-		fontSize:20,
+		fontSize:21,
 		fontFamily:'Helvetica',
-		fontWeight: 'bold'
+		fontWeight: 'regular'
 	},
-	bottom: 12,
-	right:50,
+	bottom: 19,
+	left:815,
 	width:100,
 	height:29,
-	zIndex: 2
+	zIndex: 3
 });
 
 whiteBox.add(repostCountLabel);
 
-var btn_repost = Titanium.UI.createButton({
-	backgroundImage:'images/btn_repost.png',
-	width:36,
-	height:36,
-	bottom: 10,
-	right: 10,
+// Delete Button
+var btn_delete = Titanium.UI.createButton({
+	backgroundImage:'images/btn_trash.png',
+	width:15,
+	height:19,
+	bottom: 25,
+	right: 170,
 	zIndex: 1
 });
-whiteBox.add(btn_repost);
-
-// var repostActInd = Titanium.UI.createActivityIndicator({
-// 	width:36,
-// 	height:36,
-// 	bottom: 10,
-// 	right: 10,
-// 	style: Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
-// 	backgroundColor: 'white',
-// 	zIndex: 2
-// });
-// whiteBox.add(repostActInd);
-
 
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
-if (pDashboardType === 'notlogged') {
-	
+if (! Ti.App.oAuthAdapter.isLoggedIn()) {
+	// When not loggedIn, disables the Repost Button
 	btn_repost.enabled = false;	
+	// repostCountLabel.color = '#666';
 	
 } else {
 	
-	if (_guid == myMemeInfo.guid || post.via_guid == myMemeInfo.guid || post.origin_guid == myMemeInfo.guid) {
+	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || post.origin_guid == Ti.App.myMemeInfo.guid) {
+		
+		// If the loggedIn User is the Origin or Via, disables the Repost Button and applies the iCon reposted
 		btn_repost.enabled = false;	
+		btn_repost.add(icon_reposted);
+		whiteBox.add(btn_delete);
+		// repostCountLabel.color = '#666';
+		
 	} else {
 		btn_repost.enabled = true;	
 	}
@@ -320,8 +327,12 @@ btn_repost.addEventListener("click", function(e) {
 	var response = yqlInsert.query.results.status;
 	
 	if (response.message == "ok"){
-			repostCountLabel.text = repost_countInt+=1 ;
+			icon_reposted.opacity = 0;
+			btn_repost.add(icon_reposted);
+			icon_reposted.animate({opacity: 1, duration: 500});
 			btn_repost.enabled = false;		
+			// repostCountLabel.color = '#666';
+			repostCountLabel.text = repost_countInt+=1 ;
 	} else {
 		Ti.API.info("Error while reposting");	
 	}
@@ -329,30 +340,47 @@ btn_repost.addEventListener("click", function(e) {
 });
 
 // DELETE POST
-// btn_delete.addEventListener("click", function(e) {
-// 	
-// 	yqlQuery = "DELETE FROM meme.user.posts WHERE pubid = " + _pubId;
-// 	var yqlInsert = yql.query(yqlQuery);
-// 	var response = yqlInsert.query.results.status;
-// 	
-// 	if (response.message == "ok"){
-// 		var t3 = Titanium.UI.create2DMatrix();
-// 		t3 = t3.scale(0);
-// 		win.close({transform:t3,duration:200});
-// 		Ti.App.fireEvent('openingDetailsFalse');
-// 	
-// 	} else {
-// 		Ti.API.info("Error while deleting");	
-// 	}
-// 
-// });
+btn_delete.addEventListener("click", function(e) {
+	
+	//Alert to Open Safari for the Post Permalink
+	var alertOpenPermalink = Titanium.UI.createAlertDialog({
+		title: 'Delete Post',
+		message: 'Are you sure you want to delete this Post?',
+		buttonNames: ['Yes','No'],
+		cancel: 1
+	});	
+	alertOpenPermalink.show();
+
+	// Opens the Permalink page on Safari
+	alertOpenPermalink.addEventListener('click',function(e)
+	{
+		if (e.index == 0){
+			yqlQuery = "DELETE FROM meme.user.posts WHERE pubid = '" + _pubId + "'";
+			var yql_data = yql.query(yqlQuery);
+			var response = yql_data.query.results.status;
+
+			if (response.message == "ok"){
+				var t3 = Titanium.UI.create2DMatrix();
+				t3 = t3.scale(0);
+				win.close({transform:t3,duration:200, opacity:0});
+				Ti.App.fireEvent('permalinkIsOpenedFalse');
+				Ti.App.fireEvent('reloadDashboard');
+
+			} else {
+				Ti.API.error("Error while deleting Post: " + JSON.stringify(response));	
+			}	
+		}
+	});
+	
+
+});
 
 		
 // Hides the loading indicator indicator
 Ti.App.fireEvent('hide_indicator');
 
 //link to Open Permalink Web Page in the bottom
-pos_BtnOpenSafari = 80 + (post.url.length * 8) + 30;
+pos_BtnOpenSafari = 80 + (post.url.length * 8) + 20;
 
 var LinkPermalinkLabel = Titanium.UI.createLabel({
 	color:'#FFF',
@@ -364,8 +392,8 @@ var LinkPermalinkLabel = Titanium.UI.createLabel({
 		fontStyle: 'italic',
 		fontWeight: 'bold'
 	},
-	bottom:35,
-	left:73,
+	bottom:38,
+	left:61,
 	width:500,
 	height:15
 });
@@ -376,7 +404,7 @@ var btn_openSafari = Titanium.UI.createButton({
 	backgroundImage:'images/btn_fwd.png',
 	width:22,
 	height:17,
-	bottom: 35,
+	bottom: 40,
 	left: pos_BtnOpenSafari
 });
 win.add(btn_openSafari);

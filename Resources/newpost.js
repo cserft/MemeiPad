@@ -5,7 +5,7 @@ Ti.include('newpost_flashlight.js');
 var win 			= 	Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
-var yql 			= 	win.yql;
+var yql 			= 	Ti.App.oAuthAdapter.getYql();
 var win1 			= 	win.win1; // Window Original created on app.js
 var postText 		= 	""; 
 var postTitle 		= 	'';
@@ -28,7 +28,7 @@ if (Ti.App.Properties.hasProperty('draft_post')) {
 // animation on close Window
 var animeClose = Titanium.UI.createAnimation({
 	duration: 300,
-	top: 749	
+	top: -749	
 });
 
 
@@ -433,7 +433,7 @@ function showProgressView (pCommand, pMessage) {
 
 //Close Button
 btn_close_post.addEventListener('click', function() {
-
+	
 	win.close(animeClose);
 	
 	//Closes the Keyboard if open
@@ -916,6 +916,5 @@ Ti.App.addEventListener('hide_keyboard', function(e)
 Ti.App.addEventListener('close_newpost', function(e)
 {
 	//Closes New Post Window
-	win.close({opacity:0,duration:200})
-
+	win.close({opacity:0,duration:200});
 });

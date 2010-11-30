@@ -7,8 +7,6 @@ win.orientationModes =  [
 	Titanium.UI.LANDSCAPE_RIGHT
 ];
 
-var openingDetails = false; // controls multiple Permalinks Opened
-
 //Set current timestamp
 var timestamp = function() {
 	return((new Date()).getTime());
@@ -17,16 +15,12 @@ var timestamp = function() {
 var now = timestamp();
 
 //RETRIEVING YQL OBJECT
-var yql = win.yql; // Holds YQL Object to make queries
 var win1 = win.win1; // Window Original created on app.js
-var pDashboardType = win.pDashboardType;
-var myMemeInfo = win.myMemeInfo; 
 
 // Creating the List Post Table View
 
 var baseView = Ti.UI.createView({
     backgroundColor:'transparent',
-	//backgroundImage: 'images/bg.jpg',
 	width:'100%',
 	height: '100%',
 	top:0
@@ -46,7 +40,8 @@ var tableView = Titanium.UI.createTableView({
 	top:0,
 	backgroundColor: "transparent",
 	separatorStyle: Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
-	selectionStyle:'none'
+	selectionStyle:'none',
+	zIndex: 3
 });
 
 baseView.add(tableView);
@@ -114,11 +109,11 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	// Sets the proper Column Left position
 	if (pColumn == 0) {
-		blackBoxView.left = 35;	
+		blackBoxView.left = 21;	
 	} else if (pColumn == 1) {
-		blackBoxView.left = 355;
+		blackBoxView.left = 354;
 	} else if (pColumn == 2) {
-		blackBoxView.left = 675;
+		blackBoxView.left = 688;
 	}
 	
 	// create a post view
@@ -239,10 +234,8 @@ var tempRow = null;
 var tempItemRowCount = 0;
 var data = [];
 
-var getDashboardData = function (pTimestamp, pDashboardType) {
-	Ti.API.info("DashboardType from getDashboardData Function: " + pDashboardType);
-	
-	if (pDashboardType === "logged") {
+var getDashboardData = function (pTimestamp) {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		
 		if (pTimestamp == null)
 		{
@@ -285,7 +278,7 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 	
 	Ti.API.info(" ####### YQL Query executed: " + yqlQuery);
 
-	var yqldata = yql.query(yqlQuery);
+	var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
 	var posts = yqldata.query.results.post;
 	
 	// Ti.API.debug(" ####### YQL Query POSTS RESULT: " + JSON.stringify(posts));
@@ -298,9 +291,9 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 
 
 	// create THE TABLE ROWS
-	for (var k=0; k < posts.length; k++)
+	for (var k=1; k < posts.length; k++)
 	{
-		var post 		= posts[k];
+		var post 		= posts[k-1];
 		var _caption 	= post.caption;
 		var _pubId 		= post.pubid;
 		var _postUrl 	= post.url;
@@ -361,7 +354,7 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 			
 			if (itemPerRowCount == 0) {
 				var row = Ti.UI.createTableViewRow();
-				row.height = 245;
+				row.height = 256;
 			}
 			
 		}
@@ -424,99 +417,13 @@ var getDashboardData = function (pTimestamp, pDashboardType) {
 	
 }
 
-var dashboardShadow = Titanium.UI.createImageView({
-	image:'images/shadow.png',
-	backgroundColor: "transparent",
-	top:632,
-	left:0,
-	width:1024,
-	height:26,
-	zIndex:999
-});
-win.add(dashboardShadow);
-
-
 // ==================
 // = CLICK LISTENER =
 // ==================
-
-// Avoiding multiple Permalinks Opening
-Ti.App.addEventListener('openingDetailsFalse', function(e)
-{
-	openingDetails = false;
-});
-
-tableView.addEventListener('click', function(e)
-{
-	// Ti.API.info('event fired was ' + JSON.stringify(e));
-	// Ti.API.info('event source is ' + JSON.stringify(e.source));
+tableView.addEventListener('click', function(e) {
 	Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
-	
-	// permalink should open only when click was on the blackBox
-	// otherwise there will be no guid and pubid data and the app will crash
-	if (e.source.guid && e.source.pubId) {
-		// Sets the Permalink Animation startup settings
-		var t = Ti.UI.create2DMatrix();
-		t = t.scale(0);
-
-		var winPermalink = Ti.UI.createWindow({
-		    url: 'permalink.js',
-		    name: 'Permalink Window',
-		    backgroundColor:'transparent',
-			left:0,
-			top:0,
-			height:'100%',
-			width:'100%',
-			navBarHidden: true,
-			zIndex: 6,
-			transform: t,
-			pDashboardType: pDashboardType,
-			yql: yql, //passing Variables to this Window
-			pGuid: e.source.guid,
-			pPubId: e.source.pubId
-		});
-
-		if (myMemeInfo) {
-			winPermalink.myMemeInfo = myMemeInfo;
-		}
-
-
-		// Creating the Open Permalink Transition
-		// create first transform to go beyond normal size
-		var t1 = Titanium.UI.create2DMatrix();
-		t1 = t1.scale(1.1);
-
-		var a = Titanium.UI.createAnimation();
-		a.transform = t1;
-		a.duration = 200;
-
-		// when this animation completes, scale to normal size
-		a.addEventListener('complete', function()
-		{
-			var t2 = Titanium.UI.create2DMatrix();
-			t2 = t2.scale(1.0);
-			winPermalink.animate({transform:t2, duration:200});
-		});
-
-		if (openingDetails == false){
-
-			Ti.App.fireEvent('show_indicator', {
-				message: "Loading...",
-				color: "#AB0899",
-				size: 200
-			});
-			openingDetails = true;
-			winPermalink.openingDetails = openingDetails;
-			winPermalink.open(a);	
-		}
-
-		setTimeout(function()
-		{
-			Ti.App.fireEvent('hide_indicator');
-		},10000);
-	}
+	Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId });
 });
-
 
 // var startTouchX;
 // 
@@ -557,8 +464,6 @@ tableView.addEventListener('click', function(e)
 // 	// 
 // 	
 // });
-
-
 
 // =======================
 // = SCROLL DOWN LOADING =
@@ -613,7 +518,7 @@ function endUpdate()
 	tableView.deleteRow(lastRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.FADE});
 	
 	// Get posts from Dashboard
-	getDashboardData(lastTimestamp, pDashboardType);
+	getDashboardData(lastTimestamp);
 
 	// just scroll down a bit to the new rows to bring them into view
     //tableView.scrollToIndex(lastRow,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
@@ -626,7 +531,9 @@ function endUpdate()
 var lastDistance = 0; // calculate location to determine direction
 
 tableView.addEventListener('scroll',function(e)
-{
+{	
+	// Used for the Pull to Refresh
+	Ti.API.warn("scroll activated");
 	var offset = e.contentOffset.y;
 	var height = e.size.height;
 	var total = offset + height;
@@ -641,7 +548,7 @@ tableView.addEventListener('scroll',function(e)
 		// adjust the % of rows scrolled before we decide to start fetching
 		var nearEnd = theEnd * 0.2; 
 		
-		if (!updating && pDashboardType === "logged" && (total >= nearEnd))
+		if (!updating && Ti.App.oAuthAdapter.isLoggedIn() && (total >= nearEnd))
 		{
 			beginUpdate();
 		}
@@ -727,8 +634,7 @@ tableHeader.add(lastUpdatedLabel);
 tableHeader.add(actInd);
 
 // if User is logged in then it will show the Pull to Refresh Feature
-if (pDashboardType === "logged"){
-	
+if (Ti.App.oAuthAdapter.isLoggedIn()) {
 	tableView.headerPullView = tableHeader;
 }
 
@@ -742,7 +648,7 @@ function beginReloading()
 	//tableView.setData([]);
 	setTimeout(function()
 	{	
-		getDashboardData(null, pDashboardType);
+		getDashboardData(null);
 		beginUpdate();
 
 	},1000)
@@ -763,7 +669,7 @@ function endReloading()
 
 tableView.addEventListener('scroll',function(e)
 {
-	if (pDashboardType === "logged") {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		
 		var offset = e.contentOffset.y;
 		if (offset <= -65.0 && !pulling)
@@ -786,7 +692,7 @@ tableView.addEventListener('scroll',function(e)
 
 tableView.addEventListener('scrollEnd',function(e)
 {
-	if (pDashboardType === "logged" && pulling && !reloading && e.contentOffset.y <= -65.0)
+	if (Ti.App.oAuthAdapter.isLoggedIn() && pulling && !reloading && e.contentOffset.y <= -65.0)
 	{
 		reloading = true;
 		pulling = false;
@@ -800,14 +706,10 @@ tableView.addEventListener('scrollEnd',function(e)
 });
 //variable that configs the number of Dashboard pages that loads when the app starts
 
-if (pDashboardType === "logged") {
-	// Ti.API.debug("Mounting Dashboard Logged: pDashboardType= " + pDashboardType);
-	getDashboardData(null, pDashboardType);
+if (Ti.App.oAuthAdapter.isLoggedIn()) {
 	beginUpdate();
-} else {
-	// Ti.API.debug("Mounting Dashboard Not Logged: pDashboardType= " + pDashboardType);
-	getDashboardData(null, pDashboardType);
 }
+getDashboardData(null);
 
 Ti.App.addEventListener('reloadDashboard', function(e) {
 	// Ti.API.debug("Reloading Dashboard");
