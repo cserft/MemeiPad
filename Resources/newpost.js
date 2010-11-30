@@ -842,7 +842,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	xhr.setRequestHeader('X-MemeApp-MimeType', theImage.mimetype);
 	xhr.setRequestHeader('X-MemeApp-Size', theImage.width + 'x' + theImage.height);
   	xhr.send({
-		file: theImage
+		file: theImage.imageAsResized(50, 50).image
 	});
 });
 
