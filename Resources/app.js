@@ -717,7 +717,11 @@ Ti.App.addEventListener('yqlerror', function(e) {
 if (!Titanium.Network.online) {
 	displayErrorMessage('Network Error', 'You need to be online to use Meme for iPad. Please, check your network connection and try again.', 45, 30);
 } else {
-	startApplication();
+	if (Titanium.Network.networkTypeName == 'MOBILE') {
+		displayErrorMessage('Wi-Fi Required', 'Meme is a very data intensive application and needs a Wi-Fi connection to work properly. Please, connect to Wi-Fi and try again.', 58, 25);
+	} else {
+		startApplication();
+	}
 };
 
 // =====================
