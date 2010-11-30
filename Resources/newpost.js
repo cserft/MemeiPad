@@ -566,7 +566,7 @@ var handleImageEvent = function(event) {
   Ti.App.fireEvent("photoChosen");
 };
 
-var getImagePreviewSizes = function(max_side_size, original_img) {
+var getImageResizedSizes = function(max_side_size, original_img) {
 	var w = original_img.width, h = original_img.height;
 	if ((w > max_side_size) || (h > max_side_size)) {
 		if (w > h) {
@@ -658,19 +658,9 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
 		webViewPreview.html = '';
 		viewContainerPhoto.remove(webViewPreview);
-		
-		// If it is a local image
-		if ((theImage.width > 3000) || (theImage.height > 3000)) {
-			Titanium.UI.createAlertDialog({ 
-				title: 'Oops...', 
-				message: 'The chosen image is too large to post. Please pick another one.' 
-			}).show();
-			theImage = null;
-			return;
-		}
 	
 		// set smaller size for preview (max 250px for the biggest side)
-		preview_sizes = getImagePreviewSizes(500, theImage);
+		preview_sizes = getImageResizedSizes(500, theImage);
 	
 		// img properties
 		img.image = theImage;
@@ -691,11 +681,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 
 		//Repositioned the Temp Caption on top of the TextArea
 		tempPostLabel.animate({zIndex: 0, top: 120 + img.height});
-		
 	}
-	
-
-
 });
 
 // to remove the photo chosen
@@ -831,6 +817,10 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 		Ti.API.debug('ONSENDSTREAM - PROGRESS: ' + e.progress);
 	};
 	
+	// Resizes image before uploading
+	var new_size = getImageResizedSizes(2048, theImage);
+	theImage = theImage.imageAsResized(new_size.width, new_size.height);
+	
 	// "type:image/jpeg|size:800x600|secret:xxx"
 	var auth = Ti.Utils.md5HexDigest('type:' + theImage.mimetype + '|size:' + theImage.width + 'x' + theImage.height + '|secret:' + meme_be_secret);
 	
@@ -842,7 +832,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	xhr.setRequestHeader('X-MemeApp-MimeType', theImage.mimetype);
 	xhr.setRequestHeader('X-MemeApp-Size', theImage.width + 'x' + theImage.height);
   	xhr.send({
-		file: theImage.imageAsResized(50, 50).image
+		file: theImage
 	});
 });
 
