@@ -566,16 +566,17 @@ var handleImageEvent = function(event) {
   Ti.App.fireEvent("photoChosen");
 };
 
-var getImageResizedSizes = function(max_side_size, original_img) {
-	var w = original_img.width, h = original_img.height;
-	if ((w > max_side_size) || (h > max_side_size)) {
-		if (w > h) {
-			return { width: max_side_size, height: max_side_size * (h / w) };
-		}
-		return { height: max_side_size, width: max_side_size * (w / h) };
-	}
-	// maintain original size, no need to reduce
-	return { width: w, height: h };
+var getImageResizedSizes = function(max_width, max_height, original_img) {
+    var w = original_img.width, h = original_img.height;
+    if (w > max_width) {
+        w = max_width;
+        h = (max_width * original_img.height) / original_img.width;
+    }
+    if (h > max_height) {
+        h = max_height;
+        w = (max_height * original_img.width) / original_img.height;
+    }
+    return { width: w, height: h };
 };
 
 Ti.App.addEventListener("photoChosen", function(e) {
@@ -659,8 +660,8 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		webViewPreview.html = '';
 		viewContainerPhoto.remove(webViewPreview);
 	
-		// set smaller size for preview (max 250px for the biggest side)
-		preview_sizes = getImageResizedSizes(500, theImage);
+		// set smaller size for preview
+		preview_sizes = getImageResizedSizes(500, 500, theImage);
 	
 		// img properties
 		img.image = theImage;
@@ -818,7 +819,8 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	};
 	
 	// Resizes image before uploading
-	var new_size = getImageResizedSizes(2048, theImage);
+	// Max size accepted by Meme is 780x2500 px
+	var new_size = getImageResizedSizes(780, 2500, theImage);
 	theImage = theImage.imageAsResized(new_size.width, new_size.height);
 	
 	// "type:image/jpeg|size:800x600|secret:xxx"
