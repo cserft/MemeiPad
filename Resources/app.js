@@ -55,7 +55,7 @@ var logoHeader = Titanium.UI.createImageView({
 appNavBarView.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
-	backgroundImage:'images/btn_signin_top_2.png',
+	backgroundImage:'images/btn_signin_top.png',
 	top: -22,
 	left: 940,
 	width: 96, // 72
@@ -67,7 +67,7 @@ var btn_signin = Titanium.UI.createButton({
 win1.add(btn_signin);
 
 var btn_signup = Titanium.UI.createButton({
-	backgroundImage:'images/btn_signup2.png',
+	backgroundImage:'images/btn_signup.png',
 	top: -26,
 	left: 599,
 	width: 369, //actual: 303	
@@ -120,7 +120,7 @@ var showHeader = function (successCallback) {
 		Ti.App.myMemeInfo = meme;
 		
 		var btn_Username = Ti.UI.createButton({
-			backgroundImage: 	'images/btn_username_2.png',
+			backgroundImage: 	'images/btn_username.png',
 			backgroundSelectedImage: 'images/btn_username_selected.png',
 			height: 			49,
 			width: 				243,
@@ -403,7 +403,7 @@ var showHeader = function (successCallback) {
 		// ===============
 		
 		var btn_StartPosting = Ti.UI.createButton({
-			backgroundImage: 	'images/btn_start_posting_2.png',
+			backgroundImage: 	'images/btn_start_posting.png',
 			height: 			79, //55
 			width: 				407, //395
 			left: 				623,

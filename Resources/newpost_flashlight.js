@@ -457,20 +457,19 @@ var flashlight_create = function() {
 						editTitleField.value = e.source.title;	
 						postTitle = e.source.title;
 					}
-					postBody = '';
-					textArea.value = '';
-					tempPostLabel.show();
+					postBody += '\n';
+					textArea.value += '\n';
 					theImage = e.source.fullPhoto;
 					Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 					break;
 				
 				case 'text':
 			    	//Removes whatever medias where ther ebefore
-					Ti.App.fireEvent("photoRemoved");
+					// Ti.App.fireEvent("photoRemoved");
 					if (e.source.abstract != "") {
-						textArea.value = e.source.abstract;
-						postBody = e.source.abstract;
-						tempPostLabel.hide();
+						textArea.value += '\n\n' + e.source.abstract;
+						postBody += '\n\n' + e.source.abstract;
+						textArea.focus();
 					}
 					editTitleField.value = e.source.title;	
 					postTitle = e.source.title;
@@ -478,9 +477,9 @@ var flashlight_create = function() {
 				
 				case 'video':
 					if (e.source.content != "") {
-						textArea.value = e.source.content;
-						postBody = e.source.content;
-						tempPostLabel.hide();
+						textArea.value += '\n\n' + e.source.content;
+						postBody += '\n\n' + e.source.content;
+						textArea.focus();
 					}
 					editTitleField.value = e.source.title;	
 					postTitle = e.source.title;
@@ -495,14 +494,12 @@ var flashlight_create = function() {
 					break;
 				
 				case 'twitter':
-		    	//Removes whatever medias where there ebefore
-				Ti.App.fireEvent("photoRemoved");
+			    	//Removes whatever medias where there before
+					// Ti.App.fireEvent("photoRemoved");
 				
-				editTitleField.value = "";	
-				postTitle = "";
-				textArea.value = e.source.username + '\n' + e.source.tweet;
-				postBody = '<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '</blockquote>';
-				tempPostLabel.hide();
+					textArea.value += '\n\n' + e.source.username + '\n' + e.source.tweet;
+					postBody += '\n\n<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '</blockquote>';
+					textArea.focus();
 			
 				break;
 			}
