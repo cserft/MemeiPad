@@ -1,31 +1,40 @@
 Ti.include('lib/commons.js');
 
 var getHighlightQuery = function(callback) {
+	
+	var highlightQuery = Ti.App.cache.get('highlightQuery');
+	
+	if (highlightQuery) {
+		callback(highlightQuery);
+	} else {
+		var xhr = Titanium.Network.createHTTPClient();
+		xhr.onreadystatechange = function() {
+		    try {
+		      if (this.readyState == 4) {
+		           var results = JSON.stringify(this.responseText);
+		        }
+		    } catch(e) {
+		        Ti.API.debug("Error: " + e.error);
+		    }
+		};
 
-	//Loop to present the Search Results for YouTube
-	var xhr = Titanium.Network.createHTTPClient();
-	xhr.onreadystatechange = function() {
-	    try {
-	      if (this.readyState == 4) {
-	           var results = JSON.stringify(this.responseText);
-	        }
-	    } catch(e) {
-	        Ti.API.debug("Error: " + e.error);
-	    }
-	};
+	    xhr.onerror = function(e) {
+	        Ti.API.error("ERROR: " + e.error);
+	    };
 
-    xhr.onerror = function(e) {
-        Ti.API.error("ERROR: " + e.error);
-    };
+	    xhr.onload = function(e) {
+			var data = JSON.parse(this.responseText);
+			
+			// cache results for 15 minutes
+			Ti.App.cache.put('highlightQuery', data, 900);
+			
+			callback(data);
+	    };
 
-    xhr.onload = function(e) {
-		var data = JSON.parse(this.responseText);
-		callback(data);
-    };
-
-    xhr.open('GET', 'http://api.memeapp.net/v1/highlight/meme_ipad_dashboard');
-	// xhr.setRequestHeader('X-Requested-With', '');
-	xhr.send();
+	    xhr.open('GET', 'http://api.memeapp.net/v1/highlight/meme_ipad_dashboard');
+		// xhr.setRequestHeader('X-Requested-With', '');
+		xhr.send();
+	}
 };
 
 var highlightsDisplayed = false;
@@ -35,10 +44,21 @@ var getHighlights = function (highlightView) {
 		
 		getHighlightQuery(function (data) {
 
-			var yql_data = Ti.App.oAuthAdapter.getYql().query("SELECT * FROM meme.search(" + data.amount + ") WHERE query='" + data.query + "'" );
-
-			var posts = yql_data.query.results.post;
-
+			var posts = Ti.App.cache.get('highlightPosts');
+			
+			if (!posts) {
+				var yql_data = Ti.App.oAuthAdapter.getYql().query("SELECT * FROM meme.search(" + data.amount + ") WHERE query='" + data.query + "'" );
+				
+				if (!yql_data.query.results) {
+					Ti.App.fireEvent('yqlerror');
+				}
+				
+				posts = yql_data.query.results.post;
+				
+				// cache results for 15 minutes
+				Ti.App.cache.put('highlightPosts', posts, 900);
+			}
+			
 			for ( var i=0 ; i< posts.length ; i++ ) {
 
 				// if doesn't have caption, move to next item

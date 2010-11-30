@@ -123,8 +123,8 @@ var showHeader = function (successCallback) {
 
 			Ti.App.myMemeInfo = yqlMemeInfo.query.results.meme;
 			
-			// cache results for 12 hours
-			Ti.App.cache.put(info_cache_key, yqlMemeInfo.query.results.meme, 43200);
+			// cache results for 24 hours
+			Ti.App.cache.put(info_cache_key, yqlMemeInfo.query.results.meme, 86400);
 		}
 		
 		var btn_Username = Ti.UI.createButton({
