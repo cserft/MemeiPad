@@ -627,9 +627,6 @@ tableView.addEventListener('scrollEnd',function(e)
 });
 //variable that configs the number of Dashboard pages that loads when the app starts
 
-if (Ti.App.oAuthAdapter.isLoggedIn()) {
-	beginUpdate();
-}
 getDashboardData(null);
 
 Ti.App.addEventListener('reloadDashboard', function(e) {
