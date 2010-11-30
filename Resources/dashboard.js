@@ -225,18 +225,20 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 var lastTimestamp;
 
 //variable to hold incomplete rows
+var lastRow = 0;
 var tempRow = null;
 var tempItemRowCount = 0;
 var data = [];
 
 var getDashboardData = function (pTimestamp) {
+	var posts;
+	
 	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		
-		if (pTimestamp == null)
-		{
+		if (pTimestamp == null) {
 			// Reload TableVIew or First Build
 			
-		//	clear Table
+			//	clear Table
 			lastRow = 0;
 			data = [];
 			tempRow = null;
@@ -252,29 +254,37 @@ var getDashboardData = function (pTimestamp) {
 
 		}
 		
+		var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
+		
+		// warning: cannot be cached logged-in dashboard
+		posts = yqldata.query.results.post;
+		
 	} else {
 		
-		if (pTimestamp == null)
-		{
-			// NOT LOGGED IN SO GETS THE FEATURED POSTS
+		// NOT LOGGED IN SO GETS THE FEATURED POSTS
+		posts = Ti.App.cache.get('dashboardNotLoggedPosts');
+		
+		if (!posts) {
 			// Reload TableVIew or First Build
 			lastRow = 0;
 			data = [];
 			tempRow = null;
 			tempItemRowCount = 0;
-		
+
 			Ti.API.info(" ####### STARTING FEATURED DASHBOARD (NOT LOGGED IN) ##########");
 
 			yqlQuery = "SELECT * FROM meme.posts.featured WHERE locale='en' | meme.functions.thumbs(width=307,height=231)";
+			
+			var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
+			posts = yqldata.query.results.post;
+			
+			// cache result for 2 hours
+			Ti.App.cache.put('dashboardNotLoggedPosts', posts, 7200);
 		}
+		
 	}
 
 	var itemPerRowCount = 0;
-	
-	Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
-
-	var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
-	var posts = yqldata.query.results.post;
 
 	//Defines the last post timestamp so we can paginate the Dashboard
 	lastTimestamp = posts[(posts.length - 1)].timestamp;

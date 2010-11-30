@@ -22,7 +22,7 @@ Usage:
 // ##################################################
 
 var Cache = function(options) {
-	var init_cache, expire_cache, current_timestamp, get, put;
+	var init_cache, expire_cache, current_timestamp, get, put, del;
 	
 	// Cache initialization
 	init_cache = function(cache_expiration_interval) {
@@ -83,6 +83,12 @@ var Cache = function(options) {
 		db.close();
 	}
 	
+	del = function(key) {
+		var db = Titanium.Database.open('cache');
+		db.execute('DELETE FROM cache WHERE key = ?', key);
+		db.close();
+	}
+	
 	return function(options) {
 		var expiration_seconds = 30;
 		if (options && options.cache_expiration_interval) {
@@ -93,7 +99,8 @@ var Cache = function(options) {
 		
 		return {
 			get: get,
-			put: put
+			put: put,
+			del: del
 		}
 	}(options);
 };
