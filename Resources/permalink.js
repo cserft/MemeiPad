@@ -6,7 +6,6 @@ var win = Ti.UI.currentWindow;
 var yql = Ti.App.oAuthAdapter.getYql();
 var _guid = win.pGuid;
 var _pubId = win.pPubId;
-var pDashboardType = Ti.App.oAuthAdapter.isLoggedIn() ? 'logged' : 'notlogged';
 
 // =======================
 // = DASHBOARD TABLEVIEW =
@@ -291,7 +290,7 @@ whiteBox.add(btn_repost);
 
 
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
-if (pDashboardType === 'notlogged') {
+if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 	
 	btn_repost.enabled = false;	
 	
