@@ -5,7 +5,11 @@ Ti.include('app_highlight.js');
 
 Ti.App.myMemeInfo = null;
 Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
-Ti.App.cache = Cache({ cache_expiration_interval: 60 });
+
+Ti.App.cache = Cache({ 
+	cache_expiration_interval: 60, 
+	disable: true // WARNING: remove this before put in production :)
+});
 
 //base Window
 var win1 = Titanium.UI.createWindow({  

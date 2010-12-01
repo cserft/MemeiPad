@@ -90,6 +90,16 @@ var Cache = function(options) {
 	}
 	
 	return function(options) {
+		// if development environment, disable cache capabilities
+		if (options && options.disable) {
+			return {
+				get: function(){},
+				put: function(){},
+				del: function(){}
+			}
+		}
+		
+		// initialize everything
 		var expiration_seconds = 30;
 		if (options && options.cache_expiration_interval) {
 			expiration_seconds = options.cache_expiration_interval;
