@@ -25,7 +25,7 @@ _____ AFTER LAUNCH _____
 
 permalink.js
 ------------
-
+- add report abuse button
 
 _____ AFTER LAUNCH _____
 - Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
@@ -43,6 +43,7 @@ newpost.js
 
 
 _____ AFTER LAUNCH _____
+- bookmarklet to open the App and paste the link in the newpost.js
 - improve the link paste on Flashlight, replacing the MATCH method with TEST
 - Save Video/Photo on Drafts
 - Draft Should save Media as well

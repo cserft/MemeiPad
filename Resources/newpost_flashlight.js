@@ -170,7 +170,7 @@ var flashlight_create = function() {
 			switch(e.searchType) {
 				case 0: // Video 
 					Ti.API.info("####### Video Search ");
-					yqlQuery = 'select * from youtube.search where query="' + queryText + '"';
+					yqlQuery = "SELECT * FROM youtube.search WHERE query='" + queryText + "'";
 
 					var yqlData = yql.query(yqlQuery);
 					
