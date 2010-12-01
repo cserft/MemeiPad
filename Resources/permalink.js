@@ -333,7 +333,7 @@ var repost_comment_view = Titanium.UI.createView({
 var repostComment = "";
 
 var repostCommentField = Titanium.UI.createTextField({
-	value: 			repostComment,
+	value: 			'',
 	hintText: 		'add your comment...',
 	color: 			'#666',
 	textAlign: 		'left',
@@ -349,15 +349,15 @@ var repostCommentField = Titanium.UI.createTextField({
 repost_comment_view.add(repostCommentField);
 
 // REPORT ABUSE Button
-var btn_repost_open = Titanium.UI.createButton({
-	backgroundImage: 	'images/btn_repost_open.png',
+var btn_repost_save = Titanium.UI.createButton({
+	backgroundImage: 	'images/btn_save.png',
 	width: 				104,
 	height: 			30,
 	top: 				17,
 	right: 				16,
 	zIndex: 			1
 });
-repost_comment_view.add(btn_repost_open);
+repost_comment_view.add(btn_repost_save);
 
 // =============
 // = LISTENERS =
@@ -377,12 +377,6 @@ repostCommentField.addEventListener("blur", function(e) {
 
 // REPOST ANIMATION TO ADD COMMENT
 btn_repost.addEventListener("click", function(e) {
-	whiteBox.add(repost_comment_view);
-	repost_comment_view.animate({opacity:1, duration: 200});	
-});
-
-// REPOST AND COMMENT
-btn_repost_open.addEventListener("click", function(e) {
 	
 	yqlQuery = "INSERT INTO meme.user.posts (guid, pubid) VALUES ('" + _guid + "', '" + _pubId + "')";
 
@@ -390,14 +384,42 @@ btn_repost_open.addEventListener("click", function(e) {
 	var response = yqlInsert.query.results.status;
 	
 	if (response.message == "ok"){
-			repost_comment_view.animate({opacity:0, duration: 200});
 			icon_reposted.opacity = 0;
 			btn_repost.add(icon_reposted);
 			icon_reposted.animate({opacity: 1, duration: 500});
 			btn_repost.enabled = false;	
 			repostCountLabel.text = repost_countInt+=1 ;
+			
+			// Add Comment Box after Reposting
+			whiteBox.add(repost_comment_view);
+			repost_comment_view.animate({opacity:1, duration: 200});
+			
 	} else {
 		Ti.API.info("Error while reposting");	
+	}
+		
+});
+
+// REPOST AND COMMENT
+btn_repost_save.addEventListener("click", function(e) {
+	
+	if (repostCommentField.value != '') {
+		yqlQuery = "INSERT INTO meme.user.comments (guid, pubid, comment) VALUES ('" + _guid + "', '" + _pubId + "', '" + repostCommentField.value + "')";
+
+		var yqlInsert = yql.query(yqlQuery);
+		var response = yqlInsert.query.results.status;
+
+		if (response.message == "ok"){
+				repost_comment_view.animate({opacity:0, duration: 200});
+				whiteBox.remove(repost_comment_view);
+
+		} else {
+			Ti.API.info("Error while saving Comment on reposting");	
+		}
+			
+	} else {
+		repost_comment_view.animate({opacity:0, duration: 200});
+		whiteBox.remove(repost_comment_view);
 	}
 
 });
