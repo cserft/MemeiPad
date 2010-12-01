@@ -319,12 +319,70 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 }
 
 
+// REPOST ADD COMMENT VIEWS
+var repost_comment_view = Titanium.UI.createView({
+	backgroundImage: 	'images/bg_btn_repost_comment.png',
+	bottom: 			1,
+	right: 				0, 
+	width: 				666,
+	height: 			65,
+	zIndex: 			4,
+	opacity: 			0
+});
+
+var repostComment = "";
+
+var repostCommentField = Titanium.UI.createTextField({
+	value: 			repostComment,
+	hintText: 		'add your comment...',
+	color: 			'#666',
+	textAlign: 		'left',
+	font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
+	width: 			450,
+	height: 		40,
+	top: 			15,
+	left: 			47,
+	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_NONE,
+	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
+	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
+});
+repost_comment_view.add(repostCommentField);
+
+// REPORT ABUSE Button
+var btn_repost_open = Titanium.UI.createButton({
+	backgroundImage: 	'images/btn_repost_open.png',
+	width: 				104,
+	height: 			30,
+	top: 				17,
+	right: 				16,
+	zIndex: 			1
+});
+repost_comment_view.add(btn_repost_open);
+
 // =============
 // = LISTENERS =
 // =============
 
-// REPOST
+// MOVE WINDOW ON COMMENT FOCUS SO KEYBOARD WON'T BE OVER THE COMMENT FIELD
+repostCommentField.addEventListener("focus", function(e) {
+	whiteBox.animate({top: -250, duration: 200});
+	btn_close.animate({top:-264, duration: 200});
+});
+
+// MOVE WINDOW BACK ON COMMENT BLUR
+repostCommentField.addEventListener("blur", function(e) {
+	whiteBox.animate({top: 46, duration: 200});
+	btn_close.animate({top: 32, duration: 200});
+});
+
+// REPOST ANIMATION TO ADD COMMENT
 btn_repost.addEventListener("click", function(e) {
+	whiteBox.add(repost_comment_view);
+	repost_comment_view.animate({opacity:1, duration: 200});	
+});
+
+// REPOST AND COMMENT
+btn_repost_open.addEventListener("click", function(e) {
 	
 	yqlQuery = "INSERT INTO meme.user.posts (guid, pubid) VALUES ('" + _guid + "', '" + _pubId + "')";
 
@@ -332,11 +390,11 @@ btn_repost.addEventListener("click", function(e) {
 	var response = yqlInsert.query.results.status;
 	
 	if (response.message == "ok"){
+			repost_comment_view.animate({opacity:0, duration: 200});
 			icon_reposted.opacity = 0;
 			btn_repost.add(icon_reposted);
 			icon_reposted.animate({opacity: 1, duration: 500});
-			btn_repost.enabled = false;		
-			// repostCountLabel.color = '#666';
+			btn_repost.enabled = false;	
 			repostCountLabel.text = repost_countInt+=1 ;
 	} else {
 		Ti.API.info("Error while reposting");	
