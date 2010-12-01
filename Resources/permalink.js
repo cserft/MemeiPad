@@ -237,7 +237,7 @@ whiteBox.add(postUpdatedTimeLabel);
 
 var btn_repost = Titanium.UI.createButton({
 	backgroundImage:'images/btn_repost2.png',
-	width:147,
+	width:150,
 	height:65,
 	bottom: 1,
 	right: 0,
@@ -248,8 +248,8 @@ whiteBox.add(btn_repost);
 // Already Reposted Icon
 var icon_reposted = Titanium.UI.createImageView({
 	image: 'images/icon_reposted.png',
-	top:18,
-	left:26,
+	top:16,
+	left:30,
 	width:30,
 	height:30,
 	zIndex:3
@@ -266,7 +266,7 @@ var repostCountLabel = Titanium.UI.createLabel({
 		fontFamily:'Helvetica',
 		fontWeight: 'regular'
 	},
-	bottom: 19,
+	bottom: 21,
 	left:815,
 	width:100,
 	height:29,
