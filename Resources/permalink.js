@@ -275,6 +275,16 @@ var repostCountLabel = Titanium.UI.createLabel({
 
 whiteBox.add(repostCountLabel);
 
+// REPORT ABUSE Button
+var btn_report_abuse = Titanium.UI.createButton({
+	backgroundImage:'images/btn_report_abuse.png',
+	width:17,
+	height:17,
+	bottom: 25,
+	right: 170,
+	zIndex: 1
+});
+
 // Delete Button
 var btn_delete = Titanium.UI.createButton({
 	backgroundImage:'images/btn_trash.png',
@@ -287,9 +297,9 @@ var btn_delete = Titanium.UI.createButton({
 
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
 if (! Ti.App.oAuthAdapter.isLoggedIn()) {
-	// When not loggedIn, disables the Repost Button
+	// When not loggedIn, disables the Repost Button and adds the Report Abuse button
 	btn_repost.enabled = false;	
-	// repostCountLabel.color = '#666';
+	whiteBox.add(btn_report_abuse);
 	
 } else {
 	
@@ -299,10 +309,12 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 		btn_repost.enabled = false;	
 		btn_repost.add(icon_reposted);
 		whiteBox.add(btn_delete);
-		// repostCountLabel.color = '#666';
 		
 	} else {
-		btn_repost.enabled = true;	
+		
+		// When Logged In and not the owner of the Post, enables Repost and Report Abuse Btn
+		btn_repost.enabled = true;
+		whiteBox.add(btn_report_abuse);
 	}
 }
 
@@ -345,8 +357,7 @@ btn_delete.addEventListener("click", function(e) {
 	alertOpenPermalink.show();
 
 	// Opens the Permalink page on Safari
-	alertOpenPermalink.addEventListener('click',function(e)
-	{
+	alertOpenPermalink.addEventListener('click',function(e)	{
 		if (e.index == 0){
 			yqlQuery = "DELETE FROM meme.user.posts WHERE pubid = '" + _pubId + "'";
 			var yql_data = yql.query(yqlQuery);
@@ -364,8 +375,26 @@ btn_delete.addEventListener("click", function(e) {
 			}	
 		}
 	});
-	
+});
 
+// REPORT ABUSE LISTENER
+btn_report_abuse.addEventListener("click", function(e) {
+	//Alert to Open Report Abuse page on Safari
+	var alertOpenPermalink = Titanium.UI.createAlertDialog({
+		title: 'Report Abuse',
+		message: 'We will open the Report Abuse page on Safari.',
+		buttonNames: ['Yes','Cancel'],
+		url: post.url + 'abuse/',
+		cancel: 1
+	});	
+	alertOpenPermalink.show();
+
+	alertOpenPermalink.addEventListener('click',function(e)
+	{
+		if (e.index == 0){
+			Ti.Platform.openURL(alertOpenPermalink.url);	
+		}
+	});
 });
 
 		
