@@ -254,7 +254,12 @@ var icon_reposted = Titanium.UI.createImageView({
 	zIndex:3
 });
 
-var repost_countInt = parseInt(post.repost_count);
+// IF HAS ZERO REPOSTS DOES NOT SHOW ZERO
+if (parseInt(post.repost_count) == 0) {
+	var repost_countInt = "";
+} else {
+	var repost_countInt = parseInt(post.repost_count);
+}
 
 var repostCountLabel = Titanium.UI.createLabel({
 	color:'#666',
@@ -370,6 +375,7 @@ repost_comment_view.add(btn_close_comment);
 // =============
 // = LISTENERS =
 // =============
+// BTN to close the Comment form
 btn_close_comment.addEventListener('click', function(e) {
 	repost_comment_view.animate({opacity:0, duration: 200});
 	whiteBox.remove(repost_comment_view);
