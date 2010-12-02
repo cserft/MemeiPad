@@ -1,7 +1,7 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 Ti.include('lib/cache.js');
-Ti.include('app_highlight.js');
+// Ti.include('app_highlight.js');
 
 Ti.App.myMemeInfo = null;
 Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
@@ -274,7 +274,7 @@ var showHeader = function (successCallback) {
 			
 			var aboutApp = Ti.UI.createLabel({
  				color: 			'#333',
-				text: 			'About Meme for iPad',
+				text: 			'Additional Terms of Service',
 				textAlign: 		'left',
 				font: 			{fontSize:18, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
@@ -345,10 +345,10 @@ var showHeader = function (successCallback) {
 			aboutHTML += '</body></html>'
 			
 			var aboutView = Ti.UI.createWebView({
-				html: 				aboutHTML,
+				url: 				'atos.html', // aboutHTML,
 				top: 				50,	
 				width: 				335,
-				height: 			270,
+				height: 			360, // correct: 270
 				backgroundColor: 	'#FFF'
 			});
 			aboutWindow.add(aboutView);
@@ -361,7 +361,7 @@ var showHeader = function (successCallback) {
 				style: 				Ti.UI.iPhone.SystemButtonStyle.PLAIN,
 				zIndex: 			3
 			});
-			aboutWindow.add(aboutGitButton);
+			// aboutWindow.add(aboutGitButton);
 
 			aboutGitButton.addEventListener("click", function(e) {
 				Ti.App.fireEvent('openLinkOnSafari', {
@@ -395,10 +395,7 @@ var showHeader = function (successCallback) {
 				if (e.index == 2) {
 					popover.height = 420; 
 					settingsTableView.animate({left: -341, duration: 200});
-					aboutWindow.animate({left: 0, duration: 200});
-					
-					// navGroup.open(aboutWindow, {animated: true, duration: 100});
-					
+					aboutWindow.animate({left: 0, duration: 200});				
 				}
 			});
 			
