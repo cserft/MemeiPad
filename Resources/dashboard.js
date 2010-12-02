@@ -385,6 +385,18 @@ var getDashboardData = function (pTimestamp) {
 	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
 }
 
+// Gradient in the end of the screen to smooth the design
+var dashboardShadow = Titanium.UI.createImageView({
+	image: 				'images/shadow.png',
+	backgroundColor: 	"transparent",
+	bottom: 			0,
+	left: 				0,
+	width: 				1024,
+	height: 			26,
+	zIndex: 			999
+});
+win.add(dashboardShadow);
+
 // ==================
 // = CLICK LISTENER =
 // ==================

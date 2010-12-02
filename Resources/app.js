@@ -406,7 +406,6 @@ var showHeader = function (successCallback) {
 
 		});
 		
-		
 		// ===============
 		// = post button =
 		// ===============
@@ -416,7 +415,8 @@ var showHeader = function (successCallback) {
 			height: 			79, //55
 			width: 				407, //395
 			left: 				623,
-			top: 				-13
+			top: 				-13,
+			zIndex: 			5
 		});
 		headerView.add(btn_StartPosting);
 		
@@ -473,17 +473,6 @@ var showDashboard = function() {
 		btn_signup.visible = true;
 	}
 };
-
-var dashboardShadow = Titanium.UI.createImageView({
-	image:'images/shadow.png',
-	backgroundColor: "transparent",
-	bottom:998,
-	left:0,
-	width:1024,
-	height:26,
-	zIndex:999
-});
-win1.add(dashboardShadow);
 
 var signInButtonClick = function(continuation) {
 	// Sign In Button Listener
