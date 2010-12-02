@@ -467,8 +467,8 @@ var flashlight_create = function() {
 			    	//Removes whatever medias where ther ebefore
 					// Ti.App.fireEvent("photoRemoved");
 					if (e.source.abstract != "") {
-						textArea.value += '\n\n' + e.source.abstract;
-						postBody += '\n\n' + e.source.abstract;
+						textArea.value += '\n' + e.source.abstract;
+						postBody += '\n' + e.source.abstract;
 						textArea.focus();
 					}
 					editTitleField.value = e.source.title;	
@@ -477,8 +477,8 @@ var flashlight_create = function() {
 				
 				case 'video':
 					if (e.source.content != "") {
-						textArea.value += '\n\n' + e.source.content;
-						postBody += '\n\n' + e.source.content;
+						textArea.value += '\n' + e.source.content;
+						postBody += '\n' + e.source.content;
 						textArea.focus();
 					}
 					editTitleField.value = e.source.title;	
@@ -497,8 +497,8 @@ var flashlight_create = function() {
 			    	//Removes whatever medias where there before
 					// Ti.App.fireEvent("photoRemoved");
 				
-					textArea.value += '\n\n' + e.source.username + '\n' + e.source.tweet;
-					postBody += '\n\n<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '</blockquote>';
+					textArea.value += '\n' + e.source.username + '\n' + e.source.tweet;
+					postBody += '\n<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '</blockquote>';
 					textArea.focus();
 			
 				break;
