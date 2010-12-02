@@ -320,7 +320,7 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 
 // REPOST ADD COMMENT VIEWS
 var repost_comment_view = Titanium.UI.createView({
-	backgroundImage: 	'images/bg_btn_repost_comment2.png',
+	backgroundImage: 	'images/bg_btn_repost_comment.png',
 	bottom: 			1,
 	left: 				0, 
 	width: 				753,
