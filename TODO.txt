@@ -7,7 +7,9 @@ _____ AFTER LAUNCH _____
 - Create a Website for the App
 
 app.js
-------------	
+------------
+- REsize Images in the Hightligh
+- implement button to close the Highlights and expand the dashboard	
 - BUG: when signing in, the Dashboard doesn't load (ERROR oadapter.js line 233)
 
 _____ AFTER LAUNCH _____
@@ -25,7 +27,7 @@ _____ AFTER LAUNCH _____
 
 permalink.js
 ------------
-- add report abuse button
+- BUG: little bug when clicking in the respost comment text field, keyboard does not show up, needs to click twice
 
 _____ AFTER LAUNCH _____
 - Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
@@ -40,7 +42,7 @@ _____ AFTER LAUNCH _____
 
 newpost.js
 ----------
-
+- BUG: add image from Flashlight, remove it, add another one. The textArea will move behind the photo (happens with videos as well)
 
 _____ AFTER LAUNCH _____
 - bookmarklet to open the App and paste the link in the newpost.js
