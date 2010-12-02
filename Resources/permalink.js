@@ -11,7 +11,6 @@ var _pubId = win.pPubId;
 // = DASHBOARD TABLEVIEW =
 // =======================
 
-
 // Example Queries to retrieve Post Details
 // "SELECT * FROM meme.posts WHERE owner_guid='MOLV2IG2KYLCBZDPMFVUQ7HKYU' and pubid='NtnNg2A'"
 // "SELECT * FROM meme.post.info WHERE owner_guid='MOLV2IG2KYLCBZDPMFVUQ7HKYU' and pubid='NtnNg2A'"
@@ -321,16 +320,14 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 
 // REPOST ADD COMMENT VIEWS
 var repost_comment_view = Titanium.UI.createView({
-	backgroundImage: 	'images/bg_btn_repost_comment.png',
+	backgroundImage: 	'images/bg_btn_repost_comment2.png',
 	bottom: 			1,
-	right: 				0, 
-	width: 				666,
+	left: 				0, 
+	width: 				753,
 	height: 			65,
 	zIndex: 			4,
 	opacity: 			0
 });
-
-var repostComment = "";
 
 var repostCommentField = Titanium.UI.createTextField({
 	value: 			'',
@@ -338,45 +335,61 @@ var repostCommentField = Titanium.UI.createTextField({
 	color: 			'#666',
 	textAlign: 		'left',
 	font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
-	width: 			450,
-	height: 		40,
+	width: 			500,
+	height: 		38,
 	top: 			15,
-	left: 			47,
+	left: 			52,
 	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_NONE,
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
 	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
 repost_comment_view.add(repostCommentField);
 
-// REPORT ABUSE Button
-var btn_repost_save = Titanium.UI.createButton({
-	backgroundImage: 	'images/btn_save.png',
-	width: 				104,
-	height: 			30,
-	top: 				17,
-	right: 				16,
+// SEND COMMENT BUTTON
+var btn_send_comment = Titanium.UI.createButton({
+	backgroundImage: 	'images/btn_send_comment.png',
+	width: 				125,
+	height: 			34,
+	top: 				16,
+	left: 				564,
 	zIndex: 			1
 });
-repost_comment_view.add(btn_repost_save);
+repost_comment_view.add(btn_send_comment);
+
+// CLOSE COMMENT BUTTON
+var btn_close_comment = Titanium.UI.createButton({
+	backgroundImage: 	'images/btn_close_comment.png',
+	width: 				25,
+	height: 			25,
+	top: 				20,
+	left: 				708,
+	zIndex: 			1
+});
+repost_comment_view.add(btn_close_comment);
 
 // =============
 // = LISTENERS =
 // =============
+btn_close_comment.addEventListener('click', function(e) {
+	repost_comment_view.animate({opacity:0, duration: 200});
+	whiteBox.remove(repost_comment_view);
+});
+
 
 // MOVE WINDOW ON COMMENT FOCUS SO KEYBOARD WON'T BE OVER THE COMMENT FIELD
-repostCommentField.addEventListener("focus", function(e) {
+repostCommentField.addEventListener('focus', function(e) {
 	whiteBox.animate({top: -250, duration: 200});
 	btn_close.animate({top:-264, duration: 200});
 });
 
 // MOVE WINDOW BACK ON COMMENT BLUR
-repostCommentField.addEventListener("blur", function(e) {
+repostCommentField.addEventListener('blur', function(e) {
 	whiteBox.animate({top: 46, duration: 200});
 	btn_close.animate({top: 32, duration: 200});
 });
 
 // REPOST ANIMATION TO ADD COMMENT
-btn_repost.addEventListener("click", function(e) {
+btn_repost.addEventListener('click', function(e) {
 	
 	yqlQuery = "INSERT INTO meme.user.posts (guid, pubid) VALUES ('" + _guid + "', '" + _pubId + "')";
 
@@ -401,7 +414,7 @@ btn_repost.addEventListener("click", function(e) {
 });
 
 // REPOST AND COMMENT
-btn_repost_save.addEventListener("click", function(e) {
+btn_send_comment.addEventListener("click", function(e) {
 	
 	if (repostCommentField.value != '') {
 		yqlQuery = "INSERT INTO meme.user.comments (guid, pubid, comment) VALUES ('" + _guid + "', '" + _pubId + "', '" + repostCommentField.value + "')";
