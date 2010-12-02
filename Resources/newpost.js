@@ -590,7 +590,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		//FlashLight Content was clicked
 	
 		// If the content from FlashLight is a Video then presents a Video Player
-		if (theImage.indexOf("ytimg") != -1){
+		if (theImage.indexOf("ytimg") != -1) {
 			
 			webViewPreview.html = '';
 			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
@@ -607,7 +607,6 @@ Ti.App.addEventListener("photoChosen", function(e) {
 			
 		} else if (theImage.indexOf("vimeo") != -1) { 
 			
-
 			webViewPreview.html = '';
 			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
 			img.image = null;
@@ -625,8 +624,8 @@ Ti.App.addEventListener("photoChosen", function(e) {
 			img.image = null;
 				
 			webViewPreview.html = '';
-			// HTML for the Photo
 			
+			// HTML for the Photo
 			photoHtml = '<img src="' + theImage + '">';
 			
 			// Create our Webview to render the Photo
@@ -647,7 +646,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		});
 		
 		// Repositioned the TextArea below the chosen photo
-		textArea_top =  viewContainerPhoto.height + 95;
+		textArea_top =  webViewPreview.height + 95;
 		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
@@ -693,7 +692,7 @@ Ti.App.addEventListener("photoRemoved", function(e) {
 	viewContainerPhoto.hide();
 	viewContainerPhoto.width = 'auto';
 	btn_photo_close.visible = false;
-	textArea.animate({top: 79});
+	textArea.animate({top: 100});
 	tempPostLabel.animate({top: 300});
 });
 
@@ -894,8 +893,7 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 // = HIDE ALL KEYBOARDS =
 // ======================
 
-Ti.App.addEventListener('hide_keyboard', function(e)
-{
+Ti.App.addEventListener('hide_keyboard', function(e) {
 	//Closes the Keyboard if open
 	textArea.blur();
 	editTitleField.blur();
@@ -906,8 +904,7 @@ Ti.App.addEventListener('hide_keyboard', function(e)
 // ===========================
 // = CLOSE NEW POST LISTENER =
 // ===========================
-Ti.App.addEventListener('close_newpost', function(e)
-{
+Ti.App.addEventListener('close_newpost', function(e) {
 	//Closes New Post Window
 	win.close({opacity:0,duration:200});
 });
