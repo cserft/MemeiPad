@@ -566,7 +566,8 @@ var handleImageEvent = function(event) {
   Ti.App.fireEvent("photoChosen");
 };
 
-var getImageResizedSizes = function(max_width, max_height, original_img) {
+// Get smaller sizes to downsize images
+var getImageDownsizedSizes = function(max_width, max_height, original_img) {
     var w = original_img.width, h = original_img.height;
     if (w > max_width) {
         w = max_width;
@@ -660,7 +661,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		viewContainerPhoto.remove(webViewPreview);
 	
 		// set smaller size for preview
-		preview_sizes = getImageResizedSizes(500, 500, theImage);
+		preview_sizes = getImageDownsizedSizes(500, 500, theImage);
 	
 		// img properties
 		img.image = theImage.imageAsResized(preview_sizes.width, preview_sizes.height);
@@ -820,7 +821,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	
 	// Resizes image before uploading
 	// Max size accepted by Meme is 780x2500 px
-	var new_size = getImageResizedSizes(780, 2500, theImage);
+	var new_size = getImageDownsizedSizes(780, 2500, theImage);
 	theImage = theImage.imageAsResized(new_size.width, new_size.height);
 	
 	// "type:image/jpeg|size:800x600|secret:xxx"

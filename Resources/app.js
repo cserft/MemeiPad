@@ -21,21 +21,21 @@ var win1 = Titanium.UI.createWindow({
 	]
 });
 
-var highlightView = Titanium.UI.createScrollableView({
-	views: 					[],
-	top: 					51,
-	left: 					0,
-	width: 					1024,
-	height: 				273,
-	backgroundColor: 		'black',
-	showPagingControl: 		true,
-	pagingControlHeight: 	24,
-	pagingControlColor: 	'black',
-	// maxZoomScale: 			2.0,
-	currentPage: 			0,
-	zIndex: 				1
-});
-win1.add(highlightView);
+// var highlightView = Titanium.UI.createScrollableView({
+// 	views: 					[],
+// 	top: 					51,
+// 	left: 					0,
+// 	width: 					1024,
+// 	height: 				273,
+// 	backgroundColor: 		'black',
+// 	showPagingControl: 		true,
+// 	pagingControlHeight: 	24,
+// 	pagingControlColor: 	'black',
+// 	// maxZoomScale: 			2.0,
+// 	currentPage: 			0,
+// 	zIndex: 				1
+// });
+// win1.add(highlightView);
 
 var appNavBarView = Ti.UI.createView({
 	backgroundImage: 		'images/bg_app_navbar.png',
@@ -453,8 +453,8 @@ var showDashboard = function() {
 		name: 'Dashboard',
 		backgroundColor: 'transparent',
 		left: 0,
-		top: 331,
-		height: 417,
+		top: 56,
+		height: 692,
 		width: 1024,
 		navBarHidden: true,
 		win1: win1,
@@ -494,7 +494,7 @@ var signInButtonClick = function(continuation) {
 };
 
 var startApplication = function() {
-	getHighlights(highlightView);
+	//getHighlights(highlightView);
 	showHeader(function() {
 		showDashboard();
 	});
