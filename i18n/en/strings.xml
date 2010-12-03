@@ -67,5 +67,34 @@
 	<string name="flashlight_alert_empty_title">Flashlight</string>
 	<string name="flashlight_alert_empty_message">The Flashlight is empty, just type something to get suggested content</string>
 	<string name="flashlight_no_results">No results were found.</string>
+	<!-- /newpost.js -->
+	<!-- commons.js -->
+	<string name="time_just_now">Just now</string>
+	<string name="time_1_minute">1 minute</string>
+	<string name="time_minutes">minutes</string>
+	<string name="time_1_hour">1 hour</string>
+	<string name="time_hours">hours</string>
+	<string name="time_1_day">1 day</string>
+	<string name="time_days">days</string>
+	<string name="time_1_week">1 week</string>
+	<string name="time_weeks">weeks</string>
+	<string name="time_1_month">1 month</string>
+	<string name="time_months">months</string>
+	<string name="time_1_year">1 year</string>
+	<string name="time_years">years</string>
+	<string name="time_1_century">1 century</string>
+	<string name="time_centuries"> Centuries</string>
+	<string name="time_ago"> ago</string>
+	<!-- /commons.js -->
+	<!-- permalink.js -->
+	<string name="posted"> posted </string> 
+	<string name="path_btn_send_commentbackground_image">images/btn_send_comment.png</string>
+	<string name="repostCommentField_hint_text">add your comment...</string> 
+	<string name="delete_alert_title">Delete Post</string>  
+	<string name="delete_alert_message">Are you sure you want to delete this Post?</string>
+	<string name="report_abuse_alert_title">Report Abuse</string>  
+	<string name="report_abuse_alert_message">We will open the Report Abuse page on Safari.</string>
+	<!-- /permalink.js -->
+	<!-- EXTRAS -->
 	<string name="format_test">My name is %s</string>
 </resources>

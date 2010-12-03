@@ -214,7 +214,7 @@ var post_update_time = humane_date(post.timestamp);
 
 var postUpdatedTimeLabel = Titanium.UI.createLabel({
 	color: '#999',
-	text: ' posted ' + post_update_time,
+	text: L('posted') + post_update_time,
 	textAlign: 'left',
 	font: {
 		fontSize: 13,
@@ -336,7 +336,7 @@ var repost_comment_view = Titanium.UI.createView({
 
 var repostCommentField = Titanium.UI.createTextField({
 	value: 			'',
-	hintText: 		'add your comment...',
+	hintText: 		L('repostCommentField_hint_text'),
 	color: 			'#666',
 	textAlign: 		'left',
 	font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
@@ -352,7 +352,7 @@ repost_comment_view.add(repostCommentField);
 
 // SEND COMMENT BUTTON
 var btn_send_comment = Titanium.UI.createButton({
-	backgroundImage: 	'images/btn_send_comment.png',
+	backgroundImage: 	L('path_btn_send_commentbackground_image'),
 	width: 				125,
 	height: 			34,
 	top: 				16,
@@ -448,9 +448,9 @@ btn_delete.addEventListener("click", function(e) {
 	
 	//Alert to Open Safari for the Post Permalink
 	var alertOpenPermalink = Titanium.UI.createAlertDialog({
-		title: 'Delete Post',
-		message: 'Are you sure you want to delete this Post?',
-		buttonNames: ['Yes','No'],
+		title: L('delete_alert_title'),
+		message: L('delete_alert_message'),
+		buttonNames: [L('btn_alert_YES'),L('btn_alert_NO')],
 		cancel: 1
 	});	
 	alertOpenPermalink.show();
@@ -480,9 +480,9 @@ btn_delete.addEventListener("click", function(e) {
 btn_report_abuse.addEventListener("click", function(e) {
 	//Alert to Open Report Abuse page on Safari
 	var alertOpenPermalink = Titanium.UI.createAlertDialog({
-		title: 'Report Abuse',
-		message: 'We will open the Report Abuse page on Safari.',
-		buttonNames: ['Yes','Cancel'],
+		title: L('report_abuse_alert_title'),
+		message: L('report_abuse_alert_message'),
+		buttonNames: [L('btn_alert_YES'),L('btn_alert_CANCEL')],
 		url: post.url + 'abuse/',
 		cancel: 1
 	});	
@@ -532,9 +532,9 @@ win.add(btn_openSafari);
 
 //Alert to Open Safari for the Post Permalink
 var alertOpenPermalink = Titanium.UI.createAlertDialog({
-	title: 'Open Link',
-	message: 'Are you sure you want to leave this application to open this link?',
-	buttonNames: ['Yes','Cancel'],
+	title: L('open_link_title'),
+	message: L('open_link_message'),
+	buttonNames: [L('btn_alert_YES'),L('btn_alert_CANCEL')],
 	cancel: 1
 });
 
