@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
 <id>com.acarlos.memeipad</id>
-<name>Meme for iPad</name>
+<name>MemeiPad</name>
 <version>0.8</version>
 <publisher>Antonio Carlos Silveira</publisher>
-<url>http://memeapp.net</url>
+<url>http://me.me</url>
 <description>Meme for iPad is a client for Yahoo! Meme to browse the content on Yahoo! Meme and create content for your blog on Meme</description>
 <copyright>2010 by @acarlos1000 @gneumann @gchapiewski</copyright>
 <icon>default_app_logo.png</icon>

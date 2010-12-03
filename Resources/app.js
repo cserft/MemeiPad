@@ -3,6 +3,8 @@ Ti.include('oadapter.js');
 Ti.include('lib/cache.js');
 // Ti.include('app_highlight.js');
 
+Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
+
 Ti.App.myMemeInfo = null;
 Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 
@@ -50,7 +52,7 @@ var appNavBarView = Ti.UI.createView({
 win1.add(appNavBarView);
 
 var logoHeader = Titanium.UI.createImageView({
-       	image:'images/logo_meme_white.png',
+       	image: 			L('path_logo_header'),
        	top:            9,
        	left:           15,
        	width:          163,
@@ -60,34 +62,34 @@ var logoHeader = Titanium.UI.createImageView({
 appNavBarView.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
-	backgroundImage:'images/btn_signin_top.png',
-	top: -22,
-	left: 940,
-	width: 96, // 72
-	height: 97,  // 54
-	opacity: 1,
-	visible: false,
-	zIndex: 3
+	backgroundImage: L('path_btn_signin_background_image'),
+	top: 			-22,
+	left: 			940,
+	width: 			96, // 72
+	height: 		97,  // 54
+	opacity: 		1,
+	visible: 		false,
+	zIndex: 		3
 });
 win1.add(btn_signin);
 
 var btn_signup = Titanium.UI.createButton({
-	backgroundImage:'images/btn_signup.png',
-	top: -26,
-	left: 599,
-	width: 369, //actual: 303	
-	height: 106, //actual: 54
-	opacity:1,
-	visible: false,
-	zIndex: 3
+	backgroundImage: 	L('path_btn_signup_background_image'),
+	top: 				-26,
+	left: 				599,
+	width: 				369, //actual: 303	
+	height: 			106, //actual: 54
+	opacity: 			1,
+	visible: 			false,
+	zIndex: 			3
 });
 win1.add(btn_signup);
 
 btn_signup.addEventListener("click", function(e) {
 	Ti.App.fireEvent('openLinkOnSafari', { 
-		title: 'Create your account',
-		message: 'We will open the SignUp page on Safari',
-		url: 'http://meme.yahoo.com/confirm'
+		title: L("btn_signup_alert"),
+		message: L("btn_signup_message"),
+		url: L("btn_signup_url")
 	});
 });
 
@@ -193,7 +195,7 @@ var showHeader = function (successCallback) {
 			
 			var linkMeme = Ti.UI.createLabel({
 			 	color: 			'#7D0670',
-				text: 			'me.me/' + Ti.App.myMemeInfo.name,
+				text: 			L('meme_short_domain') + Ti.App.myMemeInfo.name,
 				textAlign: 		'left',
 				font: 			{fontSize:18, fontWeight:'regular'},
 				top: 			16,
@@ -206,8 +208,8 @@ var showHeader = function (successCallback) {
 			linkMeme.addEventListener("click", function(e) {
 				Ti.App.fireEvent('openLinkOnSafari', {
 					url: Ti.App.myMemeInfo.url,
-					title: 'Open Link',
-					message: 'We will open this link on Safari'
+					title: L('open_link_title'),
+					message: L('open_link_message')
 				});
 			});
 
@@ -216,10 +218,10 @@ var showHeader = function (successCallback) {
 				left:256,
 				width:64,
 				height:31,
-				title: 'sign out',
+				title: L('btn_signout_title'),
 				color: '#666666',
 				font:{fontSize:11, fontWeight:'regular'},
-				backgroundImage: 'images/btn_signout.png',
+				backgroundImage: L('path_btn_signout_background_image'),
 				style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
 				borderRadius: 5
 			});
@@ -254,7 +256,7 @@ var showHeader = function (successCallback) {
 			
 			var followLabel = Ti.UI.createLabel({
  				color: 			'#666',
-				text: 			'followers ' + Ti.App.myMemeInfo.followers + '    following ' + Ti.App.myMemeInfo.following	,
+				text: 			L('followers') + Ti.App.myMemeInfo.followers + L('following') + Ti.App.myMemeInfo.following	,
 				textAlign: 		'left',
 				font: 			{fontSize:14, fontWeight:'regular'},
 				left: 			50,
@@ -274,7 +276,7 @@ var showHeader = function (successCallback) {
 			
 			var aboutApp = Ti.UI.createLabel({
  				color: 			'#333',
-				text: 			'Additional Terms of Service',
+				text: 			L('ATOS'),
 				textAlign: 		'left',
 				font: 			{fontSize:18, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
@@ -321,7 +323,7 @@ var showHeader = function (successCallback) {
 			aboutWindow.add(navBar);
 			
 			var backButton = Ti.UI.createButton({
-				backgroundImage: 	'images/btn_back.png',
+				backgroundImage: 	L('path_btn_back'),
 				left: 				0,
 				top: 				-5,
 				height: 			52, //29
@@ -345,7 +347,7 @@ var showHeader = function (successCallback) {
 			aboutHTML += '</body></html>'
 			
 			var aboutView = Ti.UI.createWebView({
-				url: 				'atos.html', // aboutHTML,
+				url: 				L('url_atos_html'), // aboutHTML,
 				top: 				50,	
 				width: 				335,
 				height: 			360, // correct: 270
@@ -365,7 +367,7 @@ var showHeader = function (successCallback) {
 
 			aboutGitButton.addEventListener("click", function(e) {
 				Ti.App.fireEvent('openLinkOnSafari', {
-					url: 'http://memeapp.net/source'
+					url: L('memeapp_source_url')
 				});
 			});
 			
@@ -379,7 +381,7 @@ var showHeader = function (successCallback) {
 			aboutGitButton.add(githubIcon);
 			
 			var aboutGitLabel = Ti.UI.createLabel({
-				text: 				'Meme for iPad on GitHub:\nhttp://memeapp.net/source',
+				text: 				L('aboutGitLabel_text'),
 				font: 				{fontSize:14,fontFamily:'Helvetica Neue', fontWeight:'bold'},	
 				left: 				githubIcon.left + githubIcon.width + 10,
 				width: 				220,
@@ -410,18 +412,18 @@ var showHeader = function (successCallback) {
 		// = post button =
 		// ===============
 		
-		var btn_StartPosting = Ti.UI.createButton({
-			backgroundImage: 	'images/btn_start_posting.png',
+		var btn_start_posting = Ti.UI.createButton({
+			backgroundImage: 	L('path_btn_start_posting_background_image'), 
 			height: 			79, //55
 			width: 				407, //395
 			left: 				623,
 			top: 				-13,
 			zIndex: 			5
 		});
-		headerView.add(btn_StartPosting);
+		headerView.add(btn_start_posting);
 		
 		// Opens the New Post Window
-		btn_StartPosting.addEventListener('click', function()
+		btn_start_posting.addEventListener('click', function()
 		{
 			newPost();
 		});
@@ -594,8 +596,8 @@ Ti.App.addEventListener('hide_indicator', function(e)
 // Opens a link on Safari
 //
 Ti.App.addEventListener('openLinkOnSafari', function(data) {
-	var title = 'Open Link',
-		message = 'We will open a page on Safari';
+	var title = L('open_link_title'),
+		message = L('open_link_message');
 	
 	if (data.title) {
 		title = data.title;
@@ -607,7 +609,7 @@ Ti.App.addEventListener('openLinkOnSafari', function(data) {
 	var alert = Titanium.UI.createAlertDialog({
 		title: title,
 		message: message,
-		buttonNames: ['OK','Cancel'],
+		buttonNames: [L('btn_alert_OK'),L('btn_alert_CANCEL')],
 		cancel: 1
 	});
 	
@@ -671,7 +673,7 @@ var displayErrorMessage = function(title, message, relativeTop, pFontSize) {
 	errorView.add(errorLabel);
 	
 	var btn_error_refresh = Ti.UI.createButton({
-		title: 				'refresh',
+		title: 				L('btn_error_refresh_title'),
 		color: 				'#7D0670',
 		font: 				{fontSize:22, fontFamily:'Helvetica', fontWeight:'regular'},
 		backgroundImage: 	'images/btn_error_refresh.png',
@@ -706,14 +708,14 @@ var displayErrorMessage = function(title, message, relativeTop, pFontSize) {
 // =====================
 Ti.App.addEventListener('yqlerror', function(e) {
 	Ti.API.error('App crashed (cannot connect to YQL). Query: ' + e.query);
-	displayErrorMessage('YQL Error', 'Ops, it seems we had a problem...', 80, 36);
+	displayErrorMessage(L('yql_error'), L('error_message_problem'), 80, 36);
 });
 
 // ==================================
 // = Checks if the Device is Online =
 // ==================================
 if (!Titanium.Network.online) {
-	displayErrorMessage('Network Error', 'You need to be online to use Meme for iPad. Please, check your network connection and try again.', 45, 30);
+	displayErrorMessage(L('network_error'), L('network_error_message'), 45, 30);
 } else {
 	// if (Titanium.Network.networkTypeName == 'MOBILE') {
 	// 	displayErrorMessage('Wi-Fi Required', 'Meme is a very data intensive application and needs a Wi-Fi connection to work properly. Please, connect to Wi-Fi and try again.', 58, 25);
@@ -775,7 +777,7 @@ Ti.App.addEventListener('openPermalink', function(e) {
 		if (permalinkIsOpened == false){
 
 			Ti.App.fireEvent('show_indicator', {
-				message: "Loading...",
+				message: L('loading_message'),
 				color: "#AB0899",
 				size: 200
 			});
