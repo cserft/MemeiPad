@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="path_logo_header">images/logo_meme_white_br.png</string>
+	<string name="path_btn_signin_background_image">images/btn_signin_top_br.png</string>
+	<string name="path_btn_signup_background_image">images/btn_signup_br.png</string>
+	<string name="path_btn_back">images/btn_back.png</string>
+	<string name="btn_signup_alert">Crie sua conta</string>
+	<string name="btn_signup_message">A página de criação de conta será aberta no Safari</string>
+	<string name="btn_signup_url">http://meme.yahoo.com/confirm</string>
+	<string name="btn_signout_title">sair</string>
+	<string name="path_btn_signout_background_image">images/btn_signout.png</string>
+	<string name="path_btn_start_posting_background_image">images/btn_start_posting_br.png</string>
+	<string name="followers">seguidores </string>
+	<string name="following">    seguindo </string>
+	<string name="ATOS">Termos Adicionais</string>
+	<string name="url_atos_html">atos_br.html</string>
+	<string name="meme_short_domain">me.me/</string>
+	<string name="open_link_title">Abrir Link</string>
+	<string name="btn_alert_OK">OK</string>
+	<string name="btn_alert_CANCEL">Cancelar</string>
+	<string name="open_link_message">Este link será aberto no Safari</string>
+	<string name="aboutGitLabel_text">Meme para iPad no GitHub:\nhttp://memeapp.net/source</string>
+	<string name="memeapp_source_url">http://memeapp.net/source</string>
+	<string name="btn_error_refresh_title">recarregar</string>
+	<string name="yql_error">Erro de YQL</string>
+	<string name="error_message_problem">Ops, parece que tivemos um problema...</string>
+	<string name="network_error">Erro de Rede</string>
+	<string name="network_error_message">Você precisa estar online para poder usar o Meme para iPad. Por favor, verifique sua conexão de rede e tente novamente.</string>
+	<string name="loading_message">Carregando...</string>
+	<string name="pull_to_reload_text">Puxe para recarregar</string>
+	<string name="last_updated_text">Última atualização: </string>
+	<string name="pull_down_to_refresh_text">Puxe para recarregar...</string>
+	<string name="release_to_refresh_text">Solte para recarregar...</string>
+	<string name="reloading_message">Recarregando...</string>
+	<string name="format_test">My name is %s</string>
+</resources>

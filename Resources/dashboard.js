@@ -273,6 +273,7 @@ var getDashboardData = function (pTimestamp) {
 
 			Ti.API.info(" ####### STARTING FEATURED DASHBOARD (NOT LOGGED IN) ##########");
 
+			// TODO: try to show the featured posts from the users selected Language, if not then shows English
 			yqlQuery = "SELECT * FROM meme.posts.featured WHERE locale='en' | meme.functions.thumbs(width=307,height=231)";
 			
 			var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
@@ -426,7 +427,7 @@ var bellowActInd = Titanium.UI.createActivityIndicator({
 
 
 var loadingLabel = Ti.UI.createLabel({
-	text: "Loading...",
+	text: L('loading_message'),
 	// left:55,
 	width: 200,
 	bottom: 50,
@@ -501,6 +502,7 @@ tableView.addEventListener('scroll',function(e)
 // = PULL TO REFRESH =
 // ===================
 function formatDate() {
+	// TODO: i18n format of the date
 	var date = new Date,
 		minstr = date.getMinutes(); if (minstr<10) {minstr="0"+minstr;} 		// fixes minutes when less than 10
 		datestr = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
@@ -545,9 +547,9 @@ var actInd = Titanium.UI.createActivityIndicator({
 });
 
 var statusLabel = Ti.UI.createLabel({
-	text:"Pull to reload",
+	text: L('pull_to_reload_text'),
 	// left:55,
-	width:200,
+	width:220,
 	bottom:30,
 	height:"auto",
 	color:"Gray",
@@ -556,14 +558,13 @@ var statusLabel = Ti.UI.createLabel({
 });
 
 var lastUpdatedLabel = Ti.UI.createLabel({
-	text:"Last Updated: "+formatDate(),
-	// left:55,
-	width:200,
-	bottom:15,
-	height:"auto",
-	color:"Gray",
-	textAlign:"center",
-	font:{fontSize:12}
+	text: 			L('last_updated_text') + formatDate(),
+	width: 			220,
+	bottom: 		15,
+	height: 		"auto",
+	color: 			"Gray",
+	textAlign: 		"center",
+	font: 			{fontSize:12}
 });
 
 
@@ -600,8 +601,8 @@ function endReloading()
 	// when you're done, just reset
 	tableView.setContentInsets({top:0},{animated:true});
 	reloading = false;
-	lastUpdatedLabel.text = "Last Updated: "+formatDate();
-	statusLabel.text = "Pull down to refresh...";
+	lastUpdatedLabel.text = L('last_updated_text') + formatDate();
+	statusLabel.text = L('pull_down_to_refresh_text');
 	actInd.hide();
 	arrow.show();
 }
@@ -617,14 +618,14 @@ tableView.addEventListener('scroll',function(e)
 			t = t.rotate(-180);
 			pulling = true;
 			arrow.animate({transform:t,duration:180});
-			statusLabel.text = "Release to refresh...";
+			statusLabel.text = L('release_to_refresh_text');
 		}
 		else if (pulling && offset > -65.0 && offset < 0)
 		{
 			pulling = false;
 			var t = Ti.UI.create2DMatrix();
 			arrow.animate({transform:t,duration:180});
-			statusLabel.text = "Pull down to refresh...";
+			statusLabel.text = L('pull_down_to_refresh_text');
 		}
 	}
 });
@@ -637,7 +638,7 @@ tableView.addEventListener('scrollEnd',function(e)
 		pulling = false;
 		arrow.hide();
 		actInd.show();
-		statusLabel.text = "Reloading...";
+		statusLabel.text = L('reloading_message');
 		tableView.setContentInsets({top:60},{animated:true});
 		arrow.transform=Ti.UI.create2DMatrix();
 		beginReloading();

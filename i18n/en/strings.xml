@@ -13,7 +13,7 @@
 	<string name="followers">followers </string>
 	<string name="following">    following </string>
 	<string name="ATOS">Additional Terms of Service</string>
-	<string name="url_atos_html">atos.html</string>
+	<string name="url_atos_html">atos_en.html</string>
 	<string name="meme_short_domain">me.me/</string>
 	<string name="open_link_title">Open Link</string>
 	<string name="btn_alert_OK">OK</string>
@@ -27,5 +27,10 @@
 	<string name="network_error">Network Error</string>
 	<string name="network_error_message">You need to be online to use Meme for iPad. Please, check your network connection and try again.</string>
 	<string name="loading_message">Loading...</string>
+	<string name="pull_to_reload_text">Pull to reload</string>
+	<string name="last_updated_text">Last Updated: </string>
+	<string name="pull_down_to_refresh_text">Pull down to refresh...</string>
+	<string name="release_to_refresh_text">Release to refresh...</string>
+	<string name="reloading_message">Reloading...</string>
 	<string name="format_test">My name is %s</string>
 </resources>
