@@ -84,7 +84,7 @@
 	<string name="time_years">anos</string>
 	<string name="time_1_century">1 século</string>
 	<string name="time_centuries"> Séculos</string>
-	<string name="time_ago"> atrás</string>
+	<string name="time_ago"></string>
 	<!-- /commons.js -->
 	<!-- permalink.js -->
 	<string name="posted"> postado há </string> 
