@@ -30,7 +30,7 @@ function humane_date(date_str){
 	
 	var dt = timestamp(); 
 	var seconds = (dt - date_str)/1000;
-	var token = '' L('time_ago');
+	var token = L('time_ago');
 	var prepend = '';
 	var i = 0;
 	var format;
