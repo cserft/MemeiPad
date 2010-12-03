@@ -98,7 +98,7 @@ var getHighlights = function (highlightView) {
 
 				var featuredLabel = Ti.UI.createLabel({
 					color: 			'#ffffff',
-					text:  			'FEATURED CONTENT',
+					text:  			L('featured_content_text'),
 					font: 			{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
 					opacity: 		0.5,
 					textAlign: 		'left',

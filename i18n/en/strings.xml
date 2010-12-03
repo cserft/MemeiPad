@@ -32,5 +32,6 @@
 	<string name="pull_down_to_refresh_text">Pull down to refresh...</string>
 	<string name="release_to_refresh_text">Release to refresh...</string>
 	<string name="reloading_message">Reloading...</string>
+	<string name="featured_content_text">FEATURED CONTENT</string>
 	<string name="format_test">My name is %s</string>
 </resources>
