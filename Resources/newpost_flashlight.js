@@ -124,8 +124,8 @@ var searchTabs = Titanium.UI.createTabbedBar({
 var flashlight_show = function() {
 	if (searchTextField.value == '') {
 		Ti.UI.createAlertDialog({
-			title: 'Flashlight',
-			message: 'The Flashlight is empty, just type something to get suggested content',
+			title: L('flashlight_alert_empty_title'),
+			message: L('flashlight_alert_empty_message'),
 		}).show();
 	} else {
 		flashlight_create();
@@ -143,11 +143,10 @@ var flashlight_create = function() {
 		// row for results not found
 		var notFoundRow = Ti.UI.createTableViewRow({height:78});
 		var notFoundTitle = Ti.UI.createLabel({
-			text: 'No results were found.',
+			text: L('flashlight_no_results'),
 			color: '#863486',
 			height:50,
-			width: 192,
-			left:110,
+			width: 192,	
 			textAlign:'left',
 			font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
 		});

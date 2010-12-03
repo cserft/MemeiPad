@@ -66,9 +66,9 @@ postHeaderView.add(btn_close_post);
 
 var searchTextField = Titanium.UI.createTextField({
 	value: 			queryText,
-	hintText: 		'Paste YouTube or Vimeo links or make a search to illustrate your post',
+	hintText: 		L('searchTextField_hint_text'),
 	textAlign: 		'left',
-	font: 			{fontSize:13,fontFamily:'Helvetica', fontWeight:'regular'},
+	font: 			{fontSize:12,fontFamily:'Helvetica', fontWeight:'regular'},
 	width: 			446,
 	height: 		41,
 	top: 			14,
@@ -103,12 +103,12 @@ btn_flashlight.add(actIndFlashlight);
 
 //creates the popover for the results
 var popoverSearchView = Titanium.UI.iPad.createPopover({ 
-	width:330, 
-	height:280,
-	borderWidth: 0,
-	title:'Suggested Content',
-	navBarHidden: true,
-	arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
+	width: 				330, 
+	height: 			280,
+	borderWidth: 		0,
+	title: 				L('popover_flashlight_title'),
+	navBarHidden: 		true,
+	arrowDirection: 	Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
 });
 
 // ==========================
@@ -128,7 +128,6 @@ var btn_addPhoto = Ti.UI.createButton({
 postHeaderView.add(btn_addPhoto);
 
 var popoverGalleryView = Titanium.UI.createView({
-	title: 		'Add a photo',
 	left: 		487,
 	top: 		76,
 	width:      330
@@ -149,7 +148,7 @@ btn_addPhoto.addEventListener('click', function() {
 		error:function(error) {
 			Ti.API.debug('Photo Gallery Message: ' + JSON.stringify(error));
 			
-			Ti.API.degug('Error on Gallery');
+			Ti.API.debug('Error on Gallery');
 			// var a = Titanium.UI.createAlertDialog({ 
 			// 		  	    title:'Uh Oh...',
 			// 		  	    message: 'We had a problem reading from your photo gallery - please try again'
@@ -168,11 +167,11 @@ btn_addPhoto.addEventListener('click', function() {
 // = POST BUTTON =
 // ===============
 var btn_post = Ti.UI.createButton({
-	backgroundImage: 'images/btn_post_top.png',
-	height: 85,
-	width: 192,
-	left: 780,
-	top:-10
+	backgroundImage: L('path_btn_post_top_background_image'),
+	height: 		85,
+	width: 			192,
+	left: 			780,
+	top: 			-10
 });
 postHeaderView.add(btn_post);
 // ======================
@@ -196,7 +195,7 @@ win.add(editView);
 
 var editTitleField = Titanium.UI.createTextField({
 	value: 			postTitle,
-	hintText: 		'add title',
+	hintText: 		L('editTitleField_hint_text'),
 	textAlign: 		'left',
 	font: 			{fontSize:26,fontFamily:'Helvetica', fontWeight:'bold'},
 	width: 			950,
@@ -280,7 +279,6 @@ var textArea = Titanium.UI.createTextArea({
 	top: 			79,
 	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
 	color: 			'#666',
-	// backgroundColor: 'blue',
 	textAlign: 		'left',
 	appearance: 	Titanium.UI.KEYBOARD_APPEARANCE_ALERT,	
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
@@ -293,12 +291,11 @@ editView.add(textArea);
 
 //Temporary Text when open the New Post Window, helping users to know where to click
 var tempPostLabel = Titanium.UI.createLabel({
-	text: 		'write your post here',
+	text: 		L('tempPostLabel_text'),
 	align: 		'center',
 	color: 		'#CCC',
 	top: 		300,
-	left: 		300,
-	width: 		800,
+	width: 		600,
 	height: 	100,
 	font: 		{fontSize:50, fontFamily:'Helvetica', fontWeight:'bold'},
 	zIndex: 	1
@@ -321,11 +318,11 @@ win.add(whiteShadow);
 
 //Disclaimer Community Guidelines
 var disclaimerLabel1 = Titanium.UI.createLabel({
-	text: 		'Don’t infringe copyright or post adult content. Check the Community Guidelines for more information.',
+	text: 		L('disclaimer_copyright_guidelines'),
 	color: 		'#CCC',
 	width: 		500,
 	height: 	15,
-	left: 		140,
+	left: 		120,
 	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
 	bottom: 	18
 });
@@ -333,9 +330,9 @@ win.add(disclaimerLabel1);
 
 //Disclaimer Settings Yahoo! Updates.
 var disclaimerLabel2 = Titanium.UI.createLabel({
-	text: 		' Your Post will be shared via Yahoo! Updates.',
+	text: 		L('disclaimer_yahoo_updates'),
 	color: 		'#CCC',
-	width: 		230,
+	width: 		280,
 	height: 	15,
 	left: 		disclaimerLabel1.left + disclaimerLabel1.width + 5,
 	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
@@ -349,21 +346,21 @@ win.add(disclaimerLabel2);
 
 //Alert to Open Safari for the Post Permalink
 var alertOpenPermalink = Titanium.UI.createAlertDialog({
-	title: 'Open Link',
-	message: 'Are you sure you want to leave this application to open this link?',
-	buttonNames: ['Yes','Cancel'],
+	title: L('open_link_title'),
+	message: L('open_link_message'),
+	buttonNames: [L('btn_alert_OK'),L('btn_alert_CANCEL')],
 	cancel: 1
 });
 
 disclaimerLabel1.addEventListener("click", function(e)
 {
-	alertOpenPermalink.url = "http://meme.yahoo.com/help/guidelines/";
+	alertOpenPermalink.url = L('guidelines_url');
 	alertOpenPermalink.show();
 });
 
 disclaimerLabel2.addEventListener("click", function(e)
 {
-	alertOpenPermalink.url = "http://meme.yahoo.com/settings";
+	alertOpenPermalink.url = L('settings_url');
 	alertOpenPermalink.show();
 });
 
@@ -535,13 +532,13 @@ btn_post.addEventListener('click', function() {
 		
 		if ( postText == null || postText == "" ) {
 			Ti.UI.createAlertDialog({ 
-				title: 'Oops...',
-			    message: 'Write something before you hit the post button.',
-				buttonNames: ['OK']
+				title: L('oops_alert_title'),
+			    message: L('post_message_empty'),
+				buttonNames: [L('btn_alert_OK')]
 			}).show();
 		} else {
 			//Shows the Upload Progress bar
-			showProgressView ('show', 'Preparing to post...')
+			showProgressView ('show', L('preparing_to_post_message'))
 			ind.value = 0;
 			btn_post.enabled = false;
 			
@@ -699,9 +696,9 @@ Ti.App.addEventListener("photoRemoved", function(e) {
 
 //Alert to remove the photo
 var alertCloseImage = Titanium.UI.createAlertDialog({
-	title: 'Remove',
-	message: 'Are you sure you want to remove this media from your post?',
-	buttonNames: ['Yes','No'],
+	title: L('remove_alert_title'),
+	message: L('remove_alert_message'),
+	buttonNames: [L('btn_alert_YES'),L('btn_alert_NO')],
 	cancel: 1
 });
 
@@ -732,7 +729,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	btn_post.enabled = false;
 	
 	//Shows the Upload Progress bar
-	showProgressView('show', 'Preparing to post...');
+	showProgressView('show',  L('preparing_to_post_message'));
 	
 	if (theImage != null && typeof(theImage) == 'object') {
 		// IF there is a Image to Upload
@@ -799,7 +796,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	
 	xhr.onload = function(e) {
 		// updates the Message in the Progress Bar
-		showProgressView('show', 'Publishing your post on Meme');
+		showProgressView('show', L('publishing_post_meme'));
 		
  		Ti.API.info("Upload complete!");
 		Ti.API.debug('api response was: ' + this.responseText)
@@ -814,7 +811,7 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 	};
 	
 	xhr.onsendstream = function(e) {
-		showProgressView('show', 'Uploading File...');
+		showProgressView('show', L('uploading_file'));
 		ind.value = e.progress;
 		Ti.API.debug('ONSENDSTREAM - PROGRESS: ' + e.progress);
 	};
@@ -848,14 +845,14 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 		yqlQuery = "INSERT INTO meme.user.posts (type, content) VALUES ('"+ e.postType +"', '" + e.message + "')";
 		
 		// updates the Message in the Progress Bar
-		showProgressView('show', 'Publishing your post on Meme');
+		showProgressView('show', L('publishing_post_meme'));
 		ind.value = 10;
 		
 	} else if (e.postType == "video"){
 		yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('"+ e.postType +"', '" + e.media_link + "', '" + e.message + "')";
 
 		// updates the Message in the Progress Bar
-		showProgressView('show', 'Publishing your post on Meme');
+		showProgressView('show', L('publishing_post_meme'));
 		ind.value = 10;
 	}
 	
@@ -869,12 +866,12 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	if (response) {
 		if (response.message == "ok") {
 			Ti.API.debug(" ####### YQL INSERT POST executed");
-			alertInfo = { title: 'Success', message: 'Your post was published successfully!' };
+			alertInfo = { title: L('success_alert_title'), message: L('post_success_message') };
 		} else {
-			alertInfo = { title: 'Error', message: 'Your post could not be published.' };
+			alertInfo = { title: L('error_alert_title'), message: L('post_error_message') };
 		}
 	} else {
-		alertInfo = { title: 'Error', message: 'Your post could not be published. Please check the image size, it must have less than 7MB.' };
+		alertInfo = { title: L('error_alert_title'), message: L('post_error_7meg_message') };
 	}
 	
 	// hides the Progress Bar
