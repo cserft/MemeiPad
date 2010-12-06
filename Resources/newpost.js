@@ -76,6 +76,7 @@ var searchTextField = Titanium.UI.createTextField({
 	top: 			14,
 	left: 			16,
 	borderRadius: 	4,
+	zIndex: 		2,
 	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
 	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
@@ -88,6 +89,7 @@ var btn_flashlight = Ti.UI.createButton({
 	height: 		49,
 	left: 			456,
 	top: 			11,
+	zIndex: 		3,
 	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 	
 });
@@ -99,6 +101,7 @@ var actIndFlashlight = Ti.UI.createActivityIndicator({
 	left: 			20,
 	height: 		20,
 	width: 			20,
+	zIndex: 		4,
 	style: 			Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
 });
 btn_flashlight.add(actIndFlashlight);

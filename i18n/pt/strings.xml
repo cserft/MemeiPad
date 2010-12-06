@@ -12,6 +12,7 @@
 	<string name="path_btn_start_posting_background_image">images/btn_start_posting_br.png</string>
 	<!-- ABOUT -->
 	<string name="btn_signout_title">sair</string>
+	<string name="btn_back_title">voltar</string>
 	<string name="path_btn_signout_background_image">images/btn_signout.png</string>
 	<string name="followers">seguidores </string>
 	<string name="following">    seguindo </string>

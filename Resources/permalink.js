@@ -102,7 +102,7 @@ var innerCaption;
 // Create our Webview to render the Post's content
 var postWebView = Ti.UI.createWebView({
         html: '',
-		backgroundImage: 'images/bg.jpg',
+		// backgroundImage: 'images/bg.jpg',
 		top:0,
 		width: '100%',
 		height: 567,
@@ -126,7 +126,8 @@ var border = Ti.UI.createView({
 	backgroundColor:'#EBEBEB',
 	height:1,
 	bottom:65,
-	width: '100%'	
+	width: '100%',
+	zIndex: 2
 });
 whiteBox.add(border);
 
@@ -306,24 +307,26 @@ whiteBox.add(postUpdatedTimeLabel);
 // = REPOST BUTTON AND COUNT =
 // ===========================
 
-var btn_repost = Titanium.UI.createButton({
+var btn_repost = Titanium.UI.createView({
 	backgroundImage:'images/btn_repost2.png',
 	width:150,
 	height:65,
 	bottom: 1,
 	right: 0,
+	opacity: 1,
 	zIndex: 1
 });
 whiteBox.add(btn_repost);
 
 // Already Reposted Icon
 var icon_reposted = Titanium.UI.createImageView({
-	image: 'images/icon_reposted.png',
-	top:16,
-	left:30,
-	width:30,
-	height:30,
-	zIndex:3
+	image: 		'images/icon_reposted.png',
+	top: 		16,
+	left: 		30,
+	width: 		30,
+	height: 	30,
+	opacity: 	1,
+	zIndex: 	10
 });
 
 // IF HAS ZERO REPOSTS DOES NOT SHOW ZERO
@@ -374,22 +377,24 @@ var btn_delete = Titanium.UI.createButton({
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
 if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 	// When not loggedIn, disables the Repost Button and adds the Report Abuse button
-	btn_repost.enabled = false;	
+	btn_repost.opacity = 0.7;	
+	btn_repost.touchEnabled = false;
 	whiteBox.add(btn_report_abuse);
 	
 } else {
 	
 	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || post.origin_guid == Ti.App.myMemeInfo.guid) {
 		
-		// If the loggedIn User is the Origin or Via, disables the Repost Button and applies the iCon reposted
-		btn_repost.enabled = false;	
+		// If the loggedIn User is the Origin or Via, disables the Repost Button and applies the iCon reposted	
+		btn_repost.touchEnabled = false;	
 		btn_repost.add(icon_reposted);
 		whiteBox.add(btn_delete);
 		
 	} else {
 		
 		// When Logged In and not the owner of the Post, enables Repost and Report Abuse Btn
-		btn_repost.enabled = true;
+		btn_repost.opacity = 1;	
+		btn_repost.touchEnabled = true;
 		whiteBox.add(btn_report_abuse);
 	}
 }
@@ -475,10 +480,10 @@ btn_repost.addEventListener('click', function(e) {
 	var response = yqlInsert.query.results.status;
 	
 	if (response.message == "ok"){
-			icon_reposted.opacity = 0;
 			btn_repost.add(icon_reposted);
-			icon_reposted.animate({opacity: 1, duration: 500});
-			btn_repost.enabled = false;	
+			icon_reposted.opacity = 1;
+			btn_repost.opacity = 1;	
+			btn_repost.touchEnabled = true;
 			repostCountLabel.text = repost_countInt+=1 ;
 			
 			// Add Comment Box after Reposting
@@ -576,29 +581,33 @@ Ti.App.fireEvent('hide_indicator');
 pos_BtnOpenSafari = 80 + (post.url.length * 8) + 20;
 
 var LinkPermalinkLabel = Titanium.UI.createLabel({
-	color:'#FFF',
-	text: post.url ,
-	textAlign:'left',
-	font: {
-		fontSize:14,
-		fontFamily:'Georgia',
-		fontStyle: 'italic',
-		fontWeight: 'bold'
-	},
-	bottom:38,
-	left:61,
-	width:500,
-	height:15
+	color: 				'#FFF',
+	text: 				post.url ,
+	textAlign: 			'left',
+	font: 				{
+						fontSize:14,
+						fontFamily:'Georgia',
+						fontStyle: 'italic',
+						fontWeight: 'bold'
+					 	},
+	bottom: 			38,
+	left: 				61,
+	width: 				500,
+	height: 			15,
+	opacity: 			1,
+	zIndex: 			3
 });
 
 win.add(LinkPermalinkLabel);
 
 var btn_openSafari = Titanium.UI.createButton({
-	backgroundImage:'images/btn_fwd.png',
-	width:22,
-	height:17,
-	bottom: 40,
-	left: pos_BtnOpenSafari
+	backgroundImage: 	'images/btn_fwd.png',
+	width: 				22,
+	height: 			17,
+	bottom: 			40,
+	opacity: 			1,
+	zIndex: 			99,
+	left: 				pos_BtnOpenSafari
 });
 win.add(btn_openSafari);
 
