@@ -82,13 +82,14 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	var __id_img;
 	var __id_bg_caption;
 	var __id_caption;
-	
+
 	//create a black box view with a unique name
 	var blackBoxView = Ti.UI.createView({
 		backgroundColor:'black',
 		width: 317,
 		height: 241,
-		top: 5
+		top: 5,
+		zIndex: 0
 	});
 	
 	var blackBoxLink = Ti.UI.createButton({
@@ -164,7 +165,9 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			
 			// add blackboxview again to ensure it is on top of everything
 			// this is necessary because this function is executed assynchronously
+			blackBoxLink.zIndex = blackBoxLink.zIndex+1;
 			blackBoxView.add(blackBoxLink);
+			
 			
 			// same thing for post caption
 			createPostCaption(blackBoxView, pCaption);
