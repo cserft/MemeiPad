@@ -1,4 +1,5 @@
 Ti.include('lib/commons.js');
+Ti.include('lib/meme.js');
 
 var win = Ti.UI.currentWindow;
 
@@ -189,6 +190,53 @@ var guidAvatar = Titanium.UI.createImageView({
 	zIndex:3
 });
 whiteBox.add(guidAvatar);
+
+guidAvatar.addEventListener('click', function(e) {
+	// popover must be shown only when logged in
+	// and for user different than me
+	if (Ti.App.myMemeInfo && (Ti.App.myMemeInfo.guid != meme.guid)) {
+		var popover = Ti.UI.iPad.createPopover({
+			width:100,
+			height:30,
+			backgroundColor: 'white',
+			navBarHidden: true,
+			arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN
+		});
+
+		var label = Titanium.UI.createButton({
+			style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
+			backgroundColor: 'transparent',
+			selectedColor: 'gray',
+			color: 'black',
+			font: {
+				fontSize: 14,
+				fontFamily:'Helvetica',
+				fontWeight: 'bold'
+			}
+		});
+
+		var action = null;
+		if (Meme.isFollowing(meme.guid)) {
+			label.title = 'unfollow';
+			action = Meme.unfollow
+		} else {
+			label.title = 'follow';
+			action = Meme.follow;
+		}
+
+		label.addEventListener('click', function(e) {
+			action(meme.guid);
+			popover.hide();
+		});
+
+		popover.add(label);
+
+		popover.show({
+			view:guidAvatar,
+			animated:true,
+		});
+	}
+});
 
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
