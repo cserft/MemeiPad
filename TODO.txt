@@ -29,7 +29,9 @@ permalink.js
 ------------
 - BUG: little bug when clicking in the respost comment text field, keyboard does not show up, needs to click twice
 
+
 _____ AFTER LAUNCH _____
+- Add error message when user clicks on Repost Button and is not logged in. Offers to log in or cancel.
 - Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
 - Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)

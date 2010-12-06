@@ -306,7 +306,7 @@ whiteBox.add(postUpdatedTimeLabel);
 // = REPOST BUTTON AND COUNT =
 // ===========================
 
-var btn_repost = Titanium.UI.createButton({
+var btn_repost = Titanium.UI.createView({
 	backgroundImage:'images/btn_repost2.png',
 	width:150,
 	height:65,
@@ -376,22 +376,24 @@ var btn_delete = Titanium.UI.createButton({
 // Checks if the user logged in is the Author or the Origin or a Vi and disables the Repost Button
 if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 	// When not loggedIn, disables the Repost Button and adds the Report Abuse button
-	btn_repost.enabled = false;	
+	btn_repost.opacity = 0.7;	
+	btn_repost.touchEnabled = false;
 	whiteBox.add(btn_report_abuse);
 	
 } else {
 	
 	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || post.origin_guid == Ti.App.myMemeInfo.guid) {
 		
-		// If the loggedIn User is the Origin or Via, disables the Repost Button and applies the iCon reposted
-		btn_repost.enabled = false;	
+		// If the loggedIn User is the Origin or Via, disables the Repost Button and applies the iCon reposted	
+		btn_repost.touchEnabled = false;	
 		btn_repost.add(icon_reposted);
 		whiteBox.add(btn_delete);
 		
 	} else {
 		
 		// When Logged In and not the owner of the Post, enables Repost and Report Abuse Btn
-		btn_repost.enabled = true;
+		btn_repost.opacity = 1;	
+		btn_repost.touchEnabled = true;
 		whiteBox.add(btn_report_abuse);
 	}
 }
@@ -479,7 +481,8 @@ btn_repost.addEventListener('click', function(e) {
 	if (response.message == "ok"){
 			btn_repost.add(icon_reposted);
 			icon_reposted.opacity = 1;
-			btn_repost.enabled = false;	
+			btn_repost.opacity = 1;	
+			btn_repost.touchEnabled = true;
 			repostCountLabel.text = repost_countInt+=1 ;
 			
 			// Add Comment Box after Reposting
