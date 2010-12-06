@@ -14,21 +14,26 @@ Usage:
 // of the following function (a.k.a. closure), therefore 
 // you should not invoke (as in "Meme().[...]"), use 
 // "Meme.[...]" directly.
-var Meme = function() {
+var Meme = function() {	
+	// public functions
+	var createTextPost, createPhotoPost, createVideoPost, isFollowing, follow, unfollow;
+		
+	// private functions
+	var createPost, execute;
 	
-	var createTextPost = function(content) {
+	createTextPost = function(content) {
 		return createPost('text', content);
 	};
 
-	var createPhotoPost = function(content, caption) {
+	createPhotoPost = function(content, caption) {
 		return createPost('photo', content, caption);
 	};
 
-	var createVideoPost = function(content, caption) {
+	createVideoPost = function(content, caption) {
 		return createPost('video', content, caption);
 	};
 
-	var isFollowing = function(guid) {
+	isFollowing = function(guid) {
 		if (!Ti.App.oAuthAdapter.isLoggedIn()) {
 			throw 'sAuthentication is required to run this query.';
 		}
@@ -41,12 +46,12 @@ var Meme = function() {
 		return false;
 	};
 
-	var follow = function(guid) {
+	follow = function(guid) {
 		var yqlQuery = 'INSERT INTO meme.user.following (guid) VALUES ("' + guid + '")';
 		return execute(true, yqlQuery);
 	};
 
-	var unfollow = function(guid) {
+	unfollow = function(guid) {
 		var yqlQuery = 'DELETE FROM meme.user.following WHERE guid="' + guid + '"';
 		return execute(true, yqlQuery);
 	};
@@ -56,7 +61,7 @@ var Meme = function() {
 	// =====================
 
 	// Creates a post on Meme given the type provided
-	var createPost = function(type, content, caption) {
+	createPost = function(type, content, caption) {
 		var columns = 'type';
 		var values = '"' + type + '"';
 		if (content) {
@@ -72,7 +77,7 @@ var Meme = function() {
 	};
 
 	// Executes an API query that does not expect response (insert, update, delete)
-	var execute = function(requireAuth, yqlQuery) {
+	execute = function(requireAuth, yqlQuery) {
 		if (requireAuth && !Ti.App.oAuthAdapter.isLoggedIn()) {
 			throw 'Authentication is required to run this query.';
 		}
