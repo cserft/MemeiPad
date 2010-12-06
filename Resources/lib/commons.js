@@ -2,8 +2,6 @@ var timestamp = function() {
 	return((new Date()).getTime());
 };
 
-var now  = timestamp();
-
 // =============================
 // = CACULATES THE HUMANE DATA =
 // =============================

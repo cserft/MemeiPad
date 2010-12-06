@@ -707,7 +707,7 @@ var displayErrorMessage = function(title, message, relativeTop, pFontSize) {
 // = YQL ERROR MESSAGE =
 // =====================
 Ti.App.addEventListener('yqlerror', function(e) {
-	Ti.API.error('App crashed (cannot connect to YQL). Query: ' + e.query);
+	Ti.API.error('App crashed (cannot connect to YQL). Error info: ' + JSON.stringify(e));
 	displayErrorMessage(L('yql_error'), L('error_message_problem'), 80, 36);
 });
 

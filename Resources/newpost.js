@@ -1,3 +1,4 @@
+Ti.include('lib/sha1.js');
 Ti.include('lib/secrets.js');
 Ti.include('lib/commons.js');
 Ti.include('lib/meme.js');
@@ -735,23 +736,66 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	if (theImage != null && typeof(theImage) == 'object') {
 		// IF there is a Image to Upload
 		var xhr = Titanium.Network.createHTTPClient();
-	
+		xhr.setTimeout(300000); // timeout to upload is 5 minutes
+
 		xhr.onerror = function(e) {
 			// Hides the Progress bar
 			showProgressView('hide', null);
-		
-			Ti.API.debug("Error getting upload URL: " + JSON.stringify(e));
+			Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
 		};
-	
+
 		xhr.onload = function(e) {
-			Ti.API.debug('Got upload URL from API: ' + this.responseText)
-			var result = JSON.parse(this.responseText);
+			// updates the Message in the Progress Bar
+			showProgressView('show', L('publishing_post_meme'));
+
+	 		Ti.API.info('Upload complete!');
+			Ti.API.debug('api response was (http status ' + this.status + '): ' + this.responseText);
 			
-			Ti.App.fireEvent("postClickedReadyToUpload", { url: result.url });
+			try {
+				var uploadResult = JSON.parse(this.responseText);
+				
+				if (uploadResult.status == 200) {
+					Titanium.App.fireEvent("postOnMeme", {
+						   postType: "photo",
+						   media_link: uploadResult.imgurl,
+						   message: postText
+					});
+				} else {
+					throw 'Upload error: ' + uploadResult.message;
+				}
+			} catch(e) {
+				Ti.API.error(e);
+				showProgressView('hide', null);
+				Ti.App.fireEvent('yqlerror');
+			}
 		};
-	
-	 	xhr.open('GET', 'http://api.memeapp.net/v1/img/upload/url');
-	  	xhr.send();
+
+		xhr.onsendstream = function(e) {
+			showProgressView('show', L('uploading_file'));
+			ind.value = e.progress;
+			Ti.API.debug('ONSENDSTREAM - PROGRESS: ' + e.progress);
+		};
+
+		// Resizes image before uploading
+		// Max size accepted by Meme is 780x2500 px
+		var new_size = getImageDownsizedSizes(780, 2500, theImage);
+		theImage = theImage.imageAsResized(new_size.width, new_size.height);
+		
+		// Create upload signture
+		var time = timestamp();
+		var signature = hex_hmac_sha1(meme_upload_secret, Ti.App.myMemeInfo.name + ':' + time);
+		
+		// Assembling upload URL
+		// http://meme/api/upload/?t=timestamp&m=memename&s=signature
+		var url = meme_upload_url + '?t=' + time + '&m=' + Ti.App.myMemeInfo.name + '&s=' + signature;
+
+		Ti.API.debug('Will upload to URL [' + url + ']');
+		
+		// upload it!
+		xhr.open('POST', url);
+		xhr.send({
+			file: theImage
+		});
 	
 	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("flickr") != -1) {
 		Titanium.App.fireEvent("postOnMeme", {
@@ -782,59 +826,6 @@ Titanium.App.addEventListener("postClicked", function(e) {
 			message: postText
 		});
 	}
-});
-
-Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
-	var xhr = Titanium.Network.createHTTPClient();
-	xhr.setTimeout(300000); // timeout to upload is 5 minutes
-	
-	xhr.onerror = function(e) {
-		// Hides the Progress bar
-		showProgressView('hide', null);
-		
-		Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
-	};
-	
-	xhr.onload = function(e) {
-		// updates the Message in the Progress Bar
-		showProgressView('show', L('publishing_post_meme'));
-		
- 		Ti.API.info("Upload complete!");
-		Ti.API.debug('api response was: ' + this.responseText)
-
-		var uploadResult = JSON.parse(this.responseText);
-	
-		Titanium.App.fireEvent("postOnMeme", {
-			   postType: "photo",
-			   media_link: uploadResult.url,
-			   message: postText
-		});
-	};
-	
-	xhr.onsendstream = function(e) {
-		showProgressView('show', L('uploading_file'));
-		ind.value = e.progress;
-		Ti.API.debug('ONSENDSTREAM - PROGRESS: ' + e.progress);
-	};
-	
-	// Resizes image before uploading
-	// Max size accepted by Meme is 780x2500 px
-	var new_size = getImageDownsizedSizes(780, 2500, theImage);
-	theImage = theImage.imageAsResized(new_size.width, new_size.height);
-	
-	// "type:image/jpeg|size:800x600|secret:xxx"
-	var auth = Ti.Utils.md5HexDigest('type:' + theImage.mimetype + '|size:' + theImage.width + 'x' + theImage.height + '|secret:' + meme_be_secret);
-	
-	Ti.API.debug('Starting upload to URL [' + e.url + ']');
-	xhr.open('POST', e.url);
-	xhr.setRequestHeader('X-MemeApp-AppId', 'MemeAppiPad');
-	xhr.setRequestHeader('X-MemeApp-ServiceType', 'img');
-	xhr.setRequestHeader('X-MemeApp-Auth', auth);
-	xhr.setRequestHeader('X-MemeApp-MimeType', theImage.mimetype);
-	xhr.setRequestHeader('X-MemeApp-Size', theImage.width + 'x' + theImage.height);
-  	xhr.send({
-		file: theImage
-	});
 });
 
 Titanium.App.addEventListener("postOnMeme", function(e) {
