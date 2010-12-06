@@ -136,11 +136,15 @@ var showHeader = function (successCallback) {
 		var btn_Username = Ti.UI.createButton({
 			backgroundImage: 	'images/btn_username.png',
 			backgroundSelectedImage: 'images/btn_username_selected.png',
+			// title: 				Ti.App.myMemeInfo.title,
+			font: 		{fontSize:14, fontFamily:'Helvetica Neue', fontWeight:'bold'},	
 			height: 			49,
 			width: 				243,
 			left: 				207,
 			top: 				0,
-			zIndex:  			3
+			opacity: 			1,
+			zIndex:  			1,
+			style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 		});
 		headerView.add(btn_Username);
 	
@@ -153,7 +157,8 @@ var showHeader = function (successCallback) {
 			left:  		12,
 			height: 	20,
 			width: 		200,
-			zIndex: 2
+			opacity: 	1,
+			zIndex: 	99	
 		});
 		btn_Username.add(memeTitleLabel);
 	
@@ -527,7 +532,8 @@ function showIndicator(pMessage, pColor, pSize, pTop, pLeft) {
 	indWin = Titanium.UI.createWindow({
 		height: 		pSize,
 		width: 			pSize,
-		zIndex: 		995
+		opacity: 		1,
+		zIndex: 		99
 	});
 	
 	//IF POSITION IS DEFINED
@@ -551,7 +557,9 @@ function showIndicator(pMessage, pColor, pSize, pTop, pLeft) {
 		style: 			Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
 		top: 			pSize/3,
 		height: 		30,
-		width: 			30
+		width: 			30,
+		opacity: 		1,
+		zIndex: 		5
 	});
 	indWin.add(actInd);
 
@@ -562,7 +570,9 @@ function showIndicator(pMessage, pColor, pSize, pTop, pLeft) {
 		width: 			'auto',
 		height: 		'auto',
 		font: 			{fontSize:18,fontWeight:'bold'},
-		bottom: 		pSize/4
+		bottom: 		pSize/4,
+		opacity: 		1,
+		zIndex: 		5
 	});
 	indWin.add(message);
 	indWin.open();

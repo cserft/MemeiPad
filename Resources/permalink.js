@@ -240,18 +240,20 @@ var btn_repost = Titanium.UI.createButton({
 	height:65,
 	bottom: 1,
 	right: 0,
+	opacity: 1,
 	zIndex: 1
 });
 whiteBox.add(btn_repost);
 
 // Already Reposted Icon
 var icon_reposted = Titanium.UI.createImageView({
-	image: 'images/icon_reposted.png',
-	top:16,
-	left:30,
-	width:30,
-	height:30,
-	zIndex:3
+	image: 		'images/icon_reposted.png',
+	top: 		16,
+	left: 		30,
+	width: 		30,
+	height: 	30,
+	opacity: 	1,
+	zIndex: 	10
 });
 
 // IF HAS ZERO REPOSTS DOES NOT SHOW ZERO
@@ -403,9 +405,8 @@ btn_repost.addEventListener('click', function(e) {
 	var response = yqlInsert.query.results.status;
 	
 	if (response.message == "ok"){
-			icon_reposted.opacity = 0;
 			btn_repost.add(icon_reposted);
-			icon_reposted.animate({opacity: 1, duration: 500});
+			icon_reposted.opacity = 1;
 			btn_repost.enabled = false;	
 			repostCountLabel.text = repost_countInt+=1 ;
 			
@@ -504,29 +505,33 @@ Ti.App.fireEvent('hide_indicator');
 pos_BtnOpenSafari = 80 + (post.url.length * 8) + 20;
 
 var LinkPermalinkLabel = Titanium.UI.createLabel({
-	color:'#FFF',
-	text: post.url ,
-	textAlign:'left',
-	font: {
-		fontSize:14,
-		fontFamily:'Georgia',
-		fontStyle: 'italic',
-		fontWeight: 'bold'
-	},
-	bottom:38,
-	left:61,
-	width:500,
-	height:15
+	color: 				'#FFF',
+	text: 				post.url ,
+	textAlign: 			'left',
+	font: 				{
+						fontSize:14,
+						fontFamily:'Georgia',
+						fontStyle: 'italic',
+						fontWeight: 'bold'
+					 	},
+	bottom: 			38,
+	left: 				61,
+	width: 				500,
+	height: 			15,
+	opacity: 			1,
+	zIndex: 			3
 });
 
 win.add(LinkPermalinkLabel);
 
 var btn_openSafari = Titanium.UI.createButton({
-	backgroundImage:'images/btn_fwd.png',
-	width:22,
-	height:17,
-	bottom: 40,
-	left: pos_BtnOpenSafari
+	backgroundImage: 	'images/btn_fwd.png',
+	width: 				22,
+	height: 			17,
+	bottom: 			40,
+	opacity: 			1,
+	zIndex: 			99,
+	left: 				pos_BtnOpenSafari
 });
 win.add(btn_openSafari);
 
