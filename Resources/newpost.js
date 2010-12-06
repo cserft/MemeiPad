@@ -769,7 +769,11 @@ Titanium.App.addEventListener("postClicked", function(e) {
 			} catch(e) {
 				Ti.API.error(e);
 				showProgressView('hide', null);
-				Ti.App.fireEvent('yqlerror');
+				Titanium.UI.createAlertDialog({
+					title: 'Error',
+					message: 'Error uploading image. Please try again in a few seconds.'
+				}).show();
+				btn_post.enabled = true;
 			}
 		};
 
@@ -785,7 +789,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 		theImage = theImage.imageAsResized(new_size.width, new_size.height);
 		
 		// Create upload signture
-		var time = timestamp();
+		var time = parseInt(timestamp()/1000);
 		var signature = hex_hmac_sha1(meme_upload_secret, Ti.App.myMemeInfo.name + ':' + time);
 		
 		// Assembling upload URL
