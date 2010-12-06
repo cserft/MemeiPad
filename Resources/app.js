@@ -344,7 +344,7 @@ var showHeader = function (successCallback) {
 				top: 				-5,
 				height: 			52, //29
 				width: 				73, // 50
-			    title: 				'back',
+			    title: 				L('btn_back_title'),
 				color: 				'white',
 				textAlign: 			'center',
 				font: 				{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'},

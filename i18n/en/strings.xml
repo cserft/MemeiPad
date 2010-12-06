@@ -12,6 +12,7 @@
 	<string name="path_btn_start_posting_background_image">images/btn_start_posting.png</string>
 	<!-- ABOUT -->
 	<string name="btn_signout_title">sign out</string>
+	<string name="btn_back_title">back</string>
 	<string name="path_btn_signout_background_image">images/btn_signout.png</string>
 	<string name="followers">followers </string>
 	<string name="following">    following </string>

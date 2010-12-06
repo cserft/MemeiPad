@@ -100,6 +100,7 @@ var actIndFlashlight = Ti.UI.createActivityIndicator({
 	left: 			20,
 	height: 		20,
 	width: 			20,
+	zIndex: 		4,
 	style: 			Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
 });
 btn_flashlight.add(actIndFlashlight);
