@@ -133,43 +133,54 @@ var showHeader = function (successCallback) {
 			Ti.App.cache.put(info_cache_key, yqlMemeInfo.query.results.meme, 86400);
 		}
 		
-		var btn_Username = Ti.UI.createButton({
-			backgroundImage: 	'images/btn_username.png',
-			backgroundSelectedImage: 'images/btn_username_selected.png',
-			// title: 				Ti.App.myMemeInfo.title,
-			font: 		{fontSize:14, fontFamily:'Helvetica Neue', fontWeight:'bold'},	
-			height: 			49,
-			width: 				243,
-			left: 				207,
-			top: 				0,
-			opacity: 			1,
-			zIndex:  			1,
-			style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+		var btn_Username = Ti.UI.createView({
+			backgroundImage: 			'images/btn_username.png',
+			// backgroundSelectedImage: 	'images/btn_username_selected.png',
+			// title: 						Ti.App.myMemeInfo.title,
+			// textAlign: 					'left',	
+			// font: 						{fontSize:14, fontFamily:'Helvetica Neue', fontWeight:'bold'},	
+			backgroundLeftCap: 			2,
+			backgroundRightCap: 		33,
+			height: 					49,
+			width: 						250, // original: 243
+			left: 						207,
+			top: 						0,
+			opacity: 					1,
+			zIndex:  					1,
+			style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 		});
 		headerView.add(btn_Username);
 	
 		var memeTitleLabel = Ti.UI.createLabel({
-			color: 		'#ffffff',
-			text:  		Ti.App.myMemeInfo.title,
-			font: 		{fontSize:14, fontFamily:'Helvetica Neue', fontWeight:'bold'},
-			textAlign: 	'left',		
-			top: 		14,
-			left:  		12,
-			height: 	20,
-			width: 		200,
-			opacity: 	1,
-			zIndex: 	99	
-		});
+				color: 		'#ffffff',
+				text:  		Ti.App.myMemeInfo.title,
+				font: 		{fontSize:14, fontFamily:'Helvetica Neue', fontWeight:'bold'},
+				textAlign: 	'left',		
+				top: 		14,
+				left:  		12,
+				height: 	20,
+				width: 		204,
+				opacity: 	1,
+				zIndex: 	99	
+			});
 		btn_Username.add(memeTitleLabel);
 	
 		// ================
 		// = PopOver Menu =
 		// ================
+		
+		btn_Username.addEventListener('touchend', function()	{
+			
+			btn_Username.backgroundImage = 'images/btn_username.png';
+		});
 
 		// build User popover
 		btn_Username.addEventListener('click', function()	{
 			
 			//PopOver 
+			
+			btn_Username.backgroundImage = 'images/btn_username_selected.png';
+			
 			var popover = Ti.UI.iPad.createPopover({
 				width:341,
 				height:160, 
