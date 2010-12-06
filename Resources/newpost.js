@@ -1,5 +1,6 @@
 Ti.include('lib/secrets.js');
 Ti.include('lib/commons.js');
+Ti.include('lib/meme.js');
 Ti.include('newpost_flashlight.js');
 
 var win 			= 	Ti.UI.currentWindow;
@@ -838,29 +839,24 @@ Titanium.App.addEventListener("postClickedReadyToUpload", function(e) {
 
 Titanium.App.addEventListener("postOnMeme", function(e) {
 	// Verifies the Type of Post and selects the Proper YQL Query
+	var response, alertInfo;
+	
 	if (e.postType == "photo") {
-		yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('"+ e.postType +"', '" + e.media_link + "', '" + e.message + "')";
-		
+		response = Meme.createPhotoPost(e.media_link, e.message);
 	} else if (e.postType == "text"){
-		yqlQuery = "INSERT INTO meme.user.posts (type, content) VALUES ('"+ e.postType +"', '" + e.message + "')";
+		response = Meme.createTextPost(e.message);
 		
 		// updates the Message in the Progress Bar
 		showProgressView('show', L('publishing_post_meme'));
 		ind.value = 10;
 		
 	} else if (e.postType == "video"){
-		yqlQuery = "INSERT INTO meme.user.posts (type, content, caption) VALUES ('"+ e.postType +"', '" + e.media_link + "', '" + e.message + "')";
+		response = Meme.createVideoPost(e.media_link, e.message);
 
 		// updates the Message in the Progress Bar
 		showProgressView('show', L('publishing_post_meme'));
 		ind.value = 10;
 	}
-	
-	Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
-	
-	var yqlInsert = yql.query(yqlQuery);
-	var response = yqlInsert.query.results.status;
-	var alertInfo;
 	
 	// SUCCESS
 	if (response) {
