@@ -215,18 +215,41 @@ guidAvatar.addEventListener('click', function(e) {
 			}
 		});
 
-		var action = null;
+		var updateFollowing = null;
 		if (Meme.isFollowing(meme.guid)) {
 			label.title = 'unfollow';
-			action = Meme.unfollow
+			updateFollowing = Meme.unfollow
 		} else {
 			label.title = 'follow';
-			action = Meme.follow;
+			updateFollowing = Meme.follow;
 		}
 
 		label.addEventListener('click', function(e) {
-			action(meme.guid);
-			popover.hide();
+			label.hide();
+			
+			var activity = Titanium.UI.createActivityIndicator({
+				style: Titanium.UI.iPhone.ActivityIndicatorStyle.DARK,
+				height: 20,
+				width: 20,
+				left: 40
+			});
+			popover.add(activity);
+			activity.show();
+			
+			updateFollowing(meme.guid);
+			
+			activity.hide();
+			var okImg = Titanium.UI.createImageView({
+				image: 'images/icon_reposted_small.png',
+				width: 'auto',
+				height: 'auto',
+				left: 40
+			});
+			popover.add(okImg);
+		
+			setTimeout(function(){
+				popover.hide()
+			}, 500);
 		});
 
 		popover.add(label);
