@@ -102,7 +102,7 @@ var innerCaption;
 // Create our Webview to render the Post's content
 var postWebView = Ti.UI.createWebView({
         html: '',
-		backgroundImage: 'images/bg.jpg',
+		// backgroundImage: 'images/bg.jpg',
 		top:0,
 		width: '100%',
 		height: 567,
@@ -126,7 +126,8 @@ var border = Ti.UI.createView({
 	backgroundColor:'#EBEBEB',
 	height:1,
 	bottom:65,
-	width: '100%'	
+	width: '100%',
+	zIndex: 2
 });
 whiteBox.add(border);
 

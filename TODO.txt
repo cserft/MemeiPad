@@ -17,6 +17,7 @@ _____ AFTER LAUNCH _____
 
 dashboard.js
 ------------
+- BUG: When less than 3 lines are presented, must trigger Load pra baixo.
 
 _____ AFTER LAUNCH _____
 - better handling of the Loading 'prabaixo', only hide the loading message after the rows are displayed
