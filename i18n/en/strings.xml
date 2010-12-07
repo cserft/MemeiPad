@@ -4,6 +4,7 @@
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
+	<string name="path_btn_signin_title">sign in</string>
 	<string name="path_btn_signup_background_image">images/btn_signup.png</string>
 	<string name="path_btn_back">images/btn_back.png</string>
 	<string name="btn_signup_alert">Create your account</string>
@@ -49,6 +50,7 @@
 	<string name="searchTextField_hint_text">Paste YouTube or Vimeo links or make a search to illustrate your post</string>
 	<string name="popover_flashlight_title">Suggested Content</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
+	<string name="btn_post_top_title">post</string>
 	<string name="editTitleField_hint_text">add title</string>
 	<string name="tempPostLabel_text">write your post here</string>
 	<string name="disclaimer_copyright_guidelines">Don’t infringe copyright or post adult content. Check the Community Guidelines for more information.</string>

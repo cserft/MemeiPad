@@ -3,14 +3,15 @@
 	<!-- BAHASA INDONESIA -->
 	<!-- app.js -->
 	<!-- HEADER -->
-	<string name="path_logo_header">images/logo_meme_white.png</string>
+	<string name="path_logo_header">images/logo_meme_white_id.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
-	<string name="path_btn_signup_background_image">images/btn_signup.png</string>
+	<string name="path_btn_signin_title">sign in</string>
+	<string name="path_btn_signup_background_image">images/btn_signup_id.png</string>
 	<string name="path_btn_back">images/btn_back.png</string>
 	<string name="btn_signup_alert">Buat account</string>
 	<string name="btn_signup_message">We will open the Sign up page in Safari</string>
 	<string name="btn_signup_url">http://mim.yahoo.com/confirm</string>
-	<string name="path_btn_start_posting_background_image">images/btn_start_posting.png</string>
+	<string name="path_btn_start_posting_background_image">images/btn_start_posting_id.png</string>
 	<!-- ABOUT -->
 	<string name="btn_signout_title">sign out</string>
 	<string name="btn_back_title">kembali</string>
@@ -50,6 +51,7 @@
 	<string name="searchTextField_hint_text">Paste YouTube or Vimeo links or make a search to illustrate your post</string>
 	<string name="popover_flashlight_title">Suggested Content</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
+	<string name="btn_post_top_title">posting</string>
 	<string name="editTitleField_hint_text">menambahkan judul</string>
 	<string name="tempPostLabel_text">tulis postingan Anda di sini</string>
 	<string name="disclaimer_copyright_guidelines">Jangan melanggar hak cipta atau mengirim konten dewasa. Lihat Pedoman Komunitas untuk info lengkap.</string>

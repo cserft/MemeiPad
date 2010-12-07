@@ -173,10 +173,14 @@ btn_addPhoto.addEventListener('click', function() {
 // ===============
 var btn_post = Ti.UI.createButton({
 	backgroundImage: L('path_btn_post_top_background_image'),
-	height: 		85,
-	width: 			192,
-	left: 			780,
-	top: 			-10
+	height: 					85,
+	title: 						L('btn_post_top_title'),
+	color: 						'white',
+	textAlign: 					'center',
+	font: 						{fontSize:22, fontFamily:'Helvetica Neue', fontWeight:'bold'},
+	width: 						192,
+	left: 						780,
+	top: 						-10
 });
 postHeaderView.add(btn_post);
 // ======================
@@ -329,7 +333,8 @@ var disclaimerLabel1 = Titanium.UI.createLabel({
 	height: 	15,
 	left: 		120,
 	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
-	bottom: 	18
+	bottom: 	18,
+	zIndex: 	3
 });
 win.add(disclaimerLabel1);
 
@@ -341,7 +346,8 @@ var disclaimerLabel2 = Titanium.UI.createLabel({
 	height: 	15,
 	left: 		disclaimerLabel1.left + disclaimerLabel1.width + 5,
 	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
-	bottom: 	18
+	bottom: 	18,
+	zIndex: 	3
 });
 win.add(disclaimerLabel2);
 

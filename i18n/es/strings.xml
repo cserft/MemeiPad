@@ -3,14 +3,15 @@
 	<!-- ESPANOL -->
 	<!-- app.js -->
 	<!-- HEADER -->
-	<string name="path_logo_header">images/logo_meme_white.png</string>
-	<string name="path_btn_signin_background_image">images/btn_signin_top_es.png</string>
+	<string name="path_logo_header">images/logo_meme_white_es.png</string>
+	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
+	<string name="path_btn_signin_title">ingresa</string>
 	<string name="path_btn_signup_background_image">images/btn_signup_es.png</string>
 	<string name="path_btn_back">images/btn_back.png</string>
 	<string name="btn_signup_alert">Crea tu cuenta</string>
 	<string name="btn_signup_message">We will open the Sign up page in Safari</string>
 	<string name="btn_signup_url">http://meme.yahoo.com/confirm</string>
-	<string name="path_btn_start_posting_background_image">images/btn_start_posting.png</string>
+	<string name="path_btn_start_posting_background_image">images/btn_start_posting_es.png</string>
 	<!-- ABOUT -->
 	<string name="btn_signout_title">salir</string>
 	<string name="btn_back_title">vuelta</string>
@@ -50,12 +51,13 @@
 	<string name="searchTextField_hint_text">Paste YouTube or Vimeo links or make a search to illustrate your post</string>
 	<string name="popover_flashlight_title">Suggested Content</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
-	<string name="editTitleField_hint_text">add title</string>
-	<string name="tempPostLabel_text">write your post here</string>
-	<string name="disclaimer_copyright_guidelines">Don’t infringe copyright or post adult content. Check the Community Guidelines for more information.</string>
-	<string name="disclaimer_yahoo_updates"> Your Post will be shared via Yahoo! Updates.</string>
+	<string name="btn_post_top_title">actualizar</string>
+	<string name="editTitleField_hint_text">añadir un título</string>
+	<string name="tempPostLabel_text">escribe tu entrada aquí</string>
+	<string name="disclaimer_copyright_guidelines">No violes las leyes de propiedad ni envíes contenido adulto. Revisa las Reglas de la Comunidad.</string>
+	<string name="disclaimer_yahoo_updates"> Tu post será compartido a través Yahoo! Updates.</string>
 	<string name="guidelines_url">http://meme.yahoo.com/help/guidelines/</string>
-	<string name="settings_url">http://meme.yahoo.com/settings</string>
+	<string name="settings_url">http://profiles.yahoo.com/settings/updates</string>
 	<string name="oops_alert_title">Oops...</string>
 	<string name="post_message_empty">Write something before you hit the post button.</string>
 	<string name="preparing_to_post_message">Preparing to post...</string>
@@ -91,7 +93,7 @@
 	<!-- permalink.js -->
 	<string name="posted"> posted </string> 
 	<string name="path_btn_send_commentbackground_image">images/btn_send_comment.png</string>
-	<string name="repostCommentField_hint_text">add your comment...</string> 
+	<string name="repostCommentField_hint_text">comentar aquí...</string> 
 	<string name="delete_alert_title">Delete Post</string>  
 	<string name="delete_alert_message">Are you sure you want to delete this Post?</string>
 	<string name="report_abuse_alert_title">Report Abuse</string>  

@@ -63,10 +63,14 @@ appNavBarView.add(logoHeader);
 
 var btn_signin = Titanium.UI.createButton({
 	backgroundImage: L('path_btn_signin_background_image'),
-	top: 			-22,
-	left: 			940,
-	width: 			96, // 72
-	height: 		97,  // 54
+	top: 			-6,
+	left: 			936,
+	width: 			100, 
+	height: 		66,  
+	title: 			L('path_btn_signin_title'),
+	color: 			'white',
+	textAlign: 		'center',
+	font: 			{fontSize:13, fontFamily:'Helvetica Neue', fontWeight:'regular'},
 	opacity: 		1,
 	visible: 		false,
 	zIndex: 		3
@@ -75,10 +79,10 @@ win1.add(btn_signin);
 
 var btn_signup = Titanium.UI.createButton({
 	backgroundImage: 	L('path_btn_signup_background_image'),
-	top: 				-26,
-	left: 				599,
-	width: 				369, //actual: 303	
-	height: 			106, //actual: 54
+	top: 				-6,
+	left: 				632,
+	width: 				315, //actual: 303	
+	height: 			66, //actual: 54
 	opacity: 			1,
 	visible: 			false,
 	zIndex: 			3
@@ -134,11 +138,7 @@ var showHeader = function (successCallback) {
 		}
 		
 		var btn_Username = Ti.UI.createView({
-			backgroundImage: 			'images/btn_username.png',
-			// backgroundSelectedImage: 	'images/btn_username_selected.png',
-			// title: 						Ti.App.myMemeInfo.title,
-			// textAlign: 					'left',	
-			// font: 						{fontSize:14, fontFamily:'Helvetica Neue', fontWeight:'bold'},	
+			backgroundImage: 			'images/btn_username.png',	
 			backgroundLeftCap: 			2,
 			backgroundRightCap: 		33,
 			height: 					49,
@@ -230,16 +230,18 @@ var showHeader = function (successCallback) {
 			});
 
 			var btn_signout = Ti.UI.createButton({
-				top:14,
-				left:256,
-				width:64,
-				height:31,
-				title: L('btn_signout_title'),
-				color: '#666666',
-				font:{fontSize:11, fontWeight:'regular'},
-				backgroundImage: L('path_btn_signout_background_image'),
-				style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
-				borderRadius: 5
+				top: 						14,
+				backgroundLeftCap: 			10,
+				backgroundRightCap: 		10,
+				left: 						245,
+				width: 						75,
+				height: 					31,
+				title: 						L('btn_signout_title'),
+				color: 						'#666666',
+				font: 						{fontSize:11, fontWeight:'regular'},
+				backgroundImage: 			L('path_btn_signout_background_image'),
+				style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
+				borderRadius: 				5
 			});
 			row1.add(btn_signout);
 			
@@ -339,16 +341,18 @@ var showHeader = function (successCallback) {
 			aboutWindow.add(navBar);
 			
 			var backButton = Ti.UI.createButton({
-				backgroundImage: 	L('path_btn_back'),
-				left: 				0,
-				top: 				-5,
-				height: 			52, //29
-				width: 				73, // 50
-			    title: 				L('btn_back_title'),
-				color: 				'white',
-				textAlign: 			'center',
-				font: 				{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'},
-				style: 				Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+				backgroundImage: 			L('path_btn_back'),
+				backgroundLeftCap: 			20,
+				backgroundRightCap: 		20,
+				left: 						0,
+				top: 						-5,
+				height: 					52, //29
+				width: 						100, // 50
+			    title: 						L('btn_back_title'),
+				color: 						'white',
+				textAlign: 					'center',
+				font: 						{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'},
+				style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 			});
 			navBar.add(backButton);
 
@@ -430,10 +434,10 @@ var showHeader = function (successCallback) {
 		
 		var btn_start_posting = Ti.UI.createButton({
 			backgroundImage: 	L('path_btn_start_posting_background_image'), 
-			height: 			79, //55
-			width: 				407, //395
-			left: 				623,
-			top: 				-13,
+			height: 			79,
+			width: 				419, 
+			left: 				617,
+			top: 				-12,
 			zIndex: 			5
 		});
 		headerView.add(btn_start_posting);
