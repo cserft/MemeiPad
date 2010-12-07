@@ -2,3 +2,4 @@ tmp
 secrets.js
 build/iphone/*
 .DS_Store
+*.pyc
