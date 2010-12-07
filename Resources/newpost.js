@@ -163,7 +163,7 @@ btn_addPhoto.addEventListener('click', function() {
 		allowEditing:false,
 		popoverView:popoverGalleryView,
 		arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP,
-		mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO],
+		mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]
 	});
 
 });
@@ -549,7 +549,7 @@ btn_post.addEventListener('click', function() {
 			}).show();
 		} else {
 			//Shows the Upload Progress bar
-			showProgressView ('show', L('preparing_to_post_message'))
+			showProgressView ('show', L('preparing_to_post_message'));
 			ind.value = 0;
 			btn_post.enabled = false;
 			
@@ -772,8 +772,8 @@ Titanium.App.addEventListener("postClicked", function(e) {
 				} else {
 					throw 'Upload error: ' + uploadResult.message;
 				}
-			} catch(e) {
-				Ti.API.error(e);
+			} catch(exception) {
+				Ti.API.error(exception);
 				showProgressView('hide', null);
 				Titanium.UI.createAlertDialog({
 					title: 'Error',

@@ -84,14 +84,14 @@ var flashlight_monitor_start = function() {
 		monitor_started = true;
 		monitor_id = setInterval(flashlight_monitor, 1000);
 	}
-}
+};
 
 var flashlight_monitor_stop = function() {
 	clearInterval(monitor_id);
 	monitor_started = false;
 	monitor_value = null;
 	last_monitor_value = null;
-}
+};
 
 var flashlight_monitor = function() {
 	if (monitor_value) {
@@ -114,18 +114,18 @@ var tabsButtons = [
 ];
 var searchTabs = Titanium.UI.createTabbedBar({
 	labels:tabsButtons,
-	backgroundColor:'#333',
-	top:0,
-	height:49,
-	style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
-	index:0,
+	backgroundColor: '#333',
+	top: 0,
+	height: 49,
+	style: Titanium.UI.iPhone.SystemButtonStyle.BAR,
+	index: 0
 });
 
 var flashlight_show = function() {
 	if (searchTextField.value == '') {
 		Ti.UI.createAlertDialog({
 			title: L('flashlight_alert_empty_title'),
-			message: L('flashlight_alert_empty_message'),
+			message: L('flashlight_alert_empty_message')
 		}).show();
 	} else {
 		flashlight_create();
@@ -148,7 +148,7 @@ var flashlight_create = function() {
 			height:50,
 			width: 192,	
 			textAlign:'left',
-			font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
+			font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
 		});
 		notFoundRow.add(notFoundTitle);
 		
@@ -194,7 +194,7 @@ var flashlight_create = function() {
 								width: 192,
 								left:110,
 								textAlign:'left',
-								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
+								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
 							});
 
 							var image = Ti.UI.createImageView({
@@ -261,7 +261,7 @@ var flashlight_create = function() {
 								width: 200,
 								left:110,
 								textAlign:'left',
-								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'},
+								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
 							});
 							var image = Ti.UI.createImageView({
 								image: thumb,
@@ -508,4 +508,4 @@ var flashlight_create = function() {
 		
 		flashlight_created = true;
 	}
-}
+};

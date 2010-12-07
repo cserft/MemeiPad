@@ -97,6 +97,27 @@ btn_signup.addEventListener("click", function(e) {
 	});
 });
 
+// ==========================
+// = CREATE THE POST WINDOW =
+// ==========================
+
+var a = Titanium.UI.createAnimation();
+a.duration = 200;
+a.top = 0;
+
+var newPost = function() {
+	Ti.UI.createWindow({
+		url: 'newpost.js',
+		title: 'New Post',
+		backgroundColor: 'white',
+		left: 0,
+		top: -749,
+		height: 748,
+		width: 1024,
+		zIndex: 3,
+		navBarHidden: true
+	}).open(a);
+};
 
 // ====================
 // = LOGGED IN HEADER =
@@ -260,7 +281,7 @@ var showHeader = function (successCallback) {
 			// ROW 2 FOLLOWERS
 			var row2 = Ti.UI.createTableViewRow({
 				height: 40,
-				selectionStyle:'none',
+				selectionStyle:'none'
 			});
 			
 			var iconGraphic = Ti.UI.createImageView({
@@ -364,7 +385,7 @@ var showHeader = function (successCallback) {
 			
 			var aboutHTML = '<html><head><script language="javascript">var link = function(url) { Ti.App.fireEvent("openLinkOnSafari", { url: url }); }</script></head><body>';
 			aboutHTML += '<font face="Helvetica Neue" style="font-size:14px;"><p>Meme for iPad is a pet project from the Yahoo! Meme Team, originated in one of our internal Hack Events.</p><p>It was developed by Antonio Carlos Silveira (<a href="javascript:link(\'http://twitter.com/acarlos1000\');">@acarlos1000</a>) and Guilherme Chapiewski (<a href="javascript:link(\'http://twitter.com/gchapiewski\');">@gchapiewski</a>) with Design/UI by Guilherme Neumann (<a href="javascript:link(\'http://twitter.com/gneumann\');">@gneumann</a>).</p><p>This app is totally developed on top of the Open Source Titanium SDK and Yahoo\'s YQL.</p><p>The source code of this app is freely available at GitHub, feel free to download and learn from it.</p></font>';
-			aboutHTML += '</body></html>'
+			aboutHTML += '</body></html>';
 			
 			var aboutView = Ti.UI.createWebView({
 				url: 				L('url_atos_html'), // aboutHTML,
@@ -422,8 +443,8 @@ var showHeader = function (successCallback) {
 			});
 			
 			popover.show({
-				view:btn_Username,
-				animated:true,
+				view: btn_Username,
+				animated: true
 			});
 
 		});
@@ -510,30 +531,6 @@ var startApplication = function() {
 	if (! Ti.App.oAuthAdapter.isLoggedIn()) {   	
 		Ti.App.oAuthAdapter.attachLogin(signInButtonClick, startApplication);
 	}
-}
-
-// ==========================
-// = CREATE THE POST WINDOW =
-// ==========================
-// 
-// tempPostLabel.animate({zIndex: 0, top : 120 + img.size.height});
-// 
-var a = Titanium.UI.createAnimation();
-a.duration = 200;
-a.top = 0;
-
-var newPost = function() {
-	Ti.UI.createWindow({
-		url: 'newpost.js',
-		title: 'New Post',
-		backgroundColor: 'white',
-		left: 0,
-		top: -749,
-		height: 748,
-		width: 1024,
-		zIndex: 3,
-		navBarHidden: true
-	}).open(a);
 };
 	
 //  CREATE CUSTOM LOADING INDICATOR
@@ -726,7 +723,7 @@ var displayErrorMessage = function(title, message, relativeTop, pFontSize) {
 		
 		startApplication();
 	});
-}
+};
 
 // =====================
 // = YQL ERROR MESSAGE =

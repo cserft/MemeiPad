@@ -20,7 +20,7 @@ var authorizationUI = function() {
 
 		btn_signin.enabled = true;
         // if the window doesn't exist, exit
-        if (authWindow == null) return;
+        if (authWindow == null) { return; }
         // remove the UI
         try
         {
@@ -150,7 +150,7 @@ var authorizationUI = function() {
     };
 
 	return(showUI);
-}
+};
 
 // ====================================
 // = create an OAuthAdapter instance =
@@ -335,7 +335,7 @@ var OAuthAdapter = function(pService, authorize) {
 			return true;
 		}
 		return false;
-	}
+	};
 	
 	// returns proper YQL (2 or 3 legged)
 	var getYql = function() {
@@ -343,7 +343,7 @@ var OAuthAdapter = function(pService, authorize) {
 			return { query: query };
 		}
 		return { query: query2legg };
-	}
+	};
 	
 	// will check if access tokens are stored in the config file
     var attachLogin = function(attachFunction, callback) {
@@ -372,7 +372,7 @@ var OAuthAdapter = function(pService, authorize) {
 			return token.token.xoauth_yahoo_guid;
 		}
 		return null;
-	}
+	};
 	
 	return({
 		attachLogin: attachLogin,

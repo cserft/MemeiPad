@@ -219,7 +219,7 @@ guidAvatar.addEventListener('click', function(e) {
 		var updateFollowing = null;
 		if (Meme.isFollowing(meme.guid)) {
 			label.title = 'unfollow';
-			updateFollowing = Meme.unfollow
+			updateFollowing = Meme.unfollow;
 		} else {
 			label.title = 'follow';
 			updateFollowing = Meme.follow;
@@ -249,7 +249,7 @@ guidAvatar.addEventListener('click', function(e) {
 			popover.add(okImg);
 		
 			setTimeout(function(){
-				popover.hide()
+				popover.hide();
 			}, 500);
 		});
 
@@ -257,7 +257,7 @@ guidAvatar.addEventListener('click', function(e) {
 
 		popover.show({
 			view:guidAvatar,
-			animated:true,
+			animated:true
 		});
 	}
 });
@@ -280,7 +280,6 @@ var guidNameLabel = Titanium.UI.createLabel({
 });
 
 whiteBox.add(guidNameLabel);
-
 
 //POsted X times ago message
 var post_update_time = humane_date(post.timestamp);
@@ -646,6 +645,6 @@ alertOpenPermalink.addEventListener('click',function(e)
 Ti.App.addEventListener('close_permalink', function(e)
 {
 	//Closes New Post Window
-	win.close({opacity:0,duration:200})
+	win.close({opacity:0,duration:200});
 
 });

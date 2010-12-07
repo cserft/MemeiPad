@@ -33,7 +33,7 @@ var Cache = function(options) {
 		
 		// set cache expiration task
 		setInterval(expire_cache, cache_expiration_interval * 1000);
-	}
+	};
 	
 	expire_cache = function() {
 		var db = Titanium.Database.open('cache');
@@ -53,11 +53,11 @@ var Cache = function(options) {
 		db.close();
 		
 		Ti.API.debug('CACHE EXPIRATION: [' + count + '] object(s) expired');
-	}
+	};
 	
 	current_timestamp = function() {
 		return new Date().getTime();
-	}
+	};
 	
 	get = function(key) {
 		var db = Titanium.Database.open('cache');
@@ -70,7 +70,7 @@ var Cache = function(options) {
 		rs.close();
 		db.close();
 		return result;
-	}
+	};
 	
 	put = function(key, value, expiration_seconds) {
 		if (!expiration_seconds) {
@@ -81,13 +81,13 @@ var Cache = function(options) {
 		var query = 'INSERT OR REPLACE INTO cache (key, value, expiration) VALUES (?, ?, ?);';
 		db.execute(query, key, JSON.stringify(value), expires_in);
 		db.close();
-	}
+	};
 	
 	del = function(key) {
 		var db = Titanium.Database.open('cache');
 		db.execute('DELETE FROM cache WHERE key = ?', key);
 		db.close();
-	}
+	};
 	
 	return function(options) {
 		// if development environment, disable cache capabilities
@@ -96,7 +96,7 @@ var Cache = function(options) {
 				get: function(){},
 				put: function(){},
 				del: function(){}
-			}
+			};
 		}
 		
 		// initialize everything
@@ -111,6 +111,6 @@ var Cache = function(options) {
 			get: get,
 			put: put,
 			del: del
-		}
+		};
 	}(options);
 };
