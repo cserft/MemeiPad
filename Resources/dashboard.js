@@ -259,6 +259,10 @@ var getDashboardData = function (pTimestamp) {
 		
 		var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
 		
+		if (!yqldata.query.results) {
+			Ti.App.fireEvent('yqlerror');
+		}
+		
 		// warning: cannot be cached logged-in dashboard
 		posts = yqldata.query.results.post;
 		
@@ -280,6 +284,11 @@ var getDashboardData = function (pTimestamp) {
 			yqlQuery = "SELECT * FROM meme.posts.featured WHERE locale='en' | meme.functions.thumbs(width=307,height=231)";
 			
 			var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
+			
+			if (!yqldata.query.results) {
+				Ti.App.fireEvent('yqlerror');
+			}
+			
 			posts = yqldata.query.results.post;
 			
 			// cache result for 2 hours
