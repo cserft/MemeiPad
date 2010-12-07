@@ -329,9 +329,9 @@ win.add(whiteShadow);
 var disclaimerLabel1 = Titanium.UI.createLabel({
 	text: 		L('disclaimer_copyright_guidelines'),
 	color: 		'#CCC',
-	width: 		500,
+	width: 		525,
 	height: 	15,
-	left: 		120,
+	left: 		(1024-(525+285))/2, // Total width of the screen (1024) - (width of disclaimer1 + width of disclaimer2), the result divided by 2
 	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
 	bottom: 	18,
 	zIndex: 	3

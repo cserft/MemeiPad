@@ -295,7 +295,7 @@ var postUpdatedTimeLabel = Titanium.UI.createLabel({
 	},
 	bottom: 11,
 	left: 59,
-	width: 150,
+	width: 250,
 	height: 29,
 	zIndex: 2
 });
