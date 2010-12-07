@@ -91,7 +91,8 @@
 	<!-- /commons.js -->
 	<!-- permalink.js -->
 	<string name="posted"> postado há </string> 
-	<string name="path_btn_send_commentbackground_image">images/btn_send_comment_br.png</string>
+	<string name="path_btn_send_commentbackground_image">images/btn_send_comment.png</string>
+	<string name="btn_send_comment_title">comentar</string>
 	<string name="repostCommentField_hint_text">adicione seu comentário</string> 
 	<string name="delete_alert_title">Apagar Post</string>  
 	<string name="delete_alert_message">Você tem certeza de que deseja apagar este Post?</string>

@@ -429,6 +429,10 @@ repost_comment_view.add(repostCommentField);
 // SEND COMMENT BUTTON
 var btn_send_comment = Titanium.UI.createButton({
 	backgroundImage: 	L('path_btn_send_commentbackground_image'),
+	title: 				L('btn_send_comment_title'),
+	color: 				'white',
+	textAlign: 			'center',
+	font: 				{fontSize:14, fontFamily:'Helvetica', fontWeight:'bold'},
 	width: 				125,
 	height: 			34,
 	top: 				16,

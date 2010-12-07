@@ -92,6 +92,7 @@
 	<!-- permalink.js -->
 	<string name="posted"> posted </string> 
 	<string name="path_btn_send_commentbackground_image">images/btn_send_comment.png</string>
+	<string name="btn_send_comment_title">回應</string>
 	<string name="repostCommentField_hint_text">add your comment...</string> 
 	<string name="delete_alert_title">Delete Post</string>  
 	<string name="delete_alert_message">Are you sure you want to delete this Post?</string>
