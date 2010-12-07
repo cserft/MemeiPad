@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+	<!-- ESPANOL -->
 	<!-- app.js -->
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white.png</string>
-	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
-	<string name="path_btn_signup_background_image">images/btn_signup.png</string>
+	<string name="path_btn_signin_background_image">images/btn_signin_top_es.png</string>
+	<string name="path_btn_signup_background_image">images/btn_signup_es.png</string>
 	<string name="path_btn_back">images/btn_back.png</string>
-	<string name="btn_signup_alert">Create your account</string>
+	<string name="btn_signup_alert">Crea tu cuenta</string>
 	<string name="btn_signup_message">We will open the Sign up page in Safari</string>
 	<string name="btn_signup_url">http://meme.yahoo.com/confirm</string>
 	<string name="path_btn_start_posting_background_image">images/btn_start_posting.png</string>
 	<!-- ABOUT -->
-	<string name="btn_signout_title">sign out</string>
-	<string name="btn_back_title">back</string>
+	<string name="btn_signout_title">salir</string>
+	<string name="btn_back_title">vuelta</string>
 	<string name="path_btn_signout_background_image">images/btn_signout.png</string>
-	<string name="followers">followers </string>
-	<string name="following">    following </string>
-	<string name="ATOS">Additional Terms of Service</string>
-	<string name="url_atos_html">atos_en.html</string>
+	<string name="followers">seguidores </string>
+	<string name="following">    siguiendo </string>
+	<string name="ATOS">Términos Adicionales</string>
+	<string name="url_atos_html">atos_es.html</string>
 	<string name="meme_short_domain">me.me/</string>
-	<string name="aboutGitLabel_text">Meme for iPad on GitHub:\nhttp://memeapp.net/source</string>
+	<string name="aboutGitLabel_text">Meme para iPad on GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
 	<!-- GENERIC -->
-	<string name="open_link_title">Open Link</string>
-	<string name="success_alert_title">Success</string>
+	<string name="open_link_title">Abrir Link</string>
+	<string name="success_alert_title">Éxito</string>
 	<string name="error_alert_title">Error</string>
 	<string name="btn_alert_OK">OK</string>
-	<string name="btn_alert_YES">Yes</string>
+	<string name="btn_alert_YES">Sí</string>
 	<string name="btn_alert_NO">No</string>
-	<string name="btn_alert_CANCEL">Cancel</string>
+	<string name="btn_alert_CANCEL">Cancelar</string>
 	<string name="open_link_message">We will open this link in Safari</string>
-	<string name="btn_error_refresh_title">refresh</string>
+	<string name="btn_error_refresh_title">recargar</string>
 	<string name="yql_error">YQL Error</string>
 	<string name="error_message_problem">Ops, it seems we had a problem...</string>
-	<string name="network_error">Network Error</string>
+	<string name="network_error">Error en la red</string>
 	<string name="network_error_message">You need to be online to use Meme for iPad. Please, check your network connection and try again.</string>
-	<string name="loading_message">Loading...</string>
+	<string name="loading_message">Cargando...</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
 	<string name="pull_to_reload_text">Pull to reload</string>

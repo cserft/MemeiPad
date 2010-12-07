@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+	<!-- BAHASA INDONESIA -->
 	<!-- app.js -->
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
 	<string name="path_btn_signup_background_image">images/btn_signup.png</string>
 	<string name="path_btn_back">images/btn_back.png</string>
-	<string name="btn_signup_alert">Create your account</string>
+	<string name="btn_signup_alert">Buat account</string>
 	<string name="btn_signup_message">We will open the Sign up page in Safari</string>
-	<string name="btn_signup_url">http://meme.yahoo.com/confirm</string>
+	<string name="btn_signup_url">http://mim.yahoo.com/confirm</string>
 	<string name="path_btn_start_posting_background_image">images/btn_start_posting.png</string>
 	<!-- ABOUT -->
 	<string name="btn_signout_title">sign out</string>
-	<string name="btn_back_title">back</string>
+	<string name="btn_back_title">kembali</string>
 	<string name="path_btn_signout_background_image">images/btn_signout.png</string>
-	<string name="followers">followers </string>
-	<string name="following">    following </string>
-	<string name="ATOS">Additional Terms of Service</string>
-	<string name="url_atos_html">atos_en.html</string>
-	<string name="meme_short_domain">me.me/</string>
-	<string name="aboutGitLabel_text">Meme for iPad on GitHub:\nhttp://memeapp.net/source</string>
+	<string name="followers">pengikut </string>
+	<string name="following">    mengikuti </string>
+	<string name="ATOS">Ketentuan Tambahan</string>
+	<string name="url_atos_html">atos_id.html</string>
+	<string name="meme_short_domain">mim.ly/</string>
+	<string name="aboutGitLabel_text">Mim for iPad on GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
 	<!-- GENERIC -->
-	<string name="open_link_title">Open Link</string>
-	<string name="success_alert_title">Success</string>
-	<string name="error_alert_title">Error</string>
+	<string name="open_link_title">Buka Link</string>
+	<string name="success_alert_title">Sukses</string>
+	<string name="error_alert_title">Kesalahan</string>
 	<string name="btn_alert_OK">OK</string>
-	<string name="btn_alert_YES">Yes</string>
-	<string name="btn_alert_NO">No</string>
-	<string name="btn_alert_CANCEL">Cancel</string>
+	<string name="btn_alert_YES">Ya</string>
+	<string name="btn_alert_NO">Tidak ada</string>
+	<string name="btn_alert_CANCEL">Membatalkan</string>
 	<string name="open_link_message">We will open this link in Safari</string>
-	<string name="btn_error_refresh_title">refresh</string>
-	<string name="yql_error">YQL Error</string>
+	<string name="btn_error_refresh_title">menyegarkan</string>
+	<string name="yql_error">YQL Kesalahan</string>
 	<string name="error_message_problem">Ops, it seems we had a problem...</string>
-	<string name="network_error">Network Error</string>
+	<string name="network_error">Jaringan Kesalahan</string>
 	<string name="network_error_message">You need to be online to use Meme for iPad. Please, check your network connection and try again.</string>
-	<string name="loading_message">Loading...</string>
+	<string name="loading_message">Pembebanan...</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
 	<string name="pull_to_reload_text">Pull to reload</string>
@@ -49,12 +50,12 @@
 	<string name="searchTextField_hint_text">Paste YouTube or Vimeo links or make a search to illustrate your post</string>
 	<string name="popover_flashlight_title">Suggested Content</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
-	<string name="editTitleField_hint_text">add title</string>
-	<string name="tempPostLabel_text">write your post here</string>
-	<string name="disclaimer_copyright_guidelines">Don’t infringe copyright or post adult content. Check the Community Guidelines for more information.</string>
-	<string name="disclaimer_yahoo_updates"> Your Post will be shared via Yahoo! Updates.</string>
+	<string name="editTitleField_hint_text">menambahkan judul</string>
+	<string name="tempPostLabel_text">tulis postingan Anda di sini</string>
+	<string name="disclaimer_copyright_guidelines">Jangan melanggar hak cipta atau mengirim konten dewasa. Lihat Pedoman Komunitas untuk info lengkap.</string>
+	<string name="disclaimer_yahoo_updates"> Postingan Anda akan dibagi via Yahoo! Updates.</string>
 	<string name="guidelines_url">http://meme.yahoo.com/help/guidelines/</string>
-	<string name="settings_url">http://meme.yahoo.com/settings</string>
+	<string name="settings_url">http://profiles.yahoo.com/settings/updates</string>
 	<string name="oops_alert_title">Oops...</string>
 	<string name="post_message_empty">Write something before you hit the post button.</string>
 	<string name="preparing_to_post_message">Preparing to post...</string>
@@ -70,7 +71,7 @@
 	<string name="flashlight_no_results">No results were found.</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
-	<string name="time_just_now">Just now</string>
+	<string name="time_just_now">Beberapa detik yang lalu</string>
 	<string name="time_1_minute">1 minute</string>
 	<string name="time_minutes">minutes</string>
 	<string name="time_1_hour">1 hour</string>
@@ -90,10 +91,10 @@
 	<!-- permalink.js -->
 	<string name="posted"> posted </string> 
 	<string name="path_btn_send_commentbackground_image">images/btn_send_comment.png</string>
-	<string name="repostCommentField_hint_text">add your comment...</string> 
+	<string name="repostCommentField_hint_text">beri komentar di sini...</string> 
 	<string name="delete_alert_title">Delete Post</string>  
 	<string name="delete_alert_message">Are you sure you want to delete this Post?</string>
-	<string name="report_abuse_alert_title">Report Abuse</string>  
+	<string name="report_abuse_alert_title">Laporkan penyalahgunaan</string>  
 	<string name="report_abuse_alert_message">We will open the Report Abuse page on Safari.</string>
 	<!-- /permalink.js -->
 	<!-- EXTRAS -->

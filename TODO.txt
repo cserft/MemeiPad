@@ -8,12 +8,14 @@ _____ AFTER LAUNCH _____
 
 app.js
 ------------
-- REsize Images in the Hightligh
-- implement button to close the Highlights and expand the dashboard	
+- Display Version of the App
+- Add Feedback mail on About
 - BUG: when signing in, the Dashboard doesn't load (ERROR oadapter.js line 233)
 
 _____ AFTER LAUNCH _____
 - Global Settings App Page on the iPhone/iPad - http://developer.appcelerator.com/question/39381/application-settings
+- REsize Images in the Hightligh
+- implement button to close the Highlights and expand the dashboard
 
 dashboard.js
 ------------
@@ -29,6 +31,7 @@ _____ AFTER LAUNCH _____
 permalink.js
 ------------
 - BUG: little bug when clicking in the respost comment text field, keyboard does not show up, needs to click twice
+- BUG: HTML horizontal scroll, check this content in the App. http://meme.yahoo.com/pedrovalente/p/rX-MoWZ/
 
 
 _____ AFTER LAUNCH _____

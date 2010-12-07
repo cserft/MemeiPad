@@ -54,7 +54,7 @@
 	<string name="disclaimer_copyright_guidelines">Don’t infringe copyright or post adult content. Check the Community Guidelines for more information.</string>
 	<string name="disclaimer_yahoo_updates"> Your Post will be shared via Yahoo! Updates.</string>
 	<string name="guidelines_url">http://meme.yahoo.com/help/guidelines/</string>
-	<string name="settings_url">http://meme.yahoo.com/settings</string>
+	<string name="settings_url">http://profiles.yahoo.com/settings/updates</string>
 	<string name="oops_alert_title">Oops...</string>
 	<string name="post_message_empty">Write something before you hit the post button.</string>
 	<string name="preparing_to_post_message">Preparing to post...</string>
