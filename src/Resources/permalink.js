@@ -463,28 +463,21 @@ repostCommentField.addEventListener('blur', function(e) {
 
 // REPOST ANIMATION TO ADD COMMENT
 btn_repost.addEventListener('click', function(e) {
-	
-	yqlQuery = "INSERT INTO meme.user.posts (guid, pubid) VALUES ('" + _guid + "', '" + _pubId + "')";
-
-	var yqlInsert = yql.query(yqlQuery);
-	var response = yqlInsert.query.results.status;
-	
-	if (response.message == "ok"){
-			btn_repost.add(icon_reposted);
-			// icon_reposted.zIndex = 10;
-			icon_reposted.opacity = 1;
-			btn_repost.opacity = 1;	
-			btn_repost.touchEnabled = true;
-			repostCountLabel.text = repost_countInt+=1 ;
-			
-			// Add Comment Box after Reposting
-			whiteBox.add(repost_comment_view);
-			repost_comment_view.animate({opacity:1, duration: 200});
-			
+	var reposted = Meme.repost(_guid, _pubId);
+		
+	if (reposted) {
+		btn_repost.add(icon_reposted);
+		icon_reposted.opacity = 1;
+		btn_repost.opacity = 1;	
+		btn_repost.touchEnabled = true;
+		repostCountLabel.text = repost_countInt += 1;
+		
+		// Add Comment Box after Reposting
+		whiteBox.add(repost_comment_view);
+		repost_comment_view.animate({opacity:1, duration: 200});
 	} else {
 		Ti.API.info("Error while reposting");	
-	}
-		
+	}	
 });
 
 // REPOST AND COMMENT
