@@ -61,7 +61,7 @@ var authorizationUI = function() {
 			var result = (/<span id="shortCode">(\w+)<\/span>/g).exec(htmlSource);
 			if (result && result[1]) {
 			    var pin = result[1];
-				Ti.API.debug('Found oAuth Verifier Code: ' + pin);
+				Ti.API.info('Found oAuth Verifier Code: ' + pin);
 	            destroyUI();
 				return(pCallback(pin));
 			}			
@@ -183,7 +183,6 @@ var OAuthAdapter = function(pService, authorize) {
 	var serviceRequest = function(pUrl, pParameters, accessor) {
 		pParameters.push( ["oauth_consumer_key", consumerKey ] );
 		pParameters.push( ["oauth_signature_method", "HMAC-SHA1"] ); 
-		pParameters.push( ["xoauth_lang_pref", loginLanguage] ); 
 		
 		var message = { action: pUrl,
 					    method: "POST",
@@ -222,7 +221,7 @@ var OAuthAdapter = function(pService, authorize) {
 	
     var requestToken = function() {
 		var accessor       = { consumerSecret: consumerSecret };
-		var oauth_response = oauthRequest(get_request_token_url, [ [ "oauth_callback", "oob" ] ], accessor);
+		var oauth_response = oauthRequest(get_request_token_url, [ [ "oauth_callback", "oob" ], ["xoauth_lang_pref", loginLanguage] ], accessor);
 		return(oauth_response);
     };
 
