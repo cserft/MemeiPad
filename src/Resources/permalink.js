@@ -306,10 +306,10 @@ whiteBox.add(btn_repost);
 // Already Reposted Icon
 var icon_reposted = Titanium.UI.createImageView({
 	image: 		'images/icon_reposted.png',
-	top: 		16,
-	left: 		30,
-	width: 		30,
-	height: 	30,
+	top: 		15,
+	left: 		29,
+	width: 		32,
+	height: 	32,
 	opacity: 	1,
 	zIndex: 	1
 });
