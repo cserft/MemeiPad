@@ -368,7 +368,7 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 	
 } else {
 	
-	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || post.origin_guid == Ti.App.myMemeInfo.guid) {
+	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || Meme.isReposted(post.origin_guid, post.origin_pubid)) {
 		
 		// If the loggedIn User is the Origin or Via, disables the Repost Button and applies the iCon reposted	
 		btn_repost.touchEnabled = false;	
@@ -463,52 +463,38 @@ repostCommentField.addEventListener('blur', function(e) {
 
 // REPOST ANIMATION TO ADD COMMENT
 btn_repost.addEventListener('click', function(e) {
-	
-	yqlQuery = "INSERT INTO meme.user.posts (guid, pubid) VALUES ('" + _guid + "', '" + _pubId + "')";
-
-	var yqlInsert = yql.query(yqlQuery);
-	var response = yqlInsert.query.results.status;
-	
-	if (response.message == "ok"){
-			btn_repost.add(icon_reposted);
-			// icon_reposted.zIndex = 10;
-			icon_reposted.opacity = 1;
-			btn_repost.opacity = 1;	
-			btn_repost.touchEnabled = true;
-			repostCountLabel.text = repost_countInt+=1 ;
-			
-			// Add Comment Box after Reposting
-			whiteBox.add(repost_comment_view);
-			repost_comment_view.animate({opacity:1, duration: 200});
-			
+	var reposted = Meme.repost(_guid, _pubId);
+		
+	if (reposted) {
+		btn_repost.add(icon_reposted);
+		icon_reposted.opacity = 1;
+		btn_repost.opacity = 1;	
+		btn_repost.touchEnabled = true;
+		repostCountLabel.text = repost_countInt += 1;
+		
+		// Add Comment Box after Reposting
+		whiteBox.add(repost_comment_view);
+		repost_comment_view.animate({opacity:1, duration: 200});
 	} else {
 		Ti.API.info("Error while reposting");	
-	}
-		
+	}	
 });
 
 // REPOST AND COMMENT
 btn_send_comment.addEventListener("click", function(e) {
-	
 	if (repostCommentField.value != '') {
-		yqlQuery = "INSERT INTO meme.user.comments (guid, pubid, comment) VALUES ('" + _guid + "', '" + _pubId + "', '" + repostCommentField.value + "')";
-
-		var yqlInsert = yql.query(yqlQuery);
-		var response = yqlInsert.query.results.status;
-
-		if (response.message == "ok"){
-				repost_comment_view.animate({opacity:0, duration: 200});
-				whiteBox.remove(repost_comment_view);
-
+		var ok = Meme.createComment(_guid, _pubId, repostCommentField.value);
+		
+		if (ok) {
+			repost_comment_view.animate({opacity:0, duration: 200});
+			whiteBox.remove(repost_comment_view);
 		} else {
 			Ti.API.info("Error while saving Comment on reposting");	
 		}
-			
 	} else {
 		repost_comment_view.animate({opacity:0, duration: 200});
 		whiteBox.remove(repost_comment_view);
 	}
-
 });
 
 // DELETE POST
