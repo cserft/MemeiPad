@@ -16,8 +16,8 @@ Usage:
 // "Meme.[...]" directly.
 var Meme = function() {	
 	// public functions
-	var createTextPost, createPhotoPost, createVideoPost, 
-		isFollowing, follow, unfollow, createComment, repost;
+	var createTextPost, createPhotoPost, createVideoPost, isFollowing, follow, 
+		unfollow, createComment, repost, isReposted;
 		
 	// private functions
 	var createPost, execute;
@@ -66,6 +66,19 @@ var Meme = function() {
 		var yqlQuery = 'INSERT INTO meme.user.posts (guid, pubid) VALUES ("' + guid + '", "' + pubid + '")';
 		return execute(true, yqlQuery);
 	};
+	
+	isReposted = function(guid, pubid) {
+		if (!Ti.App.oAuthAdapter.isLoggedIn()) {
+			throw 'sAuthentication is required to run this query.';
+		}
+
+		var yqlQuery = 'SELECT * FROM meme.posts WHERE owner_guid=me and origin_guid="' + guid + '" and origin_pubid="' + pubid + '"';
+		var yqlResponse = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
+		if (yqlResponse.query.results) {
+			return true;
+		}
+		return false;
+	};
 
 	// =====================
 	// = Private functions =
@@ -109,6 +122,7 @@ var Meme = function() {
 		follow: follow,
 		unfollow: unfollow,
 		createComment: createComment,
-		repost: repost
+		repost: repost,
+		isReposted: isReposted
 	});	
 }();

@@ -368,7 +368,7 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 	
 } else {
 	
-	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || post.origin_guid == Ti.App.myMemeInfo.guid) {
+	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || Meme.isReposted(post.origin_guid, post.origin_pubid)) {
 		
 		// If the loggedIn User is the Origin or Via, disables the Repost Button and applies the iCon reposted	
 		btn_repost.touchEnabled = false;	
