@@ -1,5 +1,5 @@
 tmp
 secrets.js
-build/iphone/*
+src/build/iphone/*
 .DS_Store
 *.pyc
