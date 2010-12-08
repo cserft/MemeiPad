@@ -3,10 +3,10 @@
 <id>R8AP6NQLDE.com.yahoo.meme.ipad</id>
 <name>MemeiPad</name>
 <version>1.0</version>
-<publisher>Antonio Carlos Silveira</publisher>
-<url>http://me.me</url>
-<description>Meme for iPad is a client for Yahoo! Meme to browse the content on Yahoo! Meme and create content for your blog on Meme</description>
-<copyright>2011 Yahoo! Inc</copyright>
+<publisher>Yahoo! Inc.</publisher>
+<url>http://me.me/ipad</url>
+<description>Meme iPad is a client for Yahoo! meme to view and navigate on Yahoo! meme content</description>
+<copyright>2011 Yahoo! Inc.</copyright>
 <icon>meme_appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
