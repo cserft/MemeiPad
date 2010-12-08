@@ -843,35 +843,30 @@ Titanium.App.addEventListener("postClicked", function(e) {
 
 Titanium.App.addEventListener("postOnMeme", function(e) {
 	// Verifies the Type of Post and selects the Proper YQL Query
-	var response, alertInfo;
+	var inserted, alertInfo;
 	
 	if (e.postType == "photo") {
-		response = Meme.createPhotoPost(e.media_link, e.message);
+		inserted = Meme.createPhotoPost(e.media_link, e.message);
 	} else if (e.postType == "text"){
-		response = Meme.createTextPost(e.message);
+		inserted = Meme.createTextPost(e.message);
 		
 		// updates the Message in the Progress Bar
 		showProgressView('show', L('publishing_post_meme'));
 		ind.value = 10;
 		
 	} else if (e.postType == "video"){
-		response = Meme.createVideoPost(e.media_link, e.message);
+		inserted = Meme.createVideoPost(e.media_link, e.message);
 
 		// updates the Message in the Progress Bar
 		showProgressView('show', L('publishing_post_meme'));
 		ind.value = 10;
 	}
 	
-	// SUCCESS
-	if (response) {
-		if (response.message == "ok") {
-			Ti.API.debug(" ####### YQL INSERT POST executed");
-			alertInfo = { title: L('success_alert_title'), message: L('post_success_message') };
-		} else {
-			alertInfo = { title: L('error_alert_title'), message: L('post_error_message') };
-		}
+	if (inserted) {
+		Ti.API.debug(" ####### YQL INSERT POST executed");
+		alertInfo = { title: L('success_alert_title'), message: L('post_success_message') };
 	} else {
-		alertInfo = { title: L('error_alert_title'), message: L('post_error_7meg_message') };
+		alertInfo = { title: L('error_alert_title'), message: L('post_error_message') };
 	}
 	
 	// hides the Progress Bar

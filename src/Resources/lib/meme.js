@@ -16,7 +16,7 @@ Usage:
 // "Meme.[...]" directly.
 var Meme = function() {	
 	// public functions
-	var createTextPost, createPhotoPost, createVideoPost, isFollowing, follow, unfollow;
+	var createTextPost, createPhotoPost, createVideoPost, isFollowing, follow, unfollow, createComment;
 		
 	// private functions
 	var createPost, execute;
@@ -55,6 +55,11 @@ var Meme = function() {
 		var yqlQuery = 'DELETE FROM meme.user.following WHERE guid="' + guid + '"';
 		return execute(true, yqlQuery);
 	};
+	
+	createComment = function(guid, pubid, comment) {
+		var yqlQuery = 'INSERT INTO meme.user.comments (guid, pubid, comment) VALUES ("' + guid + '", "' + pubid + '", "' + comment + '")';
+		return execute(true, yqlQuery);
+	};
 
 	// =====================
 	// = Private functions =
@@ -82,7 +87,12 @@ var Meme = function() {
 			throw 'Authentication is required to run this query.';
 		}
 		var yqlResponse = yql.query(yqlQuery);
-		return yqlResponse.query.results.status;
+		var results = yqlResponse.query.results;
+		
+		if (results && results.status && results.status.message == 'ok') {
+			return true;
+		}
+		return false;
 	};
 	
 	return ({
@@ -91,6 +101,7 @@ var Meme = function() {
 		createVideoPost: createVideoPost,
 		isFollowing: isFollowing,
 		follow: follow,
-		unfollow: unfollow
+		unfollow: unfollow,
+		createComment: createComment
 	});	
 }();

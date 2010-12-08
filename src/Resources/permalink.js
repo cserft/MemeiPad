@@ -489,26 +489,19 @@ btn_repost.addEventListener('click', function(e) {
 
 // REPOST AND COMMENT
 btn_send_comment.addEventListener("click", function(e) {
-	
 	if (repostCommentField.value != '') {
-		yqlQuery = "INSERT INTO meme.user.comments (guid, pubid, comment) VALUES ('" + _guid + "', '" + _pubId + "', '" + repostCommentField.value + "')";
-
-		var yqlInsert = yql.query(yqlQuery);
-		var response = yqlInsert.query.results.status;
-
-		if (response.message == "ok"){
-				repost_comment_view.animate({opacity:0, duration: 200});
-				whiteBox.remove(repost_comment_view);
-
+		var ok = Meme.createComment(_guid, _pubId, repostCommentField.value);
+		
+		if (ok) {
+			repost_comment_view.animate({opacity:0, duration: 200});
+			whiteBox.remove(repost_comment_view);
 		} else {
 			Ti.API.info("Error while saving Comment on reposting");	
 		}
-			
 	} else {
 		repost_comment_view.animate({opacity:0, duration: 200});
 		whiteBox.remove(repost_comment_view);
 	}
-
 });
 
 // DELETE POST
