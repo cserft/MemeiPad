@@ -36,30 +36,18 @@ if (!yqldata.query.results) {
 // = BULDING PERMALINK LAYOUT =
 // ============================
 
-var blackBG = Ti.UI.createView({
-	backgroundColor:'black',
-	width:  		'100%',
-	height: 		'100%',
-	opacity: 		0.85,
-	zIndex: 		0,
-	touchEnabled: 	false
-});
-win.add(blackBG);
-
 var whiteBox = Ti.UI.createView({
 	backgroundColor:'white',
-	width: 		900,
-	height: 	632,
-	top: 		46,
-	left: 		61,
-	zIndex: 	2
+	width:  		'100%',
+	height: 		'100%',
+	zIndex: 	0
 });
 win.add(whiteBox);
 
 var btn_close = Titanium.UI.createButton({
 	backgroundImage: 	'images/btn_close.png',
-	top: 				32,
-	left: 				942,
+	top: 				22,
+	left: 				960,
 	width: 				36,
 	height: 			36,
 	zIndex: 			3
@@ -76,22 +64,6 @@ btn_close.addEventListener("click", function(e)
 	
 });
 
-// ========================
-// = geo places retrieval =
-// ========================
-// var getGeoPlaces = function(pContent){
-// 	
-// 	yqlQuery = 'SELECT * FROM geo.placemaker WHERE documentContent = "' + pContent + '" AND documentType="text/plain"';
-// 
-// 	Ti.API.debug("####### YQL Query executed: " + yqlQuery);
-// 
-// 	var yqlGeoPlaces = yql.query(yqlQuery);
-// 	var places = yqlGeoPlaces.query.results;
-// 	
-// 	Ti.API.debug("####### PLACES: " + JSON.stringify(places));
-// 	
-// }
-
 // =============================================
 // = DEFINITION OF LAYOUT TYPE IN THE WEB VIEW =
 // =============================================
@@ -102,10 +74,11 @@ var innerCaption;
 // Create our Webview to render the Post's content
 var postWebView = Ti.UI.createWebView({
         html: '',
+		// backgroundColor: 	'transparent',
 		// backgroundImage: 'images/bg.jpg',
 		top:0,
 		width: '100%',
-		height: 567,
+		height: 683,
         left:0,
         loading: true
 });
@@ -127,7 +100,7 @@ var border = Ti.UI.createView({
 	height:1,
 	bottom:65,
 	width: '100%',
-	zIndex: 2
+	zIndex: 4
 });
 whiteBox.add(border);
 
@@ -180,25 +153,77 @@ Ti.API.debug("####### YQL Query executed: " + yqlQuery);
 var yqlMemeInfo = yql.query(yqlQuery);
 var meme = yqlMemeInfo.query.results.meme;
 
+// User Post Owner View (Avatar + Label + time of the post Label)
+var guidView = Titanium.UI.createView({
+	backgroundColor: 	'transparent',
+	bottom:4,
+	left:10,
+	width:440,
+	height:60,
+	zIndex:2
+});
+whiteBox.add(guidView);
+
 // Users Post Owner Avatar
 var guidAvatar = Titanium.UI.createImageView({
 	image: meme.avatar_url.thumb,
 	defaultImage: 'images/default_img_avatar.png',
-	bottom:14,
-	left:10,
+	top:10,
+	left:4,
 	width:40,
 	height:40,
-	zIndex:3
+	zIndex:2
 });
-whiteBox.add(guidAvatar);
+guidView.add(guidAvatar);
 
-guidAvatar.addEventListener('click', function(e) {
+//Guid Name / Title
+var guidNameLabel = Titanium.UI.createLabel({
+	color:'#A9379C',
+	text: strip_html_entities(meme.title),
+	textAlign:'left',
+	font: {
+		fontSize: 18,
+		fontFamily:'Helvetica',
+		fontWeight: 'bold'
+	},
+	top: 5,
+	left: 56,
+	width: 400,
+	height: 29,
+	zIndex: 2
+});
+
+guidView.add(guidNameLabel);
+
+//POsted X times ago message
+var post_update_time = humane_date(post.timestamp);
+
+var postUpdatedTimeLabel = Titanium.UI.createLabel({
+	color: '#999',
+	text: L('posted') + post_update_time,
+	textAlign: 'left',
+	font: {
+		fontSize: 13,
+		fontFamily: 'Georgia',
+		fontStyle: 'italic'
+	},
+	top: 25,
+	left: 54,
+	width: 250,
+	height: 29,
+	zIndex: 2
+});
+
+guidView.add(postUpdatedTimeLabel);
+
+// POPOVER WITH DETAILED INFO FROM USER OWNER OF THE POST
+guidView.addEventListener('click', function(e) {
 	// popover must be shown only when logged in
 	// and for user different than me
 	if (Ti.App.myMemeInfo && (Ti.App.myMemeInfo.guid != meme.guid)) {
 		var popover = Ti.UI.iPad.createPopover({
-			width:100,
-			height:30,
+			width:330,
+			height:130,
 			backgroundColor: 'white',
 			navBarHidden: true,
 			arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN
@@ -262,45 +287,6 @@ guidAvatar.addEventListener('click', function(e) {
 	}
 });
 
-//Guid Name / Title
-var guidNameLabel = Titanium.UI.createLabel({
-	color:'#A9379C',
-	text: strip_html_entities(meme.title),
-	textAlign:'left',
-	font: {
-		fontSize: 18,
-		fontFamily:'Helvetica',
-		fontWeight: 'bold'
-	},
-	bottom: 28,
-	left: 60,
-	width: 400,
-	height: 29,
-	zIndex: 2
-});
-
-whiteBox.add(guidNameLabel);
-
-//POsted X times ago message
-var post_update_time = humane_date(post.timestamp);
-
-var postUpdatedTimeLabel = Titanium.UI.createLabel({
-	color: '#999',
-	text: L('posted') + post_update_time,
-	textAlign: 'left',
-	font: {
-		fontSize: 13,
-		fontFamily: 'Georgia',
-		fontStyle: 'italic'
-	},
-	bottom: 11,
-	left: 59,
-	width: 250,
-	height: 29,
-	zIndex: 2
-});
-
-whiteBox.add(postUpdatedTimeLabel);
 
 // ===========================
 // = REPOST BUTTON AND COUNT =
@@ -313,7 +299,7 @@ var btn_repost = Titanium.UI.createView({
 	bottom: 1,
 	right: 0,
 	opacity: 1,
-	zIndex: 1
+	zIndex: 4
 });
 whiteBox.add(btn_repost);
 
@@ -325,7 +311,7 @@ var icon_reposted = Titanium.UI.createImageView({
 	width: 		30,
 	height: 	30,
 	opacity: 	1,
-	zIndex: 	10
+	zIndex: 	1
 });
 
 // IF HAS ZERO REPOSTS DOES NOT SHOW ZERO
@@ -345,10 +331,10 @@ var repostCountLabel = Titanium.UI.createLabel({
 		fontWeight: 'regular'
 	},
 	bottom: 21,
-	left:815,
+	left:939,
 	width:100,
 	height:29,
-	zIndex: 3
+	zIndex: 5
 });
 
 whiteBox.add(repostCountLabel);
@@ -404,9 +390,9 @@ var repost_comment_view = Titanium.UI.createView({
 	backgroundImage: 	'images/bg_btn_repost_comment.png',
 	bottom: 			1,
 	left: 				0, 
-	width: 				753,
+	width: 				1024,
 	height: 			65,
-	zIndex: 			4,
+	zIndex: 			3,
 	opacity: 			0
 });
 
@@ -416,13 +402,14 @@ var repostCommentField = Titanium.UI.createTextField({
 	color: 			'#666',
 	textAlign: 		'left',
 	font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
-	width: 			500,
+	width: 			580,
 	height: 		38,
 	top: 			15,
 	left: 			52,
+	zIndex: 		2,
 	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_NONE,
-	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
-	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
+	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT
+	// clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
 repost_comment_view.add(repostCommentField);
 
@@ -436,7 +423,7 @@ var btn_send_comment = Titanium.UI.createButton({
 	width: 				125,
 	height: 			34,
 	top: 				16,
-	left: 				564,
+	left: 				688,
 	zIndex: 			1
 });
 repost_comment_view.add(btn_send_comment);
@@ -447,7 +434,7 @@ var btn_close_comment = Titanium.UI.createButton({
 	width: 				25,
 	height: 			25,
 	top: 				20,
-	left: 				708,
+	left: 				825,
 	zIndex: 			1
 });
 repost_comment_view.add(btn_close_comment);
@@ -464,13 +451,13 @@ btn_close_comment.addEventListener('click', function(e) {
 
 // MOVE WINDOW ON COMMENT FOCUS SO KEYBOARD WON'T BE OVER THE COMMENT FIELD
 repostCommentField.addEventListener('focus', function(e) {
-	whiteBox.animate({top: -250, duration: 200});
-	btn_close.animate({top:-264, duration: 200});
+	whiteBox.animate({top: -350, duration: 200});
+	btn_close.animate({top:-364, duration: 200});
 });
 
 // MOVE WINDOW BACK ON COMMENT BLUR
 repostCommentField.addEventListener('blur', function(e) {
-	whiteBox.animate({top: 46, duration: 200});
+	whiteBox.animate({top: 0, duration: 200});
 	btn_close.animate({top: 32, duration: 200});
 });
 
@@ -484,6 +471,7 @@ btn_repost.addEventListener('click', function(e) {
 	
 	if (response.message == "ok"){
 			btn_repost.add(icon_reposted);
+			// icon_reposted.zIndex = 10;
 			icon_reposted.opacity = 1;
 			btn_repost.opacity = 1;	
 			btn_repost.touchEnabled = true;
@@ -581,66 +569,66 @@ btn_report_abuse.addEventListener("click", function(e) {
 Ti.App.fireEvent('hide_indicator');
 
 //link to Open Permalink Web Page in the bottom
-pos_BtnOpenSafari = 80 + (post.url.length * 8) + 20;
+// pos_BtnOpenSafari = 80 + (post.url.length * 8) + 20;
+// 
+// var LinkPermalinkLabel = Titanium.UI.createLabel({
+// 	color: 				'#FFF',
+// 	text: 				post.url ,
+// 	textAlign: 			'left',
+// 	font: 				{
+// 						fontSize:14,
+// 						fontFamily:'Georgia',
+// 						fontStyle: 'italic',
+// 						fontWeight: 'bold'
+// 					 	},
+// 	bottom: 			38,
+// 	left: 				61,
+// 	width: 				500,
+// 	height: 			15,
+// 	opacity: 			1,
+// 	zIndex: 			3
+// });
+// 
+// win.add(LinkPermalinkLabel);
 
-var LinkPermalinkLabel = Titanium.UI.createLabel({
-	color: 				'#FFF',
-	text: 				post.url ,
-	textAlign: 			'left',
-	font: 				{
-						fontSize:14,
-						fontFamily:'Georgia',
-						fontStyle: 'italic',
-						fontWeight: 'bold'
-					 	},
-	bottom: 			38,
-	left: 				61,
-	width: 				500,
-	height: 			15,
-	opacity: 			1,
-	zIndex: 			3
-});
+// var btn_openSafari = Titanium.UI.createButton({
+// 	backgroundImage: 	'images/btn_fwd.png',
+// 	width: 				22,
+// 	height: 			17,
+// 	bottom: 			40,
+// 	opacity: 			1,
+// 	zIndex: 			99,
+// 	left: 				pos_BtnOpenSafari
+// });
+// win.add(btn_openSafari);
 
-win.add(LinkPermalinkLabel);
-
-var btn_openSafari = Titanium.UI.createButton({
-	backgroundImage: 	'images/btn_fwd.png',
-	width: 				22,
-	height: 			17,
-	bottom: 			40,
-	opacity: 			1,
-	zIndex: 			99,
-	left: 				pos_BtnOpenSafari
-});
-win.add(btn_openSafari);
-
-//Alert to Open Safari for the Post Permalink
-var alertOpenPermalink = Titanium.UI.createAlertDialog({
-	title: L('open_link_title'),
-	message: L('open_link_message'),
-	buttonNames: [L('btn_alert_YES'),L('btn_alert_CANCEL')],
-	cancel: 1
-});
-
-btn_openSafari.addEventListener("click", function(e)
-{
-	alertOpenPermalink.show();
-});
-
-LinkPermalinkLabel.addEventListener("click", function(e)
-{
-	alertOpenPermalink.show();
-});
-
-
-// Opens the Permalink page on Safari
-alertOpenPermalink.addEventListener('click',function(e)
-{
-	if (e.index == 0){
-		// Open Link to the Guidelines Page on Safari
-		Ti.Platform.openURL(post.url);	
-	}
-});
+// //Alert to Open Safari for the Post Permalink
+// var alertOpenPermalink = Titanium.UI.createAlertDialog({
+// 	title: L('open_link_title'),
+// 	message: L('open_link_message'),
+// 	buttonNames: [L('btn_alert_YES'),L('btn_alert_CANCEL')],
+// 	cancel: 1
+// });
+// 
+// btn_openSafari.addEventListener("click", function(e)
+// {
+// 	alertOpenPermalink.show();
+// });
+// 
+// LinkPermalinkLabel.addEventListener("click", function(e)
+// {
+// 	alertOpenPermalink.show();
+// });
+// 
+// 
+// // Opens the Permalink page on Safari
+// alertOpenPermalink.addEventListener('click',function(e)
+// {
+// 	if (e.index == 0){
+// 		// Open Link to the Guidelines Page on Safari
+// 		Ti.Platform.openURL(post.url);	
+// 	}
+// });
 
 
 // ============================

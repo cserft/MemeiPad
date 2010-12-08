@@ -1,3 +1,0 @@
-version=1.5.0
-timestamp=12/03/10 18:34
-githash=b7b9e78
