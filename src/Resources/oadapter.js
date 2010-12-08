@@ -11,6 +11,15 @@ Ti.include('lib/sha1.js');
 Ti.include('lib/oauth.js');
 Ti.include('lib/secrets.js');
 
+// Sets the iPad Language to use in the Login Page
+var loginLanguage = function(){
+	if (Ti.Locale.currentLanguage == "pt") {
+		return "br";
+	} else {
+		return Ti.Locale.currentLanguage;
+	}
+}();
+
 var authorizationUI = function() {
 	var authWindow, oauthWebView, signingIn;
    
@@ -170,10 +179,11 @@ var OAuthAdapter = function(pService, authorize) {
 	var oauthRequest = function(pUrl, pParameters, accessor) {
 		return(OAuth.getParameterMap(serviceRequest(pUrl, pParameters, accessor)));
 	};
-
+	
 	var serviceRequest = function(pUrl, pParameters, accessor) {
 		pParameters.push( ["oauth_consumer_key", consumerKey ] );
-		pParameters.push( ["oauth_signature_method", "HMAC-SHA1"] );
+		pParameters.push( ["oauth_signature_method", "HMAC-SHA1"] ); 
+		pParameters.push( ["xoauth_lang_pref", loginLanguage] ); 
 		
 		var message = { action: pUrl,
 					    method: "POST",
@@ -286,7 +296,7 @@ var OAuthAdapter = function(pService, authorize) {
 		var parameters = [ ["format", "json"],
 		 				   ["diagnostics", "false"],
 		 				   ["q", pQuery],
-						   ["oauth_token", token.oauth_token],
+						   ["oauth_token", token.oauth_token], 
 						   ["env", "http://datatables.org/alltables.env"]
 						 ];
 		return doQuery(yql_base_url, parameters, accessorFromToken(token));
