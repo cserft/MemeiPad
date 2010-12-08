@@ -214,6 +214,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	createPostCaption(blackBoxView, pCaption);
 	
 	// last but not least, add blackbox on top of everything
+	blackBoxLink.zIndex = blackBoxLink.zIndex+1;
 	blackBoxView.add(blackBoxLink);
 	
 	//Returns the BlackBoxView Obj with the complete design
