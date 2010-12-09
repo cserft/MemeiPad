@@ -163,7 +163,19 @@ var flashlight_create = function() {
 		Ti.App.addEventListener('showAwesomeSearch', function (e) {
 			Ti.API.debug("####### Type of search: " + e.searchType);
 			
-			actIndFlashlight.show();
+			// Animation of the lamp blinking
+				lamp_bright.visible = true;
+				var t = Ti.UI.create2DMatrix();
+				t = t.scale(0.8);
+				
+				var a = Titanium.UI.createAnimation();
+				a.transform = t;
+				a.duration = 300;
+				a.autoreverse = true;
+				a.repeat = 30;
+				lamp_bright.animate(a);
+			// End of the animation Lamp
+
 			var results = [];
 
 			switch(e.searchType) {
@@ -437,8 +449,8 @@ var flashlight_create = function() {
 				view:btn_flashlight,
 				animated:true
 			});
-		
-			actIndFlashlight.hide();
+				// Hides the Flashlight blink
+				lamp_bright.visible = false;
 		});
 	
 		//Tabs listeners

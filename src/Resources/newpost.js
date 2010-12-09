@@ -95,16 +95,17 @@ var btn_flashlight = Ti.UI.createButton({
 });
 postHeaderView.add(btn_flashlight);
 
-// AJAX when using Flashlight
-var actIndFlashlight = Ti.UI.createActivityIndicator({
-	top: 			10, 
-	left: 			20,
-	height: 		20,
-	width: 			20,
-	zIndex: 		4,
-	style: 			Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
+//Create Image view for the lamp animation (this is a white blur)
+var lamp_bright = Titanium.UI.createImageView({
+	image: 		'images/lamp_bright.png',
+	left: 		468,
+	top: 		12,
+	width: 		37,
+	height: 	38,
+	zIndex: 	4,
+	visible: 	false
 });
-btn_flashlight.add(actIndFlashlight);
+postHeaderView.add(lamp_bright);
 
 //creates the popover for the results
 var popoverSearchView = Titanium.UI.iPad.createPopover({ 
