@@ -810,6 +810,6 @@ Ti.App.addEventListener('openPermalink', function(e) {
 		setTimeout(function()
 		{
 			Ti.App.fireEvent('hide_indicator');
-		},10000);
+		},20000);
 	}
 });
