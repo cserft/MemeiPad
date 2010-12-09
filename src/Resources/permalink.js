@@ -467,19 +467,27 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 	
 } else {
 	
-	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || Meme.isReposted(post.origin_guid, post.origin_pubid)) {
-		
-		// If the loggedIn User is the Origin or Via, disables the Repost Button and applies the iCon reposted	
+	// 1) Delete Button should display only when the user is the owner of the post
+	if (_guid == Ti.App.myMemeInfo.guid) {
+		whiteBox.add(btn_delete);
+	}
+	
+	// 2) Repost button will be enabled only for posts that were not reposted yet
+	var origin_guid = post.origin_guid;
+	var origin_pubid = post.origin_pubid;
+	
+	// if there's no origin guid/pubid, it means that the post is original
+	if (!origin_guid || !origin_pubid) {
+		origin_guid = post.guid;
+		origin_pubid = post.pubid;
+	}
+	
+	var alreadyReposted = Meme.isReposted(origin_guid, origin_pubid);
+	
+	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || alreadyReposted) {
 		btn_repost.touchEnabled = false;	
 		btn_repost.add(icon_reposted);
-		
-		// Delete Button should display only when the user is the owner of the post
-		if (_guid == Ti.App.myMemeInfo.guid) {
-			whiteBox.add(btn_delete);
-		}
-	
 	} else {
-		
 		// When Logged In and not the owner of the Post, enables Repost and Report Abuse Btn
 		btn_repost.opacity = 1;	
 		btn_repost.touchEnabled = true;
