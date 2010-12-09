@@ -304,6 +304,19 @@ var btn_repost = Titanium.UI.createView({
 whiteBox.add(btn_repost);
 
 // Already Reposted Icon
+var icon_btn_repost = Titanium.UI.createImageView({
+	image: 		'images/btn_repost.png',
+	top: 		16,
+	left: 		35,
+	width: 		30,
+	height: 	30,
+	opacity: 	1,
+	visible: 	false,
+	zIndex: 	2
+});
+// btn_repost.add(icon_btn_repost);
+
+// Already Reposted Icon
 var icon_reposted = Titanium.UI.createImageView({
 	image: 		'images/icon_reposted.png',
 	top: 		15,
@@ -373,7 +386,12 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 		// If the loggedIn User is the Origin or Via, disables the Repost Button and applies the iCon reposted	
 		btn_repost.touchEnabled = false;	
 		btn_repost.add(icon_reposted);
-		whiteBox.add(btn_delete);
+		
+		// Delete Button should display only when the user is the owner of the post
+		if (_guid == Ti.App.myMemeInfo.guid) {
+			whiteBox.add(btn_delete);
+		}
+	
 		
 	} else {
 		
@@ -466,15 +484,33 @@ btn_repost.addEventListener('click', function(e) {
 	var reposted = Meme.repost(_guid, _pubId);
 		
 	if (reposted) {
-		btn_repost.add(icon_reposted);
-		icon_reposted.opacity = 1;
-		btn_repost.opacity = 1;	
-		btn_repost.touchEnabled = true;
-		repostCountLabel.text = repost_countInt += 1;
+		// icon_btn_repost.show();
+		// 
+		// // repost animation/transform
+		// var t = Ti.UI.create2DMatrix();
+		// t = t.rotate(3);
+		// 
+		// var a = Titanium.UI.createAnimation();
+		// a.transform = t;
+		// a.duration = 1000;
+		// a.repeat = 3;
+		// icon_btn_repost.animate(a);
+		// 
+		// a.addEventListener('complete', function()
+		// {
+			// icon_btn_repost.hide();
+			btn_repost.add(icon_reposted);
+			icon_reposted.opacity = 1;
+			btn_repost.opacity = 1;	
+			btn_repost.touchEnabled = true;
+			repostCountLabel.text = repost_countInt += 1;
+			
+			// Add Comment Box after Reposting
+			whiteBox.add(repost_comment_view);
+			repost_comment_view.animate({opacity:1, duration: 200});
+		// });
 		
-		// Add Comment Box after Reposting
-		whiteBox.add(repost_comment_view);
-		repost_comment_view.animate({opacity:1, duration: 200});
+
 	} else {
 		Ti.API.info("Error while reposting");	
 	}	
