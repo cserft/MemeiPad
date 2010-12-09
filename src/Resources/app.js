@@ -768,19 +768,11 @@ Ti.App.addEventListener('openPermalink', function(e) {
 		// Creating the Open Permalink Transition
 		// create first transform to go beyond normal size
 		var t1 = Titanium.UI.create2DMatrix();
-		t1 = t1.scale(1.1);
+		t1 = t1.scale(1.0);
 
 		var a = Titanium.UI.createAnimation();
 		a.transform = t1;
 		a.duration = 200;
-
-		// when this animation completes, scale to normal size
-		a.addEventListener('complete', function()
-		{
-			var t2 = Titanium.UI.create2DMatrix();
-			t2 = t2.scale(1.0);
-			winPermalink.animate({transform:t2, duration:200});
-		});
 
 		if (permalinkIsOpened == false){
 
