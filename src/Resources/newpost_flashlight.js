@@ -1,3 +1,5 @@
+Ti.include('lib/meme.js');
+
 // ======================
 // = AWESOME SEARCH BAR =
 // ======================
@@ -181,13 +183,9 @@ var flashlight_create = function() {
 			switch(e.searchType) {
 				case 0: // Video 
 					Ti.API.info("####### Video Search ");
-					yqlQuery = "SELECT * FROM youtube.search WHERE query='" + queryText + "'";
-
-					var yqlData = yql.query(yqlQuery);
+					var videos = Meme.flashlightVideos(queryText);
 					
-					if (yqlData.query.results) {
-						var videos = yqlData.query.results.video;
-
+					if (videos) {
 						//Loop to present the Search Results for YouTube
 						for (var c=0 ; c < videos.length ; c++)	
 						{
@@ -252,13 +250,9 @@ var flashlight_create = function() {
 			
 				case 1: // Flickr
 					Ti.API.info("####### Photo Search ");
-					yqlQuery = "SELECT * FROM flickr.photos.search WHERE text='" + queryText + "' AND license='4'";
-
-					var yqlData = yql.query(yqlQuery);
+					var photos = Meme.flashlightPhotos(queryText);
 					
-					if (yqlData.query.results) {
-						var photos = yqlData.query.results.photo;
-
+					if (photos) {
 						//Loop to present the Search Results for Flickr
 						for (var c=0 ; c < photos.length ; c++)	{
 							var photo = photos[c];
@@ -308,13 +302,9 @@ var flashlight_create = function() {
 			
 				case 2: // Web Search
 					Ti.API.info("####### Web Search ");
-					yqlQuery = "SELECT title, abstract FROM search.web WHERE query='" + queryText + "'";
-				
-					var yqlData = yql.query(yqlQuery);
+					var items = Meme.flashlightWeb(queryText);
 					
-					if (yqlData.query.results) {
-						var items = yqlData.query.results.result;
-
+					if (items) {
 						//Loop to present the Search Results from the Web
 						for (var c=0 ; c < items.length ; c++) {
 							var item = items[c];
@@ -370,16 +360,10 @@ var flashlight_create = function() {
 					break;
 				
 				case 3: // Twitter Search
-
 					Ti.API.info("####### Twitter Search ");
-
-					yqlQuery = "SELECT * FROM twitter.search WHERE q='" + queryText + "'";
-
-					var yqlData = yql.query(yqlQuery);
+					var items = Meme.flashlightTweets(queryText);
 					
-					if (yqlData.query.results) {
-						var items = yqlData.query.results.results;
-
+					if (items) {
 						//Loop to present the Search Results from the Web
 						for (var c=0 ; c < items.length ; c++) {
 							var item = items[c];
