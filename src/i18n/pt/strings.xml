@@ -98,6 +98,8 @@
 	<string name="delete_alert_message">Você tem certeza de que deseja apagar este Post?</string>
 	<string name="report_abuse_alert_title">Denúncia de Abuso</string>  
 	<string name="report_abuse_alert_message">A página de Denúncia de Abuso será aberta no Safari.</string>
+	<string name="path_btn_follow_background_image">images/bg_btn_follow_pt.png</string>
+	<string name="path_btn_following_background_image">images/bg_btn_following_pt.png</string>
 	<!-- /permalink.js -->
 	<!-- EXTRAS -->
 	<string name="format_test">My name is %s</string>

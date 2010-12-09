@@ -156,11 +156,11 @@ var meme = yqlMemeInfo.query.results.meme;
 // User Post Owner View (Avatar + Label + time of the post Label)
 var guidView = Titanium.UI.createView({
 	backgroundColor: 	'transparent',
-	bottom:4,
-	left:10,
-	width:440,
-	height:60,
-	zIndex:2
+	bottom: 			4,
+	left: 				10,
+	width: 				440,
+	height: 			60,
+	zIndex: 			2
 });
 whiteBox.add(guidView);
 
@@ -221,68 +221,154 @@ guidView.addEventListener('click', function(e) {
 	// popover must be shown only when logged in
 	// and for user different than me
 	if (Ti.App.myMemeInfo && (Ti.App.myMemeInfo.guid != meme.guid)) {
+		
 		var popover = Ti.UI.iPad.createPopover({
 			width:330,
-			height:130,
+			height:100,
 			backgroundColor: 'white',
 			navBarHidden: true,
 			arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN
 		});
+		
+		var main = Ti.UI.createWindow({
+			top: 0,
+			left: 0,
+			width: 340,
+			height: 420,
+			backgroundColor:"#FFF",
+			navBarHidden: true
+		});
+		
+		popover.add(main);
+		
+		// BUILDING THE TABLE VIEW
+		var data = [];
+		
+		// ROW 1 LINK TO MEME AND FOLLOW/UNFOLLOW BUTTON
+		var row1 = Ti.UI.createTableViewRow({
+			selectionStyle:'none', // no color when clicking in the row
+			height: 60
+		});
+		
+		var linkMeme = Ti.UI.createLabel({
+		 	color: 			'#7D0670',
+			text: 			L('meme_short_domain') + meme.name,
+			textAlign: 		'left',
+			font: 			{fontSize:14, fontWeight:'regular'},
+			top: 			14,
+			left: 			14,
+			height: 		30,
+			width: 			185
+		});	
+		row1.add(linkMeme);
 
-		var label = Titanium.UI.createButton({
-			style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
-			backgroundColor: 'transparent',
-			selectedColor: 'gray',
-			color: 'black',
-			font: {
-				fontSize: 14,
-				fontFamily:'Helvetica',
-				fontWeight: 'bold'
-			}
+		linkMeme.addEventListener("click", function(e) {
+			Ti.App.fireEvent('openLinkOnSafari', {
+				url: meme.url,
+				title: L('open_link_title'),
+				message: L('open_link_message')
+			});
 		});
 
+		var btn_follow = Ti.UI.createButton({
+			top: 						14,
+			left: 						207,
+			width: 						100,
+			height: 					30,
+			style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+		});
+		row1.add(btn_follow);
+		
 		var updateFollowing = null;
 		if (Meme.isFollowing(meme.guid)) {
-			label.title = 'unfollow';
+			btn_follow.backgroundImage = L('path_btn_following_background_image');
 			updateFollowing = Meme.unfollow;
 		} else {
-			label.title = 'follow';
+			btn_follow.backgroundImage = L('path_btn_follow_background_image');
 			updateFollowing = Meme.follow;
 		}
-
-		label.addEventListener('click', function(e) {
-			label.hide();
+		
+		//Follow listener
+		btn_follow.addEventListener('click', function()
+		{
+			btn_follow.hide();
 			
 			var activity = Titanium.UI.createActivityIndicator({
-				style: Titanium.UI.iPhone.ActivityIndicatorStyle.DARK,
-				height: 20,
-				width: 20,
-				left: 40
+				style: 		Titanium.UI.iPhone.ActivityIndicatorStyle.DARK,
+				top: 		18,
+				left: 		246,
+				height: 	20,
+				width: 		20
 			});
 			popover.add(activity);
+			
 			activity.show();
 			
 			updateFollowing(meme.guid);
 			
-			activity.hide();
-			var okImg = Titanium.UI.createImageView({
-				image: 'images/icon_reposted_small.png',
-				width: 'auto',
-				height: 'auto',
-				left: 40
-			});
-			popover.add(okImg);
-		
-			setTimeout(function(){
-				popover.hide();
-			}, 500);
+			setTimeout(function()
+			{
+				activity.hide();
+				
+				if (Meme.isFollowing(meme.guid)) {
+					btn_follow.backgroundImage = L('path_btn_following_background_image');
+					updateFollowing = Meme.unfollow;
+				} else {
+					btn_follow.backgroundImage = L('path_btn_follow_background_image');
+					updateFollowing = Meme.follow;
+				}
+				
+				btn_follow.show();
+			},1000);
+
 		});
-
-		popover.add(label);
-
+		
+		data[0] = row1;
+		
+		// ROW 2 FOLLOWERS
+		var row2 = Ti.UI.createTableViewRow({
+			height: 40,
+			selectionStyle:'none'
+		});
+		
+		var iconGraphic = Ti.UI.createImageView({
+			image: 			'images/icon_graphic.png',
+			top: 			10,
+			left: 			14,
+			width: 			23,
+			height: 		16
+		});
+		row2.add(iconGraphic);
+		
+		var followLabel = Ti.UI.createLabel({
+			color: 			'#666',
+			text: 			L('followers') + meme.followers + L('following') + meme.following,
+			textAlign: 		'left',
+			font: 			{fontSize:13, fontWeight:'regular'},
+			top: 			3,
+			left: 			50,
+			height: 		34,
+			width: 			260
+		});	
+		row2.add(followLabel);
+		
+		data[1] = row2;
+		
+		var guidTableView = Ti.UI.createTableView({
+			data: 			data,
+			scrollable: 	false,
+			top: 			0,
+			left: 			0,
+			width: 			340,
+			height: 		160,
+			separatorColor: '#CCC',
+			style: 			Ti.UI.iPhone.TableViewStyle.PLAIN
+		});
+		main.add(guidTableView);
+		
 		popover.show({
-			view:guidAvatar,
-			animated:true
+			view:     guidAvatar,
+			animated: true
 		});
 	}
 });
@@ -392,7 +478,6 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 			whiteBox.add(btn_delete);
 		}
 	
-		
 	} else {
 		
 		// When Logged In and not the owner of the Post, enables Repost and Report Abuse Btn
@@ -462,8 +547,9 @@ repost_comment_view.add(btn_close_comment);
 // =============
 // BTN to close the Comment form
 btn_close_comment.addEventListener('click', function(e) {
-	repost_comment_view.animate({opacity:0, duration: 200});
-	whiteBox.remove(repost_comment_view);
+	repost_comment_view.animate({opacity:0, duration: 300}, function(){
+			whiteBox.remove(repost_comment_view);
+	});
 });
 
 
@@ -522,14 +608,18 @@ btn_send_comment.addEventListener("click", function(e) {
 		var ok = Meme.createComment(_guid, _pubId, repostCommentField.value);
 		
 		if (ok) {
-			repost_comment_view.animate({opacity:0, duration: 200});
-			whiteBox.remove(repost_comment_view);
+			//Hides Comment Box
+			repost_comment_view.animate({opacity:0, duration: 300}, function(){
+					whiteBox.remove(repost_comment_view);
+			});
 		} else {
 			Ti.API.info("Error while saving Comment on reposting");	
 		}
 	} else {
-		repost_comment_view.animate({opacity:0, duration: 200});
-		whiteBox.remove(repost_comment_view);
+		//Hides Comment Box
+		repost_comment_view.animate({opacity:0, duration: 300}, function(){
+				whiteBox.remove(repost_comment_view);
+		});
 	}
 });
 

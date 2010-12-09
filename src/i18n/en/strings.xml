@@ -98,6 +98,8 @@
 	<string name="delete_alert_message">Are you sure you want to delete this Post?</string>
 	<string name="report_abuse_alert_title">Report Abuse</string>  
 	<string name="report_abuse_alert_message">We will open the Report Abuse page on Safari.</string>
+	<string name="path_btn_follow_background_image">images/bg_btn_follow.png</string>
+	<string name="path_btn_following_background_image">images/bg_btn_following.png</string>
 	<!-- /permalink.js -->
 	<!-- EXTRAS -->
 	<string name="format_test">My name is %s</string>
