@@ -495,7 +495,6 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 	}
 }
 
-
 // REPOST ADD COMMENT VIEWS
 var repost_comment_view = Titanium.UI.createView({
 	backgroundImage: 	'images/bg_btn_repost_comment.png',
@@ -646,17 +645,14 @@ btn_delete.addEventListener("click", function(e) {
 	// Opens the Permalink page on Safari
 	alertOpenPermalink.addEventListener('click',function(e)	{
 		if (e.index == 0){
-			yqlQuery = "DELETE FROM meme.user.posts WHERE pubid = '" + _pubId + "'";
-			var yql_data = yql.query(yqlQuery);
-			var response = yql_data.query.results.status;
-
-			if (response.message == "ok"){
+			var postDeleted = Meme.deletePost(_pubId);
+			
+			if (postDeleted){
 				var t3 = Titanium.UI.create2DMatrix();
 				t3 = t3.scale(0);
 				win.close({transform:t3,duration:200, opacity:0});
 				Ti.App.fireEvent('permalinkIsOpenedFalse');
 				Ti.App.fireEvent('reloadDashboard');
-
 			} else {
 				Ti.API.error("Error while deleting Post: " + JSON.stringify(response));	
 			}	

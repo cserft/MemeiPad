@@ -16,8 +16,8 @@ Usage:
 // "Meme.[...]" directly.
 var Meme = function() {	
 	// public functions
-	var createTextPost, createPhotoPost, createVideoPost, isFollowing, follow, 
-		unfollow, createComment, repost, isReposted;
+	var createTextPost, createPhotoPost, createVideoPost, deletePost, 
+		isFollowing, follow, unfollow, createComment, repost, isReposted;
 		
 	// private functions
 	var createPost, execute;
@@ -32,6 +32,11 @@ var Meme = function() {
 
 	createVideoPost = function(content, caption) {
 		return createPost('video', content, caption);
+	};
+	
+	deletePost = function(pubid) {
+		var yqlQuery = 'DELETE FROM meme.user.posts WHERE pubid = "' + pubid + '"';
+		return execute(true, yqlQuery);
 	};
 
 	isFollowing = function(guid) {
@@ -118,6 +123,7 @@ var Meme = function() {
 		createTextPost: createTextPost,
 		createPhotoPost: createPhotoPost,
 		createVideoPost: createVideoPost,
+		deletePost: deletePost,
 		isFollowing: isFollowing,
 		follow: follow,
 		unfollow: unfollow,
