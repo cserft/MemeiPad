@@ -1,8 +1,7 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 Ti.include('lib/cache.js');
-Ti.include('lib/meme.js')
-// Ti.include('app_highlight.js');
+Ti.include('lib/meme.js');
 
 Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
 
@@ -23,22 +22,6 @@ var win1 = Titanium.UI.createWindow({
 		Titanium.UI.LANDSCAPE_RIGHT
 	]
 });
-
-// var highlightView = Titanium.UI.createScrollableView({
-// 	views: 					[],
-// 	top: 					51,
-// 	left: 					0,
-// 	width: 					1024,
-// 	height: 				273,
-// 	backgroundColor: 		'black',
-// 	showPagingControl: 		true,
-// 	pagingControlHeight: 	24,
-// 	pagingControlColor: 	'black',
-// 	// maxZoomScale: 			2.0,
-// 	currentPage: 			0,
-// 	zIndex: 				1
-// });
-// win1.add(highlightView);
 
 var appNavBarView = Ti.UI.createView({
 	backgroundImage: 		'images/bg_app_navbar.png',
@@ -509,7 +492,6 @@ var signInButtonClick = function(continuation) {
 };
 
 var startApplication = function() {
-	//getHighlights(highlightView);
 	showHeader(function() {
 		showDashboard();
 	});

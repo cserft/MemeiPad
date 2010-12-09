@@ -7,8 +7,8 @@ Ti.include('newpost_flashlight.js');
 var win 			= 	Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
-var yql 			= 	Ti.App.oAuthAdapter.getYql();
 var win1 			= 	win.win1; // Window Original created on app.js
+
 var postText 		= 	""; 
 var postTitle 		= 	'';
 var postBody 		= 	'';
@@ -843,7 +843,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 });
 
 Titanium.App.addEventListener("postOnMeme", function(e) {
-	// Verifies the Type of Post and selects the Proper YQL Query
+	// Verifies the Type of Post and selects the Proper recording method
 	var inserted, alertInfo;
 	
 	if (e.postType == "photo") {
@@ -864,7 +864,7 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	}
 	
 	if (inserted) {
-		Ti.API.debug(" ####### YQL INSERT POST executed");
+		Ti.API.debug(" ####### INSERT POST executed");
 		alertInfo = { title: L('success_alert_title'), message: L('post_success_message') };
 	} else {
 		alertInfo = { title: L('error_alert_title'), message: L('post_error_message') };
