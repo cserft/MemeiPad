@@ -13,7 +13,9 @@
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>meme_appicon.png</string>
-		<string>meme_appicon@2x.png</string>
+		<string>meme_appicon4.png</string>
+		<string>meme_appicon-iPad.png</string>
+		<string>meme_appicon-iPad-spot.png</string>
 	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
