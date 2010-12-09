@@ -283,7 +283,7 @@ viewContainerPhoto.add(actAjax);
 
 //Main TextArea
 var textArea = Titanium.UI.createTextArea({
-	value: postBody,
+	value: 			postBody,
 	height: 		600,
 	width: 			954,
 	top: 			79,
@@ -489,26 +489,26 @@ var btn_text_clear = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
 	width: 			22,
 	height: 		22,
-	top: 			10,
-	right: 			-10,
-	zIndex: 		10,
+	top: 			80,
+	right: 			5,
+	zIndex: 		2,
 	visible: 		true
 });
 
 textArea.addEventListener('focus', function(e) {
    	Ti.API.info('TextArea: focus received');
 	tempPostLabel.hide(); // hide the hint text when textArea receives Focus
-	textArea.add(btn_text_clear);
+	editView.add(btn_text_clear);
 });
 
 textArea.addEventListener('blur', function(e) {
-	textArea.remove(btn_text_clear);
+	editView.remove(btn_text_clear);
 	editView.scrollTo(0, {animated:true});
 });
 
 btn_text_clear.addEventListener('click', function(e) {
 	tempPostLabel.show(); // hide the hint text when textArea receives Focus
-	textArea.remove(btn_text_clear);
+	editView.remove(btn_text_clear);
 	textArea.blur();
 	postBody = '';
 	textArea.value = '';

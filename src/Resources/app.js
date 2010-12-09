@@ -169,7 +169,7 @@ var showHeader = function (successCallback) {
 			
 			var popover = Ti.UI.iPad.createPopover({
 				width:341,
-				height:160, 
+				height:300, 
 				backgroundColor: 'white',
 				navBarHidden: true,
 				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
@@ -271,32 +271,112 @@ var showHeader = function (successCallback) {
 			
 			data[1] = row2;
 			
-			// ROW 3: ABOUT
+			// ROW 3: ATOS
 			var row3 = Ti.UI.createTableViewRow({
 				selectedBackgroundColor: '#CCC',
-				height: 60,
+				height: 40,
 				hasChild: true
 			});
 			
-			var aboutApp = Ti.UI.createLabel({
+			var atosLabel = Ti.UI.createLabel({
  				color: 			'#333',
 				text: 			L('ATOS'),
 				textAlign: 		'left',
-				font: 			{fontSize:18, fontFamily:'Helvetica', fontWeight:'bold'},
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
 				height: 		34,
 				width: 			260
 			});	
-			row3.add(aboutApp);
+			row3.add(atosLabel);
 			
 			data[2] = row3;
+			
+			// ROW 4: YAHOO TOS
+			var row4 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40,
+				hasChild: true
+			});
+			
+			var tosLabel = Ti.UI.createLabel({
+ 				color: 			'#333',
+				text: 			'Yahoo! Terms of Service',
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			row4.add(tosLabel);
+			
+			data[3] = row4;
+			
+			// ROW 5: PRIVACY
+			var row5 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40,
+				hasChild: true
+			});
+			
+			var privacyLabel = Ti.UI.createLabel({
+ 				color: 			'#333',
+				text: 			'Privacy Policy',
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			row5.add(privacyLabel);
+			
+			data[4] = row5;
+			
+			// ROW 6: GUIDELINES
+			var row6 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40,
+				hasChild: true
+			});
+			
+			var guidelinesLabel = Ti.UI.createLabel({
+ 				color: 			'#333',
+				text: 			'Guidelines',
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			row6.add(guidelinesLabel);
+			
+			data[5] = row6;
+			
+			// ROW 7: FEEDBACK
+			var row7 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40,
+				hasChild: true
+			});
+			
+			var feedbackLabel = Ti.UI.createLabel({
+ 				color: 			'#333',
+				text: 			'Send us feedback',
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			row7.add(feedbackLabel);
+			
+			data[6] = row7;
 			
 			var settingsTableView = Ti.UI.createTableView({
 				data: 			data,
 				top: 			0,
 				left: 			0,
 				width: 			340,
-				height: 		160,
+				height: 		300,
 				separatorColor: '#CCC',
 				style: 			0 //Ti.UI.iPhone.TableViewStyle.PLAIN
 			});
