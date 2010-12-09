@@ -121,10 +121,6 @@ var showHeader = function (successCallback) {
 	win1.add(headerView);
 
 	if (Ti.App.oAuthAdapter.isLoggedIn()) {
-
-		// ========================
-		// = retrieving yql data =
-		// ========================
 		Ti.App.myMemeInfo = Meme.userInfo('me', 35, 35);
 		
 		var btn_Username = Ti.UI.createView({

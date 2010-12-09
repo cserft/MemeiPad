@@ -17,8 +17,8 @@ Usage:
 var Meme = function() {	
 	// public functions
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
-		isFollowing, follow, unfollow, createComment, repost, isReposted,
-		userInfo;
+		featuredPosts, isFollowing, follow, unfollow, createComment, repost, 
+		isReposted, userInfo;
 		
 	// private functions
 	var getYql, cacheGet, cachePut, loginRequired, throwYqlError, createPost, 
@@ -60,6 +60,27 @@ var Meme = function() {
 		}
 		
 		return post
+	};
+	
+	featuredPosts = function() {
+		var cacheKey = 'featuredPosts';
+		var posts = cacheGet(cacheKey);
+		
+		if (!posts) {
+			var yqlQuery = 'SELECT * FROM meme.posts.featured WHERE locale="en" | meme.functions.thumbs(width=307,height=231)';
+			var yqlResponse = getYql().query(yqlQuery);
+
+			if (!yqlResponse.query.results) {
+				throwYqlError();
+			}
+
+			posts = yqlResponse.query.results.post;
+
+			// cache featuredPosts for 2 hours
+			cachePut(cacheKey, posts, 7200);
+		}
+		
+		return posts;
 	};
 
 	isFollowing = function(guid) {
@@ -201,6 +222,7 @@ var Meme = function() {
 		createVideoPost: createVideoPost,
 		deletePost: deletePost,
 		getPost: getPost,
+		featuredPosts: featuredPosts,
 		isFollowing: isFollowing,
 		follow: follow,
 		unfollow: unfollow,

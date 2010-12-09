@@ -1,4 +1,5 @@
 Ti.include('lib/commons.js');
+Ti.include('lib/meme.js');
 
 var win = Ti.UI.currentWindow;
 
@@ -7,10 +8,6 @@ win.orientationModes =  [
 	Titanium.UI.LANDSCAPE_RIGHT
 ];
 
-//Set current timestamp
-var now = new Date().getTime();
-
-//RETRIEVING YQL OBJECT
 var win1 = win.win1; // Window Original created on app.js
 
 // Creating the List Post Table View
@@ -268,34 +265,16 @@ var getDashboardData = function (pTimestamp) {
 		posts = yqldata.query.results.post;
 		
 	} else {
+		Ti.API.info(" ####### STARTING FEATURED DASHBOARD (NOT LOGGED IN) ##########");
 		
 		// NOT LOGGED IN SO GETS THE FEATURED POSTS
-		posts = Ti.App.cache.get('dashboardNotLoggedPosts');
+		posts = Meme.featuredPosts();
 		
-		if (!posts) {
-			// Reload TableVIew or First Build
-			lastRow = 0;
-			data = [];
-			tempRow = null;
-			tempItemRowCount = 0;
-
-			Ti.API.info(" ####### STARTING FEATURED DASHBOARD (NOT LOGGED IN) ##########");
-
-			// TODO: try to show the featured posts from the users selected Language, if not then shows English
-			yqlQuery = "SELECT * FROM meme.posts.featured WHERE locale='en' | meme.functions.thumbs(width=307,height=231)";
-			
-			var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
-			
-			if (!yqldata.query.results) {
-				Ti.App.fireEvent('yqlerror');
-			}
-			
-			posts = yqldata.query.results.post;
-			
-			// cache result for 2 hours
-			Ti.App.cache.put('dashboardNotLoggedPosts', posts, 7200);
-		}
-		
+		// Reload TableVIew or First Build
+		lastRow = 0;
+		data = [];
+		tempRow = null;
+		tempItemRowCount = 0;
 	}
 
 	var itemPerRowCount = 0;
