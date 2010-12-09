@@ -4,38 +4,14 @@ Ti.include('lib/meme.js');
 var win = Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
-var yql = Ti.App.oAuthAdapter.getYql();
 var _guid = win.pGuid;
 var _pubId = win.pPubId;
 
-// =======================
-// = DASHBOARD TABLEVIEW =
-// =======================
-
-// Example Queries to retrieve Post Details
-// "SELECT * FROM meme.posts WHERE owner_guid='MOLV2IG2KYLCBZDPMFVUQ7HKYU' and pubid='NtnNg2A'"
-// "SELECT * FROM meme.post.info WHERE owner_guid='MOLV2IG2KYLCBZDPMFVUQ7HKYU' and pubid='NtnNg2A'"
-
-// =============
-// = YQL QUERY =
-// =============
-
-yqlQuery = "SELECT * FROM meme.posts WHERE owner_guid='" + _guid + "' and pubid='" + _pubId + "'";
-
-Ti.API.debug(" ####### YQL Query executed: " + yqlQuery);
-
-var yqldata = yql.query(yqlQuery);
-
-if (!yqldata.query.results) {
-	Ti.App.fireEvent('yqlerror');
-} else {
-	var post = yqldata.query.results.post;
-}
+var post = Meme.getPost(_guid, _pubId);
 
 // ============================
 // = BULDING PERMALINK LAYOUT =
 // ============================
-
 var whiteBox = Ti.UI.createView({
 	backgroundColor:'white',
 	width:  		'100%',

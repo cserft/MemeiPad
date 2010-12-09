@@ -16,12 +16,13 @@ Usage:
 // "Meme.[...]" directly.
 var Meme = function() {	
 	// public functions
-	var createTextPost, createPhotoPost, createVideoPost, deletePost, 
+	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
 		isFollowing, follow, unfollow, createComment, repost, isReposted,
 		userInfo;
 		
 	// private functions
-	var createPost, execute;
+	var getYql, cacheGet, cachePut, loginRequired, throwYqlError, createPost, 
+		execute;
 	
 	createTextPost = function(content) {
 		return createPost('text', content);
@@ -39,14 +40,33 @@ var Meme = function() {
 		var yqlQuery = 'DELETE FROM meme.user.posts WHERE pubid = "' + pubid + '"';
 		return execute(true, yqlQuery);
 	};
+	
+	getPost = function(guid, pubid) {
+		var cacheKey = 'post:' + guid + ':' + pubid;
+		var post = cacheGet(cacheKey);
+		
+		if (!post) {
+			var yqlQuery = 'SELECT * FROM meme.posts WHERE owner_guid="' + guid + '" and pubid="' + pubid + '"';
+			var yqlResponse = getYql().query(yqlQuery);
+
+			if (!yqlResponse.query.results) {
+				throwYqlError();
+			}
+			
+			post = yqlResponse.query.results.post;
+			
+			// cache post for 24 hours
+			cachePut(cacheKey, post, 86400);
+		}
+		
+		return post
+	};
 
 	isFollowing = function(guid) {
-		if (!Ti.App.oAuthAdapter.isLoggedIn()) {
-			throw 'sAuthentication is required to run this query.';
-		}
+		loginRequired();
 
 		var yqlQuery = 'SELECT * FROM meme.following WHERE owner_guid=me and guid="' + guid + '"';
-		var yqlResponse = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
+		var yqlResponse = getYql().query(yqlQuery);
 		if (yqlResponse.query.results) {
 			return true;
 		}
@@ -74,12 +94,10 @@ var Meme = function() {
 	};
 	
 	isReposted = function(guid, pubid) {
-		if (!Ti.App.oAuthAdapter.isLoggedIn()) {
-			throw 'sAuthentication is required to run this query.';
-		}
+		loginRequired();
 
 		var yqlQuery = 'SELECT * FROM meme.posts WHERE owner_guid=me and origin_guid="' + guid + '" and origin_pubid="' + pubid + '"';
-		var yqlResponse = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
+		var yqlResponse = getYql().query(yqlQuery);
 		if (yqlResponse.query.results) {
 			return true;
 		}
@@ -87,22 +105,26 @@ var Meme = function() {
 	};
 	
 	userInfo = function(guid, thumb_width, thumb_height) {
+		if (guid == 'me') {
+			loginRequired();
+		}
+		
 		var cacheKey = 'userInfo:' + guid;
-		var userInfo = Ti.App.cache.get(cacheKey);
+		var userInfo = cacheGet(cacheKey);
 		
 		if (!userInfo) {
 			var queryGuid = (guid == 'me') ? guid : '"' + guid + '"';
 			var yqlQuery = 'SELECT * FROM meme.info where owner_guid=' + queryGuid + ' | meme.functions.thumbs(width=' + thumb_width + ',height=' + thumb_height + ')';
-			var yqlResponse = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
+			var yqlResponse = getYql().query(yqlQuery);
 
 			if (!yqlResponse.query.results) {
-				Ti.App.fireEvent('yqlerror');
+				throwYqlError();
 			}
 
 			userInfo = yqlResponse.query.results.meme;
 			
 			// cache userInfo for 24 hours
-			Ti.App.cache.put(cacheKey, yqlResponse.query.results.meme, 86400);
+			cachePut(cacheKey, userInfo, 86400);
 		}
 		
 		return userInfo;
@@ -111,6 +133,33 @@ var Meme = function() {
 	// =====================
 	// = Private functions =
 	// =====================
+	
+	// TODO: inject YQL
+	getYql = function() {
+		return Ti.App.oAuthAdapter.getYql();
+	};
+	
+	// TODO: inject Cache
+	cacheGet = function(key) {
+		return Ti.App.cache.get(key);
+	};
+	
+	// TODO: inject Cache
+	cachePut = function(key, value, seconds) {
+		Ti.App.cache.put(key, value, seconds);
+	};
+	
+	// TODO: inject OAdapter
+	loginRequired = function() {
+		if (!Ti.App.oAuthAdapter.isLoggedIn()) {
+			throw 'Authentication is required to run this query.';
+		}
+	};
+	
+	// TODO: refactor to isolate fireEvent (?)
+	throwYqlError = function() {
+		Ti.App.fireEvent('yqlerror');
+	};
 
 	// Creates a post on Meme given the type provided
 	createPost = function(type, content, caption) {
@@ -130,14 +179,14 @@ var Meme = function() {
 
 	// Executes an API query that does not expect response (insert, update, delete)
 	execute = function(requireAuth, yqlQuery) {
-		if (requireAuth && !Ti.App.oAuthAdapter.isLoggedIn()) {
-			throw 'Authentication is required to run this query.';
+		if (requireAuth) {
+			loginRequired();
 		}
 		var yqlResponse = yql.query(yqlQuery);
 		var results = yqlResponse.query.results;
 		
 		if (!results) {
-			Ti.App.fireEvent('yqlerror');
+			throwYqlError();
 		}
 		
 		if (results.status && results.status.message == 'ok') {
@@ -151,6 +200,7 @@ var Meme = function() {
 		createPhotoPost: createPhotoPost,
 		createVideoPost: createVideoPost,
 		deletePost: deletePost,
+		getPost: getPost,
 		isFollowing: isFollowing,
 		follow: follow,
 		unfollow: unfollow,

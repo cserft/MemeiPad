@@ -290,7 +290,7 @@ var OAuthAdapter = function(pService, authorize) {
 	};
 
 	var query = function(pQuery) {
-		Ti.API.debug("Function Query Called");
+		Ti.API.debug("[oadapter] function query called");
 		var token = maybeRefreshToken(loadToken());
 		var parameters = [ ["format", "json"],
 		 				   ["diagnostics", "false"],
