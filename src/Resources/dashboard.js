@@ -232,37 +232,23 @@ var tempItemRowCount = 0;
 var data = [];
 
 var getDashboardData = function (pTimestamp) {
-	var posts;
+	var posts, queryTimestamp;
 	
 	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		
 		if (pTimestamp == null) {
 			// Reload TableVIew or First Build
-			
 			//	clear Table
 			lastRow = 0;
 			data = [];
 			tempRow = null;
 			tempItemRowCount = 0;
-			
-			Ti.API.info(" ####### STARTING DASHBOARD QUERY ##########");
-			yqlQuery = "SELECT * FROM meme.user.dashboard | meme.functions.thumbs(width=307,height=231)";
-		
+			queryTimestamp = null;
 		} else {
-	
-			Ti.API.info(" ####### STARTING UPDATE 'PRA BAIXO' QUERY ##########");
-			yqlQuery = "SELECT * from meme.user.dashboard where start_timestamp =" + (pTimestamp-1) + " | meme.functions.thumbs(width=307,height=231)";
-
+			queryTimestamp = pTimestamp - 1;
 		}
 		
-		var yqldata = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
-		
-		if (!yqldata.query.results) {
-			Ti.App.fireEvent('yqlerror');
-		}
-		
-		// warning: cannot be cached logged-in dashboard
-		posts = yqldata.query.results.post;
+		posts = Meme.dashboardPosts(307, 231, pTimestamp);
 		
 	} else {
 		Ti.API.info(" ####### STARTING FEATURED DASHBOARD (NOT LOGGED IN) ##########");

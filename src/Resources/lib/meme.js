@@ -17,8 +17,8 @@ Usage:
 var Meme = function() {	
 	// public functions
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
-		featuredPosts, isFollowing, follow, unfollow, createComment, repost, 
-		isReposted, userInfo;
+		featuredPosts, dashboardPosts, isFollowing, follow, unfollow, 
+		createComment, repost, isReposted, userInfo;
 		
 	// private functions
 	var getYql, cacheGet, cachePut, loginRequired, throwYqlError, createPost, 
@@ -82,6 +82,24 @@ var Meme = function() {
 		
 		return posts;
 	};
+	
+	dashboardPosts = function(thumbWidth, thumbHeight, startTimestamp) {
+		loginRequired();
+		
+		var yqlQuery = 'SELECT * FROM meme.user.dashboard ';
+		if (startTimestamp) {
+			yqlQuery += 'WHERE start_timestamp = "' + startTimestamp + '" ';
+		}
+		yqlQuery += '| meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')';
+		
+		var yqlResponse = getYql().query(yqlQuery);
+		
+		if (!yqlResponse.query.results) {
+			throwYqlError();
+		}
+		
+		return yqlResponse.query.results.post;
+	};
 
 	isFollowing = function(guid) {
 		loginRequired();
@@ -125,7 +143,7 @@ var Meme = function() {
 		return false;
 	};
 	
-	userInfo = function(guid, thumb_width, thumb_height) {
+	userInfo = function(guid, thumbWidth, thumbHeight) {
 		if (guid == 'me') {
 			loginRequired();
 		}
@@ -135,7 +153,7 @@ var Meme = function() {
 		
 		if (!userInfo) {
 			var queryGuid = (guid == 'me') ? guid : '"' + guid + '"';
-			var yqlQuery = 'SELECT * FROM meme.info where owner_guid=' + queryGuid + ' | meme.functions.thumbs(width=' + thumb_width + ',height=' + thumb_height + ')';
+			var yqlQuery = 'SELECT * FROM meme.info where owner_guid=' + queryGuid + ' | meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')';
 			var yqlResponse = getYql().query(yqlQuery);
 
 			if (!yqlResponse.query.results) {
@@ -223,6 +241,7 @@ var Meme = function() {
 		deletePost: deletePost,
 		getPost: getPost,
 		featuredPosts: featuredPosts,
+		dashboardPosts: dashboardPosts,
 		isFollowing: isFollowing,
 		follow: follow,
 		unfollow: unfollow,
