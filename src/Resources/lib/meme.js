@@ -43,44 +43,28 @@ var Meme = function() {
 	};
 	
 	getPost = function(guid, pubid) {
-		var cacheKey = 'post:' + guid + ':' + pubid;
-		var post = cacheGet(cacheKey);
-		
-		if (!post) {
-			var yqlQuery = 'SELECT * FROM meme.posts WHERE owner_guid="' + guid + '" and pubid="' + pubid + '"';
-			var yqlResponse = getYql().query(yqlQuery);
-
-			if (!yqlResponse.query.results) {
-				throwYqlError();
-			}
-			
-			post = yqlResponse.query.results.post;
-			
-			// cache post for 24 hours
-			cachePut(cacheKey, post, 86400);
-		}
-		
-		return post
+		var params = {
+			cacheKey: 'post:' + guid + ':' + pubid,
+			cacheSeconds: 86400, // 24 hours
+			yqlQuery: 'SELECT * FROM meme.posts WHERE owner_guid="' + guid + '" and pubid="' + pubid + '"'
+		};
+		var post;
+		cachedYqlQuery(params, function(results) {
+			post = results.post;
+		});
+		return post;
 	};
 	
 	featuredPosts = function() {
-		var cacheKey = 'featuredPosts';
-		var posts = cacheGet(cacheKey);
-		
-		if (!posts) {
-			var yqlQuery = 'SELECT * FROM meme.posts.featured WHERE locale="en" | meme.functions.thumbs(width=307,height=231)';
-			var yqlResponse = getYql().query(yqlQuery);
-
-			if (!yqlResponse.query.results) {
-				throwYqlError();
-			}
-
-			posts = yqlResponse.query.results.post;
-
-			// cache featuredPosts for 2 hours
-			cachePut(cacheKey, posts, 7200);
-		}
-		
+		var params = {
+			cacheKey: 'featuredPosts',
+			cacheSeconds: 7200, // 2 hours
+			yqlQuery: 'SELECT * FROM meme.posts.featured WHERE locale="en" | meme.functions.thumbs(width=307,height=231)'
+		};
+		var posts;
+		cachedYqlQuery(params, function(results) {
+			posts = results.post;
+		});
 		return posts;
 	};
 	
@@ -148,25 +132,16 @@ var Meme = function() {
 		if (guid == 'me') {
 			loginRequired();
 		}
-		
-		var cacheKey = 'userInfo:' + guid;
-		var userInfo = cacheGet(cacheKey);
-		
-		if (!userInfo) {
-			var queryGuid = (guid == 'me') ? guid : '"' + guid + '"';
-			var yqlQuery = 'SELECT * FROM meme.info where owner_guid=' + queryGuid + ' | meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')';
-			var yqlResponse = getYql().query(yqlQuery);
-
-			if (!yqlResponse.query.results) {
-				throwYqlError();
-			}
-
-			userInfo = yqlResponse.query.results.meme;
-			
-			// cache userInfo for 24 hours
-			cachePut(cacheKey, userInfo, 86400);
-		}
-		
+		var queryGuid = (guid == 'me') ? guid : '"' + guid + '"';
+		var params = {
+			cacheKey: 'userInfo:' + guid,
+			cacheSeconds: 86400, // 24 hours
+			yqlQuery: 'SELECT * FROM meme.info where owner_guid=' + queryGuid + ' | meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')'
+		};
+		var userInfo;
+		cachedYqlQuery(params, function(results) {
+			userInfo = results.meme;
+		});
 		return userInfo;
 	};
 	
@@ -305,7 +280,7 @@ var Meme = function() {
 			cachePut(params.cacheKey, items, cacheSeconds);
 		}
 		
-		// return to caller callback
+		// return to caller using callback
 		callback(items);
 	};
 	
