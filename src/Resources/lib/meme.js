@@ -17,7 +17,8 @@ Usage:
 var Meme = function() {	
 	// public functions
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, 
-		isFollowing, follow, unfollow, createComment, repost, isReposted;
+		isFollowing, follow, unfollow, createComment, repost, isReposted,
+		userInfo;
 		
 	// private functions
 	var createPost, execute;
@@ -84,6 +85,28 @@ var Meme = function() {
 		}
 		return false;
 	};
+	
+	userInfo = function(guid, thumb_width, thumb_height) {
+		var cacheKey = 'userInfo:' + guid;
+		var userInfo = Ti.App.cache.get(cacheKey);
+		
+		if (!userInfo) {
+			var queryGuid = (guid == 'me') ? guid : '"' + guid + '"';
+			var yqlQuery = 'SELECT * FROM meme.info where owner_guid=' + queryGuid + ' | meme.functions.thumbs(width=' + thumb_width + ',height=' + thumb_height + ')';
+			var yqlResponse = Ti.App.oAuthAdapter.getYql().query(yqlQuery);
+
+			if (!yqlResponse.query.results) {
+				Ti.App.fireEvent('yqlerror');
+			}
+
+			userInfo = yqlResponse.query.results.meme;
+			
+			// cache userInfo for 24 hours
+			Ti.App.cache.put(cacheKey, yqlResponse.query.results.meme, 86400);
+		}
+		
+		return userInfo;
+	};
 
 	// =====================
 	// = Private functions =
@@ -113,7 +136,11 @@ var Meme = function() {
 		var yqlResponse = yql.query(yqlQuery);
 		var results = yqlResponse.query.results;
 		
-		if (results && results.status && results.status.message == 'ok') {
+		if (!results) {
+			Ti.App.fireEvent('yqlerror');
+		}
+		
+		if (results.status && results.status.message == 'ok') {
 			return true;
 		}
 		return false;
@@ -129,6 +156,7 @@ var Meme = function() {
 		unfollow: unfollow,
 		createComment: createComment,
 		repost: repost,
-		isReposted: isReposted
+		isReposted: isReposted,
+		userInfo: userInfo
 	});	
 }();

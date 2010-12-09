@@ -1,6 +1,7 @@
 // create a new OAuthAdapter instance by passing by your consumer data and signature method
 Ti.include('oadapter.js');
 Ti.include('lib/cache.js');
+Ti.include('lib/meme.js')
 // Ti.include('app_highlight.js');
 
 Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
@@ -141,22 +142,7 @@ var showHeader = function (successCallback) {
 		// ========================
 		// = retrieving yql data =
 		// ========================
-		var info_cache_key = 'myMemeInfo' + Ti.App.oAuthAdapter.getUserGuid();
-		
-		Ti.App.myMemeInfo = Ti.App.cache.get(info_cache_key);
-		
-		if (!Ti.App.myMemeInfo) {
-			var yqlMemeInfo = Ti.App.oAuthAdapter.getYql().query("SELECT * FROM meme.info where owner_guid=me | meme.functions.thumbs(width=35,height=35)");
-
-			if (!yqlMemeInfo.query.results) {
-				Ti.App.fireEvent('yqlerror');
-			}
-
-			Ti.App.myMemeInfo = yqlMemeInfo.query.results.meme;
-			
-			// cache results for 24 hours
-			Ti.App.cache.put(info_cache_key, yqlMemeInfo.query.results.meme, 86400);
-		}
+		Ti.App.myMemeInfo = Meme.userInfo('me', 35, 35);
 		
 		var btn_Username = Ti.UI.createView({
 			backgroundImage: 			'images/btn_username.png',	

@@ -146,12 +146,7 @@ postWebView.addEventListener('load', function(){
 // ====================================
 // = OWNER GUID INFORMATION RETRIEVAL =
 // ====================================
-yqlQuery = "SELECT * FROM meme.info where owner_guid='" + _guid + "' | meme.functions.thumbs(width=40,height=40)";
-
-Ti.API.debug("####### YQL Query executed: " + yqlQuery);
-
-var yqlMemeInfo = yql.query(yqlQuery);
-var meme = yqlMemeInfo.query.results.meme;
+var memeInfo = Meme.userInfo(_guid, 40, 40);
 
 // User Post Owner View (Avatar + Label + time of the post Label)
 var guidView = Titanium.UI.createView({
@@ -166,7 +161,7 @@ whiteBox.add(guidView);
 
 // Users Post Owner Avatar
 var guidAvatar = Titanium.UI.createImageView({
-	image: meme.avatar_url.thumb,
+	image: memeInfo.avatar_url.thumb,
 	defaultImage: 'images/default_img_avatar.png',
 	top:10,
 	left:4,
@@ -179,7 +174,7 @@ guidView.add(guidAvatar);
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
 	color:'#A9379C',
-	text: strip_html_entities(meme.title),
+	text: strip_html_entities(memeInfo.title),
 	textAlign:'left',
 	font: {
 		fontSize: 18,
@@ -220,7 +215,7 @@ guidView.add(postUpdatedTimeLabel);
 guidView.addEventListener('click', function(e) {
 	// popover must be shown only when logged in
 	// and for user different than me
-	if (Ti.App.myMemeInfo && (Ti.App.myMemeInfo.guid != meme.guid)) {
+	if (Ti.App.myMemeInfo && (Ti.App.myMemeInfo.guid != memeInfo.guid)) {
 		
 		var popover = Ti.UI.iPad.createPopover({
 			width:330,
@@ -252,7 +247,7 @@ guidView.addEventListener('click', function(e) {
 		
 		var linkMeme = Ti.UI.createLabel({
 		 	color: 			'#7D0670',
-			text: 			L('meme_short_domain') + meme.name,
+			text: 			L('meme_short_domain') + memeInfo.name,
 			textAlign: 		'left',
 			font: 			{fontSize:14, fontWeight:'regular'},
 			top: 			14,
@@ -264,7 +259,7 @@ guidView.addEventListener('click', function(e) {
 
 		linkMeme.addEventListener("click", function(e) {
 			Ti.App.fireEvent('openLinkOnSafari', {
-				url: meme.url,
+				url: memeInfo.url,
 				title: L('open_link_title'),
 				message: L('open_link_message')
 			});
@@ -280,7 +275,7 @@ guidView.addEventListener('click', function(e) {
 		row1.add(btn_follow);
 		
 		var updateFollowing = null;
-		if (Meme.isFollowing(meme.guid)) {
+		if (Meme.isFollowing(memeInfo.guid)) {
 			btn_follow.backgroundImage = L('path_btn_following_background_image');
 			updateFollowing = Meme.unfollow;
 		} else {
@@ -304,13 +299,13 @@ guidView.addEventListener('click', function(e) {
 			
 			activity.show();
 			
-			updateFollowing(meme.guid);
+			updateFollowing(memeInfo.guid);
 			
 			setTimeout(function()
 			{
 				activity.hide();
 				
-				if (Meme.isFollowing(meme.guid)) {
+				if (Meme.isFollowing(memeInfo.guid)) {
 					btn_follow.backgroundImage = L('path_btn_following_background_image');
 					updateFollowing = Meme.unfollow;
 				} else {
@@ -342,7 +337,7 @@ guidView.addEventListener('click', function(e) {
 		
 		var followLabel = Ti.UI.createLabel({
 			color: 			'#666',
-			text: 			L('followers') + meme.followers + L('following') + meme.following,
+			text: 			L('followers') + memeInfo.followers + L('following') + memeInfo.following,
 			textAlign: 		'left',
 			font: 			{fontSize:13, fontWeight:'regular'},
 			top: 			3,
