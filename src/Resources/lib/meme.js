@@ -18,11 +18,12 @@ var Meme = function() {
 	// public functions
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
 		featuredPosts, dashboardPosts, isFollowing, follow, unfollow, 
-		createComment, repost, isReposted, userInfo;
+		createComment, repost, isReposted, userInfo, flashlightPhotos, 
+		flashlightVideos, flashlightWeb, flashlightTweets;
 		
 	// private functions
 	var getYql, cacheGet, cachePut, loginRequired, throwYqlError, createPost, 
-		execute;
+		execute, cachedYqlQuery;
 	
 	createTextPost = function(content) {
 		return createPost('text', content);
@@ -168,6 +169,54 @@ var Meme = function() {
 		
 		return userInfo;
 	};
+	
+	flashlightPhotos = function(query) {
+		var params = {
+			cacheKey: 'flashlight:photos:' + query,
+			yqlQuery: 'SELECT * FROM flickr.photos.search WHERE text="' + query + '" AND license="4"'
+		};
+		var photos;
+		cachedYqlQuery(params, function(results) {
+			photos = results.photo;
+		});
+		return photos;
+	};
+	
+	flashlightVideos = function(query) {
+		var params = {
+			cacheKey: 'flashlight:videos:' + query,
+			yqlQuery: 'SELECT * FROM youtube.search WHERE query="' + query + '"'
+		};
+		var videos;
+		cachedYqlQuery(params, function(results) {
+			videos = results.video;
+		});
+		return videos;
+	};
+	
+	flashlightWeb = function(query) {
+		var params = {
+			cacheKey: 'flashlight:web:' + query,
+			yqlQuery: 'SELECT title, abstract FROM search.web WHERE query="' + query + '"'
+		};
+		var items;
+		cachedYqlQuery(params, function(results) {
+			items = results.result;
+		});
+		return items;
+	};
+	
+	flashlightTweets = function(query) {
+		var params = {
+			cacheKey: 'flashlight:tweets:' + query,
+			yqlQuery: 'SELECT * FROM twitter.search WHERE q="' + query + '"'
+		};
+		var items;
+		cachedYqlQuery(params, function(results) {
+			items = results.results;
+		});
+		return items;
+	};
 
 	// =====================
 	// = Private functions =
@@ -221,7 +270,7 @@ var Meme = function() {
 		if (requireAuth) {
 			loginRequired();
 		}
-		var yqlResponse = yql.query(yqlQuery);
+		var yqlResponse = getYql().query(yqlQuery);
 		var results = yqlResponse.query.results;
 		
 		if (!results) {
@@ -232,6 +281,32 @@ var Meme = function() {
 			return true;
 		}
 		return false;
+	};
+	
+	// Executes SELECT YQL queries caching results and returning them in a callback
+	cachedYqlQuery = function(params, callback) {
+		// default cache time is 15 minutes
+		var cacheSeconds = 900;
+		if (params.cacheSeconds) {
+			cacheSeconds = params.cacheSeconds;
+		}
+		
+		var items = cacheGet(params.cacheKey);
+		if (!items) {
+			var yqlResponse = getYql().query(params.yqlQuery);
+
+			if (!yqlResponse.query.results) {
+				throwYqlError();
+			}
+
+			items = yqlResponse.query.results;
+			
+			// cache results
+			cachePut(params.cacheKey, items, cacheSeconds);
+		}
+		
+		// return to caller callback
+		callback(items);
 	};
 	
 	return ({
@@ -248,6 +323,10 @@ var Meme = function() {
 		createComment: createComment,
 		repost: repost,
 		isReposted: isReposted,
-		userInfo: userInfo
+		userInfo: userInfo,
+		flashlightPhotos: flashlightPhotos, 
+		flashlightVideos: flashlightVideos, 
+		flashlightWeb: flashlightWeb, 
+		flashlightTweets: flashlightTweets
 	});	
 }();
