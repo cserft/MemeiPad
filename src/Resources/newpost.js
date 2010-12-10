@@ -5,6 +5,7 @@ Ti.include('lib/meme.js');
 Ti.include('newpost_flashlight.js');
 
 var win 			= 	Ti.UI.currentWindow;
+Ti.App.newpostIsOpen = true; // controls for multiple clicks on Start new post btn
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var win1 			= 	win.win1; // Window Original created on app.js
@@ -444,6 +445,7 @@ function showProgressView (pCommand, pMessage) {
 btn_close_post.addEventListener('click', function() {
 	
 	win.close(animeClose);
+	Ti.App.newpostIsOpen = false; // controls for multiple clicks on Start new post btn
 	
 	//Closes the Keyboard if open
 	Ti.App.fireEvent('hide_keyboard');
@@ -464,8 +466,6 @@ btn_flashlight.addEventListener('click', function() {
 		//Ti.API.info('queryText when btn_flashlight clicked: ' + queryText);
 		flashlight_show();
 	},500);
-
-
 	
 });
 

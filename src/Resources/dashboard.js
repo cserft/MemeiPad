@@ -9,7 +9,7 @@ win.orientationModes =  [
 ];
 
 var win1 = win.win1; // Window Original created on app.js
-var clickTimeout = 0; // Sets the initial ClickTimeout
+var clickTimeout = 0; // Sets the initial ClickTimeout for Open a permalink
 
 // Creating the List Post Table View
 

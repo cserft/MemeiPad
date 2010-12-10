@@ -7,6 +7,8 @@ Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
 
 Ti.App.myMemeInfo = null;
 Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
+var clickTimeout 	= 	0; 	// Sets the initial ClickTimeout for startPOsting Button
+Ti.App.newpostIsOpen = false; // controls for multiple clicks on Start new post btn
 
 Ti.App.cache = Cache({ 
 	cache_expiration_interval: 60, 
@@ -511,7 +513,15 @@ var showHeader = function (successCallback) {
 		// Opens the New Post Window
 		btn_start_posting.addEventListener('click', function()
 		{
-			newPost();
+			
+			clearTimeout(clickTimeout);
+
+			clickTimeout = setTimeout(function() {	
+				if (Ti.App.newpostIsOpen == false) {
+					newPost();
+				}
+			},500);
+			
 		});
 
 	} else {
