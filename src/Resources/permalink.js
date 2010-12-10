@@ -546,23 +546,27 @@ repostCommentField.addEventListener('blur', function(e) {
 // REPOST ANIMATION TO ADD COMMENT
 btn_repost.addEventListener('click', function(e) {
 	var reposted = Meme.repost(_guid, _pubId);
+	
+	var activity = Titanium.UI.createActivityIndicator({
+		style: 				Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN,
+		backgroundImage: 	'images/bg_repost_activity.png',
+		top: 				15,
+		left: 				29,
+		width: 				32,
+		height: 			32,
+		opacity: 			1,
+		zIndex: 			2
+	});
+	btn_repost.add(activity);
+	
+	activity.show();
 		
 	if (reposted) {
-		// icon_btn_repost.show();
-		// 
-		// // repost animation/transform
-		// var t = Ti.UI.create2DMatrix();
-		// t = t.rotate(3);
-		// 
-		// var a = Titanium.UI.createAnimation();
-		// a.transform = t;
-		// a.duration = 1000;
-		// a.repeat = 3;
-		// icon_btn_repost.animate(a);
-		// 
-		// a.addEventListener('complete', function()
-		// {
-			// icon_btn_repost.hide();
+		
+		setTimeout(function()
+		{
+			activity.hide();
+			
 			btn_repost.add(icon_reposted);
 			icon_reposted.opacity = 1;
 			btn_repost.opacity = 1;	
@@ -571,10 +575,11 @@ btn_repost.addEventListener('click', function(e) {
 			
 			// Add Comment Box after Reposting
 			whiteBox.add(repost_comment_view);
-			repost_comment_view.animate({opacity:1, duration: 200});
-		// });
-		
+			repost_comment_view.animate({opacity:1, duration: 300});
+			
+		},2000);
 
+			
 	} else {
 		Ti.API.info("Error while reposting");	
 	}	
@@ -585,11 +590,23 @@ btn_send_comment.addEventListener("click", function(e) {
 	if (repostCommentField.value != '') {
 		var ok = Meme.createComment(_guid, _pubId, repostCommentField.value);
 		
+		//removes the label to add the animation
+		btn_send_comment.title = "saving...";
+		
 		if (ok) {
-			//Hides Comment Box
-			repost_comment_view.animate({opacity:0, duration: 300}, function(){
-					whiteBox.remove(repost_comment_view);
-			});
+			
+			setTimeout(function()
+			{
+				btn_send_comment.title = "done!";
+				
+				//Hides Comment Box
+				repost_comment_view.animate({opacity:0, duration: 300}, function(){
+						whiteBox.remove(repost_comment_view);
+				});
+
+			},2000);
+			
+
 		} else {
 			Ti.API.info("Error while saving Comment on reposting");	
 		}
@@ -654,6 +671,8 @@ btn_report_abuse.addEventListener("click", function(e) {
 		
 // Hides the loading indicator indicator
 Ti.App.fireEvent('hide_indicator');
+
+// TODO: Add new Share icon in the permalink and reuse the code below 
 
 //link to Open Permalink Web Page in the bottom
 // pos_BtnOpenSafari = 80 + (post.url.length * 8) + 20;
