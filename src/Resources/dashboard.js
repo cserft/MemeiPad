@@ -386,8 +386,6 @@ tableView.addEventListener('click', function(e) {
 	
 	clearTimeout(clickTimeout);
 	
-	Ti.API.info('Click Timeout ID: ' + clickTimeout);
-	
 	clickTimeout = setTimeout(function() {	
 			Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
 			Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, column: e.source.column, rowNumber: e.index});

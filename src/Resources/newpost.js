@@ -8,7 +8,7 @@ var win 			= 	Ti.UI.currentWindow;
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var win1 			= 	win.win1; // Window Original created on app.js
-
+var clickTimeout 	= 	0; 	// Sets the initial ClickTimeout for Flashlight Button
 var postText 		= 	""; 
 var postTitle 		= 	'';
 var postBody 		= 	'';
@@ -457,9 +457,15 @@ btn_close_post.addEventListener('click', function() {
 // ================================
 // Flashlight button listener
 btn_flashlight.addEventListener('click', function() {
+	
+	clearTimeout(clickTimeout);
+	
+	clickTimeout = setTimeout(function() {	
+		//Ti.API.info('queryText when btn_flashlight clicked: ' + queryText);
+		flashlight_show();
+	},500);
 
-	//Ti.API.info('queryText when btn_flashlight clicked: ' + queryText);
-	flashlight_show();
+
 	
 });
 
