@@ -9,6 +9,7 @@ Ti.App.myMemeInfo = null;
 Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 var clickTimeoutStartPosting 	= 	0; 	// Sets the initial ClickTimeout for startPOsting Button
 Ti.App.newpostIsOpen = false; // controls for multiple clicks on Start new post btn
+Ti.App.permalinkIsOpened = false; // control of Permalink Open
 
 Ti.App.cache = Cache({ 
 	cache_expiration_interval: 60, 
@@ -803,12 +804,6 @@ if (!Titanium.Network.online) {
 // =====================
 // = Permalink opening =
 // =====================
-var permalinkIsOpened = false; // controls multiple Permalinks Opened
-
-// Avoiding multiple Permalinks Opening
-Ti.App.addEventListener('permalinkIsOpenedFalse', function(e) {
-	permalinkIsOpened = false;
-});
 
 Ti.App.addEventListener('openPermalink', function(e) {
 	// permalink should open only when click was on the blackBox
@@ -842,14 +837,14 @@ Ti.App.addEventListener('openPermalink', function(e) {
 		a.transform = t1;
 		a.duration = 200;
 
-		if (permalinkIsOpened == false){
+		if (Ti.App.permalinkIsOpened == false){
 
 			Ti.App.fireEvent('show_indicator', {
 				message: L('loading_message'),
 				color: "#AB0899",
 				size: 200
 			});
-			permalinkIsOpened = true;
+			Ti.App.permalinkIsOpened = true;
 			winPermalink.open(a);
 		}
 

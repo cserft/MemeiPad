@@ -37,7 +37,7 @@ btn_close.addEventListener("click", function(e)
 	t3 = t3.scale(0);
 	win.close({transform:t3,duration:200});
 	whiteBox.remove(postWebView);
-	Ti.App.fireEvent('permalinkIsOpenedFalse');
+	Ti.App.permalinkIsOpened = false;
     // allows for other Permalinks to Open
 	
 });
@@ -649,7 +649,7 @@ btn_delete.addEventListener("click", function(e) {
 				var t3 = Titanium.UI.create2DMatrix();
 				t3 = t3.scale(0);
 				win.close({transform:t3,duration:200, opacity:0});
-				Ti.App.fireEvent('permalinkIsOpenedFalse');
+				Ti.App.permalinkIsOpened = false;
 				Ti.App.fireEvent('reloadDashboard');
 			} else {
 				Ti.API.error("Error while deleting Post: " + JSON.stringify(response));	

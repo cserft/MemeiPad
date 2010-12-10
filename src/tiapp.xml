@@ -8,13 +8,13 @@
 <description>Meme iPad is a client for Yahoo! meme to view and navigate on Yahoo! meme content</description>
 <copyright>2011 Yahoo! Inc.</copyright>
 <icon>meme_appicon.png</icon>
-    <persistent-wifi>false</persistent-wifi>
-    <prerendered-icon>false</prerendered-icon>
-    <statusbar-style>opaque_black</statusbar-style>
-    <statusbar-hidden>false</statusbar-hidden>
-    <fullscreen>false</fullscreen>
-    <navbar-hidden>false</navbar-hidden>
-    <analytics>false</analytics>
+<persistent-wifi>false</persistent-wifi>
+<prerendered-icon>false</prerendered-icon>
+<statusbar-style>opaque_black</statusbar-style>
+<statusbar-hidden>true</statusbar-hidden>
+<fullscreen>false</fullscreen>
+<navbar-hidden>false</navbar-hidden>
+<analytics>false</analytics>
 <guid>f33c2211-86ab-48a5-9bb2-710c9292da06</guid>
 <iphone>
 	<orientations device="ipad">
