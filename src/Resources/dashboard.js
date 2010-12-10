@@ -9,7 +9,7 @@ win.orientationModes =  [
 ];
 
 var win1 = win.win1; // Window Original created on app.js
-var clickTimeout = 0; // Sets the initial ClickTimeout for Open a permalink
+var clickTimeoutPermalink = 0; // Sets the initial ClickTimeout for Open a permalink
 
 // Creating the List Post Table View
 
@@ -364,6 +364,8 @@ var getDashboardData = function (pTimestamp) {
 	
 	// open Main Window from app.js with Transition
 	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
+	//Presents the Status Bar after launching
+	Titanium.UI.iPhone.showStatusBar();
 }
 
 // Gradient in the end of the screen to smooth the design
@@ -384,9 +386,9 @@ win.add(dashboardShadow);
 
 tableView.addEventListener('click', function(e) {
 	
-	clearTimeout(clickTimeout);
+	clearTimeout(clickTimeoutPermalink);
 	
-	clickTimeout = setTimeout(function() {	
+	clickTimeoutPermalink = setTimeout(function() {	
 			Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
 			Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, column: e.source.column, rowNumber: e.index});
 

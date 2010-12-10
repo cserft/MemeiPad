@@ -7,7 +7,7 @@ Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
 
 Ti.App.myMemeInfo = null;
 Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
-var clickTimeout 	= 	0; 	// Sets the initial ClickTimeout for startPOsting Button
+var clickTimeoutStartPosting 	= 	0; 	// Sets the initial ClickTimeout for startPOsting Button
 Ti.App.newpostIsOpen = false; // controls for multiple clicks on Start new post btn
 
 Ti.App.cache = Cache({ 
@@ -514,9 +514,9 @@ var showHeader = function (successCallback) {
 		btn_start_posting.addEventListener('click', function()
 		{
 			
-			clearTimeout(clickTimeout);
+			clearTimeout(clickTimeoutStartPosting);
 
-			clickTimeout = setTimeout(function() {	
+			clickTimeoutStartPosting = setTimeout(function() {	
 				if (Ti.App.newpostIsOpen == false) {
 					newPost();
 				}
