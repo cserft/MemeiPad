@@ -9,6 +9,7 @@ win.orientationModes =  [
 ];
 
 var win1 = win.win1; // Window Original created on app.js
+var clickTimeout = 0; // Sets the initial ClickTimeout
 
 // Creating the List Post Table View
 
@@ -98,6 +99,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		style: 					Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
 		pubId: 					pPubId,
 		guid: 					pGuid,
+		column: 				pColumn,
 		zindex: 				99
 	});
 	
@@ -379,9 +381,19 @@ win.add(dashboardShadow);
 // ==================
 // = CLICK LISTENER =
 // ==================
+
 tableView.addEventListener('click', function(e) {
-	Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + 'e PubID: ' + e.source.pubId);
-	Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId });
+	
+	clearTimeout(clickTimeout);
+	
+	Ti.API.info('Click Timeout ID: ' + clickTimeout);
+	
+	clickTimeout = setTimeout(function() {	
+			Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
+			Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, column: e.source.column, rowNumber: e.index});
+
+	},500);
+
 });
 
 // =======================

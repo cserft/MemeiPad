@@ -843,9 +843,9 @@ Ti.App.addEventListener('openPermalink', function(e) {
 			winPermalink.open(a);
 		}
 
-		setTimeout(function()
-		{
-			Ti.App.fireEvent('hide_indicator');
-		},20000);
+		// setTimeout(function()
+		// {
+		// 	Ti.App.fireEvent('hide_indicator');
+		// },5000);
 	}
 });
