@@ -549,8 +549,8 @@ var showDashboard = function() {
 		name: 'Dashboard',
 		backgroundColor: 'transparent',
 		left: 0,
-		top: 56,
-		height: 692,
+		top: 59,
+		height: 689,
 		width: 1024,
 		navBarHidden: true,
 		win1: win1,
@@ -809,6 +809,10 @@ Ti.App.addEventListener('openPermalink', function(e) {
 	// permalink should open only when click was on the blackBox
 	// otherwise there will be no guid and pubid data and the app will crash
 	if (e.guid && e.pubId) {
+		
+		// indicator positioning
+		var indicator_left;
+		
 		// Sets the Permalink Animation startup settings
 		var t = Ti.UI.create2DMatrix();
 		t = t.scale(0);
@@ -836,13 +840,24 @@ Ti.App.addEventListener('openPermalink', function(e) {
 		var a = Titanium.UI.createAnimation();
 		a.transform = t1;
 		a.duration = 200;
+		
+		//defines the position of the Loading Indicator
+		if (e.column == 0) {
+			indicator_left = 80;	
+		} else if (e.column == 1) {
+			indicator_left = 412;
+		} else if (e.column == 2) {
+			indicator_left = 746;
+		}
 
 		if (Ti.App.permalinkIsOpened == false){
 
 			Ti.App.fireEvent('show_indicator', {
 				message: L('loading_message'),
 				color: "#AB0899",
-				size: 200
+				size: 200,
+				top: 20,
+				left: indicator_left
 			});
 			Ti.App.permalinkIsOpened = true;
 			winPermalink.open(a);

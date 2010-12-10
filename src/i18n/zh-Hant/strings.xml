@@ -47,7 +47,7 @@
 	<!-- app_hightlight.js -->
 	<string name="featured_content_text">FEATURED CONTENT</string>
 	<!-- newpost.js -->
-	<string name="searchTextField_hint_text">Paste YouTube or Vimeo links or make a search to illustrate your post</string>
+	<string name="searchTextField_hint_text">  Paste YouTube or Vimeo links or make a search to illustrate your post</string>
 	<string name="popover_flashlight_title">Suggested Content</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
 	<string name="btn_post_top_title">發表</string>

@@ -286,11 +286,13 @@ viewContainerPhoto.add(actAjax);
 var textArea = Titanium.UI.createTextArea({
 	value: 			postBody,
 	height: 		600,
-	width: 			954,
+	width: 			900,
+	left: 			38,
 	top: 			79,
 	font: 			{fontSize:16,fontFamily:'Helvetica', fontWeight:'regular'},
 	color: 			'#666',
 	textAlign: 		'left',
+	// backgroundColor: 	'red',
 	appearance: 	Titanium.UI.KEYBOARD_APPEARANCE_ALERT,	
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
 	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS,
@@ -496,7 +498,7 @@ var btn_text_clear = Titanium.UI.createButton({
 	width: 			22,
 	height: 		22,
 	top: 			80,
-	right: 			5,
+	right: 			40,
 	zIndex: 		2,
 	visible: 		true
 });

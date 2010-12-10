@@ -376,7 +376,7 @@ var flashlight_create = function() {
 								height:48,
 								width:48,
 								top:10,
-								left:2,
+								left:10,
 								defaultImage:'images/default_img_avatar.png'
 							});
 
@@ -388,7 +388,7 @@ var flashlight_create = function() {
 								width: 250,
 								height:15,
 								top: 8,
-								left:55,
+								left:67,
 								textAlign:'left',
 								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
 							});
@@ -398,9 +398,9 @@ var flashlight_create = function() {
 								text: item.text,
 								color: '#333',
 								height:52,
-								width: 270,
+								width: 262,
 								top: 23,
-								left: 55,
+								left: 67,
 								textAlign:'left',
 								font:{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'}
 							});

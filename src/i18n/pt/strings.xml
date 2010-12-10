@@ -47,7 +47,7 @@
 	<!-- app_hightlight.js -->
 	<string name="featured_content_text">DESTAQUE</string>
 	<!-- newpost.js -->
-	<string name="searchTextField_hint_text">Cole links do YouTube ou Vimeo, ou faça uma busca para ilustrar seu post</string>
+	<string name="searchTextField_hint_text">  Cole links do YouTube ou Vimeo, ou faça uma busca para ilustrar seu post</string>
 	<string name="popover_flashlight_title">Sugestão de Conteúdo</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
 	<string name="btn_post_top_title">postar</string>

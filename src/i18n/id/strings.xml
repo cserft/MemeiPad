@@ -48,7 +48,7 @@
 	<!-- app_hightlight.js -->
 	<string name="featured_content_text">KONTEN PILIHAN</string>
 	<!-- newpost.js -->
-	<string name="searchTextField_hint_text">Taruh link YouTube atau Vimeo atau ketik kata kunci mengenai postingan Anda</string>
+	<string name="searchTextField_hint_text">  Taruh link YouTube atau Vimeo atau ketik kata kunci mengenai postingan Anda</string>
 	<string name="popover_flashlight_title">Konten Usulan</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
 	<string name="btn_post_top_title">posting</string>
