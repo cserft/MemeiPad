@@ -267,8 +267,8 @@ viewContainerPhoto.add(img);
 //Photo delete Button
 var btn_photo_close = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
-	width: 			22,
-	height: 		22,
+	width: 			19,
+	height: 		19,
 	top: 			0,
 	left: 			0,
 	zIndex: 		10
@@ -495,10 +495,10 @@ textArea.addEventListener('change', function(e) {
 //TextArea Clear Button
 var btn_text_clear = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
-	width: 			22,
-	height: 		22,
-	top: 			80,
-	right: 			40,
+	width: 			19,
+	height: 		19,
+	top: 			110,
+	right: 			45,
 	zIndex: 		2,
 	visible: 		true
 });
@@ -665,6 +665,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		
 		// Repositioned the TextArea below the chosen photo
 		textArea_top =  webViewPreview.height + 95;
+		btn_text_clear.top = textArea_top+20;
 		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
@@ -695,6 +696,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		
 		// Repositioned the TextArea below the chosen photo
 		textArea_top =  img.height + 105;
+		btn_text_clear.top = textArea_top+20;
 		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
@@ -711,6 +713,7 @@ Ti.App.addEventListener("photoRemoved", function(e) {
 	viewContainerPhoto.width = 'auto';
 	btn_photo_close.visible = false;
 	textArea.animate({top: 100});
+	btn_text_clear.top = 110;
 	tempPostLabel.animate({top: 300});
 });
 

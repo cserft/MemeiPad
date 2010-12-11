@@ -126,29 +126,6 @@ postWebView.addEventListener('load', function(){
 // ====================================
 var memeInfo = Meme.userInfo(_guid, 40, 40);
 
-// User Post Owner View (Avatar + Label + time of the post Label)
-var guidView = Titanium.UI.createView({
-	backgroundColor: 	'transparent',
-	bottom: 			4,
-	left: 				10,
-	width: 				440,
-	height: 			60,
-	zIndex: 			2
-});
-whiteBox.add(guidView);
-
-// Users Post Owner Avatar
-var guidAvatar = Titanium.UI.createImageView({
-	image: memeInfo.avatar_url.thumb,
-	defaultImage: 'images/default_img_avatar.png',
-	top:10,
-	left:4,
-	width:40,
-	height:40,
-	zIndex:2
-});
-guidView.add(guidAvatar);
-
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
 	color:'#A9379C',
@@ -165,6 +142,36 @@ var guidNameLabel = Titanium.UI.createLabel({
 	height: 29,
 	zIndex: 2
 });
+Ti.API.info("Lenght Name Avatar label: " + guidNameLabel.text.length);
+
+var width_btn_avatar = parseInt(guidNameLabel.text.length * 15);
+
+// User Post Owner View (Avatar + Label + time of the post Label)
+var guidView = Titanium.UI.createView({
+	backgroundColor: 	'transparent',
+	backgroundLeftCap: 		15,
+	// backgroundRightCap: 	134,
+	backgroundTopCap: 		15,
+	// backgroundBottomCap: 	55,
+	bottom: 			4,
+	left: 				10,
+	width: 				(width_btn_avatar <= 220) ? 220 : width_btn_avatar, //440
+	height: 			60,
+	zIndex: 			2
+});
+whiteBox.add(guidView);
+
+// Users Post Owner Avatar
+var guidAvatar = Titanium.UI.createImageView({
+	image: memeInfo.avatar_url.thumb,
+	defaultImage: 'images/default_img_avatar.png',
+	top:10,
+	left:4,
+	width:40,
+	height:40,
+	zIndex:2
+});
+guidView.add(guidAvatar);
 
 guidView.add(guidNameLabel);
 
@@ -189,10 +196,17 @@ var postUpdatedTimeLabel = Titanium.UI.createLabel({
 
 guidView.add(postUpdatedTimeLabel);
 
+guidView.addEventListener('touchend', function()	{
+	
+	guidView.backgroundImage = '';
+});
+
 // POPOVER WITH DETAILED INFO FROM USER OWNER OF THE POST
 guidView.addEventListener('click', function(e) {
 	// popover must be shown only when logged in
 	// and for user different than me
+	
+	guidView.backgroundImage = 'images/bg_btn_generic_translucid.png';
 	
 	clearTimeout(clickTimeoutViewPopoverUser);
 	

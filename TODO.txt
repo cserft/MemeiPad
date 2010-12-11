@@ -48,8 +48,9 @@ _____ AFTER LAUNCH _____
 
 newpost.js
 ----------
-- BUG: add image from Flashlight, remove it, add another one. The textArea will move behind the photo (happens with videos as well)
 - BUG: when there's upload error and you try to upload again, the progress bar appears in the worng position.
+- BUG: search for 'Helo', get the video results and click in the first item, get an error on console:
+[ERROR] invalid image type. expected either TiBlob or TiFile, was: NSNull in -[TiUIImageView setImage_:] (TiUIImageView.m:671). App Stops responding
 
 _____ AFTER LAUNCH _____
 - bookmarklet to open the App and paste the link in the newpost.js

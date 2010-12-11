@@ -810,9 +810,6 @@ Ti.App.addEventListener('openPermalink', function(e) {
 	// otherwise there will be no guid and pubid data and the app will crash
 	if (e.guid && e.pubId) {
 		
-		// indicator positioning
-		var indicator_left;
-		
 		// Sets the Permalink Animation startup settings
 		var t = Ti.UI.create2DMatrix();
 		t = t.scale(0);
@@ -840,24 +837,13 @@ Ti.App.addEventListener('openPermalink', function(e) {
 		var a = Titanium.UI.createAnimation();
 		a.transform = t1;
 		a.duration = 200;
-		
-		//defines the position of the Loading Indicator
-		if (e.column == 0) {
-			indicator_left = 80;	
-		} else if (e.column == 1) {
-			indicator_left = 412;
-		} else if (e.column == 2) {
-			indicator_left = 746;
-		}
 
 		if (Ti.App.permalinkIsOpened == false){
 
 			Ti.App.fireEvent('show_indicator', {
 				message: L('loading_message'),
 				color: "#AB0899",
-				size: 200,
-				top: 20,
-				left: indicator_left
+				size: 200
 			});
 			Ti.App.permalinkIsOpened = true;
 			winPermalink.open(a);
