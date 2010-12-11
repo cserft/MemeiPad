@@ -840,11 +840,11 @@ Ti.App.addEventListener('openPermalink', function(e) {
 
 		if (Ti.App.permalinkIsOpened == false){
 
-			Ti.App.fireEvent('show_indicator', {
-				message: L('loading_message'),
-				color: "#AB0899",
-				size: 200
-			});
+			// Ti.App.fireEvent('show_indicator', {
+			// 	message: L('loading_message'),
+			// 	color: "#AB0899",
+			// 	size: 200
+			// });
 			Ti.App.permalinkIsOpened = true;
 			winPermalink.open(a);
 		}

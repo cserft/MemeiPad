@@ -142,7 +142,6 @@ var guidNameLabel = Titanium.UI.createLabel({
 	height: 29,
 	zIndex: 2
 });
-Ti.API.info("Lenght Name Avatar label: " + guidNameLabel.text.length);
 
 var width_btn_avatar = parseInt(guidNameLabel.text.length * 15);
 
@@ -694,7 +693,7 @@ btn_report_abuse.addEventListener("click", function(e) {
 
 		
 // Hides the loading indicator indicator
-Ti.App.fireEvent('hide_indicator');
+Ti.App.activityPostClick.hide();
 
 // TODO: Add new Share icon in the permalink and reuse the code below 
 

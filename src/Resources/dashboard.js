@@ -21,6 +21,18 @@ var baseView = Ti.UI.createView({
 });
 win.add(baseView);
 
+Ti.App.activityPostClick = Titanium.UI.createActivityIndicator({
+	style: 				Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
+	message: 			L('loading_message'),
+	color: 				'white',
+	backgroundColor: 	'black',
+	width: 				200,
+	height: 			150,
+	borderRadius: 		7,
+	opacity: 			0.7,
+	zIndex: 			2
+});
+
 // =======================
 // = DASHBOARD TABLEVIEW =
 // =======================
@@ -101,6 +113,12 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		guid: 					pGuid,
 		column: 				pColumn,
 		zindex: 				99
+	});
+	
+	blackBoxLink.addEventListener('click', function(e){
+		
+		blackBoxLink.add(Ti.App.activityPostClick);
+		Ti.App.activityPostClick.show();
 	});
 	
 	// Sets the proper Column Left position
@@ -391,7 +409,7 @@ tableView.addEventListener('click', function(e) {
 	clickTimeoutPermalink = setTimeout(function() {	
 			Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
 			Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, column: e.source.column, rowNumber: e.index});
-
+		
 	},500);
 
 });
