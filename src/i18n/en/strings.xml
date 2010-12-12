@@ -37,6 +37,7 @@
 	<string name="network_error">Network Error</string>
 	<string name="network_error_message">You need to be online to use Meme for iPad. Please, check your network connection and try again.</string>
 	<string name="loading_message">Loading...</string>
+	<string name="memeapp_url">http://memeapp.net/</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
 	<string name="pull_to_reload_text">Pull to reload</string>
@@ -100,7 +101,14 @@
 	<string name="report_abuse_alert_message">We will open the Report Abuse page on Safari.</string>
 	<string name="path_btn_follow_background_image">images/bg_btn_follow.png</string>
 	<string name="path_btn_following_background_image">images/bg_btn_following.png</string>
+	<string name="copy_link_text">Copy Link</string>
+	<string name="mail_post_text">Mail this Post</string>
 	<!-- /permalink.js -->
+	<!-- Share with Mail -->
+	<string name="mail_message_body_source">Source: </string>
+	<string name="mail_message_signature">Sent with Meme for iPad</string>
+	<string name="mail_message_subject_default">Sharing an interesting Post</string>
+	<!-- /Share with Mail -->
 	<!-- EXTRAS -->
 	<string name="format_test">My name is %s</string>
 </resources>

@@ -524,7 +524,7 @@ btn_share.addEventListener('click', function(e) {
 
 		var copyLabel = Ti.UI.createLabel({
 			color: 			'#333',
-			text: 			'Copy Link',
+			text: 			L('copy_link_text'),
 			textAlign: 		'left',
 			font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'regular'},
 			top: 			7,
@@ -553,7 +553,7 @@ btn_share.addEventListener('click', function(e) {
 
 		var copyLabel = Ti.UI.createLabel({
 			color: 			'#333',
-			text: 			'Mail Post',
+			text: 			L('mail_post_text'),
 			textAlign: 		'left',
 			font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'regular'},
 			top: 			7,
@@ -604,12 +604,12 @@ btn_share.addEventListener('click', function(e) {
 				if (post.caption != "") {
 					messageSubject = strip_html_entities(post.caption);
 				} else {
-					messageSubject = "Sharing a Post from Meme"
+					messageSubject = L('mail_message_subject_default')
 				}
 				
 		        emailDialog.setSubject(messageSubject);
 
-				var messageBody = postWebView.html + '\n\n<a href=http://memeapp.net>Sent with Meme for iPad</a>';
+				var messageBody = postWebView.html + '<br/>' + L('mail_message_body_source') + '<a href=' + post.url + '>' + post.url + '</a><br/><a href=' + L('memeapp_url') + '>' + L('mail_message_signature') + '</a>';
 	            emailDialog.setMessageBody(messageBody);
 	            emailDialog.setHtml(true);
 	            emailDialog.setBarColor('black');

@@ -38,6 +38,7 @@
 	<string name="network_error">Error en la red</string>
 	<string name="network_error_message">You need to be online to use Meme for iPad. Please, check your network connection and try again.</string>
 	<string name="loading_message">Cargando...</string>
+	<string name="memeapp_url">http://memeapp.net/</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
 	<string name="pull_to_reload_text">Pull to reload</string>
@@ -64,44 +65,51 @@
 	<string name="remove_alert_title">Remove</string>
 	<string name="remove_alert_message">Are you sure you want to remove this media from your post?</string>
 	<string name="publishing_post_meme">Publishing your post on Meme</string>
-	<string name="uploading_file">Uploading File...</string>
+	<string name="uploading_file">Subindo archivo...</string>
 	<string name="post_success_message">Your post was published successfully!</string> 
 	<string name="post_error_message">Your post could not be published.</string> 
 	<string name="post_error_7meg_message">Your post could not be published. Please check the image size, it must have less than 7MB.</string>
 	<string name="flashlight_alert_empty_title">Flashlight</string>
 	<string name="flashlight_alert_empty_message">The Flashlight is empty, just type something to get suggested content</string>
-	<string name="flashlight_no_results">No results were found.</string>
+	<string name="flashlight_no_results">Sin resultados.</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
 	<string name="time_just_now">Just now</string>
-	<string name="time_1_minute">1 minute</string>
-	<string name="time_minutes">minutes</string>
-	<string name="time_1_hour">1 hour</string>
-	<string name="time_hours">hours</string>
-	<string name="time_1_day">1 day</string>
-	<string name="time_days">days</string>
-	<string name="time_1_week">1 week</string>
-	<string name="time_weeks">weeks</string>
-	<string name="time_1_month">1 month</string>
-	<string name="time_months">months</string>
-	<string name="time_1_year">1 year</string>
-	<string name="time_years">years</string>
-	<string name="time_1_century">1 century</string>
-	<string name="time_centuries"> Centuries</string>
-	<string name="time_ago"> ago</string>
+	<string name="time_1_minute">1 minuto</string>
+	<string name="time_minutes">minutos</string>
+	<string name="time_1_hour">1 hora</string>
+	<string name="time_hours">horas</string>
+	<string name="time_1_day">1 día</string>
+	<string name="time_days">días</string>
+	<string name="time_1_week">1 semana</string>
+	<string name="time_weeks">semanas</string>
+	<string name="time_1_month">1 mes</string>
+	<string name="time_months">meses</string>
+	<string name="time_1_year">1 año</string>
+	<string name="time_years">años</string>
+	<string name="time_1_century">cien años</string>
+	<string name="time_centuries"> siglo</string>
+	<string name="time_ago"></string>
 	<!-- /commons.js -->
 	<!-- permalink.js -->
-	<string name="posted"> posted </string> 
+	<string name="posted"> hace </string> 
 	<string name="path_btn_send_commentbackground_image">images/btn_send_comment.png</string>
 	<string name="btn_send_comment_title">comentar</string>
 	<string name="repostCommentField_hint_text">comentar aquí...</string> 
-	<string name="delete_alert_title">Delete Post</string>  
-	<string name="delete_alert_message">Are you sure you want to delete this Post?</string>
-	<string name="report_abuse_alert_title">Report Abuse</string>  
+	<string name="delete_alert_title">Borrar entrada</string>  
+	<string name="delete_alert_message">¿Estás seguro que quieres borrar esta entrada?</string>
+	<string name="report_abuse_alert_title">Reporta el abuso</string>  
 	<string name="report_abuse_alert_message">We will open the Report Abuse page on Safari.</string>
 	<string name="path_btn_follow_background_image">images/bg_btn_follow_es.png</string>
 	<string name="path_btn_following_background_image">images/bg_btn_following_es.png</string>
+	<string name="copy_link_text">Copiar enlace</string>
+	<string name="mail_post_text">Enviar esta entrada por correo</string>
 	<!-- /permalink.js -->
+	<!-- Share with Mail -->
+	<string name="mail_message_body_source">Fuente: </string>
+	<string name="mail_message_signature">Enviado desde Meme for iPad</string>
+	<string name="mail_message_subject_default">Compartindo una entrada interesante</string>
+	<!-- /Share with Mail -->
 	<!-- EXTRAS -->
 	<string name="format_test">My name is %s</string>
 </resources>

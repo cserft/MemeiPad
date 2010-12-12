@@ -38,6 +38,7 @@
 	<string name="network_error">Kesalahan Jaringan</string>
 	<string name="network_error_message">Anda harus online agar dapat menggunakan Mim untuk iPad. Silakan cek koneksi jaringan Anda dan coba lagi.</string>
 	<string name="loading_message">Memuat...</string>
+	<string name="memeapp_url">http://memeapp.net/</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
 	<string name="pull_to_reload_text">Tarik untuk memuat ulang</string>
@@ -101,7 +102,14 @@
 	<string name="report_abuse_alert_message">Kami akan membuka halaman Laporkan Penyalahgunaan di Safari.</string>
 	<string name="path_btn_follow_background_image">images/bg_btn_follow_id.png</string>
 	<string name="path_btn_following_background_image">images/bg_btn_following_id.png</string>
+	<string name="copy_link_text">Copy Link</string>
+	<string name="mail_post_text">Mail this Post</string>
 	<!-- /permalink.js -->
+	<!-- Share with Mail -->
+	<string name="mail_message_body_source">Source: </string>
+	<string name="mail_message_signature">Sent with Meme for iPad</string>
+	<string name="mail_message_subject_default">Sharing an interesting Post</string>
+	<!-- /Share with Mail -->
 	<!-- EXTRAS -->
 	<string name="format_test">My name is %s</string>
 </resources>
