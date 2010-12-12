@@ -224,8 +224,8 @@ guidView.addEventListener('click', function(e) {
 			var main = Ti.UI.createWindow({
 				top: 0,
 				left: 0,
-				width: 340,
-				height: 420,
+				width: 330,
+				height: 100,
 				backgroundColor:"#FFF",
 				navBarHidden: true
 			});
@@ -431,6 +431,142 @@ var repostCountLabel = Titanium.UI.createLabel({
 });
 
 whiteBox.add(repostCountLabel);
+
+// Button to share Post
+var btn_share = Titanium.UI.createButton({
+	backgroundImage: 	'images/btn_fwd2.png',
+	width: 				24,
+	height: 			18,
+	right: 				220,
+	bottom: 			25,
+	opacity: 			1,
+	zIndex: 			1
+});
+whiteBox.add(btn_share);
+
+//BTN Share popover
+
+// POPOVER WITH DETAILED INFO FROM USER OWNER OF THE POST
+btn_share.addEventListener('click', function(e) {
+	
+	clearTimeout(clickTimeoutViewPopoverUser);
+	
+	clickTimeoutViewPopoverUser = setTimeout(function() {	
+
+		var popover = Ti.UI.iPad.createPopover({
+			width:330,
+			height:140,
+			backgroundColor: 'white',
+			navBarHidden: true,
+			arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN
+		});
+
+		var main = Ti.UI.createWindow({
+			top: 0,
+			left: 0,
+			width: 330,
+			height: 140,
+			backgroundColor:"#FFF",
+			navBarHidden: true
+		});
+
+		popover.add(main);
+
+		// BUILDING THE TABLE VIEW
+		var data = [];
+
+		// ROW 1 LINK TO MEME AND FOLLOW/UNFOLLOW BUTTON
+		var row1 = Ti.UI.createTableViewRow({
+			selectionStyle:'none', // no color when clicking in the row
+			height: 60
+		});
+		
+		// REGEXP original: /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
+		var parseLinkMeme = post.url.match(/^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/);
+		
+		var linkMeme = Ti.UI.createLabel({
+		 	color: 			'#7D0670',
+			text: 			L('meme_short_domain') + parseLinkMeme[6],
+			textAlign: 		'left',
+			font: 			{fontSize:14, fontWeight:'bold'},
+			top: 			14,
+			left: 			14,
+			height: 		30,
+			width: 			300
+		});	
+		row1.add(linkMeme);
+
+		linkMeme.addEventListener("click", function(e) {
+			Ti.App.fireEvent('openLinkOnSafari', {
+				url: 		post.url,
+				title: 		L('open_link_title'),
+				message: 	L('open_link_message')
+			});
+		});
+
+		data[0] = row1;
+
+		// ROW 2 COPY CLIPBOARD
+		var row2 = Ti.UI.createTableViewRow({
+			height: 40,
+			selectionStyle:'none'
+		});
+
+		var copyLabel = Ti.UI.createLabel({
+			color: 			'#333',
+			text: 			'Copy to Clipboard',
+			textAlign: 		'left',
+			font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'regular'},
+			top: 			7,
+			left: 			14,
+			height: 		26,
+			width: 			260
+		});	
+		row2.add(copyLabel);
+
+		data[1] = row2;
+		
+		// ROW 3 MAIL LINK
+		var row3 = Ti.UI.createTableViewRow({
+			height: 40,
+			selectionStyle:'none'
+		});
+
+		var copyLabel = Ti.UI.createLabel({
+			color: 			'#333',
+			text: 			'Mail Link',
+			textAlign: 		'left',
+			font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'regular'},
+			top: 			7,
+			left: 			14,
+			height: 		26,
+			width: 			260
+		});	
+		row3.add(copyLabel);
+
+		data[2] = row3;
+
+		var shareTableView = Ti.UI.createTableView({
+			data: 			data,
+			scrollable: 	false,
+			top: 			0,
+			left: 			0,
+			width: 			340,
+			height: 		160,
+			separatorColor: '#CCC',
+			style: 			Ti.UI.iPhone.TableViewStyle.PLAIN
+		});
+		main.add(shareTableView);
+
+		popover.show({
+			view:     btn_share,
+			animated: true
+		});
+
+	},500);
+
+});
+
 
 // REPORT ABUSE Button
 var btn_report_abuse = Titanium.UI.createButton({
