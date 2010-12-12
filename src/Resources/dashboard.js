@@ -25,9 +25,10 @@ Ti.App.activityPostClick = Titanium.UI.createActivityIndicator({
 	style: 				Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
 	message: 			L('loading_message'),
 	color: 				'white',
+	top: 				60,
 	backgroundColor: 	'black',
-	width: 				200,
-	height: 			150,
+	width: 				170,
+	height: 			90,
 	borderRadius: 		7,
 	opacity: 			0.7,
 	zIndex: 			2
@@ -111,14 +112,33 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 		style: 					Titanium.UI.iPhone.SystemButtonStyle.PLAIN,
 		pubId: 					pPubId,
 		guid: 					pGuid,
-		column: 				pColumn,
 		zindex: 				99
 	});
 	
+	//Click to Open Permalink
 	blackBoxLink.addEventListener('click', function(e){
 		
-		blackBoxLink.add(Ti.App.activityPostClick);
-		Ti.App.activityPostClick.show();
+		// Titanium.API.info("globalPoint:[" + JSON.stringify(e.globalPoint) + "]");
+		// Titanium.API.info("source:[" + e.source + "]");
+		// Titanium.API.info("type:[" + e.type + "]");
+		// Titanium.API.info("x:[" + e.x + "]");
+		// Titanium.API.info("y:[" + e.y + "]");
+		// 
+		clearTimeout(clickTimeoutPermalink);
+
+		clickTimeoutPermalink = setTimeout(function() {	
+			
+			blackBoxLink.add(Ti.App.activityPostClick);
+			Ti.App.activityPostClick.show();
+			// Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
+			Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, x: e.globalPoint.x, y:e.globalPoint.y});
+
+		},500);
+		
+		
+
+
+		
 	});
 	
 	// Sets the proper Column Left position
@@ -404,13 +424,13 @@ win.add(dashboardShadow);
 
 tableView.addEventListener('click', function(e) {
 	
-	clearTimeout(clickTimeoutPermalink);
-	
-	clickTimeoutPermalink = setTimeout(function() {	
-			Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
-			Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, column: e.source.column, rowNumber: e.index});
-		
-	},500);
+	// clearTimeout(clickTimeoutPermalink);
+	// 
+	// clickTimeoutPermalink = setTimeout(function() {	
+	// 		Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
+	// 		Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, column: e.source.column, rowNumber: e.index});
+	// 	
+	// },500);
 
 });
 
