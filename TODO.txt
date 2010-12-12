@@ -22,7 +22,7 @@ dashboard.js
 - BUG: When less than 3 lines are presented, must trigger Load pra baixo.
 
 _____ AFTER LAUNCH _____
-- better handling of the Loading 'prabaixo', only hide the loading message after the rows are displayed
+- better handling of the Loading 'prabaixo', only hide the "Loading..." message after the rows are displayed
 - add a Label "Loading Dashboard..."
 - check this page: http://developer.appcelerator.com/question/28371/how-can-i-get-the-height-and-width-dimentions-of-an-image#130831
 - flip with 2 fingers on a post on dashboard reveals post informations (Author, Number of Reposts and Number of Comments)
@@ -30,17 +30,13 @@ _____ AFTER LAUNCH _____
 
 permalink.js
 ------------
-- BUG: little bug when clicking in the respost comment text field, keyboard does not show up, needs to click twice
 - BUG: HTML horizontal scroll, check this content in the App. http://meme.yahoo.com/pedrovalente/p/rX-MoWZ/
 
 
 _____ AFTER LAUNCH _____
 - Add error message when user clicks on Repost Button and is not logged in. Offers to log in or cancel.
 - Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
-- Animation when reposting
 - Show the App Posting to Meme (how to get App data from YQL)
-- add popover when click on Users'Name showing options like: follow/unfollow - See Posts from that user
-- After Reposting allow users to add Comments
 - Total stripper for HTML Entities and send it to Placemaker()
 - Use Place maker to detect places on a given Post and Show them on the Map.
 - Play Audio
@@ -48,17 +44,17 @@ _____ AFTER LAUNCH _____
 
 newpost.js
 ----------
+- BUG: paste A link on the Flashlight search (http://yahoo.com), it will get the YQL error message
 - BUG: when there's upload error and you try to upload again, the progress bar appears in the worng position.
 - BUG: search for 'Helo', get the video results and click in the first item, get an error on console:
 [ERROR] invalid image type. expected either TiBlob or TiFile, was: NSNull in -[TiUIImageView setImage_:] (TiUIImageView.m:671). App Stops responding
 
 _____ AFTER LAUNCH _____
-- bookmarklet to open the App and paste the link in the newpost.js
+- bookmarklet to open the App and paste the link in the newpost.js (getArguments)
 - improve the link paste on Flashlight, replacing the MATCH method with TEST
-- Save Video/Photo on Drafts
-- Draft Should save Media as well
+- Save Video/Photo on Drafts, draft Should save Media as well
 - When changing tabs on FlashLight Search, should keep the table and not perform another search
 - Better treatment of Web Results when abstract is empty
 - Use Place maker to detect places on a given Post and Show them on the Map.
-- Handle post later
+- Handle post later feature
 - Monitor this bug: https://appcelerator.lighthouseapp.com/projects/32238-titanium-mobile/tickets/2408-application-crashes-when-typing-html-special-characters-on-textarea

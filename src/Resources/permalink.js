@@ -477,9 +477,18 @@ btn_share.addEventListener('click', function(e) {
 
 		// ROW 1 LINK TO MEME AND FOLLOW/UNFOLLOW BUTTON
 		var row1 = Ti.UI.createTableViewRow({
-			selectionStyle:'none', // no color when clicking in the row
+			selectionStyle: 2, // GRAY color when clicking in the row
 			height: 60
 		});
+		
+		var icon_share_link = Ti.UI.createImageView({
+			image: 			'images/icon_share_link.png',
+			top: 			18,
+			left: 			8,
+			width: 			24,
+			height: 		24
+		});
+		row1.add(icon_share_link);
 		
 		// REGEXP original: /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
 		var parseLinkMeme = post.url.match(/^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/);
@@ -488,37 +497,38 @@ btn_share.addEventListener('click', function(e) {
 		 	color: 			'#7D0670',
 			text: 			L('meme_short_domain') + parseLinkMeme[6],
 			textAlign: 		'left',
-			font: 			{fontSize:14, fontWeight:'bold'},
-			top: 			14,
-			left: 			14,
+			font: 			{fontSize:13, fontWeight:'bold'},
+			top: 			15,
+			left: 			40,
 			height: 		30,
-			width: 			300
+			width: 			282
 		});	
 		row1.add(linkMeme);
-
-		linkMeme.addEventListener("click", function(e) {
-			Ti.App.fireEvent('openLinkOnSafari', {
-				url: 		post.url,
-				title: 		L('open_link_title'),
-				message: 	L('open_link_message')
-			});
-		});
 
 		data[0] = row1;
 
 		// ROW 2 COPY CLIPBOARD
 		var row2 = Ti.UI.createTableViewRow({
 			height: 40,
-			selectionStyle:'none'
+			selectionStyle: 2 // GRAY color when clicking in the row
 		});
+		
+		var icon_share_copy = Ti.UI.createImageView({
+			image: 			'images/icon_share_copy.png',
+			top: 			8,
+			left: 			8,
+			width: 			24,
+			height: 		24
+		});
+		row2.add(icon_share_copy);
 
 		var copyLabel = Ti.UI.createLabel({
 			color: 			'#333',
-			text: 			'Copy to Clipboard',
+			text: 			'Copy Link',
 			textAlign: 		'left',
 			font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'regular'},
 			top: 			7,
-			left: 			14,
+			left: 			40,
 			height: 		26,
 			width: 			260
 		});	
@@ -529,16 +539,25 @@ btn_share.addEventListener('click', function(e) {
 		// ROW 3 MAIL LINK
 		var row3 = Ti.UI.createTableViewRow({
 			height: 40,
-			selectionStyle:'none'
+			selectionStyle: 2 // GRAY color when clicking in the row
 		});
+		
+		var icon_share_mail = Ti.UI.createImageView({
+			image: 			'images/icon_share_mail.png',
+			top: 			8,
+			left: 			8,
+			width: 			24,
+			height: 		24
+		});
+		row3.add(icon_share_mail);
 
 		var copyLabel = Ti.UI.createLabel({
 			color: 			'#333',
-			text: 			'Mail Link',
+			text: 			'Mail Post',
 			textAlign: 		'left',
 			font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'regular'},
 			top: 			7,
-			left: 			14,
+			left: 			40,
 			height: 		26,
 			width: 			260
 		});	
@@ -557,6 +576,60 @@ btn_share.addEventListener('click', function(e) {
 			style: 			Ti.UI.iPhone.TableViewStyle.PLAIN
 		});
 		main.add(shareTableView);
+		
+		// Listeners
+		shareTableView.addEventListener('click', function(e)	{
+			//If Clicked on Permalink Link, then Open Safari Alert
+			if (e.index == 0) {
+				Ti.App.fireEvent('openLinkOnSafari', {
+					url: 		post.url,
+					title: 		L('open_link_title'),
+					message: 	L('open_link_message')
+				});				
+				popover.hide();
+			}
+			// If Clicked on Line 2 - Then copy link to Clipboard
+			else if (e.index == 1) {
+				Ti.UI.Clipboard.setText(post.url);
+				popover.hide();
+			}
+			
+			// If Clicked on Line 3 - Then open Mail Dialog
+			else if (e.index == 2) {
+				
+				var emailDialog = Titanium.UI.createEmailDialog();
+				
+				
+				var messageSubject;
+				if (post.caption != "") {
+					messageSubject = strip_html_entities(post.caption);
+				} else {
+					messageSubject = "Sharing a Post from Meme"
+				}
+				
+		        emailDialog.setSubject(messageSubject);
+
+				var messageBody = postWebView.html + '\n\n<a href=http://memeapp.net>Sent with Meme for iPad</a>';
+	            emailDialog.setMessageBody(messageBody);
+	            emailDialog.setHtml(true);
+	            emailDialog.setBarColor('black');
+
+		        emailDialog.addEventListener('complete',function(e)
+		        {
+		            if (e.result == emailDialog.SENT)
+		            {
+	                    Ti.API.log("Mail message was sent");
+		            }
+		            else
+		            {
+		                Ti.API.log("Mail message was not sent. result = " + e.result);
+		            }
+		        });
+		        emailDialog.open();
+		
+				popover.hide();
+			}
+		});
 
 		popover.show({
 			view:     btn_share,
