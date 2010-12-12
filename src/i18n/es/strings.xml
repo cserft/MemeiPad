@@ -104,6 +104,8 @@
 	<string name="path_btn_following_background_image">images/bg_btn_following_es.png</string>
 	<string name="copy_link_text">Copiar enlace</string>
 	<string name="mail_post_text">Enviar esta entrada por correo</string>
+	<string name="share_with_twitter">Conpártelo com Twitter for iPad</string>
+	<string name="share_with_twitter_message">This will open Twitter for iPad (if installed)</string>
 	<!-- /permalink.js -->
 	<!-- Share with Mail -->
 	<string name="mail_message_body_source">Fuente: </string>

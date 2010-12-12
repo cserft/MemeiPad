@@ -460,7 +460,7 @@ btn_share.addEventListener('click', function(e) {
 
 		var popover = Ti.UI.iPad.createPopover({
 			width:330,
-			height:140,
+			height:180,
 			backgroundColor: 'white',
 			navBarHidden: true,
 			arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN
@@ -470,7 +470,7 @@ btn_share.addEventListener('click', function(e) {
 			top: 0,
 			left: 0,
 			width: 330,
-			height: 140,
+			height: 180,
 			backgroundColor:"#FFF",
 			navBarHidden: true
 		});
@@ -569,6 +569,35 @@ btn_share.addEventListener('click', function(e) {
 		row3.add(copyLabel);
 
 		data[2] = row3;
+		
+		// ROW 4 SHARE WITH TWITTER FOR IPAD
+		var row4 = Ti.UI.createTableViewRow({
+			height: 40,
+			selectionStyle: 2 // GRAY color when clicking in the row
+		});
+		
+		var icon_share_mail = Ti.UI.createImageView({
+			image: 			'images/icon_share_twitter.png',
+			top: 			8,
+			left: 			8,
+			width: 			24,
+			height: 		24
+		});
+		row4.add(icon_share_mail);
+
+		var copyLabel = Ti.UI.createLabel({
+			color: 			'#333',
+			text: 			L('share_with_twitter'), 
+			textAlign: 		'left',
+			font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'regular'},
+			top: 			7,
+			left: 			40,
+			height: 		26,
+			width: 			260
+		});	
+		row4.add(copyLabel);
+
+		data[3] = row4;
 
 		var shareTableView = Ti.UI.createTableView({
 			data: 			data,
@@ -576,7 +605,7 @@ btn_share.addEventListener('click', function(e) {
 			top: 			0,
 			left: 			0,
 			width: 			340,
-			height: 		160,
+			height: 		180,
 			separatorColor: '#CCC',
 			style: 			Ti.UI.iPhone.TableViewStyle.PLAIN
 		});
@@ -634,7 +663,16 @@ btn_share.addEventListener('click', function(e) {
 		
 				popover.hide();
 			}
-		});
+			
+			// Share with Twitter for iPad app
+			else if (e.index == 3) {
+				Ti.App.fireEvent('openLinkOnSafari', {
+					url: 		'tweetie:' + 'http://' + L('meme_short_domain') + parseLinkMeme[6],
+					title: 		L('share_with_twitter'),
+					message: 	L('share_with_twitter_message')
+				});
+			}
+		}); // end TableView Listener
 
 		popover.show({
 			view:     btn_share,
