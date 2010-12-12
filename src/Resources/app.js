@@ -84,6 +84,17 @@ btn_signup.addEventListener("click", function(e) {
 	});
 });
 
+Ti.App.activitySmall = Ti.UI.createActivityIndicator({
+	style: 				Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN,
+	color: 				'white',
+	backgroundColor: 	'black',
+	width: 				30,
+	height: 			30,
+	borderRadius: 		5,
+	opacity: 			0.8,
+	zIndex: 			2
+});
+
 // ==========================
 // = CREATE THE POST WINDOW =
 // ==========================

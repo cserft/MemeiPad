@@ -27,7 +27,7 @@ Ti.App.activityPostClick = Titanium.UI.createActivityIndicator({
 	color: 				'white',
 	top: 				60,
 	backgroundColor: 	'black',
-	width: 				170,
+	width: 				190,
 	height: 			90,
 	borderRadius: 		7,
 	opacity: 			0.7,
@@ -423,15 +423,15 @@ win.add(dashboardShadow);
 // ==================
 
 tableView.addEventListener('click', function(e) {
-	
-	// clearTimeout(clickTimeoutPermalink);
-	// 
-	// clickTimeoutPermalink = setTimeout(function() {	
-	// 		Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
-	// 		Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, column: e.source.column, rowNumber: e.index});
-	// 	
-	// },500);
-
+// 	
+// 	// clearTimeout(clickTimeoutPermalink);
+// 	// 
+// 	// clickTimeoutPermalink = setTimeout(function() {	
+// 	// 		Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
+// 	// 		Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, column: e.source.column, rowNumber: e.index});
+// 	// 	
+// 	// },500);
+// 
 });
 
 // =======================

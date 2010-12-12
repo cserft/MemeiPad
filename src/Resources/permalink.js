@@ -231,6 +231,10 @@ guidView.addEventListener('click', function(e) {
 			});
 
 			popover.add(main);
+			
+			guidAvatar.add(Ti.App.activitySmall);
+
+			Ti.App.activitySmall.show();
 
 			// BUILDING THE TABLE VIEW
 			var data = [];
@@ -274,14 +278,15 @@ guidView.addEventListener('click', function(e) {
 			if (Meme.isFollowing(memeInfo.guid)) {
 				btn_follow.backgroundImage = L('path_btn_following_background_image');
 				updateFollowing = Meme.unfollow;
+				Ti.App.activitySmall.hide();
 			} else {
 				btn_follow.backgroundImage = L('path_btn_follow_background_image');
 				updateFollowing = Meme.follow;
+				Ti.App.activitySmall.hide();
 			}
 
 			//Follow listener
-			btn_follow.addEventListener('click', function()
-			{
+			btn_follow.addEventListener('click', function()	{
 				btn_follow.hide();
 
 				var activity = Titanium.UI.createActivityIndicator({
