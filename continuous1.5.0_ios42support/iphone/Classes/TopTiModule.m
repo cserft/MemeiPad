@@ -19,12 +19,12 @@
 
 -(id)buildDate
 {
-	return @"12/03/10 18:34";
+	return @"12/10/10 20:30";
 }
 
 -(id)buildHash
 {
-	return @"b7b9e78";
+	return @"240870c";
 }
 
 -(id)userAgent
