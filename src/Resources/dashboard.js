@@ -668,3 +668,10 @@ Ti.App.addEventListener('reloadDashboard', function(e) {
 	// Ti.API.debug("Reloading Dashboard");
 	beginReloading();
 });
+
+Ti.App.addEventListener('close_dashboard', function(e)
+{
+	//Closes Dashboard Window
+	win.close({opacity:0,duration:200});
+
+});

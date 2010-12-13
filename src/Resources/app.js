@@ -785,6 +785,9 @@ var displayErrorMessage = function(title, message, relativeTop, pFontSize) {
 		//Closes Permalink if Open
 		Ti.App.fireEvent('close_permalink');
 		
+		//Closes DASHBOARD
+		Ti.App.fireEvent('close_dashboard');
+		
 		errorWin.close({opacity:0,duration:200});
 		
 		startApplication();
