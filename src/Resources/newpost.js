@@ -306,6 +306,7 @@ editView.add(textArea);
 var tempPostLabel = Titanium.UI.createLabel({
 	text: 		L('tempPostLabel_text'),
 	align: 		'center',
+	textAlign: 		'center',
 	color: 		'#CCC',
 	top: 		300,
 	width: 		600,
