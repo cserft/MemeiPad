@@ -2,6 +2,10 @@ Ti.include('lib/sha1.js');
 Ti.include('lib/secrets.js');
 Ti.include('lib/commons.js');
 Ti.include('newpost_flashlight.js');
+Ti.include('lib/analytics.js');
+
+//Analytics Request
+doYwaRequest(analytics.NEW_POST_OPEN);
 
 var win 			= 	Ti.UI.currentWindow;
 Ti.App.newpostIsOpen = true; // controls for multiple clicks on Start new post btn
@@ -466,6 +470,9 @@ btn_flashlight.addEventListener('click', function() {
 	
 	clickTimeout = setTimeout(function() {	
 		//Ti.API.info('queryText when btn_flashlight clicked: ' + queryText);
+		//Analytics Request
+		doYwaRequest(analytics.FLASHLIGHT_SEARCH);
+		
 		flashlight_show();
 	},500);
 	
@@ -858,8 +865,15 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	var inserted, alertInfo;
 	
 	if (e.postType == "photo") {
+		//Analytics Request
+		doYwaRequest(analytics.PHOTO_POST);
+		
 		inserted = Ti.App.meme.createPhotoPost(e.media_link, e.message);
+		
 	} else if (e.postType == "text"){
+		//Analytics Request
+		doYwaRequest(analytics.TEXT_POST);
+		
 		inserted = Ti.App.meme.createTextPost(e.message);
 		
 		// updates the Message in the Progress Bar
@@ -867,6 +881,9 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 		ind.value = 10;
 		
 	} else if (e.postType == "video"){
+		//Analytics Request
+		doYwaRequest(analytics.VIDEO_POST);
+		
 		inserted = Ti.App.meme.createVideoPost(e.media_link, e.message);
 
 		// updates the Message in the Progress Bar
@@ -876,6 +893,8 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	
 	if (inserted) {
 		Ti.API.debug(" ####### INSERT POST executed");
+		doYwaRequest(analytics.NEW_POST_PUBLISHED);
+		
 		alertInfo = { title: L('success_alert_title'), message: L('post_success_message') };
 	} else {
 		alertInfo = { title: L('error_alert_title'), message: L('post_error_message') };

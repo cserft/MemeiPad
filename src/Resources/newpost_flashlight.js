@@ -1,3 +1,5 @@
+Ti.include('lib/analytics.js');
+
 // ======================
 // = AWESOME SEARCH BAR =
 // ======================
@@ -8,6 +10,8 @@ var last_monitor_value;
 var flashlight_created = false;
 
 var flashlight_text_change_monitor = function(new_monitor_value) {
+	//Analytics Request
+	doYwaRequest(analytics.FLASHLIGHT_SEARCH);
 	
 	Ti.API.debug('flashlight_text_change_monitor invoked for query = ' + new_monitor_value);
 	

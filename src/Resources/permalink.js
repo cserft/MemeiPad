@@ -1,4 +1,8 @@
 Ti.include('lib/commons.js');
+Ti.include('lib/analytics.js');
+
+//Analytics Request
+doYwaRequest(analytics.PERMALINK_VIEW);
 
 var win = Ti.UI.currentWindow;
 
@@ -398,7 +402,6 @@ var icon_btn_repost = Titanium.UI.createImageView({
 	visible: 	false,
 	zIndex: 	2
 });
-// btn_repost.add(icon_btn_repost);
 
 // Already Reposted Icon
 var icon_reposted = Titanium.UI.createImageView({
@@ -623,6 +626,9 @@ btn_share.addEventListener('click', function(e) {
 			}
 			// If Clicked on Line 2 - Then copy link to Clipboard
 			else if (e.index == 1) {
+				//Analytics Request
+				doYwaRequest(analytics.COPY_LINK);
+				
 				Ti.UI.Clipboard.setText(post.url);
 				popover.hide();
 			}
@@ -650,6 +656,9 @@ btn_share.addEventListener('click', function(e) {
 		        {
 		            if (e.result == emailDialog.SENT)
 		            {
+						//Analytics Request
+						doYwaRequest(analytics.SHARE_MAIL);
+						
 	                    Ti.API.log("Mail message was sent");
 		            }
 		            else
@@ -664,6 +673,10 @@ btn_share.addEventListener('click', function(e) {
 			
 			// Share with Twitter for iPad app
 			else if (e.index == 3) {
+				
+				//Analytics Request
+				doYwaRequest(analytics.SHARE_TWITTER_IPAD);
+				
 				Ti.App.fireEvent('openLinkOnSafari', {
 					url: 		'tweetie:' + 'http://' + L('meme_short_domain') + parseLinkMeme[6],
 					title: 		L('share_with_twitter'),
@@ -848,6 +861,8 @@ btn_repost.addEventListener('click', function(e) {
 		
 	if (reposted) {
 		
+		doYwaRequest(analytics.REPOST);
+		
 		setTimeout(function()
 		{
 			activity.hide();
@@ -926,6 +941,10 @@ btn_delete.addEventListener("click", function(e) {
 				win.close({transform:t3,duration:200, opacity:0});
 				Ti.App.permalinkIsOpened = false;
 				Ti.App.fireEvent('reloadDashboard');
+				
+				//Analytics Request
+				doYwaRequest(analytics.DELETE_POST);
+				
 			} else {
 				Ti.API.error("Error while deleting Post: " + JSON.stringify(response));	
 			}	
@@ -949,6 +968,9 @@ btn_report_abuse.addEventListener("click", function(e) {
 	{
 		if (e.index == 0){
 			Ti.Platform.openURL(alertOpenPermalink.url);	
+			
+			//Analytics Request
+			doYwaRequest(analytics.REPORT_ABUSE);
 		}
 	});
 });

@@ -2,8 +2,10 @@
 Ti.include('oadapter.js');
 Ti.include('lib/cache.js');
 Ti.include('lib/meme.js');
+Ti.include('lib/analytics.js');
 
 Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
+Ti.API.info("App Name: " + Ti.App.getName() + " and App Version: " + Ti.App.getVersion());
 
 // ==================
 // = Global objects =
@@ -38,6 +40,9 @@ var win1 = Titanium.UI.createWindow({
 		Titanium.UI.LANDSCAPE_RIGHT
 	]
 });
+
+//Analytics Request
+doYwaRequest(analytics.APP_STARTED);
 
 var appNavBarView = Ti.UI.createView({
 	backgroundImage: 		'images/bg_app_navbar.png',
@@ -90,6 +95,9 @@ var btn_signup = Titanium.UI.createButton({
 win1.add(btn_signup);
 
 btn_signup.addEventListener("click", function(e) {
+	//Analytics Request
+	doYwaRequest(analytics.OPEN_SAFARI_CREATE_ACCOUNT);
+	
 	Ti.App.fireEvent('openLinkOnSafari', { 
 		title: L("btn_signup_alert"),
 		message: L("btn_signup_message"),
@@ -717,6 +725,8 @@ Ti.App.addEventListener('openLinkOnSafari', function(data) {
 	alert.addEventListener('click', function(e) {
 		if (e.index == 0){
 			Ti.Platform.openURL(data.url);
+			//Analytics Request
+			doYwaRequest(analytics.OPEN_SAFARI);
 		}
 	});
 	
