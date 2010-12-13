@@ -571,9 +571,6 @@ var showDashboard = function() {
 	// scrollView.add(winDashboard);
 	winDashboard.open();
 	
-	//Removes the TableView so it can start fresh
-    Ti.App.fireEvent('remove_tableview');
-	
 	// Builds the LoggedIn Header or the SignIn one
 	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		btn_signin.visible = false;

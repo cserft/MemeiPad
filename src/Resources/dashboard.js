@@ -23,11 +23,9 @@ win.add(baseView);
 
 Ti.App.activityPostClick = Titanium.UI.createActivityIndicator({
 	style: 				Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
-	message: 			L('loading_message'),
-	color: 				'white',
 	top: 				60,
 	backgroundColor: 	'black',
-	width: 				190,
+	width: 				90,
 	height: 			90,
 	borderRadius: 		7,
 	opacity: 			0.7,
@@ -37,11 +35,6 @@ Ti.App.activityPostClick = Titanium.UI.createActivityIndicator({
 // =======================
 // = DASHBOARD TABLEVIEW =
 // =======================
-
-Ti.App.addEventListener('remove_tableview', function(e) {
-	Ti.API.debug("Removing TableView!!!!!!");
-    baseView.remove(tableView);
-});
 
 var tableView = Titanium.UI.createTableView({
 	top:0,
@@ -134,11 +127,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 			Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, x: e.globalPoint.x, y:e.globalPoint.y});
 
 		},500);
-		
-		
-
-
-		
+			
 	});
 	
 	// Sets the proper Column Left position
