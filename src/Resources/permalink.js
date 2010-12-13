@@ -894,6 +894,8 @@ btn_send_comment.addEventListener("click", function(e) {
 		btn_send_comment.title = "saving...";
 		
 		if (ok) {
+			//Analytics Request
+			doYwaRequest(analytics.ADD_REPOST_COMMENT);
 			
 			setTimeout(function()
 			{
