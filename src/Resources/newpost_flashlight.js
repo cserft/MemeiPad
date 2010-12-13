@@ -345,6 +345,7 @@ var flashlight_create = function() {
 								zIndex: 2,
 								title: titleStripped,
 								abstract: abstractStripped,
+								url: item.url,
 								type: 'text'
 							}));
 
@@ -460,8 +461,8 @@ var flashlight_create = function() {
 			    	//Removes whatever medias where ther ebefore
 					// Ti.App.fireEvent("photoRemoved");
 					if (e.source.abstract != "") {
-						textArea.value += '\n' + e.source.abstract;
-						postBody += '\n' + e.source.abstract;
+						textArea.value += '\n' + e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
+						postBody += '\n' + e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
 						textArea.focus();
 					}
 					editTitleField.value = e.source.title;	

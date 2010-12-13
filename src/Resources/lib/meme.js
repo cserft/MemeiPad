@@ -169,7 +169,7 @@ var Meme = function() {
 	flashlightWeb = function(query) {
 		var params = {
 			cacheKey: 'flashlight:web:' + query,
-			yqlQuery: 'SELECT title, abstract FROM search.web WHERE query="' + query + '"'
+			yqlQuery: 'SELECT title, abstract, url FROM search.web WHERE query="' + query + '"'
 		};
 		var items;
 		cachedYqlQuery(params, function(results) {
