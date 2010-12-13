@@ -891,6 +891,7 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 		win.close(animeClose);
 		btn_post.enabled = true;
 		Ti.App.fireEvent('reloadDashboard');
+		Ti.App.newpostIsOpen = false;
 	});
 });
 
