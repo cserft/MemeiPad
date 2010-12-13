@@ -633,10 +633,9 @@ btn_share.addEventListener('click', function(e) {
 				
 				var emailDialog = Titanium.UI.createEmailDialog();
 				
-				
 				var messageSubject;
 				if (post.caption != "") {
-					messageSubject = strip_html_entities(post.caption);
+					messageSubject = strip_html_entities(post.caption).substr(0, 100) + '...'; // shows only the first 100 caracters
 				} else {
 					messageSubject = L('mail_message_subject_default')
 				}
