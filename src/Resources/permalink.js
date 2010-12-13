@@ -818,8 +818,17 @@ repostCommentField.addEventListener('blur', function(e) {
 	btn_close.animate({top: 32, duration: 200});
 });
 
-// REPOST ANIMATION TO ADD COMMENT
-btn_repost.addEventListener('click', function(e) {
+// Repost bck to normal
+btn_repost.addEventListener('touchend', function()	{
+	// Click visual Feedback
+	btn_repost.opacity = 1;
+});
+
+//Repost
+btn_repost.addEventListener('touchstart', function(e) {
+	// Click visual Feedback
+	btn_repost.opacity = 0.8;
+
 	var reposted = Meme.repost(_guid, _pubId);
 	
 	var activity = Titanium.UI.createActivityIndicator({
