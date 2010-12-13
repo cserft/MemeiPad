@@ -12,7 +12,6 @@
 @interface TiNetworkHTTPClientResultProxy : TiProxy {
 @private
 	TiNetworkHTTPClientProxy *delegate;
-	NSDictionary* responseHeaders;
 }
 
 -(id)initWithDelegate:(TiNetworkHTTPClientProxy*)proxy;

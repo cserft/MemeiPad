@@ -4,8 +4,6 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
-
-// TODO: Here's a big one... we need to conform to the SHOULD, MUST, SHOULD NOT, MUST NOT in XHR standard.  See http://www.w3.org/TR/XMLHttpRequest/
 #ifdef USE_TI_NETWORK
 
 #import "TiBase.h"
@@ -15,7 +13,6 @@
 #import "TiApp.h"
 #import "TiDOMDocumentProxy.h"
 #import "Mimetypes.h"
-#import "TiFile.h"
 
 int CaselessCompare(const char * firstString, const char * secondString, int size)
 {
@@ -152,7 +149,7 @@ extern NSString * const TI_APPLICATION_DEPLOYTYPE;
 
 -(NSString*)responseText
 {
-	if (request!=nil)
+	if (request!=nil && [request error]==nil)
 	{
 		NSData *data = [request responseData];
 		if (data==nil || [data length]==0) 
@@ -238,15 +235,13 @@ extern NSString * const TI_APPLICATION_DEPLOYTYPE;
 -(void)_fireReadyStateChange:(NetworkClientState) state
 {
 	readyState = state;
-	TiNetworkHTTPClientResultProxy *thisPointer; 
+	TiNetworkHTTPClientResultProxy *thisPointer = [[[TiNetworkHTTPClientResultProxy alloc] initWithDelegate:self] autorelease];
 	if (onreadystatechange!=nil)
 	{
-		thisPointer = [[[TiNetworkHTTPClientResultProxy alloc] initWithDelegate:self] autorelease];
 		[self _fireEventToListener:@"readystatechange" withObject:nil listener:onreadystatechange thisObject:thisPointer];
 	}
 	if (onload!=nil && state==NetworkClientStateDone && connected)
 	{
-		thisPointer = [[[TiNetworkHTTPClientResultProxy alloc] initWithDelegate:self] autorelease];		
 		if (ondatastream && downloadProgress>0)
 		{
 			CGFloat progress = (CGFloat)((CGFloat)downloadProgress/(CGFloat)downloadLength);
@@ -360,30 +355,13 @@ extern NSString * const TI_APPLICATION_DEPLOYTYPE;
 	// it since we assume that the app is "trusted" (thus, cross domain ,etc)
 	if ([key isEqualToString:@"Cookie"])
 	{
-		NSMutableArray* cookies = [request requestCookies];
-		if (value == nil) {
-			[cookies removeAllObjects];
-			return;
-		}
-		
 		NSArray *tok = [value componentsSeparatedByString:@"="];
 		if ([tok count]!=2)
 		{
 			[self throwException:@"invalid arguments for setting cookie. value should be in the format 'name=value'" subreason:nil location:CODELOCATION];
 		}
-		NSString* name = [tok objectAtIndex:0];
-		id cookieValue = [tok objectAtIndex:1];
-		
-		for (NSHTTPCookie* cookie in cookies) {
-			if ([name isEqualToString:[cookie name]])
-			{
-				[cookies removeObject:cookie];
-				break;
-			}
-		}
-		
-		NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:[NSDictionary dictionaryWithObjectsAndKeys:name,NSHTTPCookieName,cookieValue,NSHTTPCookieValue,@"/",NSHTTPCookiePath,[url host],NSHTTPCookieDomain,url,NSHTTPCookieOriginURL,nil]];
-		[cookies addObject:cookie];
+		NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:[NSDictionary dictionaryWithObjectsAndKeys:[tok objectAtIndex:0],NSHTTPCookieName,[tok objectAtIndex:1],NSHTTPCookieValue,@"/",NSHTTPCookiePath,[url host],NSHTTPCookieDomain,url,NSHTTPCookieOriginURL,nil]];
+		[[request requestCookies] addObject:cookie];
 	}
 	else 
 	{
@@ -393,12 +371,6 @@ extern NSString * const TI_APPLICATION_DEPLOYTYPE;
 
 -(void)send:(id)args
 {
-	if ([self status] == [self DONE]) {
-		// TODO: Throw an exception here as per XHR standard
-		NSLog(@"[ERROR] Attempt to re-send over DONE connection");
-		return;
-	}
-	
 	// args are optional
 	if (args!=nil)
 	{
@@ -492,31 +464,6 @@ extern NSString * const TI_APPLICATION_DEPLOYTYPE;
 	return nil;
 }
 
--(NSString*)file
-{
-	return [request downloadDestinationPath];
-}
-
--(void)setFile:(id)file
-{
-	if ([file isKindOfClass:[NSString class]]) {
-		[request setDownloadDestinationPath:file];
-	}
-	else if ([file isKindOfClass:[TiFile class]]) {
-		[request setDownloadDestinationPath:[file path]];
-	}
-	else {
-		[self throwException:[NSString stringWithFormat:@"Invalid class %@ for file: Expected string or file",[file class]]
-				   subreason:nil
-					location:CODELOCATION];
-	}
-}
-
--(NSDictionary*)responseHeaders
-{
-	return [request responseHeaders];
-}
-
 #pragma mark Delegates
 
 -(void)requestFinished:(ASIHTTPRequest *)request_
@@ -527,7 +474,6 @@ extern NSString * const TI_APPLICATION_DEPLOYTYPE;
 		connected = NO;
 		[[TiApp app] stopNetwork];
 	}
-	RELEASE_TO_NIL(request);
 }
 
 -(void)requestFailed:(ASIHTTPRequest *)request_
@@ -540,7 +486,6 @@ extern NSString * const TI_APPLICATION_DEPLOYTYPE;
 	
 	NSError *error = [request error];
 	
-	// TODO: Conform to XHR 'DONE' on error
 	[self _fireReadyStateChange:NetworkClientStateDone];
 	
 	if (onerror!=nil)
@@ -549,7 +494,6 @@ extern NSString * const TI_APPLICATION_DEPLOYTYPE;
 		NSDictionary *event = [NSDictionary dictionaryWithObject:[error description] forKey:@"error"];
 		[self _fireEventToListener:@"error" withObject:event listener:onerror thisObject:thisPointer];
 	}
-	RELEASE_TO_NIL(request);
 }
 
 // Called when the request receives some data - bytes is the length of that data
