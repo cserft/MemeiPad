@@ -274,7 +274,9 @@ var btn_photo_close = Titanium.UI.createButton({
 	height: 		19,
 	top: 			0,
 	left: 			0,
-	zIndex: 		10
+	zIndex: 		10,
+	style:Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
+	
 });
 viewContainerPhoto.add(btn_photo_close);
 
