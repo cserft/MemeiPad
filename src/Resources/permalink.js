@@ -671,6 +671,7 @@ btn_share.addEventListener('click', function(e) {
 					title: 		L('share_with_twitter'),
 					message: 	L('share_with_twitter_message')
 				});
+				popover.hide();
 			}
 		}); // end TableView Listener
 
