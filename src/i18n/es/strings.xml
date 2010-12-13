@@ -9,72 +9,72 @@
 	<string name="path_btn_signup_background_image">images/btn_signup_es.png</string>
 	<string name="path_btn_back">images/btn_back.png</string>
 	<string name="btn_signup_alert">Crea tu cuenta</string>
-	<string name="btn_signup_message">We will open the Sign up page in Safari</string>
+	<string name="btn_signup_message">La página se abrirá en Safari</string>
 	<string name="btn_signup_url">http://meme.yahoo.com/confirm</string>
 	<string name="path_btn_start_posting_background_image">images/btn_start_posting_es.png</string>
 	<!-- ABOUT -->
 	<string name="btn_signout_title">salir</string>
-	<string name="btn_back_title">vuelta</string>
+	<string name="btn_back_title">atrás</string>
 	<string name="path_btn_signout_background_image">images/btn_signout.png</string>
 	<string name="followers">seguidores </string>
 	<string name="following">    siguiendo </string>
 	<string name="ATOS">Términos Adicionales</string>
 	<string name="url_atos_html">atos_es.html</string>
 	<string name="meme_short_domain">me.me/</string>
-	<string name="aboutGitLabel_text">Meme para iPad on GitHub:\nhttp://memeapp.net/source</string>
+	<string name="aboutGitLabel_text">Meme para iPad en GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
 	<!-- GENERIC -->
-	<string name="open_link_title">Abrir Link</string>
+	<string name="open_link_title">Abrir Liga</string>
 	<string name="success_alert_title">Éxito</string>
 	<string name="error_alert_title">Error</string>
 	<string name="btn_alert_OK">OK</string>
 	<string name="btn_alert_YES">Sí</string>
 	<string name="btn_alert_NO">No</string>
 	<string name="btn_alert_CANCEL">Cancelar</string>
-	<string name="open_link_message">We will open this link in Safari</string>
+	<string name="open_link_message">La página se abrirá en Safari</string>
 	<string name="btn_error_refresh_title">recargar</string>
-	<string name="yql_error">YQL Error</string>
-	<string name="error_message_problem">Ops, it seems we had a problem...</string>
-	<string name="network_error">Error en la red</string>
-	<string name="network_error_message">You need to be online to use Meme for iPad. Please, check your network connection and try again.</string>
+	<string name="yql_error">Error de YQL</string>
+	<string name="error_message_problem">Uy, algo anda mal...</string>
+	<string name="network_error">Error de conexión</string>
+	<string name="network_error_message">Necesitas estar en línea para utilizar Meme en Ipad. Revisa tu conexión.</string>
 	<string name="loading_message">Cargando...</string>
 	<string name="memeapp_url">http://memeapp.net/</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
-	<string name="pull_to_reload_text">Pull to reload</string>
-	<string name="last_updated_text">Last Updated: </string>
-	<string name="pull_down_to_refresh_text">Pull down to refresh...</string>
-	<string name="release_to_refresh_text">Release to refresh...</string>
-	<string name="reloading_message">Reloading...</string>
+	<string name="pull_to_reload_text">Mueve para recargar</string>
+	<string name="last_updated_text">Última actualización: </string>
+	<string name="pull_down_to_refresh_text">Mueve para recargar...</string>
+	<string name="release_to_refresh_text">Suelta para recargar...</string>
+	<string name="reloading_message">Actualizando...</string>
 	<!-- app_hightlight.js -->
-	<string name="featured_content_text">FEATURED CONTENT</string>
+	<string name="featured_content_text">CONTENIDO DESTACADO</string>
 	<!-- newpost.js -->
-	<string name="searchTextField_hint_text">  Paste YouTube or Vimeo links or make a search to illustrate your post</string>
-	<string name="popover_flashlight_title">Suggested Content</string>
+	<string name="searchTextField_hint_text">  Pega tus ligas de YouTube o Vimeo para ilustrar tu entrada</string>
+	<string name="popover_flashlight_title">Contenido Sugerido</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
 	<string name="btn_post_top_title">actualizar</string>
-	<string name="editTitleField_hint_text">añadir un título</string>
+	<string name="editTitleField_hint_text">agrega título</string>
 	<string name="tempPostLabel_text">escribe tu entrada aquí</string>
 	<string name="disclaimer_copyright_guidelines">No violes las leyes de propiedad ni envíes contenido adulto. Revisa las Reglas de la Comunidad.</string>
-	<string name="disclaimer_yahoo_updates"> Tu post será compartido a través Yahoo! Updates.</string>
+	<string name="disclaimer_yahoo_updates"> Tu entrada será compartida a través Yahoo! Updates.</string>
 	<string name="guidelines_url">http://meme.yahoo.com/help/guidelines/</string>
 	<string name="settings_url">http://profiles.yahoo.com/settings/updates</string>
-	<string name="oops_alert_title">Oops...</string>
-	<string name="post_message_empty">Write something before you hit the post button.</string>
-	<string name="preparing_to_post_message">Preparing to post...</string>
-	<string name="remove_alert_title">Remove</string>
-	<string name="remove_alert_message">Are you sure you want to remove this media from your post?</string>
-	<string name="publishing_post_meme">Publishing your post on Meme</string>
-	<string name="uploading_file">Subindo archivo...</string>
-	<string name="post_success_message">Your post was published successfully!</string> 
-	<string name="post_error_message">Your post could not be published.</string> 
-	<string name="post_error_7meg_message">Your post could not be published. Please check the image size, it must have less than 7MB.</string>
+	<string name="oops_alert_title">Ups...</string>
+	<string name="post_message_empty">Escribe algo antes de publicar tu entrada.</string>
+	<string name="preparing_to_post_message">Preparándote para publicar...</string>
+	<string name="remove_alert_title">Quitar</string>
+	<string name="remove_alert_message">¿Seguro lo quieres quitar de tu entrada?</string>
+	<string name="publishing_post_meme">Publicando tu entrada en Meme</string>
+	<string name="uploading_file">Cargando archivo...</string>
+	<string name="post_success_message">¡Tu entrada se publicó excitosamente!</string> 
+	<string name="post_error_message">No pudimos publicar tu entrada.</string> 
+	<string name="post_error_7meg_message">No pudimos publicar tu entrada. Revisa que el tamaño de tu imagen sea menor que 7MB.</string>
 	<string name="flashlight_alert_empty_title">Flashlight</string>
-	<string name="flashlight_alert_empty_message">The Flashlight is empty, just type something to get suggested content</string>
-	<string name="flashlight_no_results">Sin resultados.</string>
+	<string name="flashlight_alert_empty_message">The Flashlight está vacío, empieza a escribir para obtener sugerencias.</string>
+	<string name="flashlight_no_results">No encontramos resultados</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
-	<string name="time_just_now">Just now</string>
+	<string name="time_just_now">Ahora</string>
 	<string name="time_1_minute">1 minuto</string>
 	<string name="time_minutes">minutos</string>
 	<string name="time_1_hour">1 hora</string>
@@ -87,19 +87,19 @@
 	<string name="time_months">meses</string>
 	<string name="time_1_year">1 año</string>
 	<string name="time_years">años</string>
-	<string name="time_1_century">cien años</string>
-	<string name="time_centuries"> siglo</string>
+	<string name="time_1_century">1 siglo</string>
+	<string name="time_centuries"> siglos</string>
 	<string name="time_ago"></string>
 	<!-- /commons.js -->
 	<!-- permalink.js -->
 	<string name="posted"> hace </string> 
 	<string name="path_btn_send_commentbackground_image">images/btn_send_comment.png</string>
 	<string name="btn_send_comment_title">comentar</string>
-	<string name="repostCommentField_hint_text">comentar aquí...</string> 
-	<string name="delete_alert_title">Borrar entrada</string>  
-	<string name="delete_alert_message">¿Estás seguro que quieres borrar esta entrada?</string>
-	<string name="report_abuse_alert_title">Reporta el abuso</string>  
-	<string name="report_abuse_alert_message">We will open the Report Abuse page on Safari.</string>
+	<string name="repostCommentField_hint_text">agrega tu comentario...</string> 
+	<string name="delete_alert_title">Borrar</string>  
+	<string name="delete_alert_message">¿Estás seguro de que quieres borrar tu entrada?</string>
+	<string name="report_abuse_alert_title">Reportar abuso</string>  
+	<string name="report_abuse_alert_message">Tu reporte se abrirá en Safari.</string>
 	<string name="path_btn_follow_background_image">images/bg_btn_follow_es.png</string>
 	<string name="path_btn_following_background_image">images/bg_btn_following_es.png</string>
 	<string name="copy_link_text">Copiar enlace</string>
@@ -109,7 +109,7 @@
 	<!-- /permalink.js -->
 	<!-- Share with Mail -->
 	<string name="mail_message_body_source">Fuente: </string>
-	<string name="mail_message_signature">Enviado desde Meme for iPad</string>
+	<string name="mail_message_signature">Enviado desde Meme para iPad</string>
 	<string name="mail_message_subject_default">Compartindo una entrada interesante</string>
 	<!-- /Share with Mail -->
 	<!-- EXTRAS -->
