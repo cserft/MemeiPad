@@ -3,16 +3,16 @@ Simple Cache implementation for Titanium.
 
 Usage:
 	// returns null
-	Cache.get('my_data');
+	cache.get('my_data');
 	
 	// cache object for 30 seconds
-	Cache.put('my_data', { property: 'value' });
+	cache.put('my_data', { property: 'value' });
 	
 	 // returns cached object
-	Cache.get('my_data');
+	cache.get('my_data');
 	
 	// cache another object for 1 hour
-	Cache.put('another_data', xml_document, 3600);
+	cache.put('another_data', xml_document, 3600);
 ***************************************************/
 
 // ##################################################

@@ -1,5 +1,4 @@
 Ti.include('lib/commons.js');
-Ti.include('lib/meme.js');
 
 var win = Ti.UI.currentWindow;
 
@@ -276,13 +275,13 @@ var getDashboardData = function (pTimestamp) {
 			queryTimestamp = pTimestamp - 1;
 		}
 		
-		posts = Meme.dashboardPosts(307, 231, pTimestamp);
+		posts = Ti.App.meme.dashboardPosts(307, 231, pTimestamp);
 		
 	} else {
 		Ti.API.info(" ####### STARTING FEATURED DASHBOARD (NOT LOGGED IN) ##########");
 		
 		// NOT LOGGED IN SO GETS THE FEATURED POSTS
-		posts = Meme.featuredPosts();
+		posts = Ti.App.meme.featuredPosts();
 		
 		// Reload TableVIew or First Build
 		lastRow = 0;

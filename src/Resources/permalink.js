@@ -1,5 +1,4 @@
 Ti.include('lib/commons.js');
-Ti.include('lib/meme.js');
 
 var win = Ti.UI.currentWindow;
 
@@ -8,7 +7,7 @@ var _guid = win.pGuid;
 var _pubId = win.pPubId;
 var clickTimeoutViewPopoverUser = 0;
 
-var post = Meme.getPost(_guid, _pubId);
+var post = Ti.App.meme.getPost(_guid, _pubId);
 
 // ============================
 // = BULDING PERMALINK LAYOUT =
@@ -124,7 +123,7 @@ postWebView.addEventListener('load', function(){
 // ====================================
 // = OWNER GUID INFORMATION RETRIEVAL =
 // ====================================
-var memeInfo = Meme.userInfo(_guid, 40, 40);
+var memeInfo = Ti.App.meme.userInfo(_guid, 40, 40);
 
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
@@ -275,13 +274,13 @@ guidView.addEventListener('click', function(e) {
 			row1.add(btn_follow);
 
 			var updateFollowing = null;
-			if (Meme.isFollowing(memeInfo.guid)) {
+			if (Ti.App.meme.isFollowing(memeInfo.guid)) {
 				btn_follow.backgroundImage = L('path_btn_following_background_image');
-				updateFollowing = Meme.unfollow;
+				updateFollowing = Ti.App.meme.unfollow;
 				Ti.App.activitySmall.hide();
 			} else {
 				btn_follow.backgroundImage = L('path_btn_follow_background_image');
-				updateFollowing = Meme.follow;
+				updateFollowing = Ti.App.meme.follow;
 				Ti.App.activitySmall.hide();
 			}
 
@@ -306,12 +305,12 @@ guidView.addEventListener('click', function(e) {
 				{
 					activity.hide();
 
-					if (Meme.isFollowing(memeInfo.guid)) {
+					if (Ti.App.meme.isFollowing(memeInfo.guid)) {
 						btn_follow.backgroundImage = L('path_btn_following_background_image');
-						updateFollowing = Meme.unfollow;
+						updateFollowing = Ti.App.meme.unfollow;
 					} else {
 						btn_follow.backgroundImage = L('path_btn_follow_background_image');
-						updateFollowing = Meme.follow;
+						updateFollowing = Ti.App.meme.follow;
 					}
 
 					btn_follow.show();
@@ -728,7 +727,7 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 		origin_pubid = post.pubid;
 	}
 	
-	var alreadyReposted = Meme.isReposted(origin_guid, origin_pubid);
+	var alreadyReposted = Ti.App.meme.isReposted(origin_guid, origin_pubid);
 	
 	if (_guid == Ti.App.myMemeInfo.guid || post.via_guid == Ti.App.myMemeInfo.guid || alreadyReposted) {
 		btn_repost.touchEnabled = false;	
@@ -831,7 +830,7 @@ btn_repost.addEventListener('click', function(e) {
 	// btn_repost.backgroundColor = "#CCC";
 	btn_repost.opacity = 0.7;
 
-	var reposted = Meme.repost(_guid, _pubId);
+	var reposted = Ti.App.meme.repost(_guid, _pubId);
 	
 	var activity = Titanium.UI.createActivityIndicator({
 		style: 				Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN,
@@ -874,7 +873,7 @@ btn_repost.addEventListener('click', function(e) {
 // REPOST AND COMMENT
 btn_send_comment.addEventListener("click", function(e) {
 	if (repostCommentField.value != '') {
-		var ok = Meme.createComment(_guid, _pubId, repostCommentField.value);
+		var ok = Ti.App.meme.createComment(_guid, _pubId, repostCommentField.value);
 		
 		//removes the label to add the animation
 		btn_send_comment.title = "saving...";
@@ -919,7 +918,7 @@ btn_delete.addEventListener("click", function(e) {
 	// Opens the Permalink page on Safari
 	alertOpenPermalink.addEventListener('click',function(e)	{
 		if (e.index == 0){
-			var postDeleted = Meme.deletePost(_pubId);
+			var postDeleted = Ti.App.meme.deletePost(_pubId);
 			
 			if (postDeleted){
 				var t3 = Titanium.UI.create2DMatrix();

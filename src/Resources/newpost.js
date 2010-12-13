@@ -1,7 +1,6 @@
 Ti.include('lib/sha1.js');
 Ti.include('lib/secrets.js');
 Ti.include('lib/commons.js');
-Ti.include('lib/meme.js');
 Ti.include('newpost_flashlight.js');
 
 var win 			= 	Ti.UI.currentWindow;
@@ -859,16 +858,16 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 	var inserted, alertInfo;
 	
 	if (e.postType == "photo") {
-		inserted = Meme.createPhotoPost(e.media_link, e.message);
+		inserted = Ti.App.meme.createPhotoPost(e.media_link, e.message);
 	} else if (e.postType == "text"){
-		inserted = Meme.createTextPost(e.message);
+		inserted = Ti.App.meme.createTextPost(e.message);
 		
 		// updates the Message in the Progress Bar
 		showProgressView('show', L('publishing_post_meme'));
 		ind.value = 10;
 		
 	} else if (e.postType == "video"){
-		inserted = Meme.createVideoPost(e.media_link, e.message);
+		inserted = Ti.App.meme.createVideoPost(e.media_link, e.message);
 
 		// updates the Message in the Progress Bar
 		showProgressView('show', L('publishing_post_meme'));

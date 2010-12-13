@@ -5,17 +5,30 @@ Ti.include('lib/meme.js');
 
 Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
 
+// ==================
+// = Global objects =
+// ==================
 Ti.App.myMemeInfo = null;
+
 Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
-var clickTimeoutStartPosting 	= 	0; 	// Sets the initial ClickTimeout for startPOsting Button
-Ti.App.newpostIsOpen = false; // controls for multiple clicks on Start new post btn
-Ti.App.permalinkIsOpened = false; // control of Permalink Open
 
 Ti.App.cache = Cache({ 
 	cache_expiration_interval: 60, 
 	disable: true // WARNING: remove this before put in production :)
 });
 
+Ti.App.meme = Meme();
+
+// =======================
+// = Global control vars =
+// =======================
+var clickTimeoutStartPosting 	= 	0; 	// Sets the initial ClickTimeout for startPOsting Button
+Ti.App.newpostIsOpen = false; // controls for multiple clicks on Start new post btn
+Ti.App.permalinkIsOpened = false; // control of Permalink Open
+
+// ===============
+// = Application =
+// ===============
 //base Window
 var win1 = Titanium.UI.createWindow({  
     title: 				'Meme for iPad',
@@ -135,7 +148,7 @@ var showHeader = function (successCallback) {
 	win1.add(headerView);
 
 	if (Ti.App.oAuthAdapter.isLoggedIn()) {
-		Ti.App.myMemeInfo = Meme.userInfo('me', 35, 35);
+		Ti.App.myMemeInfo = Ti.App.meme.userInfo('me', 35, 35);
 		
 		var btn_Username = Ti.UI.createView({
 			backgroundImage: 			'images/btn_username.png',	

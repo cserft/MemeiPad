@@ -1,5 +1,3 @@
-Ti.include('lib/meme.js');
-
 // ======================
 // = AWESOME SEARCH BAR =
 // ======================
@@ -183,7 +181,7 @@ var flashlight_create = function() {
 			switch(e.searchType) {
 				case 0: // Video 
 					Ti.API.info("####### Video Search ");
-					var videos = Meme.flashlightVideos(queryText);
+					var videos = Ti.App.meme.flashlightVideos(queryText);
 					
 					if (videos) {
 						//Loop to present the Search Results for YouTube
@@ -250,7 +248,7 @@ var flashlight_create = function() {
 			
 				case 1: // Flickr
 					Ti.API.info("####### Photo Search ");
-					var photos = Meme.flashlightPhotos(queryText);
+					var photos = Ti.App.meme.flashlightPhotos(queryText);
 					
 					if (photos) {
 						//Loop to present the Search Results for Flickr
@@ -302,7 +300,7 @@ var flashlight_create = function() {
 			
 				case 2: // Web Search
 					Ti.API.info("####### Web Search ");
-					var items = Meme.flashlightWeb(queryText);
+					var items = Ti.App.meme.flashlightWeb(queryText);
 					
 					if (items) {
 						//Loop to present the Search Results from the Web
@@ -361,7 +359,7 @@ var flashlight_create = function() {
 				
 				case 3: // Twitter Search
 					Ti.API.info("####### Twitter Search ");
-					var items = Meme.flashlightTweets(queryText);
+					var items = Ti.App.meme.flashlightTweets(queryText);
 					
 					if (items) {
 						//Loop to present the Search Results from the Web

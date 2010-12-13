@@ -4,16 +4,13 @@ on the Meme API.
 
 Usage:
 	// follow an user
-	Meme.follow('guid_of_the_user_to_follow');
+	meme.follow('guid_of_the_user_to_follow');
 	
 	// creates a text post
-	Meme.createTextPost('A text post');
+	meme.createTextPost('A text post');
 ***************************************************/
 
-// Meme holds a reference to the result of the execution
-// of the following function (a.k.a. closure), therefore 
-// you should not invoke (as in "Meme().[...]"), use 
-// "Meme.[...]" directly.
+// TODO: inject cache, oadapter, etc.
 var Meme = function() {	
 	// public functions
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
@@ -304,4 +301,4 @@ var Meme = function() {
 		flashlightWeb: flashlightWeb, 
 		flashlightTweets: flashlightTweets
 	});	
-}();
+};
