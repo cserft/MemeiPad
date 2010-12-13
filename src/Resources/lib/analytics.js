@@ -39,6 +39,6 @@ var doYwaRequest = function(pAction) {
 
 	//eContent = encodeURIComponent(pContent);
     xhr.open('GET', request_url);
-	xhr.setRequestHeader('User-Agent', Ti.App.getName() + ':' + Ti.App.getVersion() + " | Titanium v:" + Ti.version + " | hash:" + Ti.buildHash + "(" + Titanium.buildDate + ")");
+	// xhr.setRequestHeader('User-Agent', Ti.App.getName() + ':' + Ti.App.getVersion() + " | Titanium v:" + Ti.version + " | hash:" + Ti.buildHash + "(" + Titanium.buildDate + ")");
 	xhr.send();
 };
