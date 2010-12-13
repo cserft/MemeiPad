@@ -36,6 +36,11 @@ Ti.App.activityPostClick = Titanium.UI.createActivityIndicator({
 // = DASHBOARD TABLEVIEW =
 // =======================
 
+Ti.App.addEventListener('remove_tableview', function(e) {
+	Ti.API.debug("Removing TableView!!!!!!");
+	baseView.remove(tableView);
+});
+
 var tableView = Titanium.UI.createTableView({
 	top:0,
 	backgroundColor: "transparent",
@@ -110,22 +115,16 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	
 	//Click to Open Permalink
 	blackBoxLink.addEventListener('click', function(e){
-		
-		// Titanium.API.info("globalPoint:[" + JSON.stringify(e.globalPoint) + "]");
-		// Titanium.API.info("source:[" + e.source + "]");
-		// Titanium.API.info("type:[" + e.type + "]");
-		// Titanium.API.info("x:[" + e.x + "]");
-		// Titanium.API.info("y:[" + e.y + "]");
-		// 
-		clearTimeout(clickTimeoutPermalink);
 
+		clearTimeout(clickTimeoutPermalink);
+	
 		clickTimeoutPermalink = setTimeout(function() {	
 			
 			blackBoxLink.add(Ti.App.activityPostClick);
 			Ti.App.activityPostClick.show();
-			// Ti.API.debug('table view row clicked - Guid: ' + e.source.guid + ' e PubID: ' + e.source.pubId + ' e Column: ' + e.source.column + ' e Row number: ' + e.index);
+			
 			Ti.App.fireEvent('openPermalink', { guid: e.source.guid, pubId: e.source.pubId, x: e.globalPoint.x, y:e.globalPoint.y});
-
+	
 		},500);
 			
 	});
