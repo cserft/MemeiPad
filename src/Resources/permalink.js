@@ -809,8 +809,8 @@ btn_close_comment.addEventListener('click', function(e) {
 
 // MOVE WINDOW ON COMMENT FOCUS SO KEYBOARD WON'T BE OVER THE COMMENT FIELD
 repostCommentField.addEventListener('focus', function(e) {
-	whiteBox.animate({top: -350, duration: 200});
-	btn_close.animate({top:-364, duration: 200});
+	whiteBox.animate({top: -350, duration: 300});
+	btn_close.animate({top:-364, duration: 300});
 });
 
 // MOVE WINDOW BACK ON COMMENT BLUR
@@ -822,13 +822,15 @@ repostCommentField.addEventListener('blur', function(e) {
 // Repost bck to normal
 btn_repost.addEventListener('touchend', function()	{
 	// Click visual Feedback
+	// btn_repost.backgroundColor = "transparent";
 	btn_repost.opacity = 1;
 });
 
 //Repost
-btn_repost.addEventListener('touchstart', function(e) {
+btn_repost.addEventListener('click', function(e) {
 	// Click visual Feedback
-	btn_repost.opacity = 0.8;
+	// btn_repost.backgroundColor = "#CCC";
+	btn_repost.opacity = 0.7;
 
 	var reposted = Meme.repost(_guid, _pubId);
 	
