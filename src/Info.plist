@@ -63,7 +63,7 @@
 	<key>UIDeviceFamily</key>
 	<string>2</string>
 	<key>UIPrerenderedIcon</key>
-	<false/>
+	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>wifi</string>
