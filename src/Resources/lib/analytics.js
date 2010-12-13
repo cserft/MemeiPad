@@ -1,7 +1,7 @@
 // =====================================
 // = INTEGRATION WITH Y! WEB ANALYTICS =
 // =====================================
-var analytics {
+var analytics = {
 	APP_STARTED: 2,				//OK
 	NEW_POST_OPEN: 3,			//OK
 	NEW_POST_PUBLISHED: 4,		//OK
@@ -18,7 +18,8 @@ var analytics {
 	SHARE_MAIL: 15,				//OK
 	COPY_LINK: 16,				//OK
 	DELETE_POST: 17,			//OK
-	REPORT_ABUSE: 18
+	REPORT_ABUSE: 18,			//OK
+	SIGN_IN: 19					//OK
 };
 
 
