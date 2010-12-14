@@ -725,12 +725,16 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 	
 } else {
 	
-	// 1) Delete Button should display only when the user is the owner of the post
+	// 1) Delete Button is displayed only when the user is the owner of the post
 	if (_guid == Ti.App.myMemeInfo.guid) {
 		whiteBox.add(btn_delete);
+	
+	// 2) Report abuse is displayed when user is NOT owner of the post
+	} else {
+		whiteBox.add(btn_report_abuse);
 	}
 	
-	// 2) Repost button will be enabled only for posts that were not reposted yet
+	// 3) Repost button will be enabled only for posts that were not reposted yet
 	var origin_guid = post.origin_guid;
 	var origin_pubid = post.origin_pubid;
 	
@@ -749,11 +753,6 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 		// When Logged In and not the owner of the Post, enables Repost and Report Abuse Btn
 		btn_repost.opacity = 1;	
 		btn_repost.touchEnabled = true;
-	}
-	
-	// 3) report abuse is enabled for every post that is not from the logged user
-	if (_guid != Ti.App.myMemeInfo.guid) {
-		whiteBox.add(btn_report_abuse);
 	}
 }
 
