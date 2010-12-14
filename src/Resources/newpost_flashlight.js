@@ -10,8 +10,6 @@ var last_monitor_value;
 var flashlight_created = false;
 
 var flashlight_text_change_monitor = function(new_monitor_value) {
-	//Analytics Request
-	doYwaRequest(analytics.FLASHLIGHT_SEARCH);
 	
 	Ti.API.debug('flashlight_text_change_monitor invoked for query = ' + new_monitor_value);
 	
@@ -101,6 +99,10 @@ var flashlight_monitor = function() {
 	if (monitor_value) {
 		if (monitor_value == last_monitor_value) {
 			Ti.API.debug('TIMEOUT reached with no changes, firing search!');
+			
+			//Analytics Request
+			doYwaRequest(analytics.FLASHLIGHT_SEARCH);
+			
 			flashlight_show();
 			flashlight_monitor_stop();
 		} else {
@@ -204,8 +206,6 @@ var flashlight_create = function() {
 								color: 			'#863486',
 								height:			42,
 								width: 			192,
-								verticalAlign: 	1,
-								// backgroundColor: 'red',
 								top:			10,
 								left: 			110,
 								textAlign: 		'left',
