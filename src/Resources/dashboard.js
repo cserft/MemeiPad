@@ -35,11 +35,6 @@ Ti.App.activityPostClick = Titanium.UI.createActivityIndicator({
 // = DASHBOARD TABLEVIEW =
 // =======================
 
-Ti.App.addEventListener('remove_tableview', function(e) {
-	Ti.API.debug("Removing TableView!!!!!!");
-	baseView.remove(tableView);
-});
-
 var tableView = Titanium.UI.createTableView({
 	top:0,
 	backgroundColor: "transparent",

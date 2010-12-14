@@ -286,7 +286,6 @@ var showHeader = function (successCallback) {
 				Ti.API.info("Signout Link clicked");
 				popover.hide({animated:true});
 				Ti.App.oAuthAdapter.logout('meme');
-				Ti.App.fireEvent('remove_tableview');
 				headerView.hide();
 				startApplication();
 			});
@@ -589,6 +588,10 @@ var showDashboard = function() {
 	// ===========================
 	// = CREATING DASHBOARD VIEW =
 	// ===========================
+	
+	if (winDashboard) {
+		winDashboard.close();
+	}
 
 	winDashboard = Ti.UI.createWindow({
 		url: 'dashboard.js',
@@ -605,9 +608,6 @@ var showDashboard = function() {
 	
 	// scrollView.add(winDashboard);
 	winDashboard.open();
-	
-	//Removes the TableView so it can start fresh
-	Ti.App.fireEvent('remove_tableview');
 	
 	// Builds the LoggedIn Header or the SignIn one
 	if (Ti.App.oAuthAdapter.isLoggedIn()) {
