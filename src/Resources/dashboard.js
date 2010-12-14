@@ -275,7 +275,7 @@ var getDashboardData = function (pTimestamp) {
 			queryTimestamp = pTimestamp - 1;
 		}
 		
-		posts = Ti.App.meme.dashboardPosts(307, 231, pTimestamp);
+		posts = Ti.App.meme.dashboardPosts(307, 231, queryTimestamp);
 		
 	} else {
 		Ti.API.info(" ####### STARTING FEATURED DASHBOARD (NOT LOGGED IN) ##########");
