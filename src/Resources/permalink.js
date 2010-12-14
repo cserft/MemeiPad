@@ -749,6 +749,10 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 		// When Logged In and not the owner of the Post, enables Repost and Report Abuse Btn
 		btn_repost.opacity = 1;	
 		btn_repost.touchEnabled = true;
+	}
+	
+	// 3) report abuse is enabled for every post that is not from the logged user
+	if (_guid != Ti.App.myMemeInfo.guid) {
 		whiteBox.add(btn_report_abuse);
 	}
 }
