@@ -699,10 +699,10 @@ btn_share.addEventListener('touchstart', function(e) {
 // REPORT ABUSE Button
 var btn_report_abuse = Titanium.UI.createButton({
 	backgroundImage:'images/btn_report_abuse.png',
-	width:17,
-	height:17,
-	bottom: 25,
-	right: 170,
+	width:27,
+	height:27,
+	bottom: 20,
+	right: 165,
 	zIndex: 1
 });
 
@@ -956,7 +956,7 @@ btn_delete.addEventListener('click', function(e) {
 });
 
 // REPORT ABUSE LISTENER
-btn_report_abuse.addEventListener('singletap', function(e) {
+btn_report_abuse.addEventListener('click', function(e) {
 	//Alert to Open Report Abuse page on Safari
 	var alertOpenPermalink = Titanium.UI.createAlertDialog({
 		title: L('report_abuse_alert_title'),
