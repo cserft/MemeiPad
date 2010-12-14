@@ -223,15 +223,16 @@ var Meme = function() {
 
 	// Creates a post on Meme given the type provided
 	createPost = function(type, content, caption) {
+		// must put query params in single quotes due to an API bug
 		var columns = 'type';
-		var values = '"' + type + '"';
+		var values = '\'' + type + '\'';
 		if (content) {
 			columns += ', content';
-			values += ', "' + content + '"';
+			values += ', \'' + content + '\'';
 		}
 		if (caption) {
 			columns += ', caption';
-			values += ', "' + caption + '"';
+			values += ', \'' + caption + '\'';
 		}
 		var yqlQuery = 'INSERT INTO meme.user.posts (' + columns + ') VALUES (' + values + ')';
 		return execute(true, yqlQuery);
