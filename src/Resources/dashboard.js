@@ -347,7 +347,7 @@ var getDashboardData = function (pTimestamp) {
 			
 				tempRow = null;
 				itemPerRowCount = 0;
-				lastRow++;
+				lastRow += 1;
 				tempItemRowCount = 0;
 
 				if (pTimestamp == null) {
@@ -376,8 +376,6 @@ var getDashboardData = function (pTimestamp) {
 	if (pTimestamp == null) {
 		Ti.API.debug("reseting TableView data");
 		tableView.setData(data);
-	} else {
-		return(posts);
 	}
 	
 	// open Main Window from app.js with Transition
@@ -385,8 +383,9 @@ var getDashboardData = function (pTimestamp) {
 	//Presents the Status Bar after launching
 	Titanium.UI.iPhone.showStatusBar();
 	
-	if (lastRow < 3) {
-		getDashboardData(lastTimestamp);	
+	if (Ti.App.oAuthAdapter.isLoggedIn() && (lastRow < 3)) {
+		Ti.API.info('Less than 3 rows on dashboard (currently ' + lastRow + '), will fetch more posts...');
+		getDashboardData(lastTimestamp);
 	}
 }
 
@@ -634,7 +633,6 @@ tableView.addEventListener('scrollEnd',function(e) {
 getDashboardData(null);
 
 Ti.App.addEventListener('reloadDashboard', function(e) {
-	// Ti.API.debug("Reloading Dashboard");
 	beginReloading();
 });
 
