@@ -442,10 +442,10 @@ whiteBox.add(repostCountLabel);
 // Button to share Post
 var btn_share = Titanium.UI.createButton({
 	backgroundImage: 	'images/btn_fwd2.png',
-	width: 				24,
-	height: 			18,
-	right: 				220,
-	bottom: 			25,
+	width: 				34,
+	height: 			28,
+	right: 				215,
+	bottom: 			20,
 	opacity: 			1,
 	zIndex: 			1
 });
@@ -454,7 +454,7 @@ whiteBox.add(btn_share);
 //BTN Share popover
 
 // POPOVER WITH DETAILED INFO FROM USER OWNER OF THE POST
-btn_share.addEventListener('click', function(e) {
+btn_share.addEventListener('touchstart', function(e) {
 	
 	clearTimeout(clickTimeoutViewPopoverUser);
 	
@@ -776,8 +776,8 @@ var repostCommentField = Titanium.UI.createTextField({
 	left: 			52,
 	zIndex: 		2,
 	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_NONE,
-	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT
-	// clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
+	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
+	returnKeyType: 	Titanium.UI.RETURNKEY_DONE
 });
 repost_comment_view.add(repostCommentField);
 
@@ -833,14 +833,12 @@ repostCommentField.addEventListener('blur', function(e) {
 // Repost bck to normal
 btn_repost.addEventListener('touchend', function()	{
 	// Click visual Feedback
-	// btn_repost.backgroundColor = "transparent";
 	btn_repost.opacity = 1;
 });
 
 //Repost
 btn_repost.addEventListener('click', function(e) {
 	// Click visual Feedback
-	// btn_repost.backgroundColor = "#CCC";
 	btn_repost.opacity = 0.7;
 
 	var reposted = Ti.App.meme.repost(_guid, _pubId);
@@ -921,7 +919,7 @@ btn_send_comment.addEventListener("click", function(e) {
 });
 
 // DELETE POST
-btn_delete.addEventListener("click", function(e) {
+btn_delete.addEventListener('click', function(e) {
 	
 	//Alert to Open Safari for the Post Permalink
 	var alertOpenPermalink = Titanium.UI.createAlertDialog({
@@ -955,7 +953,7 @@ btn_delete.addEventListener("click", function(e) {
 });
 
 // REPORT ABUSE LISTENER
-btn_report_abuse.addEventListener("click", function(e) {
+btn_report_abuse.addEventListener('singletap', function(e) {
 	//Alert to Open Report Abuse page on Safari
 	var alertOpenPermalink = Titanium.UI.createAlertDialog({
 		title: L('report_abuse_alert_title'),
