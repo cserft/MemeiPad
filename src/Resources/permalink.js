@@ -709,10 +709,10 @@ var btn_report_abuse = Titanium.UI.createButton({
 // Delete Button
 var btn_delete = Titanium.UI.createButton({
 	backgroundImage:'images/btn_trash.png',
-	width:15,
-	height:19,
-	bottom: 25,
-	right: 170,
+	width:25,
+	height:29,
+	bottom: 20,
+	right: 165,
 	zIndex: 1
 });
 
