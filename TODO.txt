@@ -10,16 +10,12 @@ app.js
 ------------
 - Display Version of the App
 - Add Feedback mail on About
-- BUG: when signing in, the Dashboard doesn't load (ERROR oadapter.js line 233)
 
 _____ AFTER LAUNCH _____
 - Global Settings App Page on the iPhone/iPad - http://developer.appcelerator.com/question/39381/application-settings
-- REsize Images in the Hightligh
-- implement button to close the Highlights and expand the dashboard
 
 dashboard.js
 ------------
-- BUG: When less than 3 lines are presented, must trigger Load pra baixo.
 
 _____ AFTER LAUNCH _____
 - better handling of the Loading 'prabaixo', only hide the "Loading..." message after the rows are displayed
@@ -34,7 +30,6 @@ permalink.js
 
 
 _____ AFTER LAUNCH _____
-- Add error message when user clicks on Repost Button and is not logged in. Offers to log in or cancel.
 - Find out a way to check if a youtube video has H264 version, if not present a better error handling. (check Meme Web Code)
 - Show the App Posting to Meme (how to get App data from YQL)
 - Total stripper for HTML Entities and send it to Placemaker()
@@ -45,7 +40,7 @@ _____ AFTER LAUNCH _____
 newpost.js
 ----------
 - BUG: paste A link on the Flashlight search (http://yahoo.com), it will get the YQL error message
-- BUG: when there's upload error and you try to upload again, the progress bar appears in the worng position.
+- BUG: when there's upload error and you try to upload again, the progress bar appears in the wrong position.
 - BUG: search for 'Helo', get the video results and click in the first item, get an error on console:
 [ERROR] invalid image type. expected either TiBlob or TiFile, was: NSNull in -[TiUIImageView setImage_:] (TiUIImageView.m:671). App Stops responding
 
