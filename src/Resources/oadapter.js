@@ -10,6 +10,7 @@
 Ti.include('lib/sha1.js');
 Ti.include('lib/oauth.js');
 Ti.include('lib/secrets.js');
+Ti.include('lib/analytics.js');
 
 // Sets the iPad Language to use in the Login Page
 var loginLanguage = function(){
@@ -45,6 +46,9 @@ var authorizationUI = function() {
 		oauthWindow  = null;
 		oauthWebView = null;
 		gCallback    = null;
+		
+		//Analytics Request
+		doYwaRequest(analytics.SIGN_IN);
     };
 
 	// looks for the Oauth Verifier everytime the webview loads
