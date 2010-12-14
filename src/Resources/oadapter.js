@@ -121,10 +121,10 @@ var authorizationUI = function() {
 			//Close button
 			var btn_close = Titanium.UI.createButton({
 				backgroundImage:'images/btn_close_gray.png',
-				width: 			19,
-				height: 		19,
-				top: 			10,
-				right: 			10,
+				width: 			29,
+				height: 		29,
+				top: 			5,
+				right: 			5,
 				zIndex: 		10,
 				visible: 		true
 			});

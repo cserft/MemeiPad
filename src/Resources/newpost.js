@@ -270,12 +270,12 @@ viewContainerPhoto.add(img);
 //Photo delete Button
 var btn_photo_close = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
-	width: 			19,
-	height: 		19,
-	top: 			0,
-	left: 			0,
+	width: 			29,
+	height: 		29,
+	top: 			-5,
+	left: 			-5,
 	zIndex: 		10,
-	style:Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
+	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 	
 });
 viewContainerPhoto.add(btn_photo_close);
@@ -504,10 +504,10 @@ textArea.addEventListener('change', function(e) {
 //TextArea Clear Button
 var btn_text_clear = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
-	width: 			19,
-	height: 		19,
-	top: 			100,
-	right: 			45,
+	width: 			29,
+	height: 		29,
+	top: 			95,
+	right: 			40,
 	zIndex: 		2,
 	visible: 		true
 });
@@ -523,7 +523,7 @@ textArea.addEventListener('blur', function(e) {
 	editView.scrollTo(0, {animated:true});
 });
 
-btn_text_clear.addEventListener('click', function(e) {
+btn_text_clear.addEventListener('touchstart', function(e) {
 	tempPostLabel.show(); // hide the hint text when textArea receives Focus
 	editView.remove(btn_text_clear);
 	textArea.blur();
@@ -735,7 +735,7 @@ var alertCloseImage = Titanium.UI.createAlertDialog({
 });
 
 // Listener to delete the Image and start again
-btn_photo_close.addEventListener('click', function(e) {
+btn_photo_close.addEventListener('touchstart', function(e) {
 	alertCloseImage.show();
 });
 
