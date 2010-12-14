@@ -9,6 +9,9 @@ Ti.API.info("App Name: " + Ti.App.getName() + " and App Version: " + Ti.App.getV
 
 // LIsteners to retrieve Data from the Custom Handler (memeipad)
 Ti.App.addEventListener('resume', function (){
+	//Analytics Request
+	doYwaRequest(analytics.APP_STARTED);
+	
 	Ti.API.info("App Arguments on Resume: " + JSON.stringify(Ti.App.getArguments()));
 	// var HandleArguments = Ti.App.getArguments(url);
 	// Ti.API.info("Argument splitted: " + HandleArguments);
