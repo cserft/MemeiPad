@@ -24,13 +24,18 @@ Ti.App.addEventListener('pause', function (){
 // ==================
 // = Global objects =
 // ==================
+
+// indicates if app is in development or production
+// used to disable cache, analytics, etc
+Ti.App.development = true; // WARNING: remove this before put in production :)
+
 Ti.App.myMemeInfo = null;
 
 Ti.App.oAuthAdapter = OAuthAdapter('meme', authorizationUI());
 
 Ti.App.cache = Cache({ 
 	cache_expiration_interval: 60, 
-	disable: true // WARNING: remove this before put in production :)
+	disable: Ti.App.development
 });
 
 Ti.App.meme = Meme();

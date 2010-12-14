@@ -291,8 +291,6 @@ var getDashboardData = function (pTimestamp) {
 	lastTimestamp = posts[(posts.length - 1)].timestamp;
 	lastTimestamp = parseInt(lastTimestamp);
 	
-	//Ti.API.debug("last Time Stamp: " + lastTimestamp );
-	
 	// create THE TABLE ROWS
 	for (var i=0; i<posts.length; i++) {
 		var post 		= posts[i];
@@ -349,7 +347,7 @@ var getDashboardData = function (pTimestamp) {
 			
 				tempRow = null;
 				itemPerRowCount = 0;
-				lastRow += 1;
+				lastRow++;
 				tempItemRowCount = 0;
 
 				if (pTimestamp == null) {
@@ -386,6 +384,10 @@ var getDashboardData = function (pTimestamp) {
 	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
 	//Presents the Status Bar after launching
 	Titanium.UI.iPhone.showStatusBar();
+	
+	if (lastRow < 3) {
+		getDashboardData(lastTimestamp);	
+	}
 }
 
 // Gradient in the end of the screen to smooth the design
@@ -435,7 +437,6 @@ var bellowActInd = Titanium.UI.createActivityIndicator({
 	height:30
 });
 
-
 var loadingLabel = Ti.UI.createLabel({
 	text: L('loading_message'),
 	// left:55,
@@ -450,8 +451,7 @@ var loadingLabel = Ti.UI.createLabel({
 loadingRow.add(bellowActInd);
 loadingRow.add(loadingLabel);
 
-function beginUpdate()
-{
+function beginUpdate() {
 	updating = true;
 	bellowActInd.show();
 
@@ -460,8 +460,7 @@ function beginUpdate()
 	setTimeout(endUpdate,2500);
 }
 
-function endUpdate()
-{
+function endUpdate() {
 
 	updating = false;
 	
@@ -469,13 +468,8 @@ function endUpdate()
 	
 	// Get posts from Dashboard
 	getDashboardData(lastTimestamp);
-
-	// just scroll down a bit to the new rows to bring them into view
-    //tableView.scrollToIndex(lastRow,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.NONE})
 	
-	bellowActInd.hide();
-	// Ti.App.fireEvent('hide_indicator');
-	
+	bellowActInd.hide();	
 }
 
 var lastDistance = 0; // calculate location to determine direction
@@ -483,7 +477,6 @@ var lastDistance = 0; // calculate location to determine direction
 tableView.addEventListener('scroll',function(e)
 {	
 	// Used for the Pull to Refresh
-	//Ti.API.debug("scroll activated");
 	var offset = e.contentOffset.y;
 	var height = e.size.height;
 	var total = offset + height;
@@ -506,24 +499,9 @@ tableView.addEventListener('scroll',function(e)
 	lastDistance = distance;
 });
 
-
-
 // ===================
 // = PULL TO REFRESH =
 // ===================
-function formatDate() {
-	// TODO: i18n format of the date
-	var date = new Date,
-		minstr = date.getMinutes(); if (minstr<10) {minstr="0"+minstr;} 		// fixes minutes when less than 10
-		datestr = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
-		hourstr = ' ' + date.getHours() + ':' + minstr + ' AM'; 
-		
-	if (date.getHours() >= 12) {
-		hourstr = ' ' + (date.getHours() == 12 ? date.getHours() : date.getHours() - 12) + ':' + minstr + ' PM';
-	}
-	
-	return datestr + hourstr;
-}
 
 var border = Ti.UI.createView({
 	backgroundColor:"black",
@@ -568,7 +546,7 @@ var statusLabel = Ti.UI.createLabel({
 });
 
 var lastUpdatedLabel = Ti.UI.createLabel({
-	text: 			L('last_updated_text') + formatDate(),
+	text: 			L('last_updated_text') + formatted_date(),
 	width: 			220,
 	bottom: 		15,
 	height: 		"auto",
@@ -611,7 +589,7 @@ function endReloading()
 	// when you're done, just reset
 	tableView.setContentInsets({top:0},{animated:true});
 	reloading = false;
-	lastUpdatedLabel.text = L('last_updated_text') + formatDate();
+	lastUpdatedLabel.text = L('last_updated_text') + formatted_date();
 	statusLabel.text = L('pull_down_to_refresh_text');
 	actInd.hide();
 	arrow.show();
@@ -640,10 +618,8 @@ tableView.addEventListener('scroll',function(e)
 	}
 });
 
-tableView.addEventListener('scrollEnd',function(e)
-{
-	if (Ti.App.oAuthAdapter.isLoggedIn() && pulling && !reloading && e.contentOffset.y <= -65.0)
-	{
+tableView.addEventListener('scrollEnd',function(e) {
+	if (Ti.App.oAuthAdapter.isLoggedIn() && pulling && !reloading && e.contentOffset.y <= -65.0) {
 		reloading = true;
 		pulling = false;
 		arrow.hide();
@@ -654,7 +630,6 @@ tableView.addEventListener('scrollEnd',function(e)
 		beginReloading();
 	}
 });
-//variable that configs the number of Dashboard pages that loads when the app starts
 
 getDashboardData(null);
 
@@ -663,9 +638,7 @@ Ti.App.addEventListener('reloadDashboard', function(e) {
 	beginReloading();
 });
 
-Ti.App.addEventListener('close_dashboard', function(e)
-{
+Ti.App.addEventListener('close_dashboard', function(e) {
 	//Closes Dashboard Window
 	win.close({opacity:0,duration:200});
-
 });

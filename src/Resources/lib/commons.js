@@ -1,13 +1,10 @@
+// returns timestamp in milliseconds
 var timestamp = function() {
 	return((new Date()).getTime());
 };
 
-// =============================
-// = CACULATES THE HUMANE DATA =
-// =============================
-
+// CACULATES THE HUMANE DATE
 // With this we can create messages like "This post was created 10 minutes ago" or "Just now", etc
-
 function humane_date(date_str){
 	var time_formats = [
 		[60, L('time_just_now')],
@@ -57,6 +54,20 @@ function humane_date(date_str){
 	return date_str;
 };
 
+// Returns date formatted like '12/12/2010 06:51 PM'
+function formatted_date() {
+	// TODO: i18n format of the date
+	var date = new Date,
+		minstr = date.getMinutes(); if (minstr<10) {minstr="0"+minstr;} 		// fixes minutes when less than 10
+		datestr = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+		hourstr = ' ' + date.getHours() + ':' + minstr + ' AM'; 
+		
+	if (date.getHours() >= 12) {
+		hourstr = ' ' + (date.getHours() == 12 ? date.getHours() : date.getHours() - 12) + ':' + minstr + ' PM';
+	}
+	
+	return datestr + hourstr;
+}
 
 // ====================================
 // = FUNCTION TO GET VIDEO THUMBNAILS =
