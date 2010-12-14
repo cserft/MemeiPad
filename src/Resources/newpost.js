@@ -398,7 +398,7 @@ alertOpenPermalink.addEventListener('click',function(e)
 // Upload Progress Bar
 var progressView = Titanium.UI.createView({
 	top: 			300,
-	width: 			350,
+	width: 			400,
 	height: 		80,
 	borderRadius: 	5,
 	backgroundColor: 'black',
@@ -408,7 +408,7 @@ var progressView = Titanium.UI.createView({
 win.add(progressView);
 
 var actInd = Ti.UI.createActivityIndicator({
-	top: 10, 
+	top: 22, 
 	left: 25,
 	height: 50,
 	width: 10,
@@ -419,15 +419,33 @@ progressView.add(actInd);
 var ind = Ti.UI.createProgressBar({
 	width: 250,
 	height: 60,
+	left: 	55,
+	top: 5,
 	min: 0,
 	max: 1,
 	value: 0,
 	style:Titanium.UI.iPhone.ProgressBarStyle.BAR,
-	message: '',
+	message: 'Preparing to upload file',
 	font:{fontSize:16, fontWeight:'bold'},
 	color:'white'
 });
 progressView.add(ind);
+
+var cancelPostButton = Ti.UI.createButton({
+	backgroundImage: 			L('path_btn_back'),
+	backgroundLeftCap: 			20,
+	backgroundRightCap: 		20,
+	left: 						310,
+	top: 						13,
+	height: 					52, //29
+	width: 						90, // 50
+    title: 						L('btn_alert_CANCEL'),
+	color: 						'white',
+	textAlign: 					'center',
+	font: 						{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'},
+	style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+});
+progressView.add(cancelPostButton);
 
 function showProgressView (pCommand, pMessage) {
 	
@@ -767,6 +785,15 @@ Titanium.App.addEventListener("postClicked", function(e) {
 		// IF there is a Image to Upload
 		var xhr = Titanium.Network.createHTTPClient();
 		xhr.setTimeout(300000); // timeout to upload is 5 minutes
+		
+		// Listener to cancel post
+		cancelPostButton.addEventListener('click', function(){
+			xhr.abort();
+			showProgressView('hide', "");
+			ind.value = 0;
+			btn_post.enabled = true;
+			Ti.API.debug("Post canceled");
+		});
 
 		xhr.onerror = function(e) {
 			// Hides the Progress bar
@@ -915,6 +942,8 @@ Titanium.App.addEventListener("postOnMeme", function(e) {
 		Ti.App.newpostIsOpen = false;
 	});
 });
+
+
 
 // ======================
 // = HIDE ALL KEYBOARDS =
