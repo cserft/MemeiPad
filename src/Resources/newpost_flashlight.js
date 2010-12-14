@@ -200,13 +200,36 @@ var flashlight_create = function() {
 							var row = Ti.UI.createTableViewRow({height:78});
 
 							var title = Ti.UI.createLabel({
-								text: video.title,
-								color: '#863486',
-								height:50,
-								width: 192,
-								left:110,
-								textAlign:'left',
-								font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
+								text: 			video.title,
+								color: 			'#863486',
+								height:			42,
+								width: 			192,
+								verticalAlign: 	1,
+								// backgroundColor: 'red',
+								top:			10,
+								left: 			110,
+								textAlign: 		'left',
+								font: 			{fontSize:12, fontFamily:'Helvetica', fontWeight:'regular'}
+							});
+							
+							//duration time preparation
+							var secondsToHms = function (d) {
+								d = Number(d);
+								var h = Math.floor(d / 3600);
+								var m = Math.floor(d % 3600 / 60);
+								var s = Math.floor(d % 3600 % 60);
+								return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s);
+							};
+							
+							var duration = Ti.UI.createLabel({
+								text: secondsToHms(video.duration),
+								color: 			'#666',
+								height: 		10,
+								width: 			50,
+								top: 			60,
+								left: 			110,
+								textAlign: 		'left',
+								font: 			{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'}
 							});
 
 							var image = Ti.UI.createImageView({
@@ -229,6 +252,7 @@ var flashlight_create = function() {
 							row.add(image);
 					        row.add(img_play_btn);
 							row.add(title);
+							row.add(duration);
 							row.add(Ti.UI.createView({
 								height: 78,
 								width: 310,
