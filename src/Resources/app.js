@@ -7,6 +7,17 @@ Ti.include('lib/analytics.js');
 Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
 Ti.API.info("App Name: " + Ti.App.getName() + " and App Version: " + Ti.App.getVersion());
 
+// LIsteners to retrieve Data from the Custom Handler (memeipad)
+Ti.App.addEventListener('resume', function (){
+	Ti.API.info("App Arguments on Resume: " + JSON.stringify(Ti.App.getArguments()));
+	// var HandleArguments = Ti.App.getArguments(url);
+	// Ti.API.info("Argument splitted: " + HandleArguments);
+});
+
+Ti.App.addEventListener('pause', function (){
+	Ti.API.info("App Arguments on Pause: " + JSON.stringify(Ti.App.getArguments()));
+});
+
 // ==================
 // = Global objects =
 // ==================
@@ -109,8 +120,8 @@ Ti.App.activitySmall = Ti.UI.createActivityIndicator({
 	style: 				Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN,
 	color: 				'white',
 	backgroundColor: 	'black',
-	width: 				30,
-	height: 			30,
+	width: 				35,
+	height: 			35,
 	borderRadius: 		5,
 	opacity: 			0.8,
 	zIndex: 			2
@@ -821,6 +832,9 @@ var displayErrorMessage = function(title, message, relativeTop, pFontSize) {
 // = YQL ERROR MESSAGE =
 // =====================
 Ti.App.addEventListener('yqlerror', function(e) {
+	//Analytics Request
+	doYwaRequest(analytics.YQL_ERROR);
+	
 	Ti.API.error('App crashed (cannot connect to YQL). Error info: ' + JSON.stringify(e));
 	displayErrorMessage(L('yql_error'), L('error_message_problem'), 80, 36);
 });

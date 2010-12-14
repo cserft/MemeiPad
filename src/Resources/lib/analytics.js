@@ -19,7 +19,8 @@ var analytics = {
 	COPY_LINK: 16,				//OK
 	DELETE_POST: 17,			//OK
 	REPORT_ABUSE: 18,			//OK
-	SIGN_IN: 19					//OK
+	SIGN_IN: 19,				//OK
+	YQL_ERROR: 20				//OK
 };
 
 

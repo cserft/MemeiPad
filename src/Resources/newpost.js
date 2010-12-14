@@ -933,5 +933,6 @@ Ti.App.addEventListener('hide_keyboard', function(e) {
 // ===========================
 Ti.App.addEventListener('close_newpost', function(e) {
 	//Closes New Post Window
+	Ti.App.newpostIsOpen = false;
 	win.close({opacity:0,duration:200});
 });

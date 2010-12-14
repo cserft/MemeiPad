@@ -988,6 +988,7 @@ Ti.App.activityPostClick.hide();
 Ti.App.addEventListener('close_permalink', function(e)
 {
 	//Closes New Post Window
+	Ti.App.permalinkIsOpened = false;
 	win.close({opacity:0,duration:200});
 
 });
