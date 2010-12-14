@@ -481,7 +481,7 @@ var showHeader = function (successCallback) {
 			aboutHTML += '</body></html>';
 			
 			var aboutView = Ti.UI.createWebView({
-				url: 				L('url_atos_html'), // aboutHTML,
+				url: 				'atos/' + L('url_atos_html'), // aboutHTML,
 				top: 				50,	
 				width: 				335,
 				height: 			360, // correct: 270
