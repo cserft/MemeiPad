@@ -41,5 +41,6 @@ var doYwaRequest = function(pAction) {
 	//eContent = encodeURIComponent(pContent);
     xhr.open('GET', request_url);
 	// xhr.setRequestHeader('User-Agent', Ti.App.getName() + ':' + Ti.App.getVersion() + " | Titanium v:" + Ti.version + " | hash:" + Ti.buildHash + "(" + Titanium.buildDate + ")");
+	// xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10');
 	xhr.send();
 };
