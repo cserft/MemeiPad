@@ -20,7 +20,8 @@ var analytics = {
 	DELETE_POST: 17,
 	REPORT_ABUSE: 18,
 	SIGN_IN: 19,
-	YQL_ERROR: 20
+	YQL_ERROR: 20,
+	EMAIL_OPEN: 21
 };
 
 var doYwaRequest = function(pAction) {
@@ -42,7 +43,7 @@ var doYwaRequest = function(pAction) {
 	// xhr.setRequestHeader('User-Agent', Ti.App.getName() + ':' + Ti.App.getVersion() + " | Titanium v:" + Ti.version + " | hash:" + Ti.buildHash + "(" + Titanium.buildDate + ")");
 	// xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10');
 	
-	if (!Ti.App.development) {
+	// if (!Ti.App.development) {
 		xhr.send();
-	}
+	// }
 };
