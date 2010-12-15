@@ -789,8 +789,8 @@ Titanium.App.addEventListener("postClicked", function(e) {
 		// Listener to cancel post
 		cancelPostButton.addEventListener('click', function(){
 			xhr.abort();
-			showProgressView('hide', "");
-			ind.value = 0;
+			showProgressView('hide', null);
+			ind.value = 0
 			btn_post.enabled = true;
 			Ti.API.debug("Post canceled");
 		});

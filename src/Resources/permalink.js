@@ -637,6 +637,8 @@ btn_share.addEventListener('touchstart', function(e) {
 			else if (e.index == 2) {
 				
 				var emailDialog = Titanium.UI.createEmailDialog();
+				emailDialog.setHtml(true);
+	            emailDialog.setBarColor('black');
 				
 				var messageSubject;
 				if (post.caption != "") {
@@ -649,8 +651,6 @@ btn_share.addEventListener('touchstart', function(e) {
 
 				var messageBody = postWebView.html + '<br/>' + L('mail_message_body_source') + '<a href=' + post.url + '>' + post.url + '</a><br/><br/><a href=' + L('memeapp_url') + '>' + L('mail_message_signature') + '</a><!--YWA tracking tag--><img src="http://a.analytics.yahoo.com/p.pl?a=1000671789962&js=no&x=' + analytics.EMAIL_OPEN + '" width="1" height="1" alt="" />';
 	            emailDialog.setMessageBody(messageBody);
-	            emailDialog.setHtml(true);
-	            emailDialog.setBarColor('black');
 
 		        emailDialog.addEventListener('complete',function(e)
 		        {
