@@ -22,6 +22,7 @@
 	<string name="meme_short_domain">me.me/</string>
 	<string name="aboutGitLabel_text">Meme for iPad on GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
+	<string name="meme_about_text">About this App</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">打開鏈接</string>
 	<string name="success_alert_title">成功</string>

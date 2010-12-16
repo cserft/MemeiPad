@@ -23,6 +23,7 @@
 	<string name="meme_short_domain">mim.ly/</string>
 	<string name="aboutGitLabel_text">Mim untuk iPad di GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
+	<string name="meme_about_text">About this App</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Buka Link</string>
 	<string name="success_alert_title">Berhasil</string>
