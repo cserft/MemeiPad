@@ -223,25 +223,25 @@ var showHeader = function (successCallback) {
 			
 			var popover = Ti.UI.iPad.createPopover({
 				width:341,
-				height:300, 
+				height:140, 
 				backgroundColor: 'white',
 				navBarHidden: true,
 				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
 			});
 			
-			var main = Ti.UI.createWindow({
-				top: 0,
-				left: 0,
-				width: 340,
-				height: 420,
-				backgroundColor:"#FFF",
-				navBarHidden: true
-			});
-			
-			popover.add(main);
 			
 			// BUILDING THE TABLE VIEW
 			var data = [];
+			
+			var settingsTableView = Ti.UI.createTableView({
+				data: 			data,
+				top: 			0,
+				left: 			0,
+				width: 			340,
+				height: 		140,
+				separatorColor: '#CCC',
+				style: 			0 //Ti.UI.iPhone.TableViewStyle.PLAIN
+			});
 			
 			// ROW 1 LINK TO MEME AND SIGNOUT BUTTON
 			var row1 = Ti.UI.createTableViewRow({
@@ -333,7 +333,7 @@ var showHeader = function (successCallback) {
 			
 			var atosLabel = Ti.UI.createLabel({
  				color: 			'#333',
-				text: 			L('ATOS'),
+				text: 			L('meme_about_text'),
 				textAlign: 		'left',
 				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
@@ -344,109 +344,39 @@ var showHeader = function (successCallback) {
 			
 			data[2] = row3;
 			
-			// ROW 4: YAHOO TOS
-			var row4 = Ti.UI.createTableViewRow({
-				selectedBackgroundColor: '#CCC',
-				height: 40,
-				hasChild: true
-			});
 			
-			var tosLabel = Ti.UI.createLabel({
- 				color: 			'#333',
-				text: 			'Yahoo! Terms of Service',
-				textAlign: 		'left',
-				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
-				left: 			14,
-				height: 		34,
-				width: 			260
-			});	
-			row4.add(tosLabel);
+			//Sets the data to the TableView
+			settingsTableView.data = data;
 			
-			data[3] = row4;
+			popover.add(settingsTableView);
 			
-			// ROW 5: PRIVACY
-			var row5 = Ti.UI.createTableViewRow({
-				selectedBackgroundColor: '#CCC',
-				height: 40,
-				hasChild: true
-			});
+			// CREATES THE NAVIGATION FOR THE ABOUT
 			
-			var privacyLabel = Ti.UI.createLabel({
- 				color: 			'#333',
-				text: 			'Privacy Policy',
-				textAlign: 		'left',
-				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
-				left: 			14,
-				height: 		34,
-				width: 			260
-			});	
-			row5.add(privacyLabel);
-			
-			data[4] = row5;
-			
-			// ROW 6: GUIDELINES
-			var row6 = Ti.UI.createTableViewRow({
-				selectedBackgroundColor: '#CCC',
-				height: 40,
-				hasChild: true
-			});
-			
-			var guidelinesLabel = Ti.UI.createLabel({
- 				color: 			'#333',
-				text: 			'Guidelines',
-				textAlign: 		'left',
-				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
-				left: 			14,
-				height: 		34,
-				width: 			260
-			});	
-			row6.add(guidelinesLabel);
-			
-			data[5] = row6;
-			
-			// ROW 7: FEEDBACK
-			var row7 = Ti.UI.createTableViewRow({
-				selectedBackgroundColor: '#CCC',
-				height: 40,
-				hasChild: true
-			});
-			
-			var feedbackLabel = Ti.UI.createLabel({
- 				color: 			'#333',
-				text: 			'Send us feedback',
-				textAlign: 		'left',
-				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
-				left: 			14,
-				height: 		34,
-				width: 			260
-			});	
-			row7.add(feedbackLabel);
-			
-			data[6] = row7;
-			
-			var settingsTableView = Ti.UI.createTableView({
-				data: 			data,
-				top: 			0,
-				left: 			0,
-				width: 			340,
-				height: 		300,
-				separatorColor: '#CCC',
-				style: 			0 //Ti.UI.iPhone.TableViewStyle.PLAIN
-			});
-			
-			
-			main.add(settingsTableView);
+
 			
 			//ABOUT WINDOW
-			var aboutWindow = Ti.UI.createView({
-				backgroundColor: 	"white",
-				top: 				0,
-				left: 				341,
-				width: 				340,
-				height: 			420,
-				visible: 			true
+			var aboutWindow = Ti.UI.createWindow({
+				title: 					L('meme_about_text'),
+				backgroundColor: 		"white",
+				color: 					'white',
+				top: 					0,
+				left: 					341,
+				width: 					340,
+				height: 				420,
+				visible: 				true,
+				// LeftNavButton: 			backButton,
+				barColor: 				'black',
+				navBarHidden: 			true
+				
 			});
-			main.add(aboutWindow);
+			// aboutWindow.setLeftNavButton = backButton;
+			
+			var navGroup = Ti.UI.iPhone.createNavigationGroup({
+				window: 	aboutWindow,
+				visible: 	false
+			});
+			popover.add(navGroup);
+			
 			
 			//ABOUT WINDOW
 			var navBar = Ti.UI.createView({
@@ -459,11 +389,22 @@ var showHeader = function (successCallback) {
 			});
 			aboutWindow.add(navBar);
 			
+			var aboutWindowTitle = Ti.UI.createLabel({
+ 				color: 			'white',
+				text: 			L('meme_about_text'),
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			110,
+				height: 		34,
+				width: 			200
+			});	
+			navBar.add(aboutWindowTitle);
+			
 			var backButton = Ti.UI.createButton({
 				backgroundImage: 			L('path_btn_back'),
 				backgroundLeftCap: 			20,
 				backgroundRightCap: 		20,
-				left: 						0,
+				left: 						-5,
 				top: 						-5,
 				height: 					52, //29
 				width: 						100, // 50
@@ -477,66 +418,187 @@ var showHeader = function (successCallback) {
 
 			backButton.addEventListener('click', function (){
 				settingsTableView.animate({left: 0, duration: 200});
-				aboutWindow.animate({left: 341, duration: 200});
-				popover.height = 160; 
+				navGroup.hide(aboutWindow); //.animate({left: 341, duration: 200});
+				popover.height = 140; 
 			});
 			
-			var aboutHTML = '<html><head><script language="javascript">var link = function(url) { Ti.App.fireEvent("openLinkOnSafari", { url: url }); }</script></head><body>';
-			aboutHTML += '<font face="Helvetica Neue" style="font-size:14px;"><p>Meme for iPad is a pet project from the Yahoo! Meme Team, originated in one of our internal Hack Events.</p><p>It was developed by Antonio Carlos Silveira (<a href="javascript:link(\'http://twitter.com/acarlos1000\');">@acarlos1000</a>) and Guilherme Chapiewski (<a href="javascript:link(\'http://twitter.com/gchapiewski\');">@gchapiewski</a>) with Design/UI by Guilherme Neumann (<a href="javascript:link(\'http://twitter.com/gneumann\');">@gneumann</a>).</p><p>This app is totally developed on top of the Open Source Titanium SDK and Yahoo\'s YQL.</p><p>The source code of this app is freely available at GitHub, feel free to download and learn from it.</p></font>';
-			aboutHTML += '</body></html>';
-			
 			var aboutView = Ti.UI.createWebView({
-				url: 				'atos/' + L('url_atos_html'), // aboutHTML,
-				top: 				50,	
-				width: 				335,
-				height: 			360, // correct: 270
+				top: 				44,	
+				width: 				341,
+				height: 			365, // correct: 270
 				backgroundColor: 	'#FFF'
 			});
 			aboutWindow.add(aboutView);
 			
-			var aboutGitButton = Ti.UI.createButton({
-				top: 				325,
+			// Legal tableview
+			var dataLegal = [];
+			
+			var legalTableView = Ti.UI.createTableView({
+				data: 			dataLegal,
+				top: 			0,
+				left: 			0,
+				width: 			341,
+				height: 		365,
+				separatorColor: '#CCC',
+				style: 			Ti.UI.iPhone.TableViewStyle.PLAIN
+			});
+			aboutView.add(legalTableView);
+
+			//ROW 1: App button/version
+			var rowl1 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 91
+			});
+			
+			var aboutAppButton = Ti.UI.createView({
+				top: 				0,
 				image: 				'images/btn_about.png',
 				width: 				335, //real 329
 				height: 			91, //real: 85
-				style: 				Ti.UI.iPhone.SystemButtonStyle.PLAIN,
 				zIndex: 			3
 			});
-			// aboutWindow.add(aboutGitButton);
-
-			aboutGitButton.addEventListener("click", function(e) {
+			
+			aboutAppButton.addEventListener("click", function(e) {
 				Ti.App.fireEvent('openLinkOnSafari', {
 					url: L('memeapp_source_url')
 				});
 			});
-			
-			var githubIcon = Ti.UI.createImageView({
-				image: 			'images/github.png',
-				left: 			20,
-				width: 			60,
-				height: 		60,
+
+			var appIcon = Ti.UI.createImageView({
+				image: 			'images/icon_memeapp.jpg',
+				left: 			16,
+				width: 			64,
+				height: 		64,
 				borderRadius: 	4
 			});
-			aboutGitButton.add(githubIcon);
-			
-			var aboutGitLabel = Ti.UI.createLabel({
-				text: 				L('aboutGitLabel_text'),
+			aboutAppButton.add(appIcon);
+
+			var aboutAppLabel = Ti.UI.createLabel({
+				text: 				"Meme for iPad\nVersion: " + Ti.App.getVersion(),
 				font: 				{fontSize:14,fontFamily:'Helvetica Neue', fontWeight:'bold'},	
-				left: 				githubIcon.left + githubIcon.width + 10,
+				left: 				appIcon.left + appIcon.width + 20,
 				width: 				220,
 				height: 			70,
 				backgroundColor: 	'transparent',
-				color: 				'white',
-				shadowColor: 		'black',
-				shadowOffset: 		{x:1,y:1}
+				color: 				'black'
 			});
-			aboutGitButton.add(aboutGitLabel);
+			aboutAppButton.add(aboutAppLabel);
 			
+			rowl1.add(aboutAppButton);
+			dataLegal[0] = rowl1;
+			
+			
+			//NEW ROWS
+			// ROW 2: ATOS
+			var rowl2 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40,
+				hasChild: true
+			});
+
+			var atosLabel = Ti.UI.createLabel({
+				color: 			'#333',
+				text: 			L('ATOS'),
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			rowl2.add(atosLabel);
+
+			dataLegal[1] = rowl2;
+
+
+			// ROW 3: YAHOO TOS
+			var rowl3 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40,
+				hasChild: true
+			});
+
+			var tosLabel = Ti.UI.createLabel({
+				color: 			'#333',
+				text: 			'Yahoo! Terms of Service',
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			rowl3.add(tosLabel);
+
+			dataLegal[2] = rowl3;
+
+			// ROW 4: PRIVACY
+			var rowl4 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40,
+				hasChild: true
+			});
+
+			var privacyLabel = Ti.UI.createLabel({
+				color: 			'#333',
+				text: 			'Privacy Policy',
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			rowl4.add(privacyLabel);
+
+			dataLegal[3] = rowl4;
+
+			// ROW 5: GUIDELINES
+			var rowl5 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40,
+				hasChild: true
+			});
+
+			var guidelinesLabel = Ti.UI.createLabel({
+				color: 			'#333',
+				text: 			'Guidelines',
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			rowl5.add(guidelinesLabel);
+
+			dataLegal[4] = rowl5;
+
+			// ROW 6: FEEDBACK
+			var rowl6 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40,
+				hasChild: true
+			});
+
+			var feedbackLabel = Ti.UI.createLabel({
+				color: 			'#333',
+				text: 			'Send us feedback',
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			rowl6.add(feedbackLabel);
+
+			dataLegal[5] = rowl6;
+			
+			legalTableView.data = dataLegal;
+			
+
+			// Main TableView Listener
 			settingsTableView.addEventListener('click', function(e)	{
 				if (e.index == 2) {
-					popover.height = 420; 
+					popover.height = 334; 
 					settingsTableView.animate({left: -341, duration: 200});
-					aboutWindow.animate({left: 0, duration: 200});				
+					navGroup.show();				
 				}
 			});
 			
