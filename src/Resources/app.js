@@ -44,6 +44,7 @@ Ti.App.meme = Meme();
 // = Global control vars =
 // =======================
 var clickTimeoutStartPosting 	= 	0; 	// Sets the initial ClickTimeout for startPOsting Button
+var clickTimeoutSignIn 	= 	0; 	// Sets the initial ClickTimeout for SignIn Button
 Ti.App.newpostIsOpen = false; // controls for multiple clicks on Start new post btn
 Ti.App.permalinkIsOpened = false; // control of Permalink Open
 
@@ -294,6 +295,7 @@ var showHeader = function (successCallback) {
 				headerView.hide();
 				startApplication();
 			});
+			
 			data[0] = row1;
 			
 			// ROW 2 FOLLOWERS
@@ -780,7 +782,15 @@ var showDashboard = function() {
 
 var signInButtonClick = function(continuation) {
 	// Sign In Button Listener
-	btn_signin.addEventListener("click",continuation);
+	btn_signin.addEventListener("click", function() {
+		
+		clearTimeout(clickTimeoutSignIn);
+
+		clickTimeoutSignIn = setTimeout(function() {	
+			continuation();
+		},500);		
+		
+	});
 };
 
 var startApplication = function() {
