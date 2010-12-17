@@ -24,7 +24,7 @@
 	<string name="about_guidelines">Guidelines</string>
 	<string name="about_feedback">Contact Us</string>
 	<string name="url_atos_html">atos_en.html</string>
-	<string name="url_utos_html">http://meme.yahoo.com/help/utos/</string>
+	<string name="url_utos_html">http://meme.yahoo.com/help/utos/?.lang=%s</string>
 	<string name="url_privacy_html">http://meme.yahoo.com/help/privacy/</string>
 	<string name="url_guidelines_html">http://meme.yahoo.com/help/guidelines/</string>
 	<string name="meme_short_domain">me.me/</string>

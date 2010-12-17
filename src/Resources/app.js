@@ -616,7 +616,7 @@ var showHeader = function (successCallback) {
 						barColor: 				'black'
 					});
 					var wv = Ti.UI.createWebView({
-						url: 				L('url_utos_html'),
+						url: 				String.format(L("url_utos_html"),Ti.Locale.currentLanguage),
 						top: 				0,	
 						width: 				341,
 						height: 			365, // correct: 270
@@ -631,7 +631,7 @@ var showHeader = function (successCallback) {
 						barColor: 				'black'
 					});
 					var wv = Ti.UI.createWebView({
-						url: 				L('url_privacy_html'),
+						url: 				String.format(L("url_privacy_html"),Ti.Locale.currentLanguage),
 						top: 				0,	
 						width: 				341,
 						height: 			365, // correct: 270
