@@ -19,10 +19,10 @@
 	<string name="followers"> 追隨者 </string>
 	<string name="following">     追隨 </string>
 	<string name="about_ATOS">附加服務條款</string>
-	<string name="about_UTOS">Yahoo! Terms of Service</string>
-	<string name="about_privacy">Privacy Policy</string>
-	<string name="about_guidelines">Guidelines</string>
-	<string name="about_feedback">Contact Us</string>
+	<string name="about_UTOS">服務條款</string>
+	<string name="about_privacy">隱私權政策</string>
+	<string name="about_guidelines">使用規範</string>
+	<string name="about_feedback">建議事項</string>
 	<string name="url_atos_html">atos_zh.html</string>
 	<string name="url_utos_html">http://meme.yahoo.com/help/utos/</string>
 	<string name="url_privacy_html">http://meme.yahoo.com/help/privacy/</string>
