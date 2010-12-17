@@ -373,10 +373,11 @@ var OAuthAdapter = function(pService, authorize) {
     };
 	
 	// Logs out from Yahoo! deleting the config file
-    var logout = function(pService) {
+    var logout = function(pService, callback) {
 		Ti.API.debug('Deleting access token [' + pService + '].');
 		var file = tokenFilename();
-		file.deleteFile();
+		if (file) { file.deleteFile(); }
+		callback();
 	};
 	
 	var getUserGuid = function() {

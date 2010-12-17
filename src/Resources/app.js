@@ -290,9 +290,10 @@ var showHeader = function (successCallback) {
 			{
 				Ti.API.info("Signout Link clicked");
 				popover.hide({animated:true});
-				Ti.App.oAuthAdapter.logout('meme');
-				headerView.hide();
-				startApplication();
+				Ti.App.oAuthAdapter.logout('meme', function() {
+					headerView.hide();
+					startApplication();
+				});
 			});
 			data[0] = row1;
 			
