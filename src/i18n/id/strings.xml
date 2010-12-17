@@ -24,8 +24,8 @@
 	<string name="about_guidelines">Pedoman</string>
 	<string name="about_feedback">Kirim masukan</string>
 	<string name="url_atos_html">atos_id.html</string>
-	<string name="url_utos_html">http://meme.yahoo.com/help/utos/</string>
-	<string name="url_privacy_html">http://meme.yahoo.com/help/privacy/</string>
+	<string name="url_utos_html">http://meme.yahoo.com/help/utos/?.lang=%s</string>
+	<string name="url_privacy_html">http://meme.yahoo.com/help/privacy/?.lang=%s</string>
 	<string name="url_guidelines_html">http://meme.yahoo.com/help/guidelines/</string>
 	<string name="meme_short_domain">mim.ly/</string>
 	<string name="aboutGitLabel_text">Mim untuk iPad di GitHub:\nhttp://memeapp.net/source</string>

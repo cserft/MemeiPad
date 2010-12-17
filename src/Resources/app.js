@@ -626,7 +626,7 @@ var showHeader = function (successCallback) {
 						backgroundColor: 	'#FFF'
 					});
 					baseWindow.add(wv);
-					navGroup.open(baseWindow);				
+					navGroup.open(baseWindow);		
 				}
 				else if (e.index == 3) {
 					var baseWindow = Ti.UI.createWindow({
