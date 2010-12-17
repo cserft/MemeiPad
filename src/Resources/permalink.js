@@ -642,14 +642,14 @@ btn_share.addEventListener('touchstart', function(e) {
 				
 				var messageSubject;
 				if (post.caption != "") {
-					messageSubject = strip_html_entities(post.caption).substr(0, 100) + '...'; // shows only the first 100 caracters
+					messageSubject = strip_html_entities(post.caption).substr(0, 90) + '...'; // shows only the first 100 caracters
 				} else {
 					messageSubject = L('mail_message_subject_default')
 				}
 				
 		        emailDialog.setSubject(messageSubject);
 
-				var messageBody = postWebView.html + '<br/>' + L('mail_message_body_source') + '<a href=' + post.url + '>' + post.url + '</a><br/><br/><a href=' + L('memeapp_url') + '>' + L('mail_message_signature') + '</a><!--YWA tracking tag--><img src="http://a.analytics.yahoo.com/p.pl?a=1000671789962&js=no&x=' + analytics.EMAIL_OPEN + '" width="1" height="1" alt="" />';
+				var messageBody = postWebView.html + '<br/>' + L('mail_message_body_source') + '<a href=' + post.url + '>' + post.url + '</a><br/><br/><a href=' + L('memeapp_url') + ' style="color: #333; padding-top: 30px;">' + L('mail_message_signature') + '</a><!--YWA tracking tag--><img src="http://a.analytics.yahoo.com/p.pl?a=1000671789962&js=no&x=' + analytics.EMAIL_OPEN + '" width="1" height="1" alt="" />';
 	            emailDialog.setMessageBody(messageBody);
 
 		        emailDialog.addEventListener('complete',function(e)
