@@ -365,6 +365,7 @@ var showHeader = function (successCallback) {
 				height: 				420,
 				visible: 				true,
 				// LeftNavButton: 			backButton,
+				backButtonTitle: 		'about',
 				barColor: 				'black',
 				navBarHidden: 			true
 				
@@ -394,7 +395,7 @@ var showHeader = function (successCallback) {
 				text: 			L('meme_about_text'),
 				textAlign: 		'left',
 				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
-				left: 			110,
+				left: 			105,
 				height: 		34,
 				width: 			200
 			});	
@@ -498,7 +499,7 @@ var showHeader = function (successCallback) {
 
 			var atosLabel = Ti.UI.createLabel({
 				color: 			'#333',
-				text: 			L('ATOS'),
+				text: 			L('about_ATOS'),
 				textAlign: 		'left',
 				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
@@ -519,7 +520,7 @@ var showHeader = function (successCallback) {
 
 			var tosLabel = Ti.UI.createLabel({
 				color: 			'#333',
-				text: 			'Yahoo! Terms of Service',
+				text: 			L('about_UTOS'),
 				textAlign: 		'left',
 				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
@@ -539,7 +540,7 @@ var showHeader = function (successCallback) {
 
 			var privacyLabel = Ti.UI.createLabel({
 				color: 			'#333',
-				text: 			'Privacy Policy',
+				text: 			L('about_privacy'),
 				textAlign: 		'left',
 				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
@@ -559,7 +560,7 @@ var showHeader = function (successCallback) {
 
 			var guidelinesLabel = Ti.UI.createLabel({
 				color: 			'#333',
-				text: 			'Guidelines',
+				text: 			L('about_guidelines'),
 				textAlign: 		'left',
 				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
@@ -579,7 +580,7 @@ var showHeader = function (successCallback) {
 
 			var feedbackLabel = Ti.UI.createLabel({
 				color: 			'#333',
-				text: 			'Send us feedback',
+				text: 			L('about_feedback'),
 				textAlign: 		'left',
 				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
 				left: 			14,
@@ -591,6 +592,97 @@ var showHeader = function (successCallback) {
 			dataLegal[5] = rowl6;
 			
 			legalTableView.data = dataLegal;
+			
+			// Legal TableView Listener
+			legalTableView.addEventListener('click', function(e)	{
+				if (e.index == 1) {
+					var baseWindow = Ti.UI.createWindow({
+						navBarHidden: 			false,
+						barColor: 				'black'
+					});
+					var wv = Ti.UI.createWebView({
+						url: 				'atos/' + L('url_atos_html'), 
+						top: 				0,	
+						width: 				341,
+						height: 			365, // correct: 270
+						backgroundColor: 	'#FFF'
+					});
+					baseWindow.add(wv);
+					navGroup.open(baseWindow);				
+				}
+				else if (e.index == 2) {
+					var baseWindow = Ti.UI.createWindow({
+						navBarHidden: 			false,
+						barColor: 				'black'
+					});
+					var wv = Ti.UI.createWebView({
+						url: 				L('url_utos_html'),
+						top: 				0,	
+						width: 				341,
+						height: 			365, // correct: 270
+						backgroundColor: 	'#FFF'
+					});
+					baseWindow.add(wv);
+					navGroup.open(baseWindow);				
+				}
+				else if (e.index == 3) {
+					var baseWindow = Ti.UI.createWindow({
+						navBarHidden: 			false,
+						barColor: 				'black'
+					});
+					var wv = Ti.UI.createWebView({
+						url: 				L('url_privacy_html'),
+						top: 				0,	
+						width: 				341,
+						height: 			365, // correct: 270
+						backgroundColor: 	'#FFF'
+					});
+					baseWindow.add(wv);
+					navGroup.open(baseWindow);				
+				}
+				else if (e.index == 4) {
+					var baseWindow = Ti.UI.createWindow({
+						navBarHidden: 			false,
+						barColor: 				'black'
+					});
+					var wv = Ti.UI.createWebView({
+						url: 				L('url_guidelines_html'),
+						top: 				0,	
+						width: 				341,
+						height: 			365, // correct: 270
+						backgroundColor: 	'#FFF'
+					});
+					baseWindow.add(wv);
+					navGroup.open(baseWindow);				
+				}
+				else if (e.index == 5) {
+					var emailDialog = Titanium.UI.createEmailDialog();
+					emailDialog.setHtml(false);
+		            emailDialog.setBarColor('black');
+
+					var messageSubject = String.format(L("mail_message_subject_feedback"),Ti.App.getVersion());
+
+			        emailDialog.setSubject(messageSubject);
+					emailDialog.setToRecipients([L('feedback_mail_address')]);
+
+			        emailDialog.addEventListener('complete',function(e)
+			        {
+			            if (e.result == emailDialog.SENT)
+			            {
+							//Analytics Request
+							doYwaRequest(analytics.FEEDBACK_MAIL_SENT);
+
+		                    Ti.API.log("Mail message was sent");
+			            }
+			            else
+			            {
+			                Ti.API.log("Mail message was not sent. result = " + e.result);
+			            }
+			        });
+			        emailDialog.open();		
+					popover.hide();
+				}
+			});
 			
 
 			// Main TableView Listener

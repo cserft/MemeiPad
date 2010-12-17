@@ -21,7 +21,8 @@ var analytics = {
 	REPORT_ABUSE: 18,
 	SIGN_IN: 19,
 	YQL_ERROR: 20,
-	EMAIL_OPEN: 21
+	EMAIL_OPEN: 21,
+	FEEDBACK_MAIL_SENT: 22
 };
 
 var doYwaRequest = function(pAction) {

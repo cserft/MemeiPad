@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+	<!-- PORTUGUESE -->
 	<!-- app.js -->
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white_br.png</string>
@@ -17,12 +18,21 @@
 	<string name="path_btn_signout_background_image">images/btn_signout.png</string>
 	<string name="followers">seguidores </string>
 	<string name="following">    seguindo </string>
-	<string name="ATOS">Termos Adicionais</string>
+	<string name="about_ATOS">Termos Adicionais</string>
+	<string name="about_UTOS">Yahoo! Termos de Serviço</string>
+	<string name="about_privacy">Privacidade</string>
+	<string name="about_guidelines">Regras</string>
+	<string name="about_feedback">Mande sugestões</string>
 	<string name="url_atos_html">atos_br.html</string>
+	<string name="url_utos_html">http://meme.yahoo.com/help/utos/</string>
+	<string name="url_privacy_html">http://meme.yahoo.com/help/privacy/</string>
+	<string name="url_guidelines_html">http://meme.yahoo.com/help/guidelines/</string>
 	<string name="meme_short_domain">me.me/</string>
 	<string name="aboutGitLabel_text">Meme para iPad no GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
-	<string name="meme_about_text">Sobre esta App</string>
+	<string name="meme_about_text">Sobre Meme para iPad</string>
+	<string name="mail_message_subject_feedback">Meme para iPad - Sugestão (ver. %s)</string>
+	<string name="feedback_mail_address">memeipad@yahoo.com</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Abrir Link</string>
 	<string name="success_alert_title">Sucesso</string>

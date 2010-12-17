@@ -18,12 +18,21 @@
 	<string name="path_btn_signout_background_image">images/btn_signout.png</string>
 	<string name="followers">seguidores </string>
 	<string name="following">    siguiendo </string>
-	<string name="ATOS">Términos Adicionales</string>
+	<string name="about_ATOS">Términos Adicionales</string>
+	<string name="about_UTOS">Yahoo! Términos de Uso</string>
+	<string name="about_privacy">Privacidad</string>
+	<string name="about_guidelines">Reglas</string>
+	<string name="about_feedback">Envía tus sugerencias</string>
 	<string name="url_atos_html">atos_es.html</string>
+	<string name="url_utos_html">http://meme.yahoo.com/help/utos/</string>
+	<string name="url_privacy_html">http://meme.yahoo.com/help/privacy/</string>
+	<string name="url_guidelines_html">http://meme.yahoo.com/help/guidelines/</string>
 	<string name="meme_short_domain">me.me/</string>
 	<string name="aboutGitLabel_text">Meme para iPad en GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
-	<string name="meme_about_text">About this App</string>
+	<string name="meme_about_text">About Meme for iPad</string>
+	<string name="mail_message_subject_feedback">Meme para iPad - Sugerencias (ver. %s)</string>
+	<string name="feedback_mail_address">memeipad@yahoo.com</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Abrir Liga</string>
 	<string name="success_alert_title">Éxito</string>
