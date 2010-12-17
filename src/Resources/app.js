@@ -44,6 +44,7 @@ Ti.App.meme = Meme();
 // = Global control vars =
 // =======================
 var clickTimeoutStartPosting 	= 	0; 	// Sets the initial ClickTimeout for startPOsting Button
+var clickTimeoutSignIn 	= 	0; 	// Sets the initial ClickTimeout for SignIn Button
 Ti.App.newpostIsOpen = false; // controls for multiple clicks on Start new post btn
 Ti.App.permalinkIsOpened = false; // control of Permalink Open
 
@@ -295,6 +296,7 @@ var showHeader = function (successCallback) {
 					startApplication();
 				});
 			});
+			
 			data[0] = row1;
 			
 			// ROW 2 FOLLOWERS
@@ -617,7 +619,7 @@ var showHeader = function (successCallback) {
 						barColor: 				'black'
 					});
 					var wv = Ti.UI.createWebView({
-						url: 				L('url_utos_html'),
+						url: 				String.format(L("url_utos_html"),Ti.Locale.currentLanguage),
 						top: 				0,	
 						width: 				341,
 						height: 			365, // correct: 270
@@ -632,7 +634,7 @@ var showHeader = function (successCallback) {
 						barColor: 				'black'
 					});
 					var wv = Ti.UI.createWebView({
-						url: 				L('url_privacy_html'),
+						url: 				String.format(L("url_privacy_html"),Ti.Locale.currentLanguage),
 						top: 				0,	
 						width: 				341,
 						height: 			365, // correct: 270
@@ -781,7 +783,15 @@ var showDashboard = function() {
 
 var signInButtonClick = function(continuation) {
 	// Sign In Button Listener
-	btn_signin.addEventListener("click",continuation);
+	btn_signin.addEventListener("click", function() {
+		
+		clearTimeout(clickTimeoutSignIn);
+
+		clickTimeoutSignIn = setTimeout(function() {	
+			continuation();
+		},500);		
+		
+	});
 };
 
 var startApplication = function() {
