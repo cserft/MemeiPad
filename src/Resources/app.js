@@ -396,11 +396,11 @@ var showHeader = function (successCallback) {
 			var aboutWindowTitle = Ti.UI.createLabel({
  				color: 			'white',
 				text: 			L('meme_about_text'),
-				textAlign: 		'left',
+				textAlign: 		'center',
 				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
-				left: 			105,
+				left: 			115,
 				height: 		34,
-				width: 			200
+				width: 			100
 			});	
 			navBar.add(aboutWindowTitle);
 			
@@ -450,8 +450,9 @@ var showHeader = function (successCallback) {
 
 			//ROW 1: App button/version
 			var rowl1 = Ti.UI.createTableViewRow({
-				selectedBackgroundColor: '#CCC',
-				height: 91
+				selectedBackgroundColor: 	'#CCC',
+				backgroundColor: 			'#303030',
+				height: 					91
 			});
 			
 			var aboutAppButton = Ti.UI.createView({
@@ -469,22 +470,31 @@ var showHeader = function (successCallback) {
 			});
 
 			var appIcon = Ti.UI.createImageView({
-				image: 			'images/icon_memeapp.jpg',
-				left: 			16,
-				width: 			64,
-				height: 		64,
-				borderRadius: 	4
+				image: 			'images/icon_memeapp_dropshadow.png',
+				left: 			-5,
+				width: 			97, //real 80
+				height: 		96 //real 80
 			});
 			aboutAppButton.add(appIcon);
+			
+			var appNameImage = Ti.UI.createImageView({
+				image: 			'images/meme_for_ipad_about.png',
+				left: 			90,
+				top: 			18,
+				width: 			203,
+				height: 		27
+			});
+			aboutAppButton.add(appNameImage);
 
 			var aboutAppLabel = Ti.UI.createLabel({
-				text: 				"Meme for iPad\nVersion: " + Ti.App.getVersion(),
-				font: 				{fontSize:14,fontFamily:'Helvetica Neue', fontWeight:'bold'},	
-				left: 				appIcon.left + appIcon.width + 20,
+				text: 				"Version: " + Ti.App.getVersion(),
+				font: 				{fontSize:14,fontFamily:'Helvetica', fontWeight:'light'},	
+				left: 				90,
+				top: 				45,
 				width: 				220,
-				height: 			70,
+				height: 			25,
 				backgroundColor: 	'transparent',
-				color: 				'black'
+				color: 				'white'
 			});
 			aboutAppButton.add(aboutAppLabel);
 			

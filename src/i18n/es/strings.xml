@@ -30,7 +30,7 @@
 	<string name="meme_short_domain">me.me/</string>
 	<string name="aboutGitLabel_text">Meme para iPad en GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
-	<string name="meme_about_text">About Meme for iPad</string>
+	<string name="meme_about_text">About</string>
 	<string name="mail_message_subject_feedback">Meme para iPad - Sugerencias (ver. %s)</string>
 	<string name="feedback_mail_address">memeipad@yahoo.com</string>
 	<!-- GENERIC -->
