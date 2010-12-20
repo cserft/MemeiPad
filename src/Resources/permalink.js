@@ -55,8 +55,6 @@ var innerCaption;
 // Create our Webview to render the Post's content
 var postWebView = Ti.UI.createWebView({
         html: '',
-		// backgroundColor: 	'transparent',
-		// backgroundImage: 'images/bg.jpg',
 		top:0,
 		width: '100%',
 		height: 683,
@@ -640,7 +638,10 @@ btn_share.addEventListener('touchstart', function(e) {
 				emailDialog.setHtml(true);
 	            emailDialog.setBarColor('black');
 				
-				var messageSubject;
+				var messageSubject, bodyHtml, messageBody;
+				
+				// Setting the Mail Subject
+				// TODO: use <content> for Text posts
 				if (post.caption != "") {
 					messageSubject = strip_html_entities(post.caption).substr(0, 90) + '...'; // shows only the first 100 caracters
 				} else {
@@ -648,27 +649,59 @@ btn_share.addEventListener('touchstart', function(e) {
 				}
 				
 		        emailDialog.setSubject(messageSubject);
-
-				var messageBody = postWebView.html + '<br/>' + L('mail_message_body_source') + '<a href=' + post.url + '>' + post.url + '</a><br/><br/><a href=' + L('memeapp_url') + ' style="color: #333; padding-top: 30px;">' + L('mail_message_signature') + '</a><!--YWA tracking tag--><img src="http://a.analytics.yahoo.com/p.pl?a=1000671789962&js=no&x=' + analytics.EMAIL_OPEN + '" width="1" height="1" alt="" />';
-	            emailDialog.setMessageBody(messageBody);
-
-		        emailDialog.addEventListener('complete',function(e)
-		        {
-		            if (e.result == emailDialog.SENT)
-		            {
-						//Analytics Request
-						doYwaRequest(analytics.SHARE_MAIL);
-						
-	                    Ti.API.log("Mail message was sent");
-		            }
-		            else
-		            {
-		                Ti.API.log("Mail message was not sent. result = " + e.result);
-		            }
-		        });
-		        emailDialog.open();
 		
-				popover.hide();
+				var setMailMessageBody = function (callback) {
+					
+					Ti.API.debug("setMailMessageBody function called");
+					
+					if (post.type == "video") {
+
+						getVideoData(post.content, function(thumb, data) {
+							innerMedia = '<a href=' + post.url + '><img src="' + thumb + '" class="block_clear"></a>';
+							innerCaption = add_html_entities(post.caption);
+							bodyHtml = '<style type="text/css">#wrapper {padding: 20px;width: 700px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px} .post blockquote {background:url("images/quote_innerhtml.png") no-repeat scroll 7px 3px transparent; border-left:2px solid #CCCCCC; font-size:16px; margin:8px 0; padding-left:30px;}</style><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '<br/><br/></div></div></div>';
+							messageBody = bodyHtml + '<br/>' + L('mail_message_body_source') + '<a href=' + post.url + '>' + post.url + '</a><br/><br/><a href="' + L('memeapp_url') + '">' + L('mail_message_signature') + '</a><!--YWA tracking tag--><img src="http://a.analytics.yahoo.com/p.pl?a=1000671789962&js=no&x=' + analytics.EMAIL_OPEN + '" width="1" height="1" alt="" />';	
+							callback(messageBody);
+						});
+
+					} else if (post.type == "photo"){
+						innerMedia= '<a href=' + post.url + '><img src="' + post.content.content + '" class="block_clear"></a>';
+						innerCaption = add_html_entities(post.caption);
+						bodyHtml = '<style type="text/css">#wrapper {padding: 20px;width: 700px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px} .post blockquote {background:url("images/quote_innerhtml.png") no-repeat scroll 7px 3px transparent; border-left:2px solid #CCCCCC; font-size:16px; margin:8px 0; padding-left:30px;}</style><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '<br/><br/></div></div></div>';
+						messageBody = bodyHtml + '<br/>' + L('mail_message_body_source') + '<a href=' + post.url + '>' + post.url + '</a><br/><br/><a href="' + L('memeapp_url') + '">' + L('mail_message_signature') + '</a><!--YWA tracking tag--><img src="http://a.analytics.yahoo.com/p.pl?a=1000671789962&js=no&x=' + analytics.EMAIL_OPEN + '" width="1" height="1" alt="" />';
+						callback(messageBody);
+					} else {
+						bodyHtml = postWebView.html;
+						messageBody = bodyHtml + '<br/>' + L('mail_message_body_source') + '<a href=' + post.url + '>' + post.url + '</a><br/><br/><a href="' + L('memeapp_url') + '">' + L('mail_message_signature') + '</a><!--YWA tracking tag--><img src="http://a.analytics.yahoo.com/p.pl?a=1000671789962&js=no&x=' + analytics.EMAIL_OPEN + '" width="1" height="1" alt="" />';
+						callback(messageBody);
+					}
+					
+				};
+				
+				setMailMessageBody(function(messageBody){
+					
+					emailDialog.setMessageBody(messageBody);
+					
+			        emailDialog.addEventListener('complete',function(e)
+			        {
+			            if (e.result == emailDialog.SENT)
+			            {
+							//Analytics Request
+							doYwaRequest(analytics.SHARE_MAIL);
+
+		                    Ti.API.log("Mail message was sent");
+			            }
+			            else
+			            {
+			                Ti.API.log("Mail message was not sent. result = " + e.result);
+			            }
+			        });
+			        emailDialog.open();
+
+					popover.hide();
+					
+				});
+
 			}
 			
 			// Share with Twitter for iPad app
