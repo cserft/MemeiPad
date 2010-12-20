@@ -148,9 +148,13 @@ var Meme = function() {
 			yqlQuery: 'SELECT * FROM flickr.photos.search WHERE text="' + query + '" AND license="4"'
 		};
 		var photos;
-		cachedYqlQuery(params, function(results) {
+		var successCallback = function(results) {
 			photos = results.photo;
-		});
+		};
+		var errorCallback = function() {
+			photos = null;
+		};
+		cachedYqlQuery(params, successCallback, errorCallback);
 		return photos;
 	};
 	
@@ -160,9 +164,13 @@ var Meme = function() {
 			yqlQuery: 'SELECT * FROM youtube.search WHERE query="' + query + '"'
 		};
 		var videos;
-		cachedYqlQuery(params, function(results) {
+		var successCallback = function(results) {
 			videos = results.video;
-		});
+		};
+		var errorCallback = function() {
+			videos = null;
+		};
+		cachedYqlQuery(params, successCallback, errorCallback);
 		return videos;
 	};
 	
@@ -172,9 +180,13 @@ var Meme = function() {
 			yqlQuery: 'SELECT title, abstract, url FROM search.web WHERE query="' + query + '"'
 		};
 		var items;
-		cachedYqlQuery(params, function(results) {
+		var successCallback = function(results) {
 			items = results.result;
-		});
+		};
+		var errorCallback = function() {
+			items = null;
+		};
+		cachedYqlQuery(params, successCallback, errorCallback);
 		return items;
 	};
 	
@@ -184,9 +196,13 @@ var Meme = function() {
 			yqlQuery: 'SELECT * FROM twitter.search WHERE q="' + query + '"'
 		};
 		var items;
-		cachedYqlQuery(params, function(results) {
+		var successCallback = function(results) {
 			items = results.results;
-		});
+		};
+		var errorCallback = function() {
+			ìtems = null;
+		};
+		cachedYqlQuery(params, successCallback, errorCallback);
 		return items;
 	};
 
@@ -257,7 +273,7 @@ var Meme = function() {
 	};
 	
 	// Executes SELECT YQL queries caching results and returning them in a callback
-	cachedYqlQuery = function(params, callback) {
+	cachedYqlQuery = function(params, successCallback, errorCallback) {
 		// default cache time is 15 minutes
 		var cacheSeconds = 900;
 		if (params.cacheSeconds) {
@@ -265,21 +281,31 @@ var Meme = function() {
 		}
 		
 		var items = cacheGet(params.cacheKey);
+		
+		// if didn't find items in cache, go fetch them on YQL
 		if (!items) {
 			var yqlResponse = getYql().query(params.yqlQuery);
 
 			if (!yqlResponse.query.results) {
-				throwYqlError();
+				if (errorCallback) {
+					errorCallback();
+				} else {
+					throwYqlError();
+				}
 			}
 
 			items = yqlResponse.query.results;
 			
-			// cache results
-			cachePut(params.cacheKey, items, cacheSeconds);
+			// cache valid results only
+			if (items) {
+				cachePut(params.cacheKey, items, cacheSeconds);
+			}
 		}
 		
-		// return to caller using callback
-		callback(items);
+		// if there are results (cached or not), execute successCallback
+		if (items) {
+			successCallback(items);
+		}
 	};
 	
 	return ({
