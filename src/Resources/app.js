@@ -47,6 +47,7 @@ var clickTimeoutStartPosting 	= 	0; 	// Sets the initial ClickTimeout for startP
 var clickTimeoutSignIn 	= 	0; 	// Sets the initial ClickTimeout for SignIn Button
 Ti.App.newpostIsOpen = false; // controls for multiple clicks on Start new post btn
 Ti.App.permalinkIsOpened = false; // control of Permalink Open
+Ti.App.browserIsOpened = false; // control of Browser Open
 
 // ===============
 // = Application =
@@ -118,11 +119,15 @@ btn_signup.addEventListener("click", function(e) {
 	//Analytics Request
 	doYwaRequest(analytics.OPEN_SAFARI_CREATE_ACCOUNT);
 	
-	Ti.App.fireEvent('openLinkOnSafari', { 
-		title: L("btn_signup_alert"),
-		message: L("btn_signup_message"),
+	Ti.App.fireEvent('openBrowser', {
 		url: L("btn_signup_url")
 	});
+	
+	// Ti.App.fireEvent('openLinkOnSafari', { 
+	// 	title: L("btn_signup_alert"),
+	// 	message: L("btn_signup_message"),
+	// 	url: L("btn_signup_url")
+	// });
 });
 
 Ti.App.activitySmall = Ti.UI.createActivityIndicator({
@@ -1088,4 +1093,47 @@ Ti.App.addEventListener('openPermalink', function(e) {
 		// 	Ti.App.fireEvent('hide_indicator');
 		// },5000);
 	}
+});
+
+
+// =========================
+// = OPEN INTERNAL BROWSER =
+// =========================
+
+Ti.App.addEventListener('openBrowser', function(e) {
+		
+	// Sets the Permalink Animation startup settings
+	var t = Ti.UI.create2DMatrix();
+	t = t.scale(0);
+
+	var winBrowser = Ti.UI.createWindow({
+	    url: 				'browser.js',
+	    name: 				'Internal Browser',
+	    backgroundImage: 	'images/bg_black_transparent.png',
+		backgroundLeftCap: 	10,
+		backgroundTopCap: 	10,
+		opacity: 			1,
+		left: 				0,
+		top: 				0,
+		height: 			'100%',
+		width: 				'100%',
+		navBarHidden: 		true,
+		zIndex: 			7,
+		transform: 	 		t,
+		pUrl: 				e.url
+	});
+
+	// Creating the Open Browser Animation
+	var t1 = Titanium.UI.create2DMatrix();
+	t1 = t1.scale(1.0);
+
+	var a = Titanium.UI.createAnimation();
+	a.transform = t1;
+	a.duration = 200;
+
+	if (Ti.App.browserIsOpened == false){
+		Ti.App.browserIsOpened = true;
+		winBrowser.open(a);
+	}
+
 });
