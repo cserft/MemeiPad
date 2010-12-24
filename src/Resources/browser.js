@@ -17,33 +17,12 @@ var pUrl = win.pUrl;
 var browserView = Ti.UI.createView({
 	backgroundColor:'white',
 	opacity: 		100,
-	borderRadius: 	5,
+	borderRadius: 	3,
 	width:  		978,
 	height: 		700,
 	zIndex: 		1
 });
 win.add(browserView);
-
-var btn_close = Titanium.UI.createButton({
-	backgroundImage: 	'images/btn_close.png',
-	opacity: 			1,
-	top: 				8,
-	right: 				5,
-	width: 				36,
-	height: 			36,
-	zIndex: 			3
-});
-win.add(btn_close);
-
-btn_close.addEventListener("click", function(e)
-{
-	var t3 = Titanium.UI.create2DMatrix();
-	t3 = t3.scale(0);
-	win.close({transform:t3,duration:200});
-	Ti.App.browserIsOpened = false;
-    // allows for other Browser to Open
-	
-});
 
 //Creates the top navigation bar of the browser
 var browserBar = Ti.UI.createView({
@@ -58,9 +37,54 @@ var browserBar = Ti.UI.createView({
 });
 browserView.add(browserBar);
 
+//Guid Name / Title
+var titleLabel = Titanium.UI.createLabel({
+	color:'#FFF',
+	text: '',
+	textAlign:'center',
+	font: {
+		fontSize: 20,
+		fontFamily:'Helvetica',
+		fontWeight: 'bold'
+	},
+	left: 214,
+	width: 550,
+	height: 27,
+	zIndex: 2
+});
+browserBar.add(titleLabel);
+
+
+// Button that closes the Browser
+var backButton = Ti.UI.createButton({
+	backgroundImage: 			'images/bg_btn_back.png',
+	backgroundLeftCap: 			15,
+	backgroundRightCap: 		15,
+	borderRadius: 				2,
+	right: 						5,
+	height: 					35, //29
+	width: 						80	, // 50
+    title: 						' done',
+	color: 						'white',
+	textAlign: 					'center',
+	font: 						{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'},
+	style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+});
+browserBar.add(backButton);
+
+backButton.addEventListener("click", function(e)
+{
+	var t3 = Titanium.UI.create2DMatrix();
+	t3 = t3.scale(0);
+	win.close({transform:t3,duration:200});
+	Ti.App.browserIsOpened = false;
+    // allows for other Browser to Open
+	
+});
+
 // Loader
 var actAjax = Ti.UI.createActivityIndicator({
-	left: 			750,
+	left: 			600,
 	message: 		'',
 	zIndex: 		2,
 	visible: 		false,
@@ -74,7 +98,7 @@ var webView = Ti.UI.createWebView({
 		opacity: 			1,
         url: 				pUrl,
 		top: 				44,
-		width: 				'100%',
+		width: 				978,
 		height: 			656,
         loading: 			true,
 		scalesPageToFit: 	true
@@ -82,15 +106,14 @@ var webView = Ti.UI.createWebView({
 browserView.add(webView);
 
 //Listeners
-webView.addEventListener("beforeload", function(e)
-{
+webView.addEventListener("beforeload", function(e) {
 	// displays the ajax in the NavBar while the webview is being loaded
 	actAjax.show();
 	// reload_btn.hide();
 });
 
-webView.addEventListener("load", function(e)
-{
+webView.addEventListener("load", function(e) {
+	titleLabel.text = webView.evalJS("document.title");
 	// hides the ajax in the NavBar after the webview is loaded
 	actAjax.hide();
 	// reload_btn.show();

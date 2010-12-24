@@ -123,11 +123,6 @@ btn_signup.addEventListener("click", function(e) {
 		url: L("btn_signup_url")
 	});
 	
-	// Ti.App.fireEvent('openLinkOnSafari', { 
-	// 	title: L("btn_signup_alert"),
-	// 	message: L("btn_signup_message"),
-	// 	url: L("btn_signup_url")
-	// });
 });
 
 Ti.App.activitySmall = Ti.UI.createActivityIndicator({
