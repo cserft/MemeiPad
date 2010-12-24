@@ -51,7 +51,7 @@ browserView.add(browserBar);
 //Title
 var titleLabel = Titanium.UI.createLabel({
 	color:'#FFF',
-	text: currentTitle,
+	text: '',
 	textAlign:'center',
 	font: {
 		fontSize: 20,
@@ -134,9 +134,11 @@ browserBar.add(doneButton);
 
 doneButton.addEventListener("click", function(e)
 {
-	var t3 = Titanium.UI.create2DMatrix();
-	t3 = t3.scale(0);
-	win.close({transform:t3,duration:200});
+	var a = Titanium.UI.createAnimation();
+	a.duration = 300;
+	a.top = 768;
+	
+	win.close(a);
 	Ti.App.browserIsOpened = false;
     // allows for other Browser to Open
 	
@@ -438,6 +440,7 @@ webView.addEventListener("beforeload", function(e) {
 
 webView.addEventListener("load", function(e) {
 	currentTitle = webView.evalJS("document.title");
+	titleLabel.text = webView.evalJS("document.title");
 	// hides the ajax in the NavBar after the webview is loaded
 	actAjax.hide();
 	reloadButton.show();

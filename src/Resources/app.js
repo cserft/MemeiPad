@@ -141,7 +141,7 @@ Ti.App.activitySmall = Ti.UI.createActivityIndicator({
 // ==========================
 
 var a = Titanium.UI.createAnimation();
-a.duration = 200;
+a.duration = 300;
 a.top = 0;
 
 var newPost = function() {
@@ -1109,22 +1109,22 @@ Ti.App.addEventListener('openBrowser', function(e) {
 		backgroundTopCap: 	10,
 		opacity: 			1,
 		left: 				0,
-		top: 				0,
+		top: 				768,
 		height: 			'100%',
 		width: 				'100%',
 		navBarHidden: 		true,
 		zIndex: 			7,
-		transform: 	 		t,
+		// transform: 	 		t,
 		pUrl: 				e.url
 	});
 
 	// Creating the Open Browser Animation
-	var t1 = Titanium.UI.create2DMatrix();
-	t1 = t1.scale(1.0);
+	// var t1 = Titanium.UI.create2DMatrix();
+	// t1 = t1.scale(1.0);
 
 	var a = Titanium.UI.createAnimation();
-	a.transform = t1;
-	a.duration = 200;
+	a.duration = 300;
+	a.top = 0;
 
 	if (Ti.App.browserIsOpened == false){
 		Ti.App.browserIsOpened = true;
