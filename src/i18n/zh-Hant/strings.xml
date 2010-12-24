@@ -48,7 +48,8 @@
 	<string name="network_error">網路錯誤</string>
 	<string name="network_error_message">你需要上網才能在iPad上使用Meme。請檢查網路連接。</string>
 	<string name="loading_message">載入中...</string>
-	<string name="memeapp_url">http://memeapp.net/</string>
+	<string name="memeapp_url">http://me.me/ipad/</string>
+	<string name="btn_done_title">done</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
 	<string name="pull_to_reload_text">拉一下，重新載入</string>
@@ -121,6 +122,8 @@
 	<string name="mail_message_body_source">Source: </string>
 	<string name="mail_message_signature">Sent with Meme for iPad</string>
 	<string name="mail_message_subject_default">Sharing an interesting Post</string>
+	<string name="mail_web_link">Mail Link</string>
+	<string name="mail_web_link_text">Sharing Link: </string>
 	<!-- /Share with Mail -->
 	<!-- EXTRAS -->
 	<string name="format_test">我的名字是%s</string>

@@ -48,7 +48,8 @@
 	<string name="network_error">Erro de Rede</string>
 	<string name="network_error_message">Você precisa estar online para poder usar o Meme para iPad. Por favor, verifique sua conexão de rede e tente novamente.</string>
 	<string name="loading_message">Carregando...</string>
-	<string name="memeapp_url">http://memeapp.net/</string>
+	<string name="memeapp_url">http://me.me/ipad/</string>
+	<string name="btn_done_title">done</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
 	<string name="pull_to_reload_text">Puxe para recarregar</string>
@@ -121,6 +122,8 @@
 	<string name="mail_message_body_source">Fonte: </string>
 	<string name="mail_message_signature">Enviado com Meme for iPad</string>
 	<string name="mail_message_subject_default">Compartilhando um post interessante</string>
+	<string name="mail_web_link">Enviar link por e-mail</string>
+	<string name="mail_web_link_text">Compartilhando Link: </string>
 	<!-- /Share with Mail -->
 	<!-- EXTRAS -->
 	<string name="format_test">My name is %s</string>
