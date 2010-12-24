@@ -375,14 +375,21 @@ var alertOpenPermalink = Titanium.UI.createAlertDialog({
 
 disclaimerLabel1.addEventListener("click", function(e)
 {
-	alertOpenPermalink.url = L('guidelines_url');
-	alertOpenPermalink.show();
+	Ti.App.fireEvent('openBrowser', {
+		url: L("guidelines_url")
+	});
+	
+	// alertOpenPermalink.url = L('guidelines_url');
+	// alertOpenPermalink.show();
 });
 
 disclaimerLabel2.addEventListener("click", function(e)
 {
-	alertOpenPermalink.url = L('settings_url');
-	alertOpenPermalink.show();
+	Ti.App.fireEvent('openBrowser', {
+		url: L("settings_url")
+	});
+	// alertOpenPermalink.url = L('settings_url');
+	// alertOpenPermalink.show();
 });
 
 

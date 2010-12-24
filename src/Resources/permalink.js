@@ -991,24 +991,28 @@ btn_delete.addEventListener('click', function(e) {
 // REPORT ABUSE LISTENER
 btn_report_abuse.addEventListener('click', function(e) {
 	//Alert to Open Report Abuse page on Safari
-	var alertOpenPermalink = Titanium.UI.createAlertDialog({
-		title: L('report_abuse_alert_title'),
-		message: L('report_abuse_alert_message'),
-		buttonNames: [L('btn_alert_YES'),L('btn_alert_CANCEL')],
-		url: post.url + 'abuse/',
-		cancel: 1
-	});	
-	alertOpenPermalink.show();
+	// var alertOpenPermalink = Titanium.UI.createAlertDialog({
+	// 	title: L('report_abuse_alert_title'),
+	// 	message: L('report_abuse_alert_message'),
+	// 	buttonNames: [L('btn_alert_YES'),L('btn_alert_CANCEL')],
+	// 	url: post.url + 'abuse/',
+	// 	cancel: 1
+	// });	
+	// alertOpenPermalink.show();
 
-	alertOpenPermalink.addEventListener('click',function(e)
-	{
-		if (e.index == 0){
-			Ti.Platform.openURL(alertOpenPermalink.url);	
+	// alertOpenPermalink.addEventListener('click',function(e)
+	// {
+	// 	if (e.index == 0){
+		
+			Ti.App.fireEvent('openBrowser', {
+				url: post.url + 'abuse/'
+			});
+			// Ti.Platform.openURL(alertOpenPermalink.url);	
 			
 			//Analytics Request
 			doYwaRequest(analytics.REPORT_ABUSE);
-		}
-	});
+		// }
+	// });
 });
 
 		
