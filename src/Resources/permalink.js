@@ -615,11 +615,15 @@ btn_share.addEventListener('touchstart', function(e) {
 		shareTableView.addEventListener('click', function(e)	{
 			//If Clicked on Permalink Link, then Open Safari Alert
 			if (e.index == 0) {
-				Ti.App.fireEvent('openLinkOnSafari', {
-					url: 		post.url,
-					title: 		L('open_link_title'),
-					message: 	L('open_link_message')
-				});				
+				
+				Ti.App.fireEvent('openBrowser', {
+					url: post.url
+				});
+				// Ti.App.fireEvent('openLinkOnSafari', {
+				// 	url: 		post.url,
+				// 	title: 		L('open_link_title'),
+				// 	message: 	L('open_link_message')
+				// });				
 				popover.hide();
 			}
 			// If Clicked on Line 2 - Then copy link to Clipboard
