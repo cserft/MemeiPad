@@ -20,6 +20,7 @@ var currentTitle; // holds the Current WebPage Title
 var browserView = Ti.UI.createView({
 	backgroundColor:'white',
 	opacity: 		100,
+	top: 			768,
 	borderRadius: 	3,
 	width:  		978,
 	height: 		700,
@@ -46,6 +47,36 @@ var browserBar = Titanium.UI.createToolbar({
 	zIndex: 		1
 });	
 browserView.add(browserBar);
+
+
+// Button that closes the Browser
+var doneButton = Ti.UI.createButton({
+	backgroundImage: 			'images/bg_btn_back.png',
+	backgroundLeftCap: 			15,
+	backgroundRightCap: 		15,
+	borderRadius: 				2,
+	right: 						5,
+	height: 					35, //29
+	width: 						80	, // 50
+    title: 						' ' + L('btn_done_title'),
+	color: 						'white',
+	textAlign: 					'center',
+	font: 						{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'},
+	style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+});
+browserBar.add(doneButton);
+
+doneButton.addEventListener("click", function(e)
+{
+	var a = Titanium.UI.createAnimation();
+	a.duration = 300;
+	a.top = 768;
+	
+	win.close(a);
+	Ti.App.browserIsOpened = false;
+    // allows for other Browser to Open
+	
+});
 
 
 //Title
@@ -114,36 +145,6 @@ var shareButton = Ti.UI.createButton({
 	style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 });
 browserBar.add(shareButton);
-
-// Button that closes the Browser
-var doneButton = Ti.UI.createButton({
-	backgroundImage: 			'images/bg_btn_back.png',
-	backgroundLeftCap: 			15,
-	backgroundRightCap: 		15,
-	borderRadius: 				2,
-	right: 						5,
-	height: 					35, //29
-	width: 						80	, // 50
-    title: 						' ' + L('btn_done_title'),
-	color: 						'white',
-	textAlign: 					'center',
-	font: 						{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'},
-	style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN
-});
-browserBar.add(doneButton);
-
-doneButton.addEventListener("click", function(e)
-{
-	var a = Titanium.UI.createAnimation();
-	a.duration = 300;
-	a.top = 768;
-	
-	win.close(a);
-	Ti.App.browserIsOpened = false;
-    // allows for other Browser to Open
-	
-});
-
 
 // Loader
 var actAjax = Ti.UI.createActivityIndicator({
@@ -431,7 +432,7 @@ shareButton.addEventListener('touchstart', function(e) {
 });
 
 
-//Listeners
+//WebView Listeners
 webView.addEventListener("beforeload", function(e) {
 	// displays the ajax in the NavBar while the webview is being loaded
 	actAjax.show();
@@ -451,4 +452,10 @@ webView.addEventListener("load", function(e) {
 	
 	//sets the URL to be shared/displayed
 	currentHref = webView.evalJS("location.href");
+});
+
+//Window Load Listener
+// It activates the View Animation on startup
+win.addEventListener("open", function(e) {
+	browserView.animate({top: 24, duration: 200});
 });

@@ -1096,10 +1096,6 @@ Ti.App.addEventListener('openPermalink', function(e) {
 // =========================
 
 Ti.App.addEventListener('openBrowser', function(e) {
-		
-	// Sets the Permalink Animation startup settings
-	var t = Ti.UI.create2DMatrix();
-	t = t.scale(0);
 
 	var winBrowser = Ti.UI.createWindow({
 	    url: 				'browser.js',
@@ -1107,24 +1103,20 @@ Ti.App.addEventListener('openBrowser', function(e) {
 	    backgroundImage: 	'images/bg_black_transparent.png',
 		backgroundLeftCap: 	10,
 		backgroundTopCap: 	10,
-		opacity: 			1,
 		left: 				0,
-		top: 				768,
+		top: 				0,
 		height: 			'100%',
 		width: 				'100%',
 		navBarHidden: 		true,
 		zIndex: 			7,
-		// transform: 	 		t,
+		opacity: 			0,
 		pUrl: 				e.url
 	});
 
-	// Creating the Open Browser Animation
-	// var t1 = Titanium.UI.create2DMatrix();
-	// t1 = t1.scale(1.0);
 
 	var a = Titanium.UI.createAnimation();
 	a.duration = 300;
-	a.top = 0;
+	a.opacity = 1;
 
 	if (Ti.App.browserIsOpened == false){
 		Ti.App.browserIsOpened = true;
