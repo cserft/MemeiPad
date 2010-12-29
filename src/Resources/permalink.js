@@ -259,11 +259,15 @@ guidView.addEventListener('click', function(e) {
 			row1.add(linkMeme);
 
 			linkMeme.addEventListener("click", function(e) {
-				Ti.App.fireEvent('openLinkOnSafari', {
-					url: memeInfo.url,
-					title: L('open_link_title'),
-					message: L('open_link_message')
+				Ti.App.fireEvent('openBrowser', {
+					url: memeInfo.url
 				});
+				
+				// Ti.App.fireEvent('openLinkOnSafari', {
+				// 	url: memeInfo.url,
+				// 	title: L('open_link_title'),
+				// 	message: L('open_link_message')
+				// });
 			});
 
 			var btn_follow = Ti.UI.createButton({
