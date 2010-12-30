@@ -261,16 +261,11 @@ guidView.addEventListener('click', function(e) {
 			});	
 			row1.add(linkMeme);
 
-			linkMeme.addEventListener("click", function(e) {
+			linkMeme.addEventListener("click", function(e) {		
+				popover.hide();
 				Ti.App.fireEvent('openBrowser', {
 					url: memeInfo.url
 				});
-				
-				// Ti.App.fireEvent('openLinkOnSafari', {
-				// 	url: memeInfo.url,
-				// 	title: L('open_link_title'),
-				// 	message: L('open_link_message')
-				// });
 			});
 
 			var btn_follow = Ti.UI.createButton({
@@ -620,17 +615,12 @@ btn_share.addEventListener('touchstart', function(e) {
 		
 		// Listeners
 		shareTableView.addEventListener('click', function(e)	{
-			//If Clicked on Permalink Link, then Open Safari Alert
+			//If Clicked on Permalink Link, then Open Internal Browser
 			if (e.index == 0) {
 				
 				Ti.App.fireEvent('openBrowser', {
 					url: post.url
-				});
-				// Ti.App.fireEvent('openLinkOnSafari', {
-				// 	url: 		post.url,
-				// 	title: 		L('open_link_title'),
-				// 	message: 	L('open_link_message')
-				// });				
+				});			
 				popover.hide();
 			}
 			// If Clicked on Line 2 - Then copy link to Clipboard
@@ -1000,30 +990,13 @@ btn_delete.addEventListener('click', function(e) {
 });
 
 // REPORT ABUSE LISTENER
-btn_report_abuse.addEventListener('click', function(e) {
-	//Alert to Open Report Abuse page on Safari
-	// var alertOpenPermalink = Titanium.UI.createAlertDialog({
-	// 	title: L('report_abuse_alert_title'),
-	// 	message: L('report_abuse_alert_message'),
-	// 	buttonNames: [L('btn_alert_YES'),L('btn_alert_CANCEL')],
-	// 	url: post.url + 'abuse/',
-	// 	cancel: 1
-	// });	
-	// alertOpenPermalink.show();
-
-	// alertOpenPermalink.addEventListener('click',function(e)
-	// {
-	// 	if (e.index == 0){
-		
-			Ti.App.fireEvent('openBrowser', {
-				url: post.url + 'abuse/'
-			});
-			// Ti.Platform.openURL(alertOpenPermalink.url);	
-			
-			//Analytics Request
-			doYwaRequest(analytics.REPORT_ABUSE);
-		// }
-	// });
+btn_report_abuse.addEventListener('click', function(e) {	
+	Ti.App.fireEvent('openBrowser', {
+		url: post.url + 'abuse/'
+	});
+	
+	//Analytics Request
+	doYwaRequest(analytics.REPORT_ABUSE);
 });
 
 		
