@@ -85,6 +85,7 @@ whiteBox.add(border);
 
 var getPostHtml = function(innerMedia, innerCaption) {
 	// "(" & word & ")(?=[^>]*?<)"  // does not replace word inside Tags <>
+	// (?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))
 	var exp = /(\b(?:(?:https?|ftp|[A-Za-z]+):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$]))(?=[^>]*?<)/ig;
 	innerCaption = innerCaption.replace(exp, '<a href="$1">$1</a>');
 	innerCaption = innerCaption.replace(/href="(.+?)"/g, 'href="javascript:link(\'$1\');"');
