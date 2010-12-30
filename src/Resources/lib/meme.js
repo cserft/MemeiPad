@@ -52,11 +52,11 @@ var Meme = function() {
 		return post;
 	};
 	
-	featuredPosts = function() {
+	featuredPosts = function(thumbWidth, thumbHeight) {
 		var params = {
 			cacheKey: 'featuredPosts',
 			cacheSeconds: 7200, // 2 hours
-			yqlQuery: 'SELECT * FROM meme.posts.featured WHERE locale="en" | meme.functions.thumbs(width=307,height=231)'
+			yqlQuery: 'SELECT * FROM meme.posts.featured WHERE locale="en" | meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')'
 		};
 		var posts;
 		cachedYqlQuery(params, function(results) {
