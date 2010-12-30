@@ -263,11 +263,11 @@ var showHeader = function (successCallback) {
 			row1.add(linkMeme);
 
 			linkMeme.addEventListener("click", function(e) {
-				Ti.App.fireEvent('openLinkOnSafari', {
-					url: Ti.App.myMemeInfo.url,
-					title: L('open_link_title'),
-					message: L('open_link_message')
+				popover.hide();
+				Ti.App.fireEvent('openBrowser', {
+					url: Ti.App.myMemeInfo.url
 				});
+
 			});
 
 			var btn_signout = Ti.UI.createButton({
@@ -464,9 +464,10 @@ var showHeader = function (successCallback) {
 			});
 			
 			aboutAppButton.addEventListener("click", function(e) {
-				Ti.App.fireEvent('openLinkOnSafari', {
-					url: L('memeapp_source_url')
-				});
+				// popover.hide();
+				// Ti.App.fireEvent('openBrowser', {
+				// 	url: L('memeapp_url')
+				// });
 			});
 
 			var appIcon = Ti.UI.createImageView({
