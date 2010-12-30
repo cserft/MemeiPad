@@ -56,7 +56,6 @@ function humane_date(date_str){
 
 // Returns date formatted like '12/12/2010 06:51 PM'
 function formatted_date() {
-	// TODO: i18n format of the date
 	var date = new Date,
 		minstr = date.getMinutes(); if (minstr<10) {minstr="0"+minstr;} 		// fixes minutes when less than 10
 		
