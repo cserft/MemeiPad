@@ -59,7 +59,16 @@ function formatted_date() {
 	// TODO: i18n format of the date
 	var date = new Date,
 		minstr = date.getMinutes(); if (minstr<10) {minstr="0"+minstr;} 		// fixes minutes when less than 10
-		datestr = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+		
+		// i18n of the date 
+		if (Ti.Locale.currentLanguage == 'en') { 
+			//if english the Month/Day/Year
+			datestr = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+		} else { 
+			//if any other language then Day/Month/Year
+			datestr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
+		}
+		
 		hourstr = ' ' + date.getHours() + ':' + minstr + ' AM'; 
 		
 	if (date.getHours() >= 12) {
