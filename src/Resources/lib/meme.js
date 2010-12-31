@@ -15,7 +15,7 @@ var Meme = function() {
 	// public functions
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
 		featuredPosts, dashboardPosts, isFollowing, follow, unfollow, 
-		createComment, repost, isReposted, userInfo, flashlightPhotos, 
+		createComment, repost, isReposted, userInfo, userSearch, flashlightPhotos, 
 		flashlightVideos, flashlightWeb, flashlightTweets;
 		
 	// private functions
@@ -140,6 +140,19 @@ var Meme = function() {
 			userInfo = results.meme;
 		});
 		return userInfo;
+	};
+	
+	userSearch = function(query, num, thumbWidth, thumbHeight) {
+		var params = {
+			cacheKey: 'userSearch:' + query,
+			cacheSeconds: 86400, // 24 hours
+			yqlQuery: 'SELECT * FROM meme.people('+ num +') WHERE query="' + query + '"| sort(field="followers") | reverse() | meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')' 
+		};
+		var userSearch;
+		cachedYqlQuery(params, function(results) {
+			userSearch = results.meme;
+		});
+		return userSearch;
 	};
 	
 	flashlightPhotos = function(query) {
@@ -323,6 +336,7 @@ var Meme = function() {
 		repost: repost,
 		isReposted: isReposted,
 		userInfo: userInfo,
+		userSearch: userSearch,
 		flashlightPhotos: flashlightPhotos, 
 		flashlightVideos: flashlightVideos, 
 		flashlightWeb: flashlightWeb, 
