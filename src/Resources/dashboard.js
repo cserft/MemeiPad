@@ -426,12 +426,25 @@ var createEmptyDashboard = function () {
 		color: 		'#999',
 		top: 		146,
 		left: 		47,
-		width: 		777,
-		height: 	42,
+		width: 		660,
+		height: 	60,
 		font: 		{fontSize:14, fontFamily:'Helvetica', fontWeight:'Regular'},
 		zIndex: 	1
 	});
 	baseView.add(descriptionLabel);
+	
+	var doneButton = Ti.UI.createButton({
+		backgroundImage: 	'images/btn_bg_blue.png',
+		title: 				'Go to your Dashboard',
+		width: 				200,
+		height: 			35,
+		right: 				50,
+		top: 				100,
+		font: 				{fontFamily:'Arial',fontWeight:'bold',fontSize:14},
+		opacity: 			1,
+		visible: 			false
+	});
+	baseView.add(doneButton);
 	
 	var recommendedTitleLabel = Titanium.UI.createLabel({
 		text: 		'RECOMMENDED USERS & CONTENT',
@@ -515,23 +528,38 @@ var createEmptyDashboard = function () {
 	// = recommended users scrollview =
 	// ================================
 	
-	//create the ScrollView that will hold recomended users
-	var usersView = Ti.UI.createScrollView({
-		backgroundColor: 				'transparent',
-		layout: 						'vertical',
+	var usersTableView = Titanium.UI.createTableView({
 		width: 							400,
 		height: 						370,
 		top: 							276,
 		left: 							588,
-		contentWidth: 					400,
-		contentHeight: 					'auto',
-		showVerticalScrollIndicator: 	true,
-		showHorizontalScrollIndicator: 	false,
+		rowHeight: 						70,
+		backgroundColor: 				"transparent",
+		separatorStyle: 				Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
+		selectionStyle: 				'none',
 		zIndex: 						1
 	});
-	baseView.add(usersView);
+	baseView.add(usersTableView);
 	
-	var users = Ti.App.meme.userSearch('hello', 10, 60, 60);
+	var data = [];
+	
+	//create the ScrollView that will hold recomended users
+	// var usersView = Ti.UI.createScrollView({
+	// 	backgroundColor: 				'transparent',
+	// 	layout: 						'vertical',
+	// 	width: 							400,
+	// 	height: 						370,
+	// 	top: 							276,
+	// 	left: 							588,
+	// 	contentWidth: 					400,
+	// 	contentHeight: 					'auto',
+	// 	showVerticalScrollIndicator: 	true,
+	// 	showHorizontalScrollIndicator: 	false,
+	// 	zIndex: 						1
+	// });
+	// baseView.add(usersView);
+	
+	var users = Ti.App.meme.userSearch('hello', 5, 60, 60);
 	// Ti.API.debug("User Search Results" + JSON.stringify(users));
 	
 	for (var i=0; i<users.length; i++) {
@@ -544,13 +572,17 @@ var createEmptyDashboard = function () {
 		var _avatar     = user.avatar_url;
 		var _lang		= user.language;
 
-		var rowView = Ti.UI.createView({
-			backgroundColor: 	'transparent',
-			top: 				10,
-			height: 			60,
-			width: 				400
+		// var rowView = Ti.UI.createView({
+		// 	backgroundColor: 	'transparent',
+		// 	top: 				10,
+		// 	height: 			60,
+		// 	width: 				400
+		// });
+		// usersView.add(rowView);
+		
+		var rowView = Ti.UI.createTableViewRow({
+			className: user
 		});
-		usersView.add(rowView);
 		
 		var guidAvatar = Titanium.UI.createImageView({
 			image: _avatar.thumb,
@@ -603,24 +635,36 @@ var createEmptyDashboard = function () {
 			left: 						73,
 			width: 						24,
 			height: 					24,
+			_title: 					_title,
+			_guid: 						_guid,
+			// updateFollowing: 			null,
 			style: 						Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 		});
 		rowView.add(btn_follow);
 
-		var updateFollowing = null;
+		rowView.updateFollowing = null;
 		if (Ti.App.meme.isFollowing(_guid)) {
 			btn_follow.backgroundImage = 'images/btn_icon_following.png';
-			updateFollowing = Ti.App.meme.unfollow;
-			Ti.App.activitySmall.hide();
+			rowView.updateFollowing = Ti.App.meme.unfollow;
 		} else {
 			btn_follow.backgroundImage = 'images/btn_icon_follow.png';
-			updateFollowing = Ti.App.meme.follow;
-			Ti.App.activitySmall.hide();
+			rowView.updateFollowing = Ti.App.meme.follow;
 		}
 
-		//Follow listener
-		btn_follow.addEventListener('click', function()	{
+		data.push(rowView);
+
+	}
+	
+	usersTableView.setData(data);
+	
+	usersTableView.addEventListener('click', function(e) {
+		if (e.source._guid) {
+			
+			Ti.API.info("Follow Button Clicked: Title [" + e.source._title + "] Guid [" + e.source._guid + "]");
+			var btn_follow = e.source;
+
 			btn_follow.hide();
+			doneButton.show();
 
 			var activity = Titanium.UI.createActivityIndicator({
 				style: 		Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN,
@@ -629,30 +673,29 @@ var createEmptyDashboard = function () {
 				height: 	24,
 				width: 		24
 			});
-			rowView.add(activity);
+			e.row.add(activity);
 
 			activity.show();
 
-			updateFollowing(_guid);
+			e.row.updateFollowing(btn_follow._guid);
 
 			setTimeout(function()
 			{
 				activity.hide();
 
-				if (Ti.App.meme.isFollowing(_guid)) {
+				if (Ti.App.meme.isFollowing(e.source._guid)) {
 					btn_follow.backgroundImage = 'images/btn_icon_following.png';
-					updateFollowing = Ti.App.meme.unfollow;
+					e.row.updateFollowing = Ti.App.meme.unfollow;
 				} else {
 					btn_follow.backgroundImage = 'images/btn_icon_follow.png';
-					updateFollowing = Ti.App.meme.follow;
+					e.row.updateFollowing = Ti.App.meme.follow;
 				}
 
 				btn_follow.show();
 			},1000);
-
-		});
-
-	}
+		}	
+		
+	});
 	
 	// open Main Window from app.js with Transition
 	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
