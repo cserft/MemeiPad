@@ -125,7 +125,7 @@ var Meme = function() {
 		return false;
 	};
 	
-	userInfo = function(guid, thumbWidth, thumbHeight) {
+	userInfo = function(guid, thumbWidth, thumbHeight, cache) {
 		if (guid == 'me') {
 			loginRequired();
 		}
@@ -136,9 +136,16 @@ var Meme = function() {
 			yqlQuery: 'SELECT * FROM meme.info where owner_guid=' + queryGuid + ' | meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')'
 		};
 		var userInfo;
-		cachedYqlQuery(params, function(results) {
-			userInfo = results.meme;
-		});
+		
+		if (cache) {
+			cachedYqlQuery(params, function(results) {
+				userInfo = results.meme;
+			});
+		} else {
+			var yqlResponse = getYql().query(params.yqlQuery);
+			userInfo = yqlResponse.query.results.meme;
+		}
+
 		return userInfo;
 	};
 	

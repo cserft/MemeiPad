@@ -176,7 +176,7 @@ var showHeader = function (successCallback) {
 	win1.add(headerView);
 
 	if (Ti.App.oAuthAdapter.isLoggedIn()) {
-		Ti.App.myMemeInfo = Ti.App.meme.userInfo('me', 35, 35);
+		Ti.App.myMemeInfo = Ti.App.meme.userInfo('me', 35, 35, true);
 		
 		var btn_Username = Ti.UI.createView({
 			backgroundImage: 			'images/btn_username.png',	
