@@ -1111,7 +1111,7 @@ Ti.App.addEventListener('openBrowser', function(e) {
 		navBarHidden: 		true,
 		zIndex: 			7,
 		opacity: 			0,
-		pUrl: 				e.url
+		pUrl: 				e.url.toLowerCase()
 	});
 
 
