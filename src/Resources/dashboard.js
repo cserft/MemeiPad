@@ -9,6 +9,7 @@ win.orientationModes =  [
 
 var win1 = win.win1; // Window Original created on app.js
 var clickTimeoutPermalink = 0; // Sets the initial ClickTimeout for Open a permalink
+Ti.App.Dashboard = false; // controls if the Logged in Dashboard will be presented or not
 
 // Creating the List Post Table View
 
@@ -376,19 +377,24 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 // = FUNCTION TO BUILD DASHBOARD =
 // ===============================
 
+var baseViewDashboard;
+
 var createEmptyDashboard = function () {
 	// Redefining Positions and dimensions
 	win.top = 51;
 	win.height = 697;
-	win.backgroundColor = 'black';
+	win.backgroundColor = '#0B0B0B';
 	
-	var baseView = Ti.UI.createView({
+	tableView.hide();
+	
+	baseViewDashboard = Ti.UI.createView({
 		backgroundColor: 		'transparent',
 		width: 					'100%',
 		height: 				'100%',
-		zIndex: 				10
+		zIndex: 				1,
+		visible: 				true
 	});
-	win.add(baseView);
+	win.add(baseViewDashboard);
 	
 	var welcomeLabel = Titanium.UI.createLabel({
 		text: 		'welcome to meme!',
@@ -403,7 +409,7 @@ var createEmptyDashboard = function () {
 		font: 		{fontSize:58, fontFamily:'Gotham Rounded', fontWeight:'Light'},
 		zIndex: 	1
 	});
-	baseView.add(welcomeLabel);
+	baseViewDashboard.add(welcomeLabel);
 	
 	var welcomeLabel2 = Titanium.UI.createLabel({
 		text: 		'the smart way to post',
@@ -417,10 +423,10 @@ var createEmptyDashboard = function () {
 		font: 		{fontSize:58, fontFamily:'Gotham Rounded', fontWeight:'Light'},
 		zIndex: 	1
 	});
-	baseView.add(welcomeLabel2);
+	baseViewDashboard.add(welcomeLabel2);
 	
 	var descriptionLabel = Titanium.UI.createLabel({
-		text: 		'It all starts with your easy-to-use smart posting screen. You just need to type what you want to post about so Meme can fetch some related videos and photos so you can use in your posts, in just one click! Quick, smart, and painless :) ',
+		text: 		'Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recomended list or creating a new Post, just click in the "start posting here" button',
 		align: 		'left',
 		textAlign: 	'left',
 		color: 		'#999',
@@ -431,9 +437,9 @@ var createEmptyDashboard = function () {
 		font: 		{fontSize:14, fontFamily:'Helvetica', fontWeight:'Regular'},
 		zIndex: 	1
 	});
-	baseView.add(descriptionLabel);
+	baseViewDashboard.add(descriptionLabel);
 	
-	var doneButton = Ti.UI.createButton({
+	var goDashboardButton = Ti.UI.createButton({
 		backgroundImage: 	'images/btn_bg_blue.png',
 		title: 				'Go to your Dashboard',
 		width: 				200,
@@ -444,7 +450,11 @@ var createEmptyDashboard = function () {
 		opacity: 			1,
 		visible: 			false
 	});
-	baseView.add(doneButton);
+	baseViewDashboard.add(goDashboardButton);
+	
+	goDashboardButton.addEventListener('click', function (e) {
+		Ti.App.fireEvent('goDashboard');
+	});
 	
 	var recommendedTitleLabel = Titanium.UI.createLabel({
 		text: 		'RECOMMENDED USERS & CONTENT',
@@ -458,11 +468,11 @@ var createEmptyDashboard = function () {
 		font: 		{fontSize:22, fontFamily:'Gotham Rounded', fontWeight:'Light'},
 		zIndex: 	1
 	});
-	baseView.add(recommendedTitleLabel);
+	baseViewDashboard.add(recommendedTitleLabel);
 	
 	//create the ScrollView that will hold recomended posts
 	var postsView = Ti.UI.createScrollView({
-		backgroundColor: 				'transparent',
+		backgroundColor: 				'red',
 		layout: 						'vertical',
 		width: 							490,
 		height: 						370,
@@ -474,10 +484,12 @@ var createEmptyDashboard = function () {
 		showHorizontalScrollIndicator: 	false,
 		zIndex: 						1
 	});
-	baseView.add(postsView);
+	baseViewDashboard.add(postsView);
 	
 	// NOT LOGGED IN SO GETS THE FEATURED POSTS
+	
 	var posts = Ti.App.meme.featuredPosts(235, 177);
+	
 	var _column;
 	
 	for (var i=0; i<posts.length; i++) {
@@ -523,7 +535,6 @@ var createEmptyDashboard = function () {
 		
 	}
 	
-	
 	// ================================
 	// = recommended users scrollview =
 	// ================================
@@ -534,30 +545,14 @@ var createEmptyDashboard = function () {
 		top: 							276,
 		left: 							588,
 		rowHeight: 						70,
-		backgroundColor: 				"transparent",
+		backgroundColor: 				"purple",
 		separatorStyle: 				Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
 		selectionStyle: 				'none',
 		zIndex: 						1
 	});
-	baseView.add(usersTableView);
+	baseViewDashboard.add(usersTableView);
 	
 	var data = [];
-	
-	//create the ScrollView that will hold recomended users
-	// var usersView = Ti.UI.createScrollView({
-	// 	backgroundColor: 				'transparent',
-	// 	layout: 						'vertical',
-	// 	width: 							400,
-	// 	height: 						370,
-	// 	top: 							276,
-	// 	left: 							588,
-	// 	contentWidth: 					400,
-	// 	contentHeight: 					'auto',
-	// 	showVerticalScrollIndicator: 	true,
-	// 	showHorizontalScrollIndicator: 	false,
-	// 	zIndex: 						1
-	// });
-	// baseView.add(usersView);
 	
 	var users = Ti.App.meme.userSearch('hello', 5, 60, 60);
 	// Ti.API.debug("User Search Results" + JSON.stringify(users));
@@ -571,14 +566,6 @@ var createEmptyDashboard = function () {
 		var _following  = user.following;
 		var _avatar     = user.avatar_url;
 		var _lang		= user.language;
-
-		// var rowView = Ti.UI.createView({
-		// 	backgroundColor: 	'transparent',
-		// 	top: 				10,
-		// 	height: 			60,
-		// 	width: 				400
-		// });
-		// usersView.add(rowView);
 		
 		var rowView = Ti.UI.createTableViewRow({
 			className: user
@@ -660,11 +647,12 @@ var createEmptyDashboard = function () {
 	usersTableView.addEventListener('click', function(e) {
 		if (e.source._guid) {
 			
-			Ti.API.info("Follow Button Clicked: Title [" + e.source._title + "] Guid [" + e.source._guid + "]");
-			var btn_follow = e.source;
+			var btn_follow = e.source; // gets the source of the click
 
 			btn_follow.hide();
-			doneButton.show();
+			
+			//show the go to Dashboard Button
+			goDashboardButton.show();
 
 			var activity = Titanium.UI.createActivityIndicator({
 				style: 		Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN,
@@ -700,7 +688,7 @@ var createEmptyDashboard = function () {
 	// open Main Window from app.js with Transition
 	win1.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
 	//Presents the Status Bar after launching
-	Titanium.UI.iPhone.showStatusBar();
+	Ti.UI.iPhone.showStatusBar();
 	
 };
 
@@ -829,13 +817,21 @@ var getDashboardData = function (pTimestamp) {
 	
 	if (Ti.App.oAuthAdapter.isLoggedIn()) {
 		
-		if (true /*Ti.App.myMemeInfo.following == 0*/) {
+		var userInfo = Ti.App.meme.userInfo('me', 35, 35, false); // withou cache
+		
+		if (userInfo.following == 0) {
 			Ti.API.info(" ####### STARTING DASHBOARD EMPTY (LOGGED IN) ##########");
 
 			// Reload TableVIew or First Build
 			createEmptyDashboard();
 			
 		} else {
+
+			//confirms the proper size
+			win.top = 59;
+			win.height = 689;
+			win.backgroundColor = 'transparent';
+			tableView.show();
 			
 			// User is Following some blogs so must show the Logged In Dashboard
 			if (pTimestamp == null) {
@@ -1122,4 +1118,13 @@ Ti.App.addEventListener('reloadDashboard', function(e) {
 Ti.App.addEventListener('close_dashboard', function(e) {
 	//Closes Dashboard Window
 	win.close({opacity:0,duration:200});
+});
+
+Ti.App.addEventListener('goDashboard', function(e) {
+	Ti.API.info("BaseView: " + baseViewDashboard);
+	baseViewDashboard.animate({top: 768, zIndex: 0, duration: 300}, function(){
+		baseViewDashboard.hide();
+		getDashboardData(null);
+	});
+	
 });
