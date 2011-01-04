@@ -15,7 +15,7 @@ var Meme = function() {
 	// public functions
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
 		featuredPosts, dashboardPosts, isFollowing, follow, unfollow, 
-		createComment, repost, isReposted, userInfo, userSearch, flashlightPhotos, 
+		createComment, repost, isReposted, userInfo, userSearch, userFeatured, flashlightPhotos, 
 		flashlightVideos, flashlightWeb, flashlightTweets;
 		
 	// private functions
@@ -52,7 +52,7 @@ var Meme = function() {
 		return post;
 	};
 	
-	featuredPosts = function(thumbWidth, thumbHeight) {
+	featuredPosts = function(thumbWidth, thumbHeight, callback) {
 		var params = {
 			cacheKey: 'featuredPosts',
 			cacheSeconds: 7200, // 2 hours
@@ -62,7 +62,13 @@ var Meme = function() {
 		cachedYqlQuery(params, function(results) {
 			posts = results.post;
 		});
-		return posts;
+		if (!callback) {
+			Ti.API.info("No Callback Called");
+			return posts;
+		} else {
+			Ti.API.info("Callback Called");
+			return callback(posts);
+		}
 	};
 	
 	dashboardPosts = function(thumbWidth, thumbHeight, startTimestamp) {
@@ -149,7 +155,7 @@ var Meme = function() {
 		return userInfo;
 	};
 	
-	userSearch = function(query, num, thumbWidth, thumbHeight) {
+	userSearch = function(query, num, thumbWidth, thumbHeight, callback) {
 		var params = {
 			cacheKey: 'userSearch:' + query,
 			cacheSeconds: 86400, // 24 hours
@@ -159,7 +165,34 @@ var Meme = function() {
 		cachedYqlQuery(params, function(results) {
 			userSearch = results.meme;
 		});
-		return userSearch;
+		
+		if (!callback) {
+			Ti.API.info("No Callback Called");
+			return userSearch;
+		} else {
+			Ti.API.info("Callback Called");
+			return callback(userSearch);
+		}
+	};
+	
+	userFeatured = function(num, thumbWidth, thumbHeight, callback) {
+		var params = {
+			cacheKey: 'userFeatured:' + num,
+			cacheSeconds: 86400, // 24 hours
+			yqlQuery: 'select * from meme.info(' + num + ') where owner_guid in (select guid from meme.posts.featured where locale="" | unique(field="guid")) | meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')'
+		};
+		var userFeatured;
+		cachedYqlQuery(params, function(results) {
+			userFeatured = results.meme;
+		});
+		
+		if (!callback) {
+			Ti.API.info("No Callback Called");
+			return userFeatured;
+		} else {
+			Ti.API.info("Callback Called");
+			return callback(userFeatured);
+		}
 	};
 	
 	flashlightPhotos = function(query) {
@@ -344,6 +377,7 @@ var Meme = function() {
 		isReposted: isReposted,
 		userInfo: userInfo,
 		userSearch: userSearch,
+		userFeatured: userFeatured,
 		flashlightPhotos: flashlightPhotos, 
 		flashlightVideos: flashlightVideos, 
 		flashlightWeb: flashlightWeb, 
