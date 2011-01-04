@@ -8,7 +8,7 @@ Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
 Ti.API.info("App Name: " + Ti.App.getName() + " and App Version: " + Ti.App.getVersion());
 
 // LIsteners to retrieve Data from the Custom Handler (memeipad)
-Ti.App.addEventListener('resume', function (){
+Ti.App.addEventListener('resumed', function (){
 	//Analytics Request
 	doYwaRequest(analytics.APP_STARTED);
 	
@@ -615,7 +615,7 @@ var showHeader = function (successCallback) {
 						barColor: 				'black'
 					});
 					var wv = Ti.UI.createWebView({
-						url: 				'atos/' + L('url_atos_html'), 
+						url: 				String.format(L("url_atos_html"),Ti.Locale.currentLanguage), 
 						top: 				0,	
 						width: 				341,
 						height: 			365, // correct: 270
@@ -1019,8 +1019,37 @@ Ti.App.addEventListener('yqlerror', function(e) {
 	//Analytics Request
 	doYwaRequest(analytics.YQL_ERROR);
 	
+	//Closes the Keyboard if open
+	Ti.App.fireEvent('hide_keyboard');
+	
 	Ti.API.error('App crashed (cannot connect to YQL). Error info: ' + JSON.stringify(e));
-	displayErrorMessage(L('yql_error'), L('error_message_problem'), 80, 36);
+	
+	//Alert to Error
+	var alertError = Titanium.UI.createAlertDialog({
+		title: L('yql_error'),
+		message: L('error_message_problem'),
+		buttonNames: [L('btn_alert_CANCEL'),L('btn_error_refresh_title')],
+		cancel: 0
+	});	
+	alertError.show();
+	
+	alertError.addEventListener('click',function(e)	{
+		if (e.index == 1){
+			//Closes NewPost if Open
+			Ti.App.fireEvent('close_newpost');
+
+			//Closes Permalink if Open
+			Ti.App.fireEvent('close_permalink');
+
+			//Closes DASHBOARD
+			Ti.App.fireEvent('close_dashboard');
+
+			startApplication();
+				
+		}	
+	});
+	
+	// displayErrorMessage(L('yql_error'), L('error_message_problem'), 80, 36);
 });
 
 // ==================================
@@ -1029,11 +1058,7 @@ Ti.App.addEventListener('yqlerror', function(e) {
 if (!Titanium.Network.online) {
 	displayErrorMessage(L('network_error'), L('network_error_message'), 45, 30);
 } else {
-	// if (Titanium.Network.networkTypeName == 'MOBILE') {
-	// 	displayErrorMessage('Wi-Fi Required', 'Meme is a very data intensive application and needs a Wi-Fi connection to work properly. Please, connect to Wi-Fi and try again.', 58, 25);
-	// } else {
 		startApplication();
-	// }
 };
 
 // =====================
