@@ -405,7 +405,7 @@ var createEmptyDashboard = function () {
 		color: 		'#FFF',
 		// backgroundColor: 'red',
 		top: 		44,
-		left: 		47,
+		left: 		63,
 		width: 		900,
 		height: 	65,
 		font: 		{fontSize:58, fontFamily:'Gotham Rounded', fontWeight:'Light'},
@@ -419,7 +419,7 @@ var createEmptyDashboard = function () {
 		textAlign: 	'left',
 		color: 		'#FFF',
 		top: 		95,
-		left: 		47,
+		left: 		63,
 		width: 		900,
 		height: 	60,
 		font: 		{fontSize:58, fontFamily:'Gotham Rounded', fontWeight:'Light'},
@@ -433,26 +433,38 @@ var createEmptyDashboard = function () {
 		textAlign: 	'left',
 		color: 		'#999',
 		top: 		146,
-		left: 		47,
-		width: 		660,
+		left: 		63,
+		width: 		770,
 		height: 	60,
 		font: 		{fontSize:14, fontFamily:'Helvetica', fontWeight:'Regular'},
 		zIndex: 	1
 	});
 	baseViewDashboard.add(descriptionLabel);
 	
-	var goDashboardButton = Ti.UI.createButton({
-		backgroundImage: 	'images/btn_bg_blue.png',
-		title: 				'Go to your Dashboard',
-		width: 				200,
-		height: 			35,
-		right: 				50,
-		top: 				100,
-		font: 				{fontFamily:'Arial',fontWeight:'bold',fontSize:14},
-		opacity: 			1,
-		visible: 			false
+	var goDashboardView = Ti.UI.createView({
+		backgroundImage: 		'images/bg_goDashboardView.png',
+		opacity: 				1,
+		backgroundLeftCap: 		10,
+		bottom: 				-51,
+		width:  				1024,
+		height: 				51,
+		zIndex: 				2
 	});
-	baseViewDashboard.add(goDashboardButton);
+	baseViewDashboard.add(goDashboardView);
+	
+	var goDashboardButton = Ti.UI.createButton({
+		backgroundImage: 	'transparent',
+		title: 				'Now that you are following some people, check out your dashboard',
+		color: 				'white',
+		textAlign: 			'center',
+		width: 				600,
+		height: 			35,
+		top: 				8,
+		font: 				{fontFamily:'Helvetica',fontWeight:'bold',fontSize:18},
+		opacity: 			1,
+		visible: 			true
+	});
+	goDashboardView.add(goDashboardButton);
 	
 	goDashboardButton.addEventListener('click', function (e) {
 		Ti.App.fireEvent('goDashboard');
@@ -464,7 +476,7 @@ var createEmptyDashboard = function () {
 		textAlign: 	'left',
 		color: 		'#999',
 		top: 		234,
-		left: 		47,
+		left: 		63,
 		width: 		490,
 		height: 	30,
 		font: 		{fontSize:22, fontFamily:'Gotham Rounded', fontWeight:'Light'},
@@ -478,8 +490,8 @@ var createEmptyDashboard = function () {
 		layout: 						'vertical',
 		width: 							490,
 		height: 						370,
-		top: 							279,
-		left: 							47,
+		top: 							270,
+		left: 							63,
 		contentWidth: 					490,
 		contentHeight: 					'auto',
 		showVerticalScrollIndicator: 	true,
@@ -549,8 +561,8 @@ var createEmptyDashboard = function () {
 	var usersTableView = Titanium.UI.createTableView({
 		width: 							400,
 		height: 						370,
-		top: 							276,
-		left: 							588,
+		top: 							270,
+		left: 							608,
 		rowHeight: 						70,
 		backgroundColor: 				"transparent",
 		separatorStyle: 				Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
@@ -659,7 +671,7 @@ var createEmptyDashboard = function () {
 				btn_follow.hide();
 
 				//show the go to Dashboard Button
-				goDashboardButton.show();
+				goDashboardView.animate({bottom: 0, duration: 400});
 
 				var activity = Titanium.UI.createActivityIndicator({
 					style: 		Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN,
@@ -829,7 +841,7 @@ var getDashboardData = function (pTimestamp) {
 		
 		var userInfo = Ti.App.meme.userInfo('me', 35, 35, false); // without cache
 		
-		if (userInfo.following == 0) {
+		if (true/*userInfo.following == 0*/) {
 			Ti.API.info(" ####### STARTING DASHBOARD EMPTY (LOGGED IN) ##########");
 
 			// Reload TableVIew or First Build
