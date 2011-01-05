@@ -23,7 +23,7 @@
 	<string name="about_privacy">Privacy Policy</string>
 	<string name="about_guidelines">Guidelines</string>
 	<string name="about_feedback">Contact Us</string>
-	<string name="url_atos_html">atos_en.html</string>
+	<string name="url_atos_html">http://meme.yahoo.com/help/atos/?.lang=%s</string>
 	<string name="url_utos_html">http://meme.yahoo.com/help/utos/?.lang=%s</string>
 	<string name="url_privacy_html">http://meme.yahoo.com/help/privacy/?.lang=%s</string>
 	<string name="url_guidelines_html">http://meme.yahoo.com/help/guidelines/</string>
@@ -42,8 +42,8 @@
 	<string name="btn_alert_NO">No</string>
 	<string name="btn_alert_CANCEL">Cancel</string>
 	<string name="open_link_message">We will open this link in Safari</string>
-	<string name="btn_error_refresh_title">refresh</string>
-	<string name="yql_error">YQL Error</string>
+	<string name="btn_error_refresh_title">retry</string>
+	<string name="yql_error">Error</string>
 	<string name="error_message_problem">Ops, it seems we had a problem...</string>
 	<string name="network_error">Network Error</string>
 	<string name="network_error_message">You need to be online to use Meme for iPad. Please, check your network connection and try again.</string>

@@ -23,7 +23,7 @@
 	<string name="about_privacy">Privacidade</string>
 	<string name="about_guidelines">Regras</string>
 	<string name="about_feedback">Mande sugestões</string>
-	<string name="url_atos_html">atos_br.html</string>
+	<string name="url_atos_html">http://meme.yahoo.com/help/atos/?.lang=%s</string>
 	<string name="url_utos_html">http://meme.yahoo.com/help/utos/?.lang=%s</string>
 	<string name="url_privacy_html">http://meme.yahoo.com/help/privacy/?.lang=%s</string>
 	<string name="url_guidelines_html">http://meme.yahoo.com/help/guidelines/</string>
@@ -42,8 +42,8 @@
 	<string name="btn_alert_NO">Não</string>
 	<string name="btn_alert_CANCEL">Cancelar</string>
 	<string name="open_link_message">Este link será aberto no Safari</string>
-	<string name="btn_error_refresh_title">recarregar</string>
-	<string name="yql_error">Erro de YQL</string>
+	<string name="btn_error_refresh_title">tentar novamente</string>
+	<string name="yql_error">Erro</string>
 	<string name="error_message_problem">Ops, parece que tivemos um problema...</string>
 	<string name="network_error">Erro de Rede</string>
 	<string name="network_error_message">Você precisa estar online para poder usar o Meme para iPad. Por favor, verifique sua conexão de rede e tente novamente.</string>

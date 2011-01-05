@@ -23,7 +23,7 @@
 	<string name="about_privacy">隱私權政策</string>
 	<string name="about_guidelines">使用規範</string>
 	<string name="about_feedback">建議事項</string>
-	<string name="url_atos_html">atos_zh.html</string>
+	<string name="url_atos_html">http://meme.yahoo.com/help/atos/?.lang=%s</string>
 	<string name="url_utos_html">http://meme.yahoo.com/help/utos/?.lang=%s</string>
 	<string name="url_privacy_html">http://meme.yahoo.com/help/privacy/?.lang=%s</string>
 	<string name="url_guidelines_html">http://meme.yahoo.com/help/guidelines/</string>
@@ -43,7 +43,7 @@
 	<string name="btn_alert_CANCEL">取消</string>
 	<string name="open_link_message">>我們會在Safari中打開註冊頁</string>
 	<string name="btn_error_refresh_title">刷新</string>
-	<string name="yql_error">YQL 錯誤</string>
+	<string name="yql_error"> 錯誤</string>
 	<string name="error_message_problem">對不起，好像出現了問題...</string>
 	<string name="network_error">網路錯誤</string>
 	<string name="network_error_message">你需要上網才能在iPad上使用Meme。請檢查網路連接。</string>
