@@ -90,6 +90,7 @@ var getPostHtml = function(innerMedia, innerCaption) {
 	Ti.API.info("innerCaption: " + innerCaption);
 	innerCaption = innerCaption.replace(exp, '<a href="$1">$1</a>');
 	innerCaption = innerCaption.replace(/href="(.+?)"/g, 'href="javascript:link(\'$1\');"');
+	innerCaption = innerCaption.replace(/link\(\'(Http)/g, 'link(\'http');
 	return '<html><head><script language="javascript">var link = function(url) { Ti.App.fireEvent("openBrowser", { url: url }); }</script><style type="text/css">#wrapper {padding: 20px;width: 700px;}.post {font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:16px;margin:8px 0;padding-left:8px;font-size: 16px;color:#516064;}.post strong, .post b {font-weight:600;} a { outline:0 none;} a, a:visited {color:#863486;cursor:pointer;text-decoration:none;} .block_clear {display: block;clear: both;} p{margin-bottom:-10px} .post blockquote {background:url("images/quote_innerhtml.png") no-repeat scroll 7px 3px transparent; border-left:2px solid #CCCCCC; font-size:16px; margin:8px 0; padding-left:30px;}</style></head><body><div id="wrapper"><div id="middle">' + innerMedia + '<div class="post">' + innerCaption + '<br/><br/></div></div></div></body></html>';
 };
 
