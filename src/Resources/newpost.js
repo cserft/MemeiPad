@@ -121,6 +121,22 @@ var popoverSearchView = Titanium.UI.iPad.createPopover({
 	arrowDirection: 	Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
 });
 
+// ==================
+// = BOTTOM TOOLBAR =
+// ==================
+
+//Creates the bottom toolbar
+var toolBar = Titanium.UI.createView({
+	bottom: 		0,
+	left: 			0,
+	translucent: 	false,
+	width: 			1024,
+	height: 		53,
+	backgroundImage: 'images/bg_newpost_toolbar.png',
+	zIndex: 		2
+});	
+win.add(toolBar);
+
 // ==========================
 // = ADD PHOTO FROM GALLERY =
 // ==========================
@@ -167,7 +183,7 @@ btn_addPhoto.addEventListener('click', function() {
 		},
 		allowEditing:false,
 		popoverView:popoverGalleryView,
-		arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP,
+		arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN,
 		mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]
 	});
 
@@ -188,6 +204,63 @@ var btn_post = Ti.UI.createButton({
 	top: 						-10
 });
 postHeaderView.add(btn_post);
+
+// White Gradient in the Bottom
+// var whiteShadow = Titanium.UI.createImageView({
+// 	image: 'images/white_shadow.png',
+// 	bottom: 	53,
+// 	left: 		0,
+// 	width: 		1024,
+// 	height: 	91
+// });
+// win.add(whiteShadow);
+
+//Disclaimer Community Guidelines
+var disclaimerLabel1 = Titanium.UI.createLabel({
+	text: 		L('disclaimer_copyright_guidelines'),
+	color: 		'#666',
+	width: 		525,
+	height: 	13,
+	left: 		19,
+	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
+	bottom: 	28,
+	zIndex: 	3
+});
+toolBar.add(disclaimerLabel1);
+
+//Disclaimer Settings Yahoo! Updates.
+var disclaimerLabel2 = Titanium.UI.createLabel({
+	text: 		L('disclaimer_yahoo_updates'),
+	color: 		'#666',
+	width: 		280,
+	height: 	13,
+	left: 		19,
+	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
+	bottom: 	10,
+	zIndex: 	3
+});
+toolBar.add(disclaimerLabel2);
+
+// =============================================
+// = DISCLAIMERS LISTENERS TO OPEN THE BROWSER =
+// =============================================
+
+//Alert to Open Safari for the Post Permalink
+disclaimerLabel1.addEventListener("click", function(e)
+{
+	Ti.App.fireEvent('openBrowser', {
+		url: L("guidelines_url")
+	});
+
+});
+
+disclaimerLabel2.addEventListener("click", function(e)
+{
+	Ti.App.fireEvent('openBrowser', {
+		url: L("settings_url")
+	});
+});
+
 // ======================
 // = END OF THE TOP BAR =
 // ======================
@@ -325,82 +398,7 @@ if (postBody == ''){
 	tempPostLabel.show();	
 }
 
-// White Gradient in the Bottom
-var whiteShadow = Titanium.UI.createImageView({
-	image: 'images/white_shadow.png',
-	bottom: 	0,
-	left: 		0,
-	width: 		1024,
-	height: 	91
-});
-win.add(whiteShadow);
 
-//Disclaimer Community Guidelines
-var disclaimerLabel1 = Titanium.UI.createLabel({
-	text: 		L('disclaimer_copyright_guidelines'),
-	color: 		'#CCC',
-	width: 		525,
-	height: 	15,
-	left: 		(1024-(525+285))/2, // Total width of the screen (1024) - (width of disclaimer1 + width of disclaimer2), the result divided by 2
-	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
-	bottom: 	18,
-	zIndex: 	3
-});
-win.add(disclaimerLabel1);
-
-//Disclaimer Settings Yahoo! Updates.
-var disclaimerLabel2 = Titanium.UI.createLabel({
-	text: 		L('disclaimer_yahoo_updates'),
-	color: 		'#CCC',
-	width: 		280,
-	height: 	15,
-	left: 		disclaimerLabel1.left + disclaimerLabel1.width + 5,
-	font: 		{fontSize:11, fontFamily:'Helvetica', fontWeight:'regular'},
-	bottom: 	18,
-	zIndex: 	3
-});
-win.add(disclaimerLabel2);
-
-// =============================================
-// = DISCLAIMERS LISTENERS TO OPEN THE BROWSER =
-// =============================================
-
-//Alert to Open Safari for the Post Permalink
-var alertOpenPermalink = Titanium.UI.createAlertDialog({
-	title: L('open_link_title'),
-	message: L('open_link_message'),
-	buttonNames: [L('btn_alert_OK'),L('btn_alert_CANCEL')],
-	cancel: 1
-});
-
-disclaimerLabel1.addEventListener("click", function(e)
-{
-	Ti.App.fireEvent('openBrowser', {
-		url: L("guidelines_url")
-	});
-	
-	// alertOpenPermalink.url = L('guidelines_url');
-	// alertOpenPermalink.show();
-});
-
-disclaimerLabel2.addEventListener("click", function(e)
-{
-	Ti.App.fireEvent('openBrowser', {
-		url: L("settings_url")
-	});
-	// alertOpenPermalink.url = L('settings_url');
-	// alertOpenPermalink.show();
-});
-
-
-// Opens the Permalink page on Safari
-alertOpenPermalink.addEventListener('click',function(e)
-{
-	if (e.index == 0){
-		// Open Link to the Guidelines Page on Safari
-		Ti.Platform.openURL(alertOpenPermalink.url);	
-	}
-});
 
 // Upload Progress Bar
 var progressView = Titanium.UI.createView({
