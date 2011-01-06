@@ -457,7 +457,7 @@ var flashlight_create = function() {
 	
 			//show the Popover
 			popoverSearchView.show({
-				view:btn_flashlight,
+				view:postHeaderView,
 				animated:true
 			});
 				// Hides the Flashlight blink

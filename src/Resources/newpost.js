@@ -284,12 +284,12 @@ disclaimerLabel2.addEventListener("click", function(e)
 function moveToolBar(arg) {
 	if (arg == true) {
 		//Show Keyboard
-		toolBar.animate({bottom: 352, duration: 300});
+		toolBar.animate({bottom: 352, duration: 200});
 		popoverGalleryView.top = 362;
 		editView.height = 277;
 	} else {
 		//hide Keyboard
-		toolBar.animate({bottom: 0, duration: 300});
+		toolBar.animate({bottom: 0, duration: 200});
 		popoverGalleryView.top = 715;
 		editView.height = 634;
 	}
@@ -532,8 +532,17 @@ btn_flashlight.addEventListener('click', function() {
 		//Ti.API.info('queryText when btn_flashlight clicked: ' + queryText);
 		//Analytics Request
 		doYwaRequest(analytics.FLASHLIGHT_SEARCH);
+		if (searchTextField.value == '') {
+			Ti.UI.createAlertDialog({
+				title: L('flashlight_alert_empty_title'),
+				message: L('flashlight_alert_empty_message')
+			}).show();
+			
+		} else {
+			flashlight_show();
+		}
 		
-		flashlight_show();
+		
 	},500);
 	
 });
