@@ -141,28 +141,50 @@ win.add(toolBar);
 // = ADD PHOTO FROM GALLERY =
 // ==========================
 
-var btn_addPhoto = Ti.UI.createButton({
-	backgroundImage: 'images/btn_add_photos.png',
-	width: 			59,
-	height: 		50,
-	borderRadius: 	4,
-	left: 			629,
-	top: 			11,
-	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+var btn_addPhoto = Ti.UI.createView({
+	backgroundImage: 'images/bg_btn_add_photo.png',
+	width: 			146,
+	height: 		53,
+	left: 			698,
+	top: 			0
 	
 });
-postHeaderView.add(btn_addPhoto);
+toolBar.add(btn_addPhoto);
+
+// White Gradient in the Bottom
+var icon_photo = Titanium.UI.createImageView({
+	image: 'images/icon_img.png',
+	left: 		20,
+	width: 		26,
+	height: 	21
+});
+btn_addPhoto.add(icon_photo);
+
+//Disclaimer Community Guidelines
+var btn_addPhotoLabel = Titanium.UI.createLabel({
+	text: 		'add photo',
+	textAlign: 'center',
+	color: 		'#FFF',
+	width: 		80,
+	height: 	18,
+	left: 		50,
+	font: 		{fontSize:12, fontFamily:'Helvetica', fontWeight:'Light'},
+	zIndex: 	1
+});
+btn_addPhoto.add(btn_addPhotoLabel);
 
 var popoverGalleryView = Titanium.UI.createView({
-	left: 		487,
-	top: 		76,
+	left: 		605,
+	top: 		715,
 	width:      330
 });
-postHeaderView.add(popoverGalleryView);
+toolBar.add(popoverGalleryView);
 
 // build the Photo Gallery popover
 btn_addPhoto.addEventListener('click', function() {
 	Ti.API.info('Dialog Open Gallery was clicked');
+	
+	btn_addPhoto.backgroundImage = 'images/bg_btn_add_photo_selected.png';
 	
 	Ti.Media.openPhotoGallery({
 		success:function(event) {
@@ -183,27 +205,32 @@ btn_addPhoto.addEventListener('click', function() {
 		},
 		allowEditing:false,
 		popoverView:popoverGalleryView,
+		animated: false,
 		arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN,
 		mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]
 	});
 
+});
+
+btn_addPhoto.addEventListener('touchend', function() {
+	btn_addPhoto.backgroundImage = 'images/bg_btn_add_photo.png';
 });
 		
 // ===============
 // = POST BUTTON =
 // ===============
 var btn_post = Ti.UI.createButton({
-	backgroundImage: L('path_btn_post_top_background_image'),
-	height: 					85,
+	backgroundImage: 			'images/bg_btn_post_new.png',
+	height: 					53,
 	title: 						L('btn_post_top_title'),
 	color: 						'white',
 	textAlign: 					'center',
-	font: 						{fontSize:22, fontFamily:'Helvetica Neue', fontWeight:'bold'},
-	width: 						192,
-	left: 						780,
-	top: 						-10
+	font: 						{fontSize:24, fontFamily:'Helvetica Neue', fontWeight:'Light'},
+	width: 						180,
+	left: 						845,
+	top: 						0
 });
-postHeaderView.add(btn_post);
+toolBar.add(btn_post);
 
 // White Gradient in the Bottom
 // var whiteShadow = Titanium.UI.createImageView({
@@ -272,7 +299,7 @@ var editView = Titanium.UI.createScrollView({
 	left: 		0,
 	top: 		66,
 	width:      '100%',
-	height:     683,
+	height:     629,
 	contentWidth: 1024,
 	contentHeight:'auto',
 	showVerticalScrollIndicator:true,
