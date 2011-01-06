@@ -42,10 +42,10 @@ var animeClose = Titanium.UI.createAnimation({
 // = Header View =
 // ===============
 var postHeaderView = Ti.UI.createView({
-	backgroundImage: 	'images/bg_post_top_bar.png',
+	backgroundImage: 	'images/bg_post_top_bar_black.png',
 	left: 				0,
 	top: 				0,
-	height: 			65,
+	height: 			61,
 	width: 				1024,
 	zIndex: 			2
 
@@ -56,11 +56,11 @@ win.add(postHeaderView);
 // = BACK BUTTON =
 // ===============
 var btn_close_post = Ti.UI.createButton({
-	backgroundImage: 'images/btn_close_post.png',
-	height: 50,
-	width: 49,
+	backgroundImage: 'images/btn_close_post2.png',
+	height: 36,
+	width: 36,
 	left: 970,
-	top: 10,
+	top: 12,
 	style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 });
 postHeaderView.add(btn_close_post);
