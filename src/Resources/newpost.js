@@ -535,6 +535,14 @@ searchTextField.addEventListener('change', function(e) {
 	flashlight_text_change_monitor(searchTextField.value);
 });
 
+searchTextField.addEventListener('focus', function(e) {
+	toolBar.animate({bottom: 352, duration: 300});
+});
+
+searchTextField.addEventListener('blur', function(e) {
+	toolBar.animate({bottom: 0, duration: 300});
+});
+
 // ===========================
 // = TEXT AREA FORM HANDLERS =
 // ===========================
@@ -566,11 +574,13 @@ textArea.addEventListener('focus', function(e) {
    	Ti.API.info('TextArea: focus received');
 	tempPostLabel.hide(); // hide the hint text when textArea receives Focus
 	editView.add(btn_text_clear);
+	toolBar.animate({bottom: 352, duration: 300});
 });
 
 textArea.addEventListener('blur', function(e) {
 	editView.remove(btn_text_clear);
 	editView.scrollTo(0, {animated:true});
+	toolBar.animate({bottom: 0, duration: 300});
 });
 
 btn_text_clear.addEventListener('touchstart', function(e) {
@@ -585,6 +595,14 @@ btn_text_clear.addEventListener('touchstart', function(e) {
 editTitleField.addEventListener('change', function(e) {
 	Ti.API.info('Post Title: you typed ' + e.value + ' act val ' + editTitleField.value);
 	postTitle = editTitleField.value;
+});
+
+editTitleField.addEventListener('focus', function(e) {
+	toolBar.animate({bottom: 352, duration: 300});
+});
+
+editTitleField.addEventListener('blur', function(e) {
+	toolBar.animate({bottom: 0, duration: 300});
 });
 
 // =======================
