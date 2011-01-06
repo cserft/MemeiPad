@@ -284,10 +284,12 @@ function moveToolBar(arg) {
 		//Show Keyboard
 		toolBar.animate({bottom: 352, duration: 300});
 		popoverGalleryView.top = 362;
+		editView.height = 277;
 	} else {
 		//hide Keyboard
 		toolBar.animate({bottom: 0, duration: 300});
 		popoverGalleryView.top = 715;
+		editView.height = 629;
 	}
 };
 
