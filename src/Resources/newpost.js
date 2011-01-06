@@ -73,26 +73,28 @@ postHeaderView.add(btn_close_post);
 var searchTextField = Titanium.UI.createTextField({
 	value: 			queryText,
 	hintText: 		L('searchTextField_hint_text'),
+	backgroundColor: 'transparent',
 	textAlign: 		'left',
-	font: 			{fontSize:12,fontFamily:'Helvetica', fontWeight:'regular'},
-	width: 			446,
+	color: 			"#999",
+	font: 			{fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
+	width: 			455,
 	height: 		41,
-	top: 			14,
-	left: 			16,
+	top: 			12,
+	left: 			350,
 	borderRadius: 	4,
 	zIndex: 		2,
-	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_NONE,
 	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
 	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
 postHeaderView.add(searchTextField);
 
 var btn_flashlight = Ti.UI.createButton({
-	backgroundImage: 'images/btn_flashlight.png',
-	width: 			162,
-	height: 		49,
-	left: 			456,
-	top: 			11,
+	backgroundImage: 'images/btn_flashlight_new.png',
+	width: 			120,
+	height: 		40,
+	left: 			230,
+	top: 			12,
 	zIndex: 		3,
 	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 	
@@ -102,8 +104,8 @@ postHeaderView.add(btn_flashlight);
 //Create Image view for the lamp animation (this is a white blur)
 var lamp_bright = Titanium.UI.createImageView({
 	image: 		'images/lamp_bright.png',
-	left: 		468,
-	top: 		12,
+	left: 		230 , // - 221
+	top: 		10,
 	width: 		37,
 	height: 	38,
 	zIndex: 	4,
@@ -289,7 +291,7 @@ function moveToolBar(arg) {
 		//hide Keyboard
 		toolBar.animate({bottom: 0, duration: 300});
 		popoverGalleryView.top = 715;
-		editView.height = 629;
+		editView.height = 634;
 	}
 };
 
@@ -303,9 +305,9 @@ function moveToolBar(arg) {
 // =============
 var editView = Titanium.UI.createScrollView({
 	left: 		0,
-	top: 		66,
+	top: 		61,
 	width:      '100%',
-	height:     629,
+	height:     634,
 	contentWidth: 1024,
 	contentHeight:'auto',
 	showVerticalScrollIndicator:true,
