@@ -284,12 +284,12 @@ disclaimerLabel2.addEventListener("click", function(e)
 function moveToolBar(arg) {
 	if (arg == true) {
 		//Show Keyboard
-		toolBar.animate({bottom: 352, duration: 200});
+		toolBar.animate({bottom: 352, duration: 300});
 		popoverGalleryView.top = 362;
 		editView.height = 277;
 	} else {
 		//hide Keyboard
-		toolBar.animate({bottom: 0, duration: 200});
+		toolBar.animate({bottom: 0, duration: 300});
 		popoverGalleryView.top = 715;
 		editView.height = 634;
 	}
