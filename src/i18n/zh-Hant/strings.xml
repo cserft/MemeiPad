@@ -67,7 +67,7 @@
 	<string name="editTitleField_hint_text">加標題</string>
 	<string name="tempPostLabel_text">在這裡編輯帖子</string>
 	<string name="disclaimer_copyright_guidelines">請勿侵犯著作權和發佈色情內容. 查看社群使用規範了解更多資訊.</string>
-	<string name="disclaimer_yahoo_updates"> 你的帖子會通過Yahoo! Updates分享給他人</string>
+	<string name="disclaimer_yahoo_updates">你的帖子會通過Yahoo! Updates分享給他人</string>
 	<string name="guidelines_url">http://meme.yahoo.com/help/guidelines/</string>
 	<string name="settings_url">http://meme.yahoo.com/settings</string>
 	<string name="oops_alert_title">抱歉...</string>

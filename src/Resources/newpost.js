@@ -232,16 +232,6 @@ var btn_post = Ti.UI.createButton({
 });
 toolBar.add(btn_post);
 
-// White Gradient in the Bottom
-// var whiteShadow = Titanium.UI.createImageView({
-// 	image: 'images/white_shadow.png',
-// 	bottom: 	53,
-// 	left: 		0,
-// 	width: 		1024,
-// 	height: 	91
-// });
-// win.add(whiteShadow);
-
 //Disclaimer Community Guidelines
 var disclaimerLabel1 = Titanium.UI.createLabel({
 	text: 		L('disclaimer_copyright_guidelines'),
@@ -287,6 +277,20 @@ disclaimerLabel2.addEventListener("click", function(e)
 		url: L("settings_url")
 	});
 });
+
+// Fucntion that moves the ToolBar with the Keyboard
+function moveToolBar(arg) {
+	if (arg == true) {
+		//Show Keyboard
+		toolBar.animate({bottom: 352, duration: 300});
+		popoverGalleryView.top = 362;
+	} else {
+		//hide Keyboard
+		toolBar.animate({bottom: 0, duration: 300});
+		popoverGalleryView.top = 715;
+	}
+};
+
 
 // ======================
 // = END OF THE TOP BAR =
@@ -536,11 +540,11 @@ searchTextField.addEventListener('change', function(e) {
 });
 
 searchTextField.addEventListener('focus', function(e) {
-	toolBar.animate({bottom: 352, duration: 300});
+	moveToolBar(true);
 });
 
 searchTextField.addEventListener('blur', function(e) {
-	toolBar.animate({bottom: 0, duration: 300});
+	moveToolBar(false);
 });
 
 // ===========================
@@ -574,13 +578,13 @@ textArea.addEventListener('focus', function(e) {
    	Ti.API.info('TextArea: focus received');
 	tempPostLabel.hide(); // hide the hint text when textArea receives Focus
 	editView.add(btn_text_clear);
-	toolBar.animate({bottom: 352, duration: 300});
+	moveToolBar(true);
 });
 
 textArea.addEventListener('blur', function(e) {
 	editView.remove(btn_text_clear);
 	editView.scrollTo(0, {animated:true});
-	toolBar.animate({bottom: 0, duration: 300});
+	moveToolBar(false);
 });
 
 btn_text_clear.addEventListener('touchstart', function(e) {
@@ -598,11 +602,11 @@ editTitleField.addEventListener('change', function(e) {
 });
 
 editTitleField.addEventListener('focus', function(e) {
-	toolBar.animate({bottom: 352, duration: 300});
+	moveToolBar(true);
 });
 
 editTitleField.addEventListener('blur', function(e) {
-	toolBar.animate({bottom: 0, duration: 300});
+	moveToolBar(false);
 });
 
 // =======================

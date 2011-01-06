@@ -67,7 +67,7 @@
 	<string name="editTitleField_hint_text">adicione um título</string>
 	<string name="tempPostLabel_text">escreva aqui seu post</string>
 	<string name="disclaimer_copyright_guidelines">Não viole direitos autorais e/ou envie conteúdo adulto. Na dúvida, veja as Regras da Comunidade.</string>
-	<string name="disclaimer_yahoo_updates"> Seu post será compartilhado via Yahoo! Atualizações.</string>
+	<string name="disclaimer_yahoo_updates">Seu post será compartilhado via Yahoo! Atualizações.</string>
 	<string name="guidelines_url">http://meme.yahoo.com/help/guidelines/</string>
 	<string name="settings_url">http://profiles.yahoo.com/settings/updates</string>
 	<string name="oops_alert_title">Oops...</string>
