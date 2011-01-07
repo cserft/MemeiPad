@@ -69,38 +69,51 @@ postHeaderView.add(btn_close_post);
 // =========================
 // = Awesome bar TextField =
 // =========================
+var BgSearchTextField = Titanium.UI.createView({
+	backgroundImage: 			'images/bg_flashlight_form.png',
+	backgroundLeftCap: 			20,
+	backgroundRightCap: 		20,
+	left: 						307, 
+	top: 						9,
+	width: 						520,
+	height: 					41,
+	zIndex: 					1,
+});
+postHeaderView.add(BgSearchTextField);
 
 var searchTextField = Titanium.UI.createTextField({
-	value: 			queryText,
-	hintText: 		L('searchTextField_hint_text'),
-	backgroundColor: 'transparent',
-	textAlign: 		'left',
-	verticalAlign: 	'center',
-	color: 			"#999",
-	font: 			{fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
-	width: 			455,
-	height: 		41,
-	top: 			12,
-	left: 			350,
-	borderRadius: 	4,
-	zIndex: 		2,
-	borderStyle: 	Titanium.UI.INPUT_BORDERSTYLE_NONE,
-	keyboardType: 	Titanium.UI.KEYBOARD_DEFAULT,
-	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
+	value: 					queryText,
+	hintText: 				L('searchTextField_hint_text'),
+	backgroundColor: 		'transparent',
+	backgroundLeftCap: 		20,
+	backgroundRightCap: 	20,
+	textAlign: 				'left',
+	verticalAlign: 			'center',
+	color: 					"#999",
+	font: 					{fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
+	width: 					510,
+	height: 				41,
+	top: 					9,
+	left: 					317,
+	borderRadius: 			4,
+	zIndex: 				2,
+	borderStyle: 			Titanium.UI.INPUT_BORDERSTYLE_NONE,
+	keyboardType: 			Titanium.UI.KEYBOARD_DEFAULT,
+	clearButtonMode: 		Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
 postHeaderView.add(searchTextField);
 
 // verifies if the Search Field has some value and sets the Font Size
 if (queryText != "") {
-	searchTextField.font = {fontSize:17, fontFamily:'Georgia', fontStyle:'Italic'},
+	searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
 }
 
 var btn_flashlight = Ti.UI.createButton({
 	backgroundImage: 'images/btn_flashlight_new.png',
 	width: 			120,
 	height: 		40,
-	left: 			230,
-	top: 			12,
+	left: 			187,
+	top: 			9,
 	zIndex: 		3,
 	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 	
@@ -110,8 +123,8 @@ postHeaderView.add(btn_flashlight);
 //Create Image view for the lamp animation (this is a white blur)
 var lamp_bright = Titanium.UI.createImageView({
 	image: 		'images/lamp_bright.png',
-	left: 		230 , // - 221
-	top: 		10,
+	left: 		187 , // - 221
+	top: 		8,
 	width: 		37,
 	height: 	38,
 	zIndex: 	4,
@@ -472,7 +485,7 @@ var ind = Ti.UI.createProgressBar({
 	max: 1,
 	value: 0,
 	style:Titanium.UI.iPhone.ProgressBarStyle.BAR,
-	message: 'Preparing to upload file',
+	message: L('prepare_uploading_file'),
 	font:{fontSize:16, fontWeight:'bold'},
 	color:'white'
 });
@@ -500,7 +513,7 @@ function showProgressView (pCommand, pMessage) {
 		progressView.hide();
 		ind.hide();
 		actInd.hide();
-		ind.message = '';	
+		ind.message =  L('prepare_uploading_file');	
 		
 	} else { // Hides the Progress bar
 		progressView.show();
@@ -565,12 +578,12 @@ searchTextField.addEventListener('change', function(e) {
 		searchTextField.hintText = L('searchTextField_hint_text');
 	} else {
 		// else there is something in the Field and it should use the bigger font size
-		searchTextField.font = {fontSize:17, fontFamily:'Georgia', fontStyle:'Italic'},
+		searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
 	}
 });
 
 searchTextField.addEventListener('focus', function(e) {
-	searchTextField.font = {fontSize:17, fontFamily:'Georgia', fontStyle:'Italic'},
+	searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
 	searchTextField.hintText = "";
 	moveToolBar(true);
 });
@@ -580,7 +593,7 @@ searchTextField.addEventListener('blur', function(e) {
 		searchTextField.font = {fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
 		searchTextField.hintText = L('searchTextField_hint_text');
 	} else {
-		searchTextField.font = {fontSize:17, fontFamily:'Georgia', fontStyle:'Italic'},
+		searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
 	}
 	moveToolBar(false);
 });
@@ -898,7 +911,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 			showProgressView('show', L('publishing_post_meme'));
 
 	 		Ti.API.info('Upload complete!');
-			Ti.API.debug('api response was (http status ' + this.status + '): ' + this.responseText);
+			Ti.API.info('api response was (http status ' + this.status + '): ' + this.responseText);
 			
 			try {
 				var uploadResult = JSON.parse(this.responseText);
@@ -940,14 +953,14 @@ Titanium.App.addEventListener("postClicked", function(e) {
 		
 		// Assembling upload URL
 		// http://meme/api/upload/?t=timestamp&m=memename&s=signature
-		var url = meme_upload_url + '?t=' + time + '&m=' + Ti.App.myMemeInfo.name + '&s=' + signature;
-
-		Ti.API.debug('Will upload to URL [' + url + ']');
 		
 		// upload it!
-		xhr.open('POST', url);
+		xhr.open('POST', meme_upload_url);
 		xhr.send({
-			file: theImage
+			t: time,
+			file: theImage,
+			m: Ti.App.myMemeInfo.name,
+			s: signature
 		});
 	
 	} else if (theImage != null && typeof(theImage) == 'string' && theImage.indexOf("flickr") != -1) {
