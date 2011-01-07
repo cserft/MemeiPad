@@ -75,6 +75,7 @@ var searchTextField = Titanium.UI.createTextField({
 	hintText: 		L('searchTextField_hint_text'),
 	backgroundColor: 'transparent',
 	textAlign: 		'left',
+	verticalAlign: 	'center',
 	color: 			"#999",
 	font: 			{fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
 	width: 			455,
@@ -88,6 +89,11 @@ var searchTextField = Titanium.UI.createTextField({
 	clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
 });
 postHeaderView.add(searchTextField);
+
+// verifies if the Search Field has some value and sets the Font Size
+if (queryText != "") {
+	searchTextField.font = {fontSize:17, fontFamily:'Georgia', fontStyle:'Italic'},
+}
 
 var btn_flashlight = Ti.UI.createButton({
 	backgroundImage: 'images/btn_flashlight_new.png',
@@ -553,10 +559,18 @@ searchTextField.addEventListener('change', function(e) {
 });
 
 searchTextField.addEventListener('focus', function(e) {
+	searchTextField.font = {fontSize:17, fontFamily:'Georgia', fontStyle:'Italic'},
+	searchTextField.hintText = "";
 	moveToolBar(true);
 });
 
 searchTextField.addEventListener('blur', function(e) {
+	if (searchTextField.value == "") {
+		searchTextField.font = {fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
+		searchTextField.hintText = L('searchTextField_hint_text');
+	} else {
+		searchTextField.font = {fontSize:17, fontFamily:'Georgia', fontStyle:'Italic'},
+	}
 	moveToolBar(false);
 });
 
