@@ -325,6 +325,7 @@ var editTitleField = Titanium.UI.createTextField({
 	value: 			postTitle,
 	hintText: 		L('editTitleField_hint_text'),
 	textAlign: 		'left',
+	verticalAlign: 	'center',
 	font: 			{fontSize:26,fontFamily:'Helvetica', fontWeight:'bold'},
 	width: 			950,
 	height: 		55,
@@ -556,6 +557,16 @@ btn_flashlight.addEventListener('click', function() {
 searchTextField.addEventListener('change', function(e) {
 //	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
 	flashlight_text_change_monitor(searchTextField.value);
+	
+	// Controls the Look and Feel of the Font on the Search Box, changing the Fonst Size and the hintText 
+	if (searchTextField.value == "") {
+		// if the user clears the field, then it should show the hintText and reset the font Size
+		searchTextField.font = {fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
+		searchTextField.hintText = L('searchTextField_hint_text');
+	} else {
+		// else there is something in the Field and it should use the bigger font size
+		searchTextField.font = {fontSize:17, fontFamily:'Georgia', fontStyle:'Italic'},
+	}
 });
 
 searchTextField.addEventListener('focus', function(e) {
