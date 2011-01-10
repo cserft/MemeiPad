@@ -439,6 +439,7 @@ var flashlight_create = function() {
 								zIndex: 2,
 								username: '@' + item.from_user,
 								tweet: item.text,
+								link: "http://twitter.com/#!/" + item.from_user + "/status/" + item.id_str + '/',
 								type: 'twitter'
 							}));
 
@@ -476,21 +477,27 @@ var flashlight_create = function() {
 			switch (e.source.type) {
 				case 'photo':
 					if (e.source.title != "") {
-						editTitleField.value = e.source.title;	
-						postTitle = e.source.title;
+						if (editTitleField.value == "") {
+							editTitleField.value = e.source.title;	
+							postTitle = e.source.title;
+						}
 					}
-					postBody += '\n';
-					textArea.value += '\n';
+					// postBody += '\n';
+					// textArea.value += '\n';
 					theImage = e.source.fullPhoto;
 					Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
 					break;
 				
 				case 'text':
-			    	//Removes whatever medias where ther ebefore
-					// Ti.App.fireEvent("photoRemoved");
 					if (e.source.abstract != "") {
-						textArea.value += '\n' + e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
-						postBody += '\n' + e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
+						if (textArea.value != "") {
+							textArea.value += '\n' + e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
+							postBody += '\n' + e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
+						} else {
+							textArea.value += e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
+							postBody += e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
+						}
+
 						textArea.focus();
 					}
 					editTitleField.value = e.source.title;	
@@ -499,8 +506,14 @@ var flashlight_create = function() {
 				
 				case 'video':
 					if (e.source.content != "") {
-						textArea.value += '\n' + e.source.content;
-						postBody += '\n' + e.source.content;
+						
+						if (textArea.value != "") {
+							textArea.value += '\n' + e.source.content;
+							postBody += '\n' + e.source.content;
+						} else {
+							textArea.value += e.source.content;
+							postBody += e.source.content;
+						}
 						textArea.focus();
 					}
 					editTitleField.value = e.source.title;	
@@ -516,14 +529,16 @@ var flashlight_create = function() {
 					break;
 				
 				case 'twitter':
-			    	//Removes whatever medias where there before
-					// Ti.App.fireEvent("photoRemoved");
-				
-					textArea.value += '\n' + e.source.username + '\n' + e.source.tweet;
-					postBody += '\n<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '</blockquote>';
+					if (textArea.value != "") {
+						textArea.value += '\n' + e.source.username + '\n' + e.source.tweet + '\nPermalink: ' + e.source.link;
+						postBody += '\n<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '\nPermalink: ' + e.source.link + '</blockquote>';
+					} else {
+						textArea.value += e.source.username + '\n' + e.source.tweet + '\nPermalink: ' + e.source.link;
+						postBody += '<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '\nPermalink: ' + e.source.link + '</blockquote>';
+					}
 					textArea.focus();
 			
-				break;
+					break;
 			}
 		
 			popoverSearchView.hide();
