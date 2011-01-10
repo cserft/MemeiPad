@@ -90,6 +90,7 @@
 	<string name="flashlight_alert_empty_title">探照灯</string>
 	<string name="flashlight_alert_empty_message">探照灯关键字为空，只要输入任何内容我们就会提供建议</string>
 	<string name="flashlight_no_results">没有找到结果。</string>
+	<string name="add_photo_button_title">add photo</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
 	<string name="time_just_now">一會兒</string>

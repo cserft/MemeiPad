@@ -183,7 +183,7 @@ btn_addPhoto.add(icon_photo);
 
 //Disclaimer Community Guidelines
 var btn_addPhotoLabel = Titanium.UI.createLabel({
-	text: 		'add photo',
+	text: 		L('add_photo_button_title'),
 	textAlign: 'center',
 	color: 		'#FFF',
 	width: 		80,

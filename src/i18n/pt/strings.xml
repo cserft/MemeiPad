@@ -90,6 +90,7 @@
 	<string name="flashlight_alert_empty_title">Flashlight</string>
 	<string name="flashlight_alert_empty_message">O campo Flashlight esta vazio, digite alguma coisa para buscar sugestões de conteúdo</string>
 	<string name="flashlight_no_results">Nenhum resultado foi encontrado.</string>
+	<string name="add_photo_button_title">incluir foto</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
 	<string name="time_just_now">poucos segundos</string>

@@ -90,6 +90,7 @@
 	<string name="flashlight_alert_empty_title">Flashlight</string>
 	<string name="flashlight_alert_empty_message">Flashlight kosong, ketik sesuatu untuk mendapatkan konten usulan</string>
 	<string name="flashlight_no_results">Hasil tidak ditemukan.</string>
+	<string name="add_photo_button_title">add photo</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
 	<string name="time_just_now">Baru saja</string>
