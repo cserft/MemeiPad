@@ -2,7 +2,7 @@
 <resources>
 	<!-- BAHASA INDONESIA -->
 	<!-- app.js -->
-	<string name="app_name">Mim iPad</string>
+	<string name="app_name">Mim for iPad</string> <!-- Limit of 13 characters -->
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white_id.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
@@ -50,7 +50,7 @@
 	<string name="network_error_message">Anda harus online agar dapat menggunakan Mim untuk iPad. Silakan cek koneksi jaringan Anda dan coba lagi.</string>
 	<string name="loading_message">Memuat...</string>
 	<string name="memeapp_url">http://me.me/ipad/</string>
-	<string name="btn_done_title">done</string>
+	<string name="btn_done_title">Selesai</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
 	<string name="pull_to_reload_text">Tarik untuk memuat ulang</string>
@@ -60,7 +60,7 @@
 	<string name="reloading_message">Memuat ulang...</string>
 	<string name="welcome_message">welcome to meme!</string>
 	<string name="welcome_message2">the smart way to post</string>
-	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the "start posting here" button</string>
+	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the \"start posting here\" button</string>
 	<string name="go_dashboard_title">Now that you are following some people, check out your feed</string>
 	<string name="recommended_label_title">RECOMMENDED USERS AND CONTENT</string>
 	<!-- app_hightlight.js -->
@@ -90,7 +90,7 @@
 	<string name="flashlight_alert_empty_title">Flashlight</string>
 	<string name="flashlight_alert_empty_message">Flashlight kosong, ketik sesuatu untuk mendapatkan konten usulan</string>
 	<string name="flashlight_no_results">Hasil tidak ditemukan.</string>
-	<string name="add_photo_button_title">add photo</string>
+	<string name="add_photo_button_title">add foto</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
 	<string name="time_just_now">Baru saja</string>

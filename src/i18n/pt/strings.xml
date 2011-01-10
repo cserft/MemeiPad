@@ -2,7 +2,7 @@
 <resources>
 	<!-- PORTUGUESE -->
 	<!-- app.js -->
-	<string name="app_name">Meme para iPad</string>
+	<string name="app_name">Meme iPad</string> <!-- Limit of 13 characters -->
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white_br.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
@@ -60,7 +60,7 @@
 	<string name="reloading_message">Recarregando...</string>
 	<string name="welcome_message">bem vindo ao meme!</string>
 	<string name="welcome_message2">o jeito inteligente de postar</string>
-	<string name="welcome_description">Meme do Yahoo! é um novo tipo de pltaforma de blog elegante, inteligente e simples.\nVocê pode começar seguindo algus dos blogs recomendados ou criando um novo post, clique no botão "comece por aqui"</string>
+	<string name="welcome_description">Meme do Yahoo! é um novo tipo de pltaforma de blog elegante, inteligente e simples.\nVocê pode começar seguindo algus dos blogs recomendados ou criando um novo post, clique no botão \"comece por aqui\"</string>
 	<string name="go_dashboard_title">Agora que você esta seguindo alguns blogs, dê uma olhada no seu feed</string>
 	<string name="recommended_label_title">CONTEÚDO E USUÄRIOS RECOMENDADO</string>
 	<!-- app_hightlight.js -->

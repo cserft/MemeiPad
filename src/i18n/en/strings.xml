@@ -2,7 +2,7 @@
 <resources>
 	<!-- ENGLISH -->
 	<!-- app.js -->
-	<string name="app_name">Meme for iPad</string>
+	<string name="app_name">Meme for iPad</string> <!-- Limit of 13 characters -->
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
