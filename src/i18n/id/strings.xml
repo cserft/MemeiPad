@@ -62,7 +62,7 @@
 	<string name="welcome_message2">the smart way to post</string>
 	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the "start posting here" button</string>
 	<string name="go_dashboard_title">Now that you are following some people, check out your feed</string>
-	<string name="recommended_label_title">RECOMMENDED USERS & CONTENT</string>
+	<string name="recommended_label_title">RECOMMENDED USERS AND CONTENT</string>
 	<!-- app_hightlight.js -->
 	<string name="featured_content_text">KONTEN PILIHAN</string>
 	<!-- newpost.js -->

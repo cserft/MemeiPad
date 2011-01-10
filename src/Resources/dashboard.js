@@ -239,7 +239,7 @@ var createPost = function(pContent, pCaption, pPubId, pPostUrl, pType, pColumn, 
 	} else {
 		// mini post
 		
-		Ti.API.info("CreatePost 'mini' GUID(" + pGuid + "), PUBID("+ pPubId + ")");
+		// Ti.API.info("CreatePost 'mini' GUID(" + pGuid + "), PUBID("+ pPubId + ")");
 		
 		//create a black box view with a unique name
 		var blackBoxView = Ti.UI.createView({
@@ -505,7 +505,7 @@ var createEmptyDashboard = function () {
 	Ti.App.meme.featuredPosts(235, 177, function(posts){
 		var _column;
 		
-		Ti.API.info("Callback called from Featured Posts [" + JSON.stringify(posts) + "]");
+		// Ti.API.info("Callback called from Featured Posts [" + JSON.stringify(posts) + "]");
 
 		for (var i=0; i<posts.length; i++) {
 			var post 		= posts[i];
