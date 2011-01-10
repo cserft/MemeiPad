@@ -2,6 +2,7 @@
 <resources>
 	<!-- ESPANOL -->
 	<!-- app.js -->
+	<string name="app_name">Meme para iPad</string>
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white_es.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
@@ -57,10 +58,15 @@
 	<string name="pull_down_to_refresh_text">Mueve para recargar...</string>
 	<string name="release_to_refresh_text">Suelta para recargar...</string>
 	<string name="reloading_message">Actualizando...</string>
+	<string name="welcome_message">welcome to meme!</string>
+	<string name="welcome_message2">the smart way to post</string>
+	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the "start posting here" button</string>
+	<string name="go_dashboard_title">Now that you are following some blogs, check out your feed</string>
+	<string name="recommended_label_title">RECOMMENDED USERS & CONTENT</string>
 	<!-- app_hightlight.js -->
 	<string name="featured_content_text">CONTENIDO DESTACADO</string>
 	<!-- newpost.js -->
-	<string name="searchTextField_hint_text">  Pega tus ligas de YouTube o Vimeo para ilustrar tu entrada</string>
+	<string name="searchTextField_hint_text">Pega tus ligas de YouTube o Vimeo para ilustrar tu entrada</string>
 	<string name="popover_flashlight_title">Contenido Sugerido</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
 	<string name="btn_post_top_title">actualizar</string>
@@ -76,6 +82,7 @@
 	<string name="remove_alert_title">Quitar</string>
 	<string name="remove_alert_message">¿Seguro lo quieres quitar de tu entrada?</string>
 	<string name="publishing_post_meme">Publicando tu entrada en Meme</string>
+	<string name="prepare_uploading_file">Preparing to upload file</string>
 	<string name="uploading_file">Cargando archivo...</string>
 	<string name="post_success_message">¡Tu entrada se publicó excitosamente!</string> 
 	<string name="post_error_message">No pudimos publicar tu entrada.</string> 

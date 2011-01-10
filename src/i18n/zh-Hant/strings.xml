@@ -2,6 +2,7 @@
 <resources>
 	<!-- TRADITIONAL CHINESE -->
 	<!-- app.js -->
+	<string name="app_name">Meme for iPad</string>
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
@@ -57,10 +58,15 @@
 	<string name="pull_down_to_refresh_text">向下拉，刷新...</string>
 	<string name="release_to_refresh_text">放開，刷新...</string>
 	<string name="reloading_message">重新載入中...</string>
+	<string name="welcome_message">welcome to meme!</string>
+	<string name="welcome_message2">the smart way to post</string>
+	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the "start posting here" button</string>
+	<string name="go_dashboard_title">Now that you are following some blogs, check out your dashboard</string>
+	<string name="recommended_label_title">RECOMMENDED USERS & CONTENT</string>
 	<!-- app_hightlight.js -->
 	<string name="featured_content_text">特色內容</string>
 	<!-- newpost.js -->
-	<string name="searchTextField_hint_text">  把你的YouTube或Vimeo鏈接黏貼進來，或者搜索你需要的的內容</string>
+	<string name="searchTextField_hint_text">把你的YouTube或Vimeo鏈接黏貼進來，或者搜索你需要的的內容</string>
 	<string name="popover_flashlight_title">建議內容</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
 	<string name="btn_post_top_title">發表</string>
@@ -76,6 +82,7 @@
 	<string name="remove_alert_title">删除</string>
 	<string name="remove_alert_message">你确定要把这个媒体从帖子中删除?</string>
 	<string name="publishing_post_meme">在Meme上發表你的帖子</string>
+	<string name="prepare_uploading_file">Preparing to upload file</string>
 	<string name="uploading_file">上傳文件...</string>
 	<string name="post_success_message">你的帖子已经成功發表!</string> 
 	<string name="post_error_message">你的帖子不能发表。</string> 

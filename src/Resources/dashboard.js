@@ -399,7 +399,7 @@ var createEmptyDashboard = function () {
 	win.add(baseViewDashboard);
 	
 	var welcomeLabel = Titanium.UI.createLabel({
-		text: 		'welcome to meme!',
+		text: 		L('welcome_message'),
 		align: 		'left',
 		textAlign: 	'left',
 		color: 		'#FFF',
@@ -414,7 +414,7 @@ var createEmptyDashboard = function () {
 	baseViewDashboard.add(welcomeLabel);
 	
 	var welcomeLabel2 = Titanium.UI.createLabel({
-		text: 		'the smart way to post',
+		text: 		L('welcome_message2'),
 		align: 		'left',
 		textAlign: 	'left',
 		color: 		'#FFF',
@@ -428,7 +428,7 @@ var createEmptyDashboard = function () {
 	baseViewDashboard.add(welcomeLabel2);
 	
 	var descriptionLabel = Titanium.UI.createLabel({
-		text: 		'Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recomended list or creating a new Post, just click in the "start posting here" button',
+		text: 		L('welcome_description'),
 		align: 		'left',
 		textAlign: 	'left',
 		color: 		'#999',
@@ -454,7 +454,7 @@ var createEmptyDashboard = function () {
 	
 	var goDashboardButton = Ti.UI.createButton({
 		backgroundImage: 	'transparent',
-		title: 				'Now that you are following some people, check out your dashboard',
+		title: 				L('go_dashboard_title'),
 		color: 				'white',
 		textAlign: 			'center',
 		width: 				600,
@@ -471,7 +471,7 @@ var createEmptyDashboard = function () {
 	});
 	
 	var recommendedTitleLabel = Titanium.UI.createLabel({
-		text: 		'RECOMMENDED USERS & CONTENT',
+		text: 		L('recommended_label_title'),
 		align: 		'left',
 		textAlign: 	'left',
 		color: 		'#999',

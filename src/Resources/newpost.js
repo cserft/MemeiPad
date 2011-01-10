@@ -73,7 +73,7 @@ var BgSearchTextField = Titanium.UI.createView({
 	backgroundImage: 			'images/bg_flashlight_form.png',
 	backgroundLeftCap: 			20,
 	backgroundRightCap: 		20,
-	left: 						307, 
+	left: 						310, 
 	top: 						9,
 	width: 						520,
 	height: 					41,
@@ -94,12 +94,12 @@ var searchTextField = Titanium.UI.createTextField({
 	width: 					510,
 	height: 				41,
 	top: 					9,
-	left: 					317,
+	left: 					320,
 	borderRadius: 			4,
 	zIndex: 				2,
 	borderStyle: 			Titanium.UI.INPUT_BORDERSTYLE_NONE,
-	keyboardType: 			Titanium.UI.KEYBOARD_DEFAULT,
-	clearButtonMode: 		Titanium.UI.INPUT_BUTTONMODE_ONFOCUS
+	// clearButtonMode: 		Titanium.UI.INPUT_BUTTONMODE_ONFOCUS,
+	keyboardType: 			Titanium.UI.KEYBOARD_DEFAULT
 });
 postHeaderView.add(searchTextField);
 
@@ -112,9 +112,9 @@ var btn_flashlight = Ti.UI.createButton({
 	backgroundImage: 'images/btn_flashlight_new.png',
 	width: 			120,
 	height: 		40,
-	left: 			187,
+	left: 			183,
 	top: 			9,
-	zIndex: 		3,
+	zIndex: 		2,
 	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 	
 });
@@ -123,7 +123,7 @@ postHeaderView.add(btn_flashlight);
 //Create Image view for the lamp animation (this is a white blur)
 var lamp_bright = Titanium.UI.createImageView({
 	image: 		'images/lamp_bright.png',
-	left: 		187 , // - 221
+	left: 		183 , // - 221
 	top: 		8,
 	width: 		37,
 	height: 	38,

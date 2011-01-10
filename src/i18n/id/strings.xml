@@ -2,6 +2,7 @@
 <resources>
 	<!-- BAHASA INDONESIA -->
 	<!-- app.js -->
+	<string name="app_name">Mim iPad</string>
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white_id.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
@@ -57,10 +58,15 @@
 	<string name="pull_down_to_refresh_text">Tarik ke bawah untuk refresh...</string>
 	<string name="release_to_refresh_text">Lepaskan untuk refresh...</string>
 	<string name="reloading_message">Memuat ulang...</string>
+	<string name="welcome_message">welcome to meme!</string>
+	<string name="welcome_message2">the smart way to post</string>
+	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the "start posting here" button</string>
+	<string name="go_dashboard_title">Now that you are following some people, check out your feed</string>
+	<string name="recommended_label_title">RECOMMENDED USERS & CONTENT</string>
 	<!-- app_hightlight.js -->
 	<string name="featured_content_text">KONTEN PILIHAN</string>
 	<!-- newpost.js -->
-	<string name="searchTextField_hint_text">  Taruh link YouTube atau Vimeo atau ketik kata kunci mengenai postingan Anda</string>
+	<string name="searchTextField_hint_text">Taruh link YouTube atau Vimeo atau ketik kata kunci mengenai postingan Anda</string>
 	<string name="popover_flashlight_title">Konten Usulan</string>
 	<string name="path_btn_post_top_background_image">images/btn_post_top.png</string>
 	<string name="btn_post_top_title">posting</string>
@@ -76,6 +82,7 @@
 	<string name="remove_alert_title">Hapus</string>
 	<string name="remove_alert_message">Apa Anda yakin ingin menghapus media ini dari postingan Anda?</string>
 	<string name="publishing_post_meme">Menerbitkan postingan Anda di Mim</string>
+	<string name="prepare_uploading_file">Preparing to upload file</string>
 	<string name="uploading_file">Meng-upload File...</string>
 	<string name="post_success_message">Postingan Anda berhasil diterbitkan!</string> 
 	<string name="post_error_message">Postingan Anda tidak dapat diterbitkan.</string> 
