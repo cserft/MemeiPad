@@ -591,6 +591,10 @@ function loadDraft () {
 	Ti.App.mediaDraftType = draft[3];
 	Ti.App.mediaDraft = draft[4];
 	
+	if (textArea.value != "") {
+		tempPostLabel.hide();
+	}
+	
 	if (Ti.App.mediaDraftType != "") {
 		if (Ti.App.mediaDraftType != "file") {
 			mediaChosen('flashlight', Ti.App.mediaDraftType, Ti.App.mediaDraft);
