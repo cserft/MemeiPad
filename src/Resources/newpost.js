@@ -9,8 +9,8 @@ doYwaRequest(analytics.NEW_POST_OPEN);
 
 var win 				= 	Ti.UI.currentWindow;
 Ti.App.newpostIsOpen 	= true; // controls for multiple clicks on Start new post btn
-Ti.App.mediaDraft   	= ""; // var used to save the media files, links in draft
-Ti.App.mediaDraftType 	= ""; // var that holds the media draft type: ("vimeo", "youtube", "photo", "file")
+var mediaDraft   	= ""; // var used to save the media files, links in draft
+var mediaDraftType 	= ""; // var that holds the media draft type: ("vimeo", "youtube", "photo", "file")
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var win1 			= 	win.win1; // Window Original created on app.js
@@ -547,7 +547,7 @@ function saveLocalFile (filename, media, callback){
       oldf.deleteFile();
     }
     f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, filename);
-    f.write(media.image);
+    f.write(media);
     callback(f);
 }
 
@@ -586,21 +586,25 @@ function loadDraft () {
 	editTitleField.value = draft[0];
 	textArea.value = draft[1];
 	searchTextField.value = draft[2];
-	Ti.App.mediaDraftType = draft[3];
-	Ti.App.mediaDraft = draft[4];
+	mediaDraftType = draft[3];
+	mediaDraft = draft[4];
+	
+	//Setting Post vars
+	postTitle = draft[0];
+	postBody = draft[1];
 	
 	// If has TextArea content, don't show the temp Label
 	if (textArea.value != "") {
 		tempPostLabel.hide();
 	}
 	
-	if (Ti.App.mediaDraftType != "") {
-		if (Ti.App.mediaDraftType != "file") {
-			mediaChosen('flashlight', Ti.App.mediaDraftType, Ti.App.mediaDraft);
+	if (mediaDraftType != "") {
+		if (mediaDraftType != "file") {
+			mediaChosen('flashlight', mediaDraftType, mediaDraft);
 		} else {
-			readLocalFile(Ti.App.mediaDraft, function(media){
+			readLocalFile(mediaDraft, function(media){
 				Ti.API.debug("Media File from loadDraft() ["+ media +"]");
-				mediaChosen('file', Ti.App.mediaDraftType, media);
+				mediaChosen('file', mediaDraftType, media);
 				
 			});
 		}
@@ -634,7 +638,7 @@ btn_close_post.addEventListener('click', function() {
 	//Closes the Keyboard if open
 	Ti.App.fireEvent('hide_keyboard');
 	
-	saveDraft(editTitleField.value, textArea.value, searchTextField.value, Ti.App.mediaDraftType, Ti.App.mediaDraft);
+	saveDraft(editTitleField.value, textArea.value, searchTextField.value, mediaDraftType, mediaDraft);
 	
 });
 
@@ -753,7 +757,7 @@ editTitleField.addEventListener('blur', function(e) {
 
 // This is the FULL Post variable: Title + Body
 
-btn_post.addEventListener('click', function() {
+btn_post.addEventListener('click', function(e) {
 	//Closes the Keyboard if open
 	Ti.App.fireEvent('hide_keyboard');
 	
@@ -763,8 +767,6 @@ btn_post.addEventListener('click', function() {
 	}
 	postText = postText + postBody;
 	postText = postText.replace(/(\')/g, '\\$1');
-	
-	Ti.API.info("PostText Has the value: " + postText);
 	
 	if (theImage == null) {
 		Ti.API.info("No Image to Upload");
@@ -786,10 +788,10 @@ btn_post.addEventListener('click', function() {
 				postType: "text"
 			});
 		}
+		
 	} else {
-		Titanium.App.fireEvent("postClicked", {
-			   message: postText
-		});
+		
+		Ti.App.fireEvent("postClicked");
 	}
 });
 
@@ -816,7 +818,6 @@ function mediaChosen (pType, pTypeMedia, pMedia) {
 
 	if (pType == 'flashlight') {
 		//FlashLight Content was clicked
-		// {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft }
 		Ti.API.info(">>> Entered on Flashlight Paste");
 
 		// RESETS THE PREVIEW
@@ -836,9 +837,8 @@ function mediaChosen (pType, pTypeMedia, pMedia) {
 			viewContainerPhoto.show();
 			
 			//Saving Draft vars
-			Ti.App.mediaDraftType = pTypeMedia;
-			Ti.App.mediaDraft = pMedia;
-			// saveDraft(editTitleField.value, textArea.value, searchTextField.value, Ti.App.mediaDraftType, Ti.App.mediaDraft);
+			mediaDraftType = pTypeMedia;
+			mediaDraft = pMedia;
 			
 		} else if (pTypeMedia == "vimeo") { 
 			Ti.API.info(">>> Entered on Flashlight Type:[" + pTypeMedia + "] Media [" + pMedia + "]");
@@ -849,9 +849,8 @@ function mediaChosen (pType, pTypeMedia, pMedia) {
 			viewContainerPhoto.show();
 			
 			//Saving Draft vars
-			Ti.App.mediaDraftType = pTypeMedia;
-			Ti.App.mediaDraft = pMedia;
-			// saveDraft(editTitleField.value, textArea.value, searchTextField.value, Ti.App.mediaDraftType, Ti.App.mediaDraft);
+			mediaDraftType = pTypeMedia;
+			mediaDraft = pMedia;
 		
 		} else {
 			// IS A PHOTO
@@ -863,9 +862,8 @@ function mediaChosen (pType, pTypeMedia, pMedia) {
 			viewContainerPhoto.show();
 			
 			//Saving Draft vars
-			Ti.App.mediaDraftType = pTypeMedia;
-			Ti.App.mediaDraft = pMedia;
-			// saveDraft(editTitleField.value, textArea.value, searchTextField.value, Ti.App.mediaDraftType, Ti.App.mediaDraft);
+			mediaDraftType = pTypeMedia;
+			mediaDraft = pMedia;
 		}
 		
 		webViewPreview.addEventListener('load', function(){
@@ -887,27 +885,25 @@ function mediaChosen (pType, pTypeMedia, pMedia) {
 	
 		// img properties
 		if (pMedia) {
-			theImage = pMedia;
+			img.image = pMedia;
+			theImage = img.toImage();
 			// set smaller size for preview
 			preview_sizes = getImageDownsizedSizes(500, 500, theImage);
-			Ti.API.debug("Media Received in the Media Chosen Function: ["+ theImage +"] and height:["+ preview_sizes.height +"]" );
+			img.image = theImage.imageAsResized(preview_sizes.width, preview_sizes.height);
+			Ti.API.debug("Media Received in the Media Chosen Function: ["+ img.image +"]" );
 		} else {
 			// set smaller size for preview
 			preview_sizes = getImageDownsizedSizes(500, 500, theImage);
+			img.image = theImage.imageAsResized(preview_sizes.width, preview_sizes.height);
 		}
 		
-		img.image = theImage.imageAsResized(preview_sizes.width, preview_sizes.height);
 		img.top = 10;
 		img.left = 10;
-		img.height = preview_sizes.height;
-		img.width = preview_sizes.width;
 		viewContainerPhoto.show();
 		
 		//Saving Draft vars
-		Ti.App.mediaDraftType = "file";
-		Ti.App.mediaDraft = theImage;
-		
-		// saveDraft(editTitleField.value, textArea.value, searchTextField.value, Ti.App.mediaDraftType, Ti.App.mediaDraft);
+		mediaDraftType = "file";
+		mediaDraft = theImage;
 		
 		//adds the close button to the image
 		btn_photo_close.show();
@@ -937,8 +933,8 @@ Ti.App.addEventListener("photoRemoved", function(e) {
 	tempPostLabel.animate({top: 300});
 	
 	//reseting Draft vars
-	Ti.App.mediaDraft = "";
-	Ti.App.mediaDraftType = "";
+	mediaDraft = "";
+	mediaDraftType = "";
 });
 
 //Alert to remove the photo
