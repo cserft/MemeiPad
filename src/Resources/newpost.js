@@ -121,11 +121,6 @@ var searchTextField = Titanium.UI.createTextField({
 });
 postHeaderView.add(searchTextField);
 
-// verifies if the Search Field has some value and sets the Font Size
-if (queryText != "") {
-	searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
-}
-
 var btn_flashlight = Ti.UI.createButton({
 	backgroundImage: 'images/btn_flashlight_new.png',
 	width: 			120,
@@ -591,6 +586,7 @@ function loadDraft () {
 	Ti.App.mediaDraftType = draft[3];
 	Ti.App.mediaDraft = draft[4];
 	
+	// If has TextArea content, don't show the temp Label
 	if (textArea.value != "") {
 		tempPostLabel.hide();
 	}
@@ -611,6 +607,11 @@ function loadDraft () {
 // calls load post draft
 if (Ti.App.Properties.hasProperty('draft_post')) {
 	loadDraft();
+}
+
+// verifies if the Search Field has some value and sets the Font Size
+if (editTitleField.value != "") {
+	searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
 }
 
 // =============
