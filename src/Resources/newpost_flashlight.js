@@ -17,7 +17,7 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 	monitor_value = new_monitor_value;
 	
 	// CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
-	// Detects what type of YouTube link
+	// Detects what type of Video link
 	var youtubeVideoArray = new_monitor_value.match(/v=([a-zA-Z0-9_-]{11})/);
 	var youtubeShortArray = new_monitor_value.match(/youtu.be\/([a-zA-Z0-9_-]{11})/);
 	var vimeoArray = new_monitor_value.match(/vimeo.com\/([\d]+)&?$/);

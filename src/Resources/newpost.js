@@ -382,7 +382,7 @@ var webViewPreview = Ti.UI.createWebView({
 		backgroundColor: 'transparent',
         loading: true,
 		scalesPageToFit: false,
-		visible: false
+		visible: true
 });
 
 //Create Image view to display Photo from Selection from the Gallery
@@ -400,8 +400,8 @@ var btn_photo_close = Titanium.UI.createButton({
 	backgroundImage:'images/btn_close_gray.png',
 	width: 			29,
 	height: 		29,
-	top: 			-5,
-	left: 			-5,
+	top: 			0,
+	left: 			0,
 	zIndex: 		10,
 	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
 	
@@ -731,74 +731,56 @@ var getImageDownsizedSizes = function(max_width, max_height, original_img) {
 
 Ti.App.addEventListener("photoChosen", function(e) {
 	
-	var textArea_top, photo_close_x;
+	var textArea_top;
 	
 	//Closes the Keyboard if open
 	Ti.App.fireEvent('hide_keyboard');
 
 	if (e.typePhoto == 'flashlight') {
 		//FlashLight Content was clicked
+
+		// IF AN IMAGE OR WEBVIEW WAS IN THE PREVIEW BEFORE IT REMOVES IT
+		img.image = null;
+		webViewPreview.html = '';
+		actAjax.show();
 	
 		// If the content from FlashLight is a Video then presents a Video Player
 		if (theImage.indexOf("ytimg") != -1) {
-			
-			webViewPreview.html = '';
-			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
-			img.image = null;
 			
 			videoHtml = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
 			
 			// Create our Webview to render the Video
 			webViewPreview.html = videoHtml;
-			webViewPreview.visible = true;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
-			actAjax.show();
 			
 		} else if (theImage.indexOf("vimeo") != -1) { 
-			
-			webViewPreview.html = '';
-			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
-			img.image = null;
 
 			// Create our Webview to render the Video
 			webViewPreview.html = videoHtml;
-			webViewPreview.visible = true;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
-			actAjax.show();
-
+		
 		} else {
 			// IS A PHOTO
-			// IF AN IMAGE WAS IN THE PREVIEW BEFORE IT REMOVES IT
-			img.image = null;
-				
-			webViewPreview.html = '';
 			
 			// HTML for the Photo
 			photoHtml = '<img src="' + theImage + '">';
 			
 			// Create our Webview to render the Photo
 			webViewPreview.html = photoHtml;
-			webViewPreview.visible = true;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
-			actAjax.show();
 		}
 		
 		webViewPreview.addEventListener('load', function(){
 			actAjax.hide();
-			
 			//adds the close button to the image
-			photo_close_x = 0;
-			btn_photo_close.left = 0;
-			btn_photo_close.visible = true;
+			btn_photo_close.show();
 		});
 		
 		// Repositioned the TextArea below the chosen photo
 		textArea_top =  webViewPreview.height + 95;
-		btn_text_clear.top = textArea_top+20;
-		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
 		tempPostLabel.animate({zIndex: 0, top: 100 + viewContainerPhoto.height});
@@ -807,7 +789,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		// IF IT IS A LOCAL FILE THEN
 		
 		// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
-		webViewPreview.html = '';
+		// webViewPreview.html = '';
 		viewContainerPhoto.remove(webViewPreview);
 	
 		// set smaller size for preview
@@ -819,21 +801,21 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		img.left = 10;
 		img.height = preview_sizes.height;
 		img.width = preview_sizes.width;
-		viewContainerPhoto.visible = true;
+		viewContainerPhoto.show();
 		
 		//adds the close button to the image
-		photo_close_x = 0;
-		btn_photo_close.left = 0;
-		btn_photo_close.visible = true;
+		btn_photo_close.show();
 		
 		// Repositioned the TextArea below the chosen photo
 		textArea_top =  img.height + 105;
-		btn_text_clear.top = textArea_top+20;
-		textArea.animate({zIndex: 0, top: textArea_top});
 
 		//Repositioned the Temp Caption on top of the TextArea
 		tempPostLabel.animate({zIndex: 0, top: 120 + img.height});
 	}
+	
+	// Repositioned the TextArea below the chosen photo
+	btn_text_clear.top = textArea_top+20;
+	textArea.animate({zIndex: 0, top: textArea_top});
 });
 
 // to remove the photo chosen
