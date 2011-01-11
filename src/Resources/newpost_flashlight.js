@@ -65,11 +65,14 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			
 			//Sets the Image to the Video Thumbnail
 			theImage = _data.thumbnail_url;
-			videoHtml = _data.html;
+			// videoHtml = _data.html;
 			videoLink = new_monitor_value;
 			videoId = vimeoArray[1];
-			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
-	
+			
+			Ti.App.mediaDraftType = "vimeo";
+			Ti.App.mediaDraft = _data.html;
+			
+			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft}); 
 		});
 		
 		Ti.API.info("Pasted link Vimeo ID: " + vimeoArray[1]);
@@ -482,10 +485,12 @@ var flashlight_create = function() {
 							postTitle = e.source.title;
 						}
 					}
-					// postBody += '\n';
-					// textArea.value += '\n';
-					theImage = e.source.fullPhoto;
-					Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+
+					theImage = e.source.fullPhoto; 
+					Ti.App.mediaDraftType = "photo";
+					Ti.App.mediaDraft = '<img src="' + e.source.fullPhoto + '">';
+					
+					Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft });
 					break;
 				
 				case 'text':
@@ -521,10 +526,18 @@ var flashlight_create = function() {
 				
 					//Sets the Image to the Videos Thumbnail
 					theImage = e.source.image;
-				
 					videoLink = e.source.videoLink;
 					videoId = e.source.videoId;
-					Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+					
+					// Defines the Video Source Type (Vimeo or youTube)
+					if (theImage.indexOf("ytimg") != -1) {
+						Ti.App.mediaDraftType = "youtube";
+						Ti.App.mediaDraft = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
+					} else {
+						Ti.App.mediaDraftType = "vimeo";
+					}
+
+					Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft });
 
 					break;
 				
