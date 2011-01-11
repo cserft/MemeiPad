@@ -31,7 +31,7 @@
 	<string name="meme_short_domain">me.me/</string>
 	<string name="aboutGitLabel_text">Meme para iPad en GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
-	<string name="meme_about_text">About</string>
+	<string name="meme_about_text">Información</string>
 	<string name="mail_message_subject_feedback">Meme para iPad - Sugerencias (ver. %s)</string>
 	<string name="feedback_mail_address">memeipad@yahoo.com</string>
 	<!-- GENERIC -->
@@ -58,11 +58,11 @@
 	<string name="pull_down_to_refresh_text">Mueve para recargar...</string>
 	<string name="release_to_refresh_text">Suelta para recargar...</string>
 	<string name="reloading_message">Actualizando...</string>
-	<string name="welcome_message">welcome to meme!</string>
-	<string name="welcome_message2">the smart way to post</string>
-	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the \"start posting here\" button</string>
-	<string name="go_dashboard_title">Now that you are following some blogs, check out your feed</string>
-	<string name="recommended_label_title">RECOMMENDED USERS AND CONTENT</string>
+	<string name="welcome_message">¡Bienvenido a Meme!</string>
+	<string name="welcome_message2">la forma inteligente de bloguear</string>
+	<string name="welcome_description">Meme de Yahoo! es una nueva plataforma de bloguéo: elegante, inteligente y simple. /n Puedes empezar siguiendo algunos de los blogs en nuestras recomendaciones o crear una nueva entrada, sólo haz clic el el botón de \"empieza aquí\"</string>
+	<string name="go_dashboard_title">Ahora que sigues algunos blogs, revisa tu feed</string>
+	<string name="recommended_label_title">USUARIOS Y CONTENIDO RECOMENDADO</string>
 	<!-- app_hightlight.js -->
 	<string name="featured_content_text">CONTENIDO DESTACADO</string>
 	<!-- newpost.js -->
@@ -90,7 +90,7 @@
 	<string name="flashlight_alert_empty_title">Flashlight</string>
 	<string name="flashlight_alert_empty_message">The Flashlight está vacío, empieza a escribir para obtener sugerencias.</string>
 	<string name="flashlight_no_results">No encontramos resultados</string>
-	<string name="add_photo_button_title">add photo</string>
+	<string name="add_photo_button_title">agrega foto</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
 	<string name="time_just_now">Ahora</string>
@@ -123,8 +123,8 @@
 	<string name="path_btn_following_background_image">images/bg_btn_following_es.png</string>
 	<string name="copy_link_text">Copiar enlace</string>
 	<string name="mail_post_text">Enviar esta entrada por correo</string>
-	<string name="share_with_twitter">Conpártelo com Twitter for iPad</string>
-	<string name="share_with_twitter_message">This will open Twitter for iPad (if installed)</string>
+	<string name="share_with_twitter">Compártelo por Twitter for iPad</string>
+	<string name="share_with_twitter_message">La entrada se abrirá en Twitter para iPad (se instalado)</string>
 	<!-- /permalink.js -->
 	<!-- Share with Mail -->
 	<string name="mail_message_body_source">Fuente: </string>
