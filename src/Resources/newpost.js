@@ -35,20 +35,6 @@ function saveLocalFile (filename, media, callback){
     callback(f);
 }
 
-function readLocalFile (filename, callback){
-	file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, filename);
-	
-    if (file.exists()) {
-	 	Ti.API.debug('Found previous post draft file, reading it');
-		var fileContent = file.read();
-		callback(fileContent);
-    } else {
-		Ti.API.debug('No Draft File Found!');
-	}
-    
-};
-
-
 // Saves Draft
 function saveDraft (title, body, query, type, media) {
 	if (type != 'file') {
@@ -62,46 +48,6 @@ function saveDraft (title, body, query, type, media) {
 	Ti.API.debug('Saving post draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] media [' + media + ']');
 };
 
-// Loads Draft
-function loadDraft () {
-	Ti.API.debug('Loading Draft');
-	
-	var draft = Ti.App.Properties.getList('draft_post');
-	postTitle = draft[0];
-	postBody = draft[1];
-	queryText = draft[2];
-	Ti.App.mediaDraftType = draft[3];
-	Ti.App.mediaDraft = draft[4];
-	
-	if (Ti.App.mediaDraftType != "") {
-		switch(Ti.App.mediaDraftType) {
-			case "vimeo":
-				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft });
-			break;
-			
-			case "youtube":
-				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft });
-			break;
-			
-			case "photo":
-				Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft });
-			break;
-			
-			case "file":
-				readLocalFile("photo_draft", function(media){
-					Ti.App.fireEvent("photoChosen", {typePhoto: 'local', typeMedia: Ti.App.mediaDraftType, media: media });
-				});
-			break;
-		}
-	}
-	
-	Ti.App.Properties.removeProperty('draft_post');
-};
-
-// calls load post draft
-if (Ti.App.Properties.hasProperty('draft_post')) {
-	loadDraft();
-}
 
 // animation on close Window
 var animeClose = Titanium.UI.createAnimation({
@@ -579,6 +525,17 @@ var cancelPostButton = Ti.UI.createButton({
 });
 progressView.add(cancelPostButton);
 
+//TextArea Clear Button
+var btn_text_clear = Titanium.UI.createButton({
+	backgroundImage:'images/btn_close_gray.png',
+	width: 			29,
+	height: 		29,
+	top: 			95,
+	right: 			40,
+	zIndex: 		2,
+	visible: 		true
+});
+
 function showProgressView (pCommand, pMessage) {
 	
 	if (pCommand == "hide") { // Hides the Progress bar
@@ -595,6 +552,62 @@ function showProgressView (pCommand, pMessage) {
 	}	
 }
 
+// Get smaller sizes to downsize images
+var getImageDownsizedSizes = function(max_width, max_height, original_img) {
+    var w = original_img.width, h = original_img.height;
+    if (w > max_width) {
+        w = max_width;
+        h = (max_width * original_img.height) / original_img.width;
+    }
+    if (h > max_height) {
+        h = max_height;
+        w = (max_height * original_img.width) / original_img.height;
+    }
+    return { width: w, height: h };
+};
+
+// Reads local file
+function readLocalFile (filename, callback){
+	file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, filename);
+	
+    if (file.exists()) {
+	 	Ti.API.debug('Found previous post draft file, reading it');
+		var fileContent = file.read();
+		callback(fileContent);
+    } else {
+		Ti.API.debug('No Draft File Found!');
+	}
+    
+};
+
+// Loads Draft
+function loadDraft () {
+	Ti.API.debug('Loading Draft');
+	
+	var draft = Ti.App.Properties.getList('draft_post');
+	editTitleField.value = draft[0];
+	textArea.value = draft[1];
+	searchTextField.value = draft[2];
+	Ti.App.mediaDraftType = draft[3];
+	Ti.App.mediaDraft = draft[4];
+	
+	if (Ti.App.mediaDraftType != "") {
+		if (Ti.App.mediaDraftType != "file") {
+			mediaChosen('flashlight', Ti.App.mediaDraftType, Ti.App.mediaDraft);
+		} else {
+			readLocalFile("photo_draft", function(media){
+				mediaChosen('local', Ti.App.mediaDraftType, media);
+			});
+		}
+	}
+	
+	Ti.App.Properties.removeProperty('draft_post');
+};
+
+// calls load post draft
+if (Ti.App.Properties.hasProperty('draft_post')) {
+	loadDraft();
+}
 
 // =============
 // = LISTENERS =
@@ -687,17 +700,6 @@ textArea.addEventListener('change', function(e) {
 	postBody = e.value;
 });
 
-//TextArea Clear Button
-var btn_text_clear = Titanium.UI.createButton({
-	backgroundImage:'images/btn_close_gray.png',
-	width: 			29,
-	height: 		29,
-	top: 			95,
-	right: 			40,
-	zIndex: 		2,
-	visible: 		true
-});
-
 textArea.addEventListener('focus', function(e) {
    	Ti.API.info('TextArea: focus received');
 	tempPostLabel.hide(); // hide the hint text when textArea receives Focus
@@ -788,28 +790,18 @@ var handleImageEvent = function(event) {
   Ti.App.fireEvent("photoChosen");
 };
 
-// Get smaller sizes to downsize images
-var getImageDownsizedSizes = function(max_width, max_height, original_img) {
-    var w = original_img.width, h = original_img.height;
-    if (w > max_width) {
-        w = max_width;
-        h = (max_width * original_img.height) / original_img.width;
-    }
-    if (h > max_height) {
-        h = max_height;
-        w = (max_height * original_img.width) / original_img.height;
-    }
-    return { width: w, height: h };
-};
-
 Ti.App.addEventListener("photoChosen", function(e) {
+	mediaChosen(e.typePhoto, e.typeMedia, e.media);
+});
 	
+function mediaChosen (type, typeMedia, media) {
+
 	var textArea_top;
 	
 	//Closes the Keyboard if open
 	Ti.App.fireEvent('hide_keyboard');
 
-	if (e.typePhoto == 'flashlight') {
+	if (type == 'flashlight') {
 		//FlashLight Content was clicked
 		// {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft }
 		Ti.API.info(">>> Entered on Flashlight Paste");
@@ -822,44 +814,44 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		actAjax.show();
 	
 		// If the content from FlashLight is a Video then presents a Video Player
-		if (e.typeMedia == "youtube") {
+		if (typeMedia == "youtube") {
 			
-			Ti.API.info(">>> Entered on Flashlight Type:[" + e.typeMedia + "] Media [" + e.media + "]");
+			Ti.API.info(">>> Entered on Flashlight Type:[" + typeMedia + "] Media [" + media + "]");
 			// Create our Webview to render the Video
-			webViewPreview.html = e.media;
+			webViewPreview.html = media;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
 			
 			//Saving Draft vars
-			Ti.App.mediaDraftType = e.typeMedia;
-			Ti.App.mediaDraft = e.media;
+			Ti.App.mediaDraftType = typeMedia;
+			Ti.App.mediaDraft = media;
 			// saveDraft(editTitleField.value, textArea.value, searchTextField.value, Ti.App.mediaDraftType, Ti.App.mediaDraft);
 			
-		} else if (e.typeMedia == "vimeo") { 
-			Ti.API.info(">>> Entered on Flashlight Type:[" + e.typeMedia + "] Media [" + e.media + "]");
+		} else if (typeMedia == "vimeo") { 
+			Ti.API.info(">>> Entered on Flashlight Type:[" + typeMedia + "] Media [" + media + "]");
 			
 			// Create our Webview to render the Video
-			webViewPreview.html = e.media;
+			webViewPreview.html = media;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
 			
 			//Saving Draft vars
-			Ti.App.mediaDraftType = e.typeMedia;
-			Ti.App.mediaDraft = e.media;
+			Ti.App.mediaDraftType = typeMedia;
+			Ti.App.mediaDraft = media;
 			// saveDraft(editTitleField.value, textArea.value, searchTextField.value, Ti.App.mediaDraftType, Ti.App.mediaDraft);
 		
 		} else {
 			// IS A PHOTO
-			Ti.API.info(">>> Entered on Flashlight Type:[" + e.typeMedia + "] Media [" + e.media + "]");
+			Ti.API.info(">>> Entered on Flashlight Type:[" + typeMedia + "] Media [" + media + "]");
 			
 			// Create our Webview to render the Photo
-			webViewPreview.html = e.media;
+			webViewPreview.html = media;
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
 			
 			//Saving Draft vars
-			Ti.App.mediaDraftType = e.typeMedia;
-			Ti.App.mediaDraft = e.media;
+			Ti.App.mediaDraftType = typeMedia;
+			Ti.App.mediaDraft = media;
 			// saveDraft(editTitleField.value, textArea.value, searchTextField.value, Ti.App.mediaDraftType, Ti.App.mediaDraft);
 		}
 		
@@ -893,7 +885,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 		
 		//Saving Draft vars
 		Ti.App.mediaDraftType = "file";
-		Ti.App.mediaDraft = img.image;
+		Ti.App.mediaDraft = theImage;
 		
 		// saveDraft(editTitleField.value, textArea.value, searchTextField.value, Ti.App.mediaDraftType, Ti.App.mediaDraft);
 		
@@ -910,7 +902,7 @@ Ti.App.addEventListener("photoChosen", function(e) {
 	// Repositioned the TextArea below the chosen photo
 	btn_text_clear.top = textArea_top+20;
 	textArea.animate({zIndex: 0, top: textArea_top});
-});
+};
 
 // to remove the photo chosen
 Ti.App.addEventListener("photoRemoved", function(e) {
