@@ -841,7 +841,7 @@ var getDashboardData = function (pTimestamp) {
 		
 		var userInfo = Ti.App.meme.userInfo('me', 35, 35, false); // without cache
 		
-		if (true /*userInfo.following == 0*/) {
+		if (userInfo.following == 0) {
 			Ti.API.info(" ####### STARTING DASHBOARD EMPTY (LOGGED IN) ##########");
 
 			// Reload TableVIew or First Build
