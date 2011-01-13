@@ -477,7 +477,7 @@ var createEmptyDashboard = function () {
 		color: 		'#999',
 		top: 		234,
 		left: 		63,
-		width: 		490,
+		width: 		600,
 		height: 	30,
 		font: 		{fontSize:22, fontFamily:'Gotham Rounded', fontWeight:'Light'},
 		zIndex: 	1
@@ -841,7 +841,7 @@ var getDashboardData = function (pTimestamp) {
 		
 		var userInfo = Ti.App.meme.userInfo('me', 35, 35, false); // without cache
 		
-		if (userInfo.following == 0) {
+		if (true /*userInfo.following == 0*/) {
 			Ti.API.info(" ####### STARTING DASHBOARD EMPTY (LOGGED IN) ##########");
 
 			// Reload TableVIew or First Build

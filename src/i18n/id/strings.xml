@@ -31,8 +31,8 @@
 	<string name="meme_short_domain">mim.ly/</string>
 	<string name="aboutGitLabel_text">Mim untuk iPad di GitHub:\nhttp://memeapp.net/source</string>
 	<string name="memeapp_source_url">http://memeapp.net/source</string>
-	<string name="meme_about_text">About</string>
-	<string name="mail_message_subject_feedback">Meme for iPad Feedback (ver. %s)</string>
+	<string name="meme_about_text">Tentang</string>
+	<string name="mail_message_subject_feedback">Masukan untuk Mim untuk iPad (ver. %s)</string>
 	<string name="feedback_mail_address">memeipad@yahoo.com</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Buka Link</string>
@@ -58,11 +58,11 @@
 	<string name="pull_down_to_refresh_text">Tarik ke bawah untuk refresh...</string>
 	<string name="release_to_refresh_text">Lepaskan untuk refresh...</string>
 	<string name="reloading_message">Memuat ulang...</string>
-	<string name="welcome_message">welcome to meme!</string>
-	<string name="welcome_message2">the smart way to post</string>
-	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the \"start posting here\" button</string>
-	<string name="go_dashboard_title">Now that you are following some people, check out your feed</string>
-	<string name="recommended_label_title">RECOMMENDED USERS AND CONTENT</string>
+	<string name="welcome_message">selamat datang di mim!</string>
+	<string name="welcome_message2">cara cerdas untuk posting</string>
+	<string name="welcome_description">Mim dari Yahoo! adalah platform blogging jenis baru: elegan, cerdas dan mudah.\nAnda dapat memulai dengan mengikuti beberapa blog yang ada di daftar rekomendasi kami atau membuat Postingan baru, cukup klik tombol \"buat postingan\"</string>
+	<string name="go_dashboard_title">Kini setelah Anda mengikuti beberapa orang, lihat feed Anda</string>
+	<string name="recommended_label_title">KONTEN DAN PENGGUNA YANG DIREKOMENDASI</string>
 	<!-- app_hightlight.js -->
 	<string name="featured_content_text">KONTEN PILIHAN</string>
 	<!-- newpost.js -->
@@ -90,7 +90,7 @@
 	<string name="flashlight_alert_empty_title">Flashlight</string>
 	<string name="flashlight_alert_empty_message">Flashlight kosong, ketik sesuatu untuk mendapatkan konten usulan</string>
 	<string name="flashlight_no_results">Hasil tidak ditemukan.</string>
-	<string name="add_photo_button_title">add foto</string>
+	<string name="add_photo_button_title">tambah foto</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
 	<string name="time_just_now">Baru saja</string>
@@ -123,16 +123,16 @@
 	<string name="path_btn_following_background_image">images/bg_btn_following_id.png</string>
 	<string name="copy_link_text">Salin link</string>
 	<string name="mail_post_text">Mail posting ini</string>
-	<string name="share_with_twitter">Share with Twitter for iPad</string>
-	<string name="share_with_twitter_message">This will open Twitter for iPad (if installed)</string>
+	<string name="share_with_twitter">Bagi dengan Twitter untuk iPad</string>
+	<string name="share_with_twitter_message">Ini akan membuka Twitter untuk iPad (jika terinstal)</string>
 	<!-- /permalink.js -->
 	<!-- Share with Mail -->
 	<string name="mail_message_body_source">Sumber: </string>
 	<string name="mail_message_signature">Sent with Meme for iPad</string>
 	<string name="mail_message_subject_default">Sharing an interesting Post</string>
-	<string name="mail_web_link">Mail Link</string>
-	<string name="mail_web_link_text">Sharing Link: </string>
+	<string name="mail_web_link">EMail Link</string>
+	<string name="mail_web_link_text">Berbagi Link: </string>
 	<!-- /Share with Mail -->
 	<!-- EXTRAS -->
-	<string name="format_test">My name is %s</string>
+	<string name="format_test">Nama saya %s</string>
 </resources>
