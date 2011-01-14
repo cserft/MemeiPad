@@ -37,7 +37,7 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			theImage = _data.thumbnail_url;
 			videoLink = new_monitor_value;
 			videoId = youtubeVideoArray[1];
-			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+			Ti.App.fireEvent("mediaChosen", {flashlight: true});
 	
 		});
 		
@@ -52,7 +52,7 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			theImage = _data.thumbnail_url;
 			videoLink = new_monitor_value;
 			videoId = youtubeShortArray[1];
-			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight'});
+			Ti.App.fireEvent("mediaChosen", {flashlight: true});
 	
 		});
 		
@@ -69,10 +69,10 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			videoLink = new_monitor_value;
 			videoId = vimeoArray[1];
 			
-			Ti.App.mediaDraftType = "vimeo";
-			Ti.App.mediaDraft = _data.html;
+			mediaType = "vimeo";
+			mediaDraft = _data.html;
 			
-			Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft}); 
+			Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, media: mediaDraft}); 
 		});
 		
 		Ti.API.info("Pasted link Vimeo ID: " + vimeoArray[1]);
@@ -475,8 +475,6 @@ var flashlight_create = function() {
 	
 		flashlightTableView.addEventListener('click', function(e) {
 		
-			// Ti.API.info("Full Photo:  [" + e.source.fullPhoto + "] and Title: [" + e.source.title + "]");
-		
 			switch (e.source.type) {
 				case 'photo':
 					if (e.source.title != "") {
@@ -487,10 +485,11 @@ var flashlight_create = function() {
 					}
 
 					theImage = e.source.fullPhoto; 
-					Ti.App.mediaDraftType = "photo";
-					Ti.App.mediaDraft = '<img src="' + e.source.fullPhoto + '">';
+					mediaType = "photo";
+					mediaDraft = '<img src="' + e.source.fullPhoto + '">';
+					mediaLink = e.source.fullPhoto;
 					
-					Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft });
+					Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaDraft, mediaLink: mediaLink });
 					break;
 				
 				case 'text':
@@ -528,16 +527,17 @@ var flashlight_create = function() {
 					theImage = e.source.image;
 					videoLink = e.source.videoLink;
 					videoId = e.source.videoId;
+					mediaLink = videoLink;
 					
 					// Defines the Video Source Type (Vimeo or youTube)
 					if (theImage.indexOf("ytimg") != -1) {
-						Ti.App.mediaDraftType = "youtube";
-						Ti.App.mediaDraft = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
+						mediaType = "youtube";
+						mediaDraft = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
 					} else {
-						Ti.App.mediaDraftType = "vimeo";
+						mediaType = "vimeo";
 					}
 
-					Ti.App.fireEvent("photoChosen", {typePhoto: 'flashlight', typeMedia: Ti.App.mediaDraftType, media: Ti.App.mediaDraft });
+					Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaDraft, mediaLink: videoLink });
 
 					break;
 				
