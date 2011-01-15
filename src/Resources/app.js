@@ -810,7 +810,14 @@ var startApplication = function() {
 		showDashboard();
 	});
 	
-	if (! Ti.App.oAuthAdapter.isLoggedIn()) {   	
+	if (! Ti.App.oAuthAdapter.isLoggedIn()) {  
+		
+		// Resets the Draft when logging in first time. 
+		if (Ti.App.Properties.hasProperty('draft_post')) {
+			Ti.App.Properties.removeProperty('draft_post');	
+		}
+		
+		//Start the oAuth Process
 		Ti.App.oAuthAdapter.attachLogin(signInButtonClick, startApplication);
 	}
 };
