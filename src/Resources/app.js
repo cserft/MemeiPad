@@ -719,18 +719,18 @@ var showHeader = function (successCallback) {
 		// = post button =
 		// ===============
 		
-		var btn_start_posting = Ti.UI.createButton({
-			backgroundImage: 	L('path_btn_start_posting_background_image'), 
+		var btn_create_post = Ti.UI.createButton({
+			backgroundImage: 	L('path_create_post_background_image'), 
 			height: 			79,
 			width: 				419, 
 			left: 				617,
 			top: 				-12,
 			zIndex: 			5
 		});
-		headerView.add(btn_start_posting);
+		headerView.add(btn_create_post);
 		
 		// Opens the New Post Window
-		btn_start_posting.addEventListener('click', function()
+		btn_create_post.addEventListener('click', function()
 		{
 			
 			clearTimeout(clickTimeoutStartPosting);

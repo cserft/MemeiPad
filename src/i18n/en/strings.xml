@@ -12,7 +12,7 @@
 	<string name="btn_signup_alert">Create your account</string>
 	<string name="btn_signup_message">We will open the Sign up page in Safari</string>
 	<string name="btn_signup_url">http://meme.yahoo.com/confirm</string>
-	<string name="path_btn_start_posting_background_image">images/btn_start_posting.png</string>
+	<string name="path_create_post_background_image">images/btn_create_post.png</string>
 	<!-- ABOUT -->
 	<string name="btn_signout_title">sign out</string>
 	<string name="btn_back_title">back</string>

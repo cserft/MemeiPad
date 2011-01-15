@@ -12,7 +12,7 @@
 	<string name="btn_signup_alert">創建你的賬號</string>
 	<string name="btn_signup_message">我們會在Safari中打開註冊頁</string>
 	<string name="btn_signup_url">http://meme.yahoo.com/confirm</string>
-	<string name="path_btn_start_posting_background_image">images/btn_start_posting_zh.png</string>
+	<string name="path_create_post_background_image">images/btn_create_post_br.png</string>
 	<!-- ABOUT -->
 	<string name="btn_signout_title">登出</string>
 	<string name="btn_back_title">返回</string>
