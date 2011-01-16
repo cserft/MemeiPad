@@ -693,6 +693,29 @@ btn_flashlight.addEventListener('click', function() {
 	
 });
 
+// Keyboard return button listener for the Flashlight
+searchTextField.addEventListener('return', function() {
+	
+	clearTimeout(clickTimeout);
+	
+	clickTimeout = setTimeout(function() {	
+		//Ti.API.info('queryText when btn_flashlight clicked: ' + queryText);
+		//Analytics Request
+		doYwaRequest(analytics.FLASHLIGHT_SEARCH);
+		if (searchTextField.value == '') {
+			Ti.UI.createAlertDialog({
+				title: L('flashlight_alert_empty_title'),
+				message: L('flashlight_alert_empty_message')
+			}).show();
+			
+		} else {
+			flashlight_show();
+		}
+		
+	},500);
+	
+});
+
 searchTextField.addEventListener('change', function(e) {
 //	Ti.API.info('Awesome Bar form: you typed ' + e.value + ' act val ' + searchTextField.value);
 	flashlight_text_change_monitor(searchTextField.value);
@@ -771,7 +794,7 @@ textArea.addEventListener('blur', function(e) {
 });
 
 btn_text_clear.addEventListener('touchstart', function(e) {
-	editView.add(tempPostLabel);
+	// editView.add(tempPostLabel);
 	tempPostLabel.show(); // hide the hint text when textArea receives Focus
 	editView.remove(btn_text_clear);
 	textArea.blur();
