@@ -222,15 +222,18 @@ var showHeader = function (successCallback) {
 			
 			btn_Username.backgroundImage = 'images/btn_username_selected.png';
 			
+			//DEFINES THE HEIGHT OF THE POPOVER
+			var height_small = 180;
+			var height_big = 334;
+			
 			var popover = Ti.UI.iPad.createPopover({
-				width:341,
-				height:140, 
-				backgroundColor: 'white',
-				navBarHidden: true,
-				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
+				width: 				341,
+				height: 			height_small, 
+				backgroundColor: 	'white',
+				navBarHidden: 		true,
+				arrowDirection: 	Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP
 			});
-			
-			
+
 			// BUILDING THE TABLE VIEW
 			var data = [];
 			
@@ -239,7 +242,7 @@ var showHeader = function (successCallback) {
 				top: 			0,
 				left: 			0,
 				width: 			340,
-				height: 		140,
+				height: 		height_small,
 				separatorColor: '#CCC',
 				style: 			0 //Ti.UI.iPhone.TableViewStyle.PLAIN
 			});
@@ -327,14 +330,33 @@ var showHeader = function (successCallback) {
 			
 			data[1] = row2;
 			
-			// ROW 3: ATOS
+			// ROW 3: SETTINGS
 			var row3 = Ti.UI.createTableViewRow({
+				selectedBackgroundColor: '#CCC',
+				height: 40
+			});
+			
+			var bookmarklet = Ti.UI.createLabel({
+ 				color: 			'#333',
+				text: 			L('meme_install_bookmarklet_text'),
+				textAlign: 		'left',
+				font: 			{fontSize:16, fontFamily:'Helvetica', fontWeight:'bold'},
+				left: 			14,
+				height: 		34,
+				width: 			260
+			});	
+			row3.add(bookmarklet);
+			
+			data[2] = row3;
+			
+			// ROW 4: ABOUT
+			var row4 = Ti.UI.createTableViewRow({
 				selectedBackgroundColor: '#CCC',
 				height: 40,
 				hasChild: true
 			});
 			
-			var atosLabel = Ti.UI.createLabel({
+			var aboutLabel = Ti.UI.createLabel({
  				color: 			'#333',
 				text: 			L('meme_about_text'),
 				textAlign: 		'left',
@@ -343,9 +365,9 @@ var showHeader = function (successCallback) {
 				height: 		34,
 				width: 			260
 			});	
-			row3.add(atosLabel);
+			row4.add(aboutLabel);
 			
-			data[2] = row3;
+			data[3] = row4;
 			
 			
 			//Sets the data to the TableView
@@ -423,7 +445,7 @@ var showHeader = function (successCallback) {
 			backButton.addEventListener('click', function (){
 				settingsTableView.animate({left: 0, duration: 200});
 				navGroup.hide(aboutWindow); //.animate({left: 341, duration: 200});
-				popover.height = 140; 
+				popover.height = height_small; 
 			});
 			
 			var aboutView = Ti.UI.createWebView({
@@ -730,7 +752,26 @@ var showHeader = function (successCallback) {
 			// Main TableView Listener
 			settingsTableView.addEventListener('click', function(e)	{
 				if (e.index == 2) {
-					popover.height = 334; 
+
+					//Alert to remove the photo
+					var alertBookmarklet = Titanium.UI.createAlertDialog({
+						title: L('meme_bookmarklet_alert_title'),
+						message: L('meme_bookmarklet_alert_message'),
+						buttonNames: [L('btn_alert_CANCEL'),L('btn_alert_INSTALL')],
+						cancel: 0
+					});
+
+					alertBookmarklet.show();
+
+					alertBookmarklet.addEventListener('click',function(e) {
+						if (e.index == 1) {
+							Ti.Platform.openURL(L('meme_bookmarklet_url'));
+						}
+					});
+									
+				}
+				if (e.index == 3) {
+					popover.height = height_big; 
 					settingsTableView.animate({left: -341, duration: 200});
 					navGroup.show();				
 				}
