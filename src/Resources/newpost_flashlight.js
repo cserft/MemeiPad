@@ -22,13 +22,13 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 	var youtubeShortArray = new_monitor_value.match(/youtu.be\/([a-zA-Z0-9_-]{11})/);
 	var vimeoArray = new_monitor_value.match(/vimeo.com\/([\d]+)&?$/);
 	
-	// Detects Images Pasted
-	// var photoLinkArray = new_monitor_value.match(/)
-	
 	// Flickr REGEX
 	var flickrArray = new_monitor_value.match(/flickr.com\/photos\/[^\/]+\/([0-9]+)/i);
-	// $farm_url = preg_match('/flickr\.com\/[0-9]+\/([0-9]+)_(.*)/i', $url, $farm_match);
 	
+	//Images REGEX
+	var imageArray = new_monitor_value.match(/(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:jpe?g|gif|png))(?:\?([^#]*))?(?:#(.*))?/i);
+	
+	//Triggers the Paste command or a FlashLight Search flashlight_monitor_start();
 	if (youtubeVideoArray != null && youtubeVideoArray != undefined) {
 		
 		getVideoData(new_monitor_value, function(_videoThumb, _data) {
@@ -90,13 +90,13 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		
 	} else if (flickrArray != null && flickrArray != undefined) {
 		
-		Ti.API.info("Pasted a Flickr Link: " + flickrArray[1]);
+		Ti.API.info("Pasted a Flickr Link: " + flickrArray[0]);
 		
 		getVideoData(new_monitor_value, function(_photoThumb, _data) {
 			editTitleField.value = _data.title;	
 			postTitle = _data.title;
 			
-			//Sets the Image to the Video Thumbnail
+			//Sets the Image to the Photo Thumbnail
 			theImage = _data.url;
 			mediaLink = _data.url;
 			
@@ -106,6 +106,19 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
 	
 		});
+		
+	} else if (imageArray != null && imageArray != undefined) {
+		
+		Ti.API.info("Pasted a Image Link: JPG/PNG/GIF: " + imageArray[0]);
+		
+		//Sets the Image to the Image Thumbnail
+		theImage = imageArray[0];
+		mediaLink = imageArray[0];
+
+		mediaType = "photo";
+		mediaPreview = '<img src="' + imageArray[0] + '">';
+		
+		Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
 								
 	} else {
 		
