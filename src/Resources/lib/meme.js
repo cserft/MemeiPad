@@ -16,7 +16,7 @@ var Meme = function() {
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
 		featuredPosts, dashboardPosts, isFollowing, follow, unfollow, 
 		createComment, repost, isReposted, userInfo, userSearch, userFeatured, flashlightPhotos, 
-		flashlightVideos, flashlightWeb, flashlightTweets;
+		flashlightVideos, flashlightWeb, flashlightLinkWeb, flashlightTweets;
 		
 	// private functions
 	var getYql, cacheGet, cachePut, loginRequired, throwYqlError, createPost, 
@@ -193,6 +193,23 @@ var Meme = function() {
 			Ti.API.info("Callback Called");
 			return callback(userFeatured);
 		}
+	};
+	
+	flashlightLinkWeb = function(query) {
+		var params = {
+			cacheKey: 'flashlight:link:' + query,
+			//select * from html where url='http://www.globo.com' and xpath="/html/head/meta[@name='description']|//title"
+			yqlQuery: 'SELECT * FROM html WHERE url="' + query + '" and xpath="/html/head/meta[@name=\'description\']|//title"'
+		};
+		var items;
+		var successCallback = function(results) {
+			items = results;
+		};
+		var errorCallback = function() {
+			items = null;
+		};
+		cachedYqlQuery(params, successCallback, errorCallback);
+		return items;
 	};
 	
 	flashlightPhotos = function(query) {
@@ -383,6 +400,7 @@ var Meme = function() {
 		flashlightPhotos: flashlightPhotos, 
 		flashlightVideos: flashlightVideos, 
 		flashlightWeb: flashlightWeb, 
+		flashlightLinkWeb: flashlightLinkWeb,
 		flashlightTweets: flashlightTweets
 	});	
 };
