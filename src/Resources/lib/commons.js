@@ -88,6 +88,10 @@ var getVideoData = function(pContent, callback) {
 	if (pContent.indexOf("vimeo") != -1) {
 		// vimeo
 		request_url = 'http://vimeo.com/api/oembed.json?maxwidth=640&maxheight=385&url=' + pContent;
+		
+	} else if (pContent.indexOf("flickr") != -1) {
+		request_url = 'http://flickr.com/services/oembed?maxwidth=640&maxheight=600&format=json&url=' + pContent;
+		
 	} else {
 		// youtube
 		var videoId = pContent.match(/v.([a-zA-Z0-9_-]{11})&?/)[1];
@@ -112,8 +116,15 @@ var getVideoData = function(pContent, callback) {
 
     xhr.onload = function(e) {
 		var data = JSON.parse(this.responseText);
-        var videoThumb = data.thumbnail_url;
-		callback(videoThumb, data);
+		if (data.provider_name != "Flickr") {
+			var videoThumb = data.thumbnail_url;
+			callback(videoThumb, data);
+		} else {
+			var photoThumb = data.url;
+			callback(photoThumb, data);
+		}
+        
+		
     };
 
 	//eContent = encodeURIComponent(pContent);
