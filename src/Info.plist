@@ -24,7 +24,7 @@
 			<string>com.yahoo.meme.ipad</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>memeipad</string>
+				<string>memeapp</string>
 			</array>
 		</dict>
 	</array>
