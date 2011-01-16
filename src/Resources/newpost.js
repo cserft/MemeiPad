@@ -72,9 +72,9 @@ var BgSearchTextField = Titanium.UI.createView({
 	backgroundImage: 			'images/bg_flashlight_form.png',
 	backgroundLeftCap: 			20,
 	backgroundRightCap: 		20,
-	left: 						310, 
+	left: 						300, 
 	top: 						9,
-	width: 						520,
+	width: 						540,
 	height: 					41,
 	zIndex: 					1,
 });
@@ -93,7 +93,7 @@ var searchTextField = Titanium.UI.createTextField({
 	width: 					485,
 	height: 				41,
 	top: 					9,
-	left: 					320,
+	left: 					310,
 	borderRadius: 			4,
 	zIndex: 				2,
 	borderStyle: 			Titanium.UI.INPUT_BORDERSTYLE_NONE,
@@ -102,11 +102,24 @@ var searchTextField = Titanium.UI.createTextField({
 });
 postHeaderView.add(searchTextField);
 
+//Photo delete Button
+var btn_search_clear = Titanium.UI.createButton({
+	backgroundImage:'images/btn_close_white.png',
+	width: 			25,
+	height: 		25,
+	top: 			8,
+	right: 			10,
+	zIndex: 		10,
+	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+	
+});
+// BgSearchTextField.add(btn_search_clear);
+
 var btn_flashlight = Ti.UI.createButton({
 	backgroundImage: 'images/btn_flashlight_new.png',
 	width: 			120,
 	height: 		40,
-	left: 			183,
+	left: 			173,
 	top: 			9,
 	zIndex: 		2,
 	style: 			Titanium.UI.iPhone.SystemButtonStyle.PLAIN
@@ -117,7 +130,7 @@ postHeaderView.add(btn_flashlight);
 //Create Image view for the lamp animation (this is a white blur)
 var lamp_bright = Titanium.UI.createImageView({
 	image: 		'images/lamp_bright.png',
-	left: 		183 , // - 221
+	left: 		173 , // - 221
 	top: 		8,
 	width: 		37,
 	height: 	38,
@@ -602,6 +615,7 @@ function loadDraft () {
 	// verifies if the Flashlight Search Field has some value and sets the Bigger Font Size
 	if (searchTextField.value != "") {
 		setFlashlightFont(18);
+		BgSearchTextField.add(btn_search_clear);
 	}
 	
 	if (mediaType != "") {
@@ -627,6 +641,7 @@ if (Ti.App.Properties.hasProperty('draft_post')) {
 // verifies if the Flashlight Search Field has some value and sets the Bigger Font Size
 if (searchTextField.value != "") {
 	setFlashlightFont(18);
+	BgSearchTextField.add(btn_search_clear);
 }
 
 // end Draft functions
@@ -671,7 +686,6 @@ btn_flashlight.addEventListener('click', function() {
 			flashlight_show();
 		}
 		
-		
 	},500);
 	
 });
@@ -685,9 +699,11 @@ searchTextField.addEventListener('change', function(e) {
 		// if the user clears the field, then it should show the hintText and reset the font Size
 		setFlashlightFont(13);
 		searchTextField.hintText = L('searchTextField_hint_text');
+		BgSearchTextField.remove(btn_search_clear);
 	} else {
 		// else there is something in the Field and it should use the bigger font size
 		setFlashlightFont(18);
+		BgSearchTextField.add(btn_search_clear);
 	}
 });
 
@@ -705,6 +721,15 @@ searchTextField.addEventListener('blur', function(e) {
 		setFlashlightFont(18);
 	}
 	moveToolBar(false);
+});
+
+// Clears the Flashlight Search Field
+btn_search_clear.addEventListener('touchstart', function(e) {
+	queryText = '';
+	searchTextField.value = '';
+	setFlashlightFont(13);
+	searchTextField.focus();
+	BgSearchTextField.remove(btn_search_clear);
 });
 
 // ===========================
