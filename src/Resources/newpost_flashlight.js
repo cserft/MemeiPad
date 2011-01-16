@@ -43,7 +43,7 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			
 			mediaType = "youtube";
 			mediaPreview = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
-			mediaLink = VideoLink;
+			mediaLink = videoLink;
 			
 			Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
 	
@@ -77,7 +77,6 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			
 			//Sets the Image to the Video Thumbnail
 			theImage = _data.thumbnail_url;
-			// videoHtml = _data.html;
 			mediaLink = new_monitor_value;
 			videoId = vimeoArray[1];
 			
