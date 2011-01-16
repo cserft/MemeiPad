@@ -34,6 +34,7 @@
 	<string name="meme_about_text">Información</string>
 	<string name="mail_message_subject_feedback">Meme para iPad - Sugerencias (ver. %s)</string>
 	<string name="feedback_mail_address">memeipad@yahoo.com</string>
+	<string name="meme_settings_text">Ajustes</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Abrir Liga</string>
 	<string name="success_alert_title">Éxito</string>
