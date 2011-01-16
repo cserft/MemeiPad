@@ -315,11 +315,13 @@ var Meme = function() {
 		var yqlResponse = getYql().query(yqlQuery);
 		var results = yqlResponse.query.results;
 		
+		Ti.API.info("Results: ["+ JSON.stringify(results) +"]");
+		
 		if (!results) {
 			throwYqlError();
 		}
 		
-		if (results.status && results.status.message == 'ok') {
+		if (results.status && results.status.message == 'ok') { 
 			return true;
 		}
 		return false;
