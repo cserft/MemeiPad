@@ -10,9 +10,9 @@ doYwaRequest(analytics.NEW_POST_OPEN);
 var win 				= 	Ti.UI.currentWindow;
 Ti.App.newpostIsOpen 	= true; // controls for multiple clicks on Start new post btn
 var mediaPreview   	= ""; // var used to save the media files, links in draft
-var mediaType 	= ""; // var that holds the media draft type: ("vimeo", "youtube", "photo", "file")
-var mediaLink 	= ""; // var that holds the media link for draft Post from Flashlight 
-var flashlight = ""; // var that controls if the post is a Flashlight result (true|false)
+var mediaType 		= ""; // var that holds the media draft type: ("vimeo", "youtube", "photo", "file")
+var mediaLink 		= ""; // var that holds the media link for draft Post from Flashlight 
+var flashlight 		= ""; // var that controls if the post is a Flashlight result (true|false)
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var win1 			= 	win.win1; // Window Original created on app.js
@@ -26,10 +26,15 @@ var videoLink 		=   '';
 var videoId			=	'';
 
 // animation on close Window
-var animeClose = Titanium.UI.createAnimation({
+var animeClose = Ti.UI.createAnimation({
 	duration: 300,
 	top: -749	
 });
+
+//Function to set the Flashlight Field Font size
+function setFlashlightFont (size) {
+		searchTextField.font = {fontSize:size, fontFamily:'Georgia', fontStyle:'Italic'};
+}
 
 
 // ===============
@@ -85,7 +90,7 @@ var searchTextField = Titanium.UI.createTextField({
 	verticalAlign: 			'center',
 	color: 					"#999",
 	font: 					{fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
-	width: 					510,
+	width: 					485,
 	height: 				41,
 	top: 					9,
 	left: 					320,
@@ -594,9 +599,9 @@ function loadDraft () {
 	postTitle = draft[0];
 	postBody = draft[1];
 	
-	// If has TextArea content, don't show the temp Label
-	if (textArea.value != "") {
-		tempPostLabel.hide();
+	// verifies if the Flashlight Search Field has some value and sets the Bigger Font Size
+	if (searchTextField.value != "") {
+		setFlashlightFont(18);
 	}
 	
 	if (mediaType != "") {
@@ -619,9 +624,9 @@ if (Ti.App.Properties.hasProperty('draft_post')) {
 	loadDraft();
 }
 
-// verifies if the Flashlight Search Field has some value and sets the Font Size
-if (editTitleField.value != "") {
-	searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
+// verifies if the Flashlight Search Field has some value and sets the Bigger Font Size
+if (searchTextField.value != "") {
+	setFlashlightFont(18);
 }
 
 // end Draft functions
@@ -678,26 +683,26 @@ searchTextField.addEventListener('change', function(e) {
 	// Controls the Look and Feel of the Font on the Search Box, changing the Fonst Size and the hintText 
 	if (searchTextField.value == "") {
 		// if the user clears the field, then it should show the hintText and reset the font Size
-		searchTextField.font = {fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
+		setFlashlightFont(13);
 		searchTextField.hintText = L('searchTextField_hint_text');
 	} else {
 		// else there is something in the Field and it should use the bigger font size
-		searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
+		setFlashlightFont(18);
 	}
 });
 
 searchTextField.addEventListener('focus', function(e) {
-	searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
+	setFlashlightFont(18);
 	searchTextField.hintText = "";
 	moveToolBar(true);
 });
 
 searchTextField.addEventListener('blur', function(e) {
 	if (searchTextField.value == "") {
-		searchTextField.font = {fontSize:13, fontFamily:'Georgia', fontStyle:'Italic'},
+		setFlashlightFont(13);
 		searchTextField.hintText = L('searchTextField_hint_text');
 	} else {
-		searchTextField.font = {fontSize:18, fontFamily:'Georgia', fontStyle:'Italic'},
+		setFlashlightFont(18);
 	}
 	moveToolBar(false);
 });
