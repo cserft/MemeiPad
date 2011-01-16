@@ -9,9 +9,10 @@ doYwaRequest(analytics.NEW_POST_OPEN);
 
 var win 				= 	Ti.UI.currentWindow;
 Ti.App.newpostIsOpen 	= true; // controls for multiple clicks on Start new post btn
-var mediaDraft   	= ""; // var used to save the media files, links in draft
+var mediaPreview   	= ""; // var used to save the media files, links in draft
 var mediaType 	= ""; // var that holds the media draft type: ("vimeo", "youtube", "photo", "file")
 var mediaLink 	= ""; // var that holds the media link for draft Post from Flashlight 
+var flashlight = ""; // var that controls if the post is a Flashlight result (true|false)
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var win1 			= 	win.win1; // Window Original created on app.js
@@ -441,8 +442,6 @@ if (postBody == ''){
 	tempPostLabel.show();	
 }
 
-
-
 // Upload Progress Bar
 var progressView = Titanium.UI.createView({
 	top: 			300,
@@ -553,17 +552,17 @@ function saveLocalFile (filename, media, callback){
 }
 
 // Saves Draft
-function saveDraft (title, body, query, type, mediaDraft, mediaLink) {
+function saveDraft (title, body, query, type, mediaPreview, mediaLink) {
 	if (type != 'file') {
-		Ti.App.Properties.setList('draft_post', [title, body, query, type, mediaDraft, mediaLink]);
+		Ti.App.Properties.setList('draft_post', [title, body, query, type, mediaPreview, mediaLink]);
 	} else {
-		saveLocalFile("photo_draft", mediaDraft, function(f){
+		saveLocalFile("photo_draft", mediaPreview, function(f){
 			Ti.App.Properties.setList('draft_post', [title, body, query, type, f.name, mediaLink]);
 			Ti.API.debug('Saving Local File Draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] FileName [' + f.name + '] mediaLink ['+ mediaLink +']');
 		});
 	}
 	
-	Ti.API.debug('Saving post draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] mediaDraft [' + mediaDraft + '] mediaLink ['+ mediaLink +']');
+	Ti.API.debug('Saving post draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] mediaPreview [' + mediaPreview + '] mediaLink ['+ mediaLink +']');
 };
 
 // Reads local file
@@ -588,7 +587,7 @@ function loadDraft () {
 	textArea.value = draft[1];
 	searchTextField.value = draft[2];
 	mediaType = draft[3];
-	mediaDraft = draft[4];
+	mediaPreview = draft[4];
 	mediaLink = draft[5];
 	
 	//Setting Post vars
@@ -602,9 +601,9 @@ function loadDraft () {
 	
 	if (mediaType != "") {
 		if (mediaType != "file") {
-			mediaChosen(true, mediaType, mediaDraft, mediaLink);
+			mediaChosen(true, mediaType, mediaPreview, mediaLink);
 		} else {
-			readLocalFile(mediaDraft, function(media){
+			readLocalFile(mediaPreview, function(media){
 				Ti.API.debug("Media File from loadDraft() ["+ media +"]");
 				mediaChosen(false, mediaType, media, mediaLink);
 				
@@ -641,7 +640,7 @@ btn_close_post.addEventListener('click', function() {
 	Ti.App.fireEvent('hide_keyboard');
 	
 	// Triggers the Save Draft Process
-	saveDraft(editTitleField.value, textArea.value, searchTextField.value, mediaType, mediaDraft, mediaLink);
+	saveDraft(editTitleField.value, textArea.value, searchTextField.value, mediaType, mediaPreview, mediaLink);
 	
 });
 
@@ -769,33 +768,11 @@ btn_post.addEventListener('click', function(e) {
 		postText = "<strong>" + postTitle + "</strong><p>\n</p>";
 	}
 	postText = postText + postBody;
-	postText = postText.replace(/(\')/g, '\\$1');
-	
-	if (mediaType == "") {
-		Ti.API.info("No Image to Upload");
-		
-		if ( postText == null || postText == "" ) {
-			Ti.UI.createAlertDialog({ 
-				title: L('oops_alert_title'),
-			    message: L('post_message_empty'),
-				buttonNames: [L('btn_alert_OK')]
-			}).show();
-		} else {
-			//Shows the Upload Progress bar
-			showProgressView ('show', L('preparing_to_post_message'));
-			ind.value = 0;
-			btn_post.enabled = false;
-			
-			Titanium.App.fireEvent("postOnMeme", {
-				message: postText,
-				postType: "text"
-			});
-		}
-		
-	} else {
-		Ti.API.info("Variables passed on PostClicked Event:\n Flashlight ["+ e.source.flashlight + "]\n mediaType ["+ e.source.mediaType + "]\n mediaLink ["+ e.source.mediaLink +"]");
-		Ti.App.fireEvent("postClicked", {flashlight: e.source.flashlight, mediaType: e.source.mediaType, mediaLink: e.source.mediaLink});
-	}
+	postText = postText.replace(/(\')/g, '\\$1'); // cleaning up ' to not mess with YQL insert
+
+	Ti.API.info("Variables passed on PostClicked Event:\n Flashlight ["+ flashlight + "]\n mediaType ["+ mediaType + "]\n mediaLink ["+ mediaLink +"]");
+	Ti.App.fireEvent("postClicked", {flashlight: flashlight, mediaType: mediaType, mediaLink: mediaLink});
+
 });
 
 // ===============================
@@ -803,8 +780,11 @@ btn_post.addEventListener('click', function(e) {
 // ===============================
 
 var handleImageEvent = function(event) {
-  theImage = event.media;
-  Ti.App.fireEvent("mediaChosen", {flashlight: false});
+	theImage = event.media;
+	mediaType = "file";
+	mediaPreview = "";
+	mediaLink = "";
+	Ti.App.fireEvent("mediaChosen", {flashlight: false, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
 };
 
 Ti.App.addEventListener("mediaChosen", function(e) {
@@ -813,15 +793,11 @@ Ti.App.addEventListener("mediaChosen", function(e) {
 	
 function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 	
-	
-	
-	//adding all vars needed to publish embedded in the Post Button when clicks the btn_post button
-	btn_post.mediaType = pMediaType;
-	btn_post.mediaLink = pMediaLink;
-	btn_post.flashlight = pFlashlight;
-	
 	var textArea_top;
 	
+	// updates Flashlight var
+	flashlight = pFlashlight;
+
 	//Closes the Keyboard if open
 	Ti.App.fireEvent('hide_keyboard');
 
@@ -847,7 +823,7 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 			
 			//Saving Draft vars
 			mediaType = pMediaType;
-			mediaDraft = pMediaPreview;
+			mediaPreview = pMediaPreview;
 			mediaLink = pMediaLink
 			
 		} else if (pMediaType == "vimeo") { 
@@ -860,10 +836,10 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 			
 			//Saving Draft vars
 			mediaType = pMediaType;
-			mediaDraft = pMediaPreview;
+			mediaPreview = pMediaPreview;
 			mediaLink = pMediaLink;
 		
-		} else {
+		} else if (pMediaType == "photo") {
 			// IS A PHOTO
 			Ti.API.info(">>> Entered on Flashlight Type:[" + pMediaType + "] Media [" + pMediaPreview + "] MediaLink ["+ pMediaLink +"]");
 			
@@ -874,7 +850,7 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 			
 			//Saving Draft vars
 			mediaType = pMediaType;
-			mediaDraft = pMediaPreview;
+			mediaPreview = pMediaPreview;
 		}
 		
 		webViewPreview.addEventListener('load', function(){
@@ -889,7 +865,7 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 		tempPostLabel.animate({zIndex: 0, top: 100 + viewContainerPhoto.height});
 
 	} else {
-		// IF IT IS A LOCAL FILE THEN
+		// THIS IS A LOCAL FILE THEN
 		
 		// IF AN VIDEO WAS IN THE PREVIEW BEFORE IT REMOVES IT
 		viewContainerPhoto.remove(webViewPreview);
@@ -898,6 +874,7 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 		if (pMediaPreview) {
 			img.image = pMediaPreview;
 			theImage = img.toImage();
+			
 			// set smaller size for preview
 			preview_sizes = getImageDownsizedSizes(500, 500, theImage);
 			img.image = theImage.imageAsResized(preview_sizes.width, preview_sizes.height);
@@ -914,7 +891,7 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 		
 		//Saving Draft vars
 		mediaType = "file";
-		mediaDraft = theImage;
+		mediaPreview = theImage;
 		
 		//adds the close button to the image
 		btn_photo_close.show();
@@ -932,7 +909,7 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 };
 
 // to remove the photo chosen
-Ti.App.addEventListener("photoRemoved", function(e) {
+Ti.App.addEventListener("mediaRemoved", function(e) {
 	theImage = null;
 	webViewPreview.html = '';
 	viewContainerPhoto.remove(webViewPreview);
@@ -944,8 +921,9 @@ Ti.App.addEventListener("photoRemoved", function(e) {
 	tempPostLabel.animate({top: 300});
 	
 	//reseting Draft vars
-	mediaDraft = "";
+	mediaPreview = "";
 	mediaType = "";
+	mediaLink = "";
 });
 
 //Alert to remove the photo
@@ -963,7 +941,7 @@ btn_photo_close.addEventListener('touchstart', function(e) {
 
 alertCloseImage.addEventListener('click',function(e) {
 	if (e.index == 0) {
-		Ti.App.fireEvent("photoRemoved");
+		Ti.App.fireEvent("mediaRemoved");
 	}
 });
 
@@ -982,24 +960,45 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	//DISABLES THE POST BUTTON
 	btn_post.enabled = false;
 	
+	Ti.API.info("postClicked init with: \nFlashLight ["+ e.flashlight +"]\nmediaType ["+ e.mediaType +"]\n mediaLink ["+ e.mediaLink +"]");
+	
+	// if (mediaType != "photo" || mediaType ||) {
+	// 	
+	// 	if ( postText == null || postText == "" ) {
+	// 		Ti.UI.createAlertDialog({ 
+	// 			title: L('oops_alert_title'),
+	// 		    message: L('post_message_empty'),
+	// 			buttonNames: [L('btn_alert_OK')]
+	// 		}).show();
+	// 	} else {
+	// 		//Shows the Upload Progress bar
+	// 		showProgressView ('show', L('preparing_to_post_message'));
+	// 		ind.value = 0;
+	// 		btn_post.enabled = false;
+	// 		
+	// 		// Titanium.App.fireEvent("postOnMeme", {
+	// 		// 	message: postText,
+	// 		// 	postType: "text"
+	// 		// });
+	// 	}
+	
 	//Shows the Upload Progress bar
 	showProgressView('show',  L('preparing_to_post_message'));
 	
-	Ti.API.info("pFlashlight inside postClicked: ["+ e.flashlight +"]");
-	
 //	if (theImage != null && typeof(theImage) == 'object') {
-	if (!e.flashlight) {
+	if (e.mediaType == "file") {
 		// IF there is a Image to Upload
+		
 		var xhr = Titanium.Network.createHTTPClient();
 		xhr.setTimeout(300000); // timeout to upload is 5 minutes
 		
 		// Listener to cancel post
 		cancelPostButton.addEventListener('click', function(){
 			xhr.abort();
-			showProgressView('hide', null);
-			ind.value = 0
+			ind.value = 0;
 			btn_post.enabled = true;
 			Ti.API.debug("Post canceled");
+			showProgressView('hide', null);
 		});
 
 		xhr.onerror = function(e) {
