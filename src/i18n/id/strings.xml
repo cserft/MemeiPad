@@ -35,6 +35,10 @@
 	<string name="mail_message_subject_feedback">Masukan untuk Mim untuk iPad (ver. %s)</string>
 	<string name="feedback_mail_address">memeipad@yahoo.com</string>
 	<string name="meme_settings_text">Pengaturan</string>
+	<string name="meme_install_bookmarklet_text">Menginstal Safari Bookmarklet</string>
+	<string name="meme_bookmarklet_url">http://memeapp.net/bookmarklet/</string>
+	<string name="meme_bookmarklet_alert_title">Menginstal Bookmarklet</string>
+	<string name="meme_bookmarklet_alert_message">You will be redirected to Safari to complete the installation of the Bookmarklet. Follow the instructions that appear on that page.</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Buka Link</string>
 	<string name="success_alert_title">Berhasil</string>
@@ -43,6 +47,7 @@
 	<string name="btn_alert_YES">Ya</string>
 	<string name="btn_alert_NO">Tidak</string>
 	<string name="btn_alert_CANCEL">Batal</string>
+	<string name="btn_alert_INSTALL">Menginstal</string>
 	<string name="open_link_message">Kami akan membuka link ini di Safari</string>
 	<string name="btn_error_refresh_title">refresh</string>
 	<string name="yql_error">Kesalahan</string>

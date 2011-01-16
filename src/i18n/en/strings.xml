@@ -35,6 +35,10 @@
 	<string name="mail_message_subject_feedback">Meme for iPad - Feedback (ver. %s)</string>
 	<string name="feedback_mail_address">memeipad@yahoo.com</string>
 	<string name="meme_settings_text">Settings</string>
+	<string name="meme_install_bookmarklet_text">Install Safari Bookmarklet</string>
+	<string name="meme_bookmarklet_url">http://memeapp.net/bookmarklet/</string>
+	<string name="meme_bookmarklet_alert_title">Install Bookmarklet</string>
+	<string name="meme_bookmarklet_alert_message">You will be redirected to Safari to complete the installation of the Bookmarklet. Follow the instructions that appear on that page.</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Open Link</string>
 	<string name="success_alert_title">Success</string>
@@ -43,6 +47,7 @@
 	<string name="btn_alert_YES">Yes</string>
 	<string name="btn_alert_NO">No</string>
 	<string name="btn_alert_CANCEL">Cancel</string>
+	<string name="btn_alert_INSTALL">Install</string>
 	<string name="open_link_message">We will open this link in Safari</string>
 	<string name="btn_error_refresh_title">retry</string>
 	<string name="yql_error">Error</string>
