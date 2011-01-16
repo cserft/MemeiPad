@@ -28,6 +28,9 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 	//Images REGEX
 	var imageArray = new_monitor_value.match(/(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:jpe?g|gif|png))(?:\?([^#]*))?(?:#(.*))?/i);
 	
+	//WEb Pages REGEX
+	var linksArray = new_monitor_value.match(/(\b(?:(?:https?|ftp|[A-Za-z]+):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$]))(?=[^>]*?(<|$))/i);
+	
 	//Triggers the Paste command or a FlashLight Search flashlight_monitor_start();
 	if (youtubeVideoArray != null && youtubeVideoArray != undefined) {
 		
@@ -119,6 +122,19 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		mediaPreview = '<img src="' + imageArray[0] + '">';
 		
 		Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
+		
+	
+	} else if (linksArray != null && linksArray != undefined) {
+		
+		Ti.API.info("Pasted a Web Link: " + linksArray[0]);
+		
+		var items = Ti.App.meme.flashlightLinkWeb(linksArray[0]);
+		
+		editTitleField.value = items.title;	
+		postTitle = items.title;
+		
+		textArea.value =items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];	
+		postBody = items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
 								
 	} else {
 		

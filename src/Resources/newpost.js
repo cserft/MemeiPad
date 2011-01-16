@@ -16,6 +16,7 @@ var flashlight 		= ""; // var that controls if the post is a Flashlight result (
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var win1 			= 	win.win1; // Window Original created on app.js
+var link				=	win.link; // Bookmarklet Link
 var clickTimeout 	= 	0; 	// Sets the initial ClickTimeout for Flashlight Button
 var postText 		= 	""; 
 var postTitle 		= 	'';
@@ -651,6 +652,14 @@ if (searchTextField.value != "") {
 }
 
 // end Draft functions
+
+//If there is a URL from Bookmarklet the use it on Flashlight
+if (link) {
+	searchTextField.value = link;
+	queryText = link;
+	flashlight_text_change_monitor(searchTextField.value);
+	Ti.API.info("Got an URL: ["+ link +"]");
+}
 
 // =============
 // = LISTENERS =

@@ -12,9 +12,14 @@ Ti.App.addEventListener('resumed', function (){
 	//Analytics Request
 	doYwaRequest(analytics.APP_STARTED);
 	
+	// Retrieves the data from the Bookmarklet
 	Ti.API.info("App Arguments on Resume: " + JSON.stringify(Ti.App.getArguments()));
-	// var HandleArguments = Ti.App.getArguments(url);
-	// Ti.API.info("Argument splitted: " + HandleArguments);
+	var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
+	Ti.API.info("Arguments URL: " + bookmarkletLink);
+	if (bookmarkletLink != null && Ti.App.newpostIsOpen == false) {
+		newPost(bookmarkletLink);
+	}
+	bookmarkletLink = null;
 });
 
 Ti.App.addEventListener('pause', function (){
@@ -144,7 +149,7 @@ var a = Titanium.UI.createAnimation();
 a.duration = 300;
 a.top = 0;
 
-var newPost = function() {
+var newPost = function(link) {
 	Ti.UI.createWindow({
 		url: 'newpost.js',
 		title: 'New Post',
@@ -154,6 +159,7 @@ var newPost = function() {
 		height: 748,
 		width: 1024,
 		zIndex: 3,
+		link: link,
 		navBarHidden: true
 	}).open(a);
 };
