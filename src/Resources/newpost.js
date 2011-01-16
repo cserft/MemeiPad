@@ -455,11 +455,6 @@ var tempPostLabel = Titanium.UI.createLabel({
 	zIndex: 	1
 });
 
-if (postBody == ''){
-	editView.add(tempPostLabel);
-	tempPostLabel.show();	
-}
-
 // Upload Progress Bar
 var progressView = Titanium.UI.createView({
 	top: 			300,
@@ -618,6 +613,14 @@ function loadDraft () {
 		BgSearchTextField.add(btn_search_clear);
 	}
 	
+	// Sets the tempLabel
+	if (textArea.value == ''){
+		editView.add(tempPostLabel);
+		tempPostLabel.show();	
+	} else {
+		tempPostLabel.hide();
+	}
+	
 	if (mediaType != "") {
 		if (mediaType != "file") {
 			mediaChosen(true, mediaType, mediaPreview, mediaLink);
@@ -743,7 +746,13 @@ tempPostLabel.addEventListener('touchend', function(e) {
 
 //Captures the value on the textArea form and hide hintText
 textArea.addEventListener('change', function(e) {
-	tempPostLabel.hide(); // hide the hint text when starts using the keyboard
+	
+	if (e.value == ''){
+		editView.add(tempPostLabel);
+		tempPostLabel.show();	
+	} else {
+		tempPostLabel.hide();
+	}
 	// Ti.API.debug('text is: ' + e.value);
 	postBody = e.value;
 });
@@ -762,6 +771,7 @@ textArea.addEventListener('blur', function(e) {
 });
 
 btn_text_clear.addEventListener('touchstart', function(e) {
+	editView.add(tempPostLabel);
 	tempPostLabel.show(); // hide the hint text when textArea receives Focus
 	editView.remove(btn_text_clear);
 	textArea.blur();
