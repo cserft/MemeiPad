@@ -308,16 +308,19 @@ disclaimerLabel2.addEventListener("click", function(e)
 
 // Fucntion that moves the ToolBar with the Keyboard
 function moveToolBar(arg) {
-	if (arg == true) {
+	var pos;
+	if (arg == true && pos != "up") {
 		//Show Keyboard
 		toolBar.animate({bottom: 352, duration: 250});
 		popoverGalleryView.top = 362;
 		editView.height = 277;
+		pos = "up";
 	} else {
 		//hide Keyboard
 		toolBar.animate({bottom: 0, duration: 250});
 		popoverGalleryView.top = 715;
 		editView.height = 634;
+		pos = "down";
 	}
 };
 
