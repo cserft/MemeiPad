@@ -609,6 +609,28 @@ var showHeader = function (successCallback) {
 			
 			// Legal TableView Listener
 			legalTableView.addEventListener('click', function(e)	{
+				
+				// adds loaders before the webview is loaded and hides it after loading
+				function addAjaxLoader () {
+					// Loader
+					var actAjax = Ti.UI.createActivityIndicator({
+						message: 		'',
+						zIndex: 		2,
+						visible: 		false,
+						style: 			Ti.UI.iPhone.ActivityIndicatorStyle.DARK
+					});
+					wv.add(actAjax);
+					
+					wv.addEventListener("beforeload", function(e) {
+						// displays the ajax 
+						actAjax.show();
+					});	
+					wv.addEventListener("load", function(e) {
+						// hides the ajax 
+						actAjax.hide();
+					});
+				};
+				
 				if (e.index == 1) {
 					var baseWindow = Ti.UI.createWindow({
 						navBarHidden: 			false,
@@ -622,7 +644,10 @@ var showHeader = function (successCallback) {
 						backgroundColor: 	'#FFF'
 					});
 					baseWindow.add(wv);
-					navGroup.open(baseWindow);				
+					navGroup.open(baseWindow);	
+					
+					addAjaxLoader();
+					
 				}
 				else if (e.index == 2) {
 					var baseWindow = Ti.UI.createWindow({
@@ -638,6 +663,7 @@ var showHeader = function (successCallback) {
 					});
 					baseWindow.add(wv);
 					navGroup.open(baseWindow);		
+					addAjaxLoader();
 				}
 				else if (e.index == 3) {
 					var baseWindow = Ti.UI.createWindow({
@@ -652,7 +678,8 @@ var showHeader = function (successCallback) {
 						backgroundColor: 	'#FFF'
 					});
 					baseWindow.add(wv);
-					navGroup.open(baseWindow);				
+					navGroup.open(baseWindow);	
+					addAjaxLoader();			
 				}
 				else if (e.index == 4) {
 					var baseWindow = Ti.UI.createWindow({
@@ -667,7 +694,8 @@ var showHeader = function (successCallback) {
 						backgroundColor: 	'#FFF'
 					});
 					baseWindow.add(wv);
-					navGroup.open(baseWindow);				
+					navGroup.open(baseWindow);	
+					addAjaxLoader();			
 				}
 				else if (e.index == 5) {
 					var emailDialog = Titanium.UI.createEmailDialog();
