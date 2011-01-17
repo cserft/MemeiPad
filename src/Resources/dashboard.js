@@ -925,8 +925,6 @@ var updating = false;
 
 var loadingRow = Ti.UI.createTableViewRow({
 	className: "LoadingRow", 
-	// backgroundColor: "black",
-	// opacity: 0.9,
 	height: 100
 });
 
@@ -939,7 +937,6 @@ var bellowActInd = Titanium.UI.createActivityIndicator({
 
 var loadingLabel = Ti.UI.createLabel({
 	text: L('loading_message'),
-	// left:55,
 	width: 200,
 	bottom: 50,
 	height: 30,
