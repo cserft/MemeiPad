@@ -14,13 +14,16 @@ Ti.App.addEventListener('resumed', function (e){
 	//Analytics Request
 	doYwaRequest(analytics.APP_STARTED);
 	
-	// Retrieves the data from the Bookmarklet
-	var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
-	// Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
+	// Ti.API.info("Arguments URL [" + Ti.App.getArguments().url + "]");
 	
-	if (bookmarkletLink != book_previous && Ti.App.newpostIsOpen == false) {
-		newPost(bookmarkletLink);
-		book_previous = bookmarkletLink;
+	if (Ti.App.getArguments().url) {
+		// Retrieves the data from the Bookmarklet
+		var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
+		// Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
+		if (bookmarkletLink != book_previous && Ti.App.newpostIsOpen == false) {
+			newPost(bookmarkletLink);
+			book_previous = bookmarkletLink;
+		}
 	}
 	
 });

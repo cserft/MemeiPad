@@ -645,6 +645,14 @@ if (Ti.App.Properties.hasProperty('draft_post')) {
 	loadDraft();
 }
 
+//If there is a URL from Bookmarklet the use it on Flashlight
+if (link) {
+	searchTextField.value = link;
+	queryText = link;
+	flashlight_text_change_monitor(searchTextField.value);
+	Ti.API.info("Got an URL: ["+ link +"]");
+}
+
 // verifies if the Flashlight Search Field has some value and sets the Bigger Font Size
 if (searchTextField.value != "") {
 	setFlashlightFont(18);
@@ -653,13 +661,7 @@ if (searchTextField.value != "") {
 
 // end Draft functions
 
-//If there is a URL from Bookmarklet the use it on Flashlight
-if (link) {
-	searchTextField.value = link;
-	queryText = link;
-	flashlight_text_change_monitor(searchTextField.value);
-	Ti.API.info("Got an URL: ["+ link +"]");
-}
+
 
 // =============
 // = LISTENERS =
