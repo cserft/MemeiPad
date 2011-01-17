@@ -14,8 +14,6 @@ Ti.App.addEventListener('resumed', function (e){
 	//Analytics Request
 	doYwaRequest(analytics.APP_STARTED);
 	
-	// Ti.API.info("Arguments URL [" + Ti.App.getArguments().url + "]");
-	
 	if (Ti.App.getArguments().url) {
 		// Retrieves the data from the Bookmarklet
 		var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
@@ -512,20 +510,24 @@ var showHeader = function (successCallback) {
 			});
 			aboutAppButton.add(appIcon);
 			
-			var appNameImage = Ti.UI.createImageView({
-				image: 			'images/meme_for_ipad_about.png',
-				left: 			90,
-				top: 			18,
-				width: 			203,
-				height: 		27
+			var aboutAppName = Ti.UI.createLabel({
+				text: 				L('app_name'),
+				font: 				{fontSize:28, fontFamily:'Gotham Rounded', fontWeight:'Bold'},	
+				left: 				90,
+				top: 				18,
+				width: 				240,
+				height: 			40,
+				backgroundColor: 	'transparent',
+				minimumFontSize: 	25,
+				color: 				'white'
 			});
-			aboutAppButton.add(appNameImage);
+			aboutAppButton.add(aboutAppName);
 
 			var aboutAppLabel = Ti.UI.createLabel({
-				text: 				"Version: " + Ti.App.getVersion(),
-				font: 				{fontSize:14,fontFamily:'Helvetica', fontWeight:'light'},	
-				left: 				90,
-				top: 				45,
+				text: 				L('about_version') + Ti.App.getVersion(),
+				font: 				{fontSize:14,fontFamily:'Helvetica', fontWeight:'Light'},	
+				left: 				93,
+				top: 				43,
 				width: 				220,
 				height: 			25,
 				backgroundColor: 	'transparent',
@@ -764,7 +766,9 @@ var showHeader = function (successCallback) {
 			// Main TableView Listener
 			settingsTableView.addEventListener('click', function(e)	{
 				if (e.index == 2) {
-
+					
+					popover.hide();
+					
 					//Alert to remove the photo
 					var alertBookmarklet = Titanium.UI.createAlertDialog({
 						title: L('meme_bookmarklet_alert_title'),
@@ -772,7 +776,6 @@ var showHeader = function (successCallback) {
 						buttonNames: [L('btn_alert_CANCEL'),L('btn_alert_INSTALL')],
 						cancel: 0
 					});
-
 					alertBookmarklet.show();
 
 					alertBookmarklet.addEventListener('click',function(e) {
