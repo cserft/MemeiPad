@@ -7,23 +7,26 @@ Ti.include('lib/analytics.js');
 Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
 Ti.API.info("App Name: " + Ti.App.getName() + " and App Version: " + Ti.App.getVersion());
 
-// LIsteners to retrieve Data from the Custom Handler (memeipad)
-Ti.App.addEventListener('resumed', function (){
+// Listeners to retrieve Data from the Custom Handler (memeipad)
+var book_previous; 
+
+Ti.App.addEventListener('resumed', function (e){
 	//Analytics Request
 	doYwaRequest(analytics.APP_STARTED);
 	
 	// Retrieves the data from the Bookmarklet
-	Ti.API.info("App Arguments on Resume: " + JSON.stringify(Ti.App.getArguments()));
 	var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
-	Ti.API.info("Arguments URL: " + bookmarkletLink);
-	if (bookmarkletLink != null && Ti.App.newpostIsOpen == false) {
+	// Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
+	
+	if (bookmarkletLink != book_previous && Ti.App.newpostIsOpen == false) {
 		newPost(bookmarkletLink);
+		book_previous = bookmarkletLink;
 	}
-	bookmarkletLink = null;
+	
 });
 
-Ti.App.addEventListener('pause', function (){
-	Ti.API.info("App Arguments on Pause: " + JSON.stringify(Ti.App.getArguments()));
+Ti.App.addEventListener('pause', function (e){
+	// Ti.API.info("App Arguments on Pause: " + JSON.stringify(Ti.App.getArguments()));
 });
 
 // ==================
