@@ -2,7 +2,7 @@
 <resources>
 	<!-- BAHASA INDONESIA -->
 	<!-- app.js -->
-	<string name="app_name">Mim for iPad</string> <!-- Limit of 13 characters -->
+	<string name="app_name">mim untuk ipad</string> <!-- Limit of 13 characters -->
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white_id.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
@@ -39,6 +39,7 @@
 	<string name="meme_bookmarklet_url">http://memeapp.net/bookmarklet/</string>
 	<string name="meme_bookmarklet_alert_title">Menginstal Bookmarklet</string>
 	<string name="meme_bookmarklet_alert_message">You will be redirected to Safari to complete the installation of the Bookmarklet. Follow the instructions that appear on that page.</string>
+	<string name="about_version">versi: </string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Buka Link</string>
 	<string name="success_alert_title">Berhasil</string>
@@ -114,7 +115,7 @@
 	<string name="time_years">tahun</string>
 	<string name="time_1_century">1 abad</string>
 	<string name="time_centuries"> Abad</string>
-	<string name="time_ago"> Yang lalu</string>
+	<string name="time_ago"> yang lalu</string>
 	<!-- /commons.js -->
 	<!-- permalink.js -->
 	<string name="posted"> di-posting </string> 

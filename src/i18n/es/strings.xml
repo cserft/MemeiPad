@@ -2,7 +2,7 @@
 <resources>
 	<!-- ESPANOL -->
 	<!-- app.js -->
-	<string name="app_name">Meme iPad</string> <!-- Limit of 13 characters -->
+	<string name="app_name">meme para ipad</string> <!-- Limit of 13 characters -->
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white_es.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
@@ -39,6 +39,7 @@
 	<string name="meme_bookmarklet_url">http://memeapp.net/bookmarklet/</string>
 	<string name="meme_bookmarklet_alert_title">Instalar Bookmarklet</string>
 	<string name="meme_bookmarklet_alert_message">You will be redirected to Safari to complete the installation of the Bookmarklet. Follow the instructions that appear on that page.</string>
+	<string name="about_version">versión: </string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Abrir Liga</string>
 	<string name="success_alert_title">Éxito</string>
@@ -49,7 +50,7 @@
 	<string name="btn_alert_CANCEL">Cancelar</string>
 	<string name="btn_alert_INSTALL">Instalar</string>
 	<string name="open_link_message">La página se abrirá en Safari</string>
-	<string name="btn_error_refresh_title">vuelva a intentar</string>
+	<string name="btn_error_refresh_title">recargar</string>
 	<string name="yql_error">Error</string>
 	<string name="error_message_problem">Uy, algo anda mal...</string>
 	<string name="network_error">Error de conexión</string>

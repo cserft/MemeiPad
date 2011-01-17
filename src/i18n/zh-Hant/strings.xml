@@ -2,7 +2,7 @@
 <resources>
 	<!-- TRADITIONAL CHINESE -->
 	<!-- app.js -->
-	<string name="app_name">Meme for iPad</string>  <!-- Limit of 13 characters -->
+	<string name="app_name">meme for ipad</string>  <!-- Limit of 13 characters -->
 	<!-- HEADER -->
 	<string name="path_logo_header">images/logo_meme_white.png</string>
 	<string name="path_btn_signin_background_image">images/btn_signin_top.png</string>
@@ -39,6 +39,7 @@
 	<string name="meme_bookmarklet_url">http://memeapp.net/bookmarklet/</string>
 	<string name="meme_bookmarklet_alert_title">Install Bookmarklet</string>
 	<string name="meme_bookmarklet_alert_message">You will be redirected to Safari to complete the installation of the Bookmarklet. Follow the instructions that appear on that page.</string>
+	<string name="about_version">v. </string>
 	<!-- GENERIC -->
 	<string name="open_link_title">打開鏈接</string>
 	<string name="success_alert_title">成功</string>
