@@ -37,7 +37,7 @@
 	<string name="meme_settings_text">Ajustes</string>
 	<string name="meme_install_bookmarklet_text">Instalar Bookmarklet en Safari</string>
 	<string name="meme_bookmarklet_url">http://memeapp.net/bookmarklet/</string>
-	<string name="meme_bookmarklet_alert_title">Instalar Bookmarklet</string>
+	<string name="meme_bookmarklet_alert_title">Instalar Bookmarklet en Safari</string>
 	<string name="meme_bookmarklet_alert_message">You will be redirected to Safari to complete the installation of the Bookmarklet. Follow the instructions that appear on that page.</string>
 	<string name="about_version">versión: </string>
 	<!-- GENERIC -->
