@@ -133,8 +133,13 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		editTitleField.value = items.title;	
 		postTitle = items.title;
 		
-		textArea.value =items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];	
-		postBody = items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
+		if (textArea.value != "") {
+			textArea.value += '\n\n' + items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
+			postBody = textArea.value;
+		} else {
+			textArea.value += items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
+			postBody = textArea.value;
+		}
 								
 	} else {
 		
@@ -554,11 +559,11 @@ var flashlight_create = function() {
 				case 'text':
 					if (e.source.abstract != "") {
 						if (textArea.value != "") {
-							textArea.value += '\n' + e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
-							postBody += '\n' + e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
+							textArea.value += '\n\n' + e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
+							postBody = textArea.value;
 						} else {
 							textArea.value += e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
-							postBody += e.source.abstract + '\n' + L('mail_message_body_source') + e.source.url;
+							postBody = textArea.value;
 						}
 
 						textArea.focus();
@@ -571,11 +576,11 @@ var flashlight_create = function() {
 					if (e.source.content != "") {
 						
 						if (textArea.value != "") {
-							textArea.value += '\n' + e.source.content;
-							postBody += '\n' + e.source.content;
+							textArea.value += '\n\n' + e.source.content;
+							postBody = textArea.value;
 						} else {
 							textArea.value += e.source.content;
-							postBody += e.source.content;
+							postBody = textArea.value;
 						}
 						textArea.focus();
 					}
@@ -602,8 +607,8 @@ var flashlight_create = function() {
 				
 				case 'twitter':
 					if (textArea.value != "") {
-						textArea.value += '\n' + e.source.username + '\n' + e.source.tweet + '\nPermalink: ' + e.source.link;
-						postBody += '\n<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '\nPermalink: ' + e.source.link + '</blockquote>';
+						textArea.value += '\n\n' + e.source.username + '\n' + e.source.tweet + '\nPermalink: ' + e.source.link;
+						postBody += '\n\n<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '\nPermalink: ' + e.source.link + '</blockquote>';
 					} else {
 						textArea.value += e.source.username + '\n' + e.source.tweet + '\nPermalink: ' + e.source.link;
 						postBody += '<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '\nPermalink: ' + e.source.link + '</blockquote>';

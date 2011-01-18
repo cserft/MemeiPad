@@ -619,14 +619,6 @@ function loadDraft () {
 		BgSearchTextField.add(btn_search_clear);
 	}
 	
-	// // Sets the tempLabel
-	// if (textArea.value == ''){
-	// 	editView.add(tempPostLabel);
-	// 	tempPostLabel.show();	
-	// } else {
-	// 	tempPostLabel.hide();
-	// }
-	
 	if (mediaType != "") {
 		if (mediaType != "file") {
 			mediaChosen(true, mediaType, mediaPreview, mediaLink);
@@ -645,14 +637,30 @@ function loadDraft () {
 // calls load post draft
 if (Ti.App.Properties.hasProperty('draft_post')) {
 	loadDraft();
-}
+	
+	// If there is a link from bookmarklet then Presents the Alert message
+	if (link) {
+		//Alert to Error
+		var alertPaste = Titanium.UI.createAlertDialog({
+			title: L('meme_paste_alert_title'),
+			message: String.format(L("meme_paste_alert_message"), link),
+			buttonNames: [L('btn_alert_CANCEL'),L('btn_alert_YES')],
+			cancel: 0
+		});	
+		alertPaste.show();
 
-//If there is a URL from Bookmarklet the use it on Flashlight
-if (link) {
-	searchTextField.value = link;
-	queryText = link;
-	flashlight_text_change_monitor(searchTextField.value);
-	Ti.API.info("Got an URL: ["+ link +"]");
+		alertPaste.addEventListener('click',function(e)	{
+			if (e.index == 1){
+				Ti.App.fireEvent("bookmarklet_link", {link: link});
+			}	
+		});
+	}
+	
+} else {
+	//If there is a URL from Bookmarklet the use it on Flashlight
+	if (link) {
+		Ti.App.fireEvent("bookmarklet_link", {link: link});
+	}
 }
 
 // verifies if the Flashlight Search Field has some value and sets the Bigger Font Size
@@ -1269,11 +1277,24 @@ Ti.App.addEventListener('shake_clean', function(e) {
 	postTitle = "";
 	postBody = "";
 	queryText = "";
-	
+
 	tempPostLabel.show();
 	BgSearchTextField.remove(btn_search_clear);
 	setFlashlightFont(13);
 	searchTextField.hintText = L('searchTextField_hint_text');
 	
 	Ti.App.fireEvent("mediaRemoved");
+	
+	Ti.App.fireEvent("hide_keyboard");
+});
+
+// =======================================
+// = triggers the Bookmarklet PAste Link =
+// =======================================
+
+Ti.App.addEventListener('bookmarklet_link', function(e) {
+	searchTextField.value = e.link;
+	queryText = e.link;
+	flashlight_text_change_monitor(searchTextField.value);
+	Ti.API.info("Got an URL: ["+ e.link +"]");
 });

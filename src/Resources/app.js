@@ -1235,9 +1235,29 @@ Ti.App.addEventListener('resumed', function (e){
 		// Retrieves the data from the Bookmarklet
 		var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
 		// Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
-		if (bookmarkletLink != book_previous && Ti.App.newpostIsOpen == false) {
-			newPost(bookmarkletLink);
-			book_previous = bookmarkletLink;
+		if (bookmarkletLink != book_previous) {
+			
+			if (Ti.App.newpostIsOpen == false) {
+				newPost(bookmarkletLink);
+				book_previous = bookmarkletLink;
+				
+			} else {
+				//Alert if the NewPost Screen is open
+				var alertPaste = Titanium.UI.createAlertDialog({
+					title: L('meme_paste_alert_title'),
+					message: String.format(L("meme_paste_alert_message"), bookmarkletLink),
+					buttonNames: [L('btn_alert_CANCEL'),L('btn_alert_YES')],
+					cancel: 0
+				});	
+				alertPaste.show();
+
+				alertPaste.addEventListener('click',function(e)	{
+					if (e.index == 1){
+						Ti.App.fireEvent("bookmarklet_link", {link: bookmarkletLink});
+						book_previous = bookmarkletLink;
+					}	
+				});
+			}
 		}
 	}
 	
