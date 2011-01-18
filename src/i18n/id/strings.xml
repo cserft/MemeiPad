@@ -40,6 +40,8 @@
 	<string name="meme_bookmarklet_alert_title">Menginstal Bookmarklet</string>
 	<string name="meme_bookmarklet_alert_message">You will be redirected to Safari to complete the installation of the Bookmarklet. Follow the instructions that appear on that page.</string>
 	<string name="about_version">versi: </string>
+	<string name="meme_paste_alert_message">Apakah Anda ingin menambahkan konten dari Link berikut di Postingan?\n\n%s</string>
+	<string name="meme_paste_alert_title">Perhatian!</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Buka Link</string>
 	<string name="success_alert_title">Berhasil</string>

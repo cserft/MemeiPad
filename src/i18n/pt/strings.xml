@@ -40,6 +40,8 @@
 	<string name="meme_bookmarklet_alert_title">Instalar Bookmarklet</string>
 	<string name="meme_bookmarklet_alert_message">Você será redirecionado para o Safari para completar a instalação do Bookmarklet. Siga as instruções na página.</string>
 	<string name="about_version">versão: </string>
+	<string name="meme_paste_alert_message">Você deseja adicionar o conteúdo do link abaixo no seu Post?\n\n%s</string>
+	<string name="meme_paste_alert_title">Atenção!</string>
 	<!-- GENERIC -->
 	<string name="open_link_title">Abrir Link</string>
 	<string name="success_alert_title">Sucesso</string>
