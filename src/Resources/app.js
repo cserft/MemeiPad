@@ -13,7 +13,7 @@ Ti.API.info("App Name: " + Ti.App.getName() + " and App Version: " + Ti.App.getV
 
 // indicates if app is in development or production
 // used to disable cache, analytics, etc
-Ti.App.development = true; // WARNING: remove this before put in production :)
+Ti.App.development = false; // WARNING: remove this before put in production :)
 
 Ti.App.myMemeInfo = null;
 
@@ -1231,36 +1231,38 @@ Ti.App.addEventListener('resumed', function (e){
 	//Analytics Request
 	doYwaRequest(analytics.APP_STARTED);
 	
-	if (Ti.App.getArguments().url) {
-		// Retrieves the data from the Bookmarklet
-		var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
-		// Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
-		if (bookmarkletLink != book_previous) {
+	if (Ti.App.oAuthAdapter.isLoggedIn()) {
+	
+		if (Ti.App.getArguments().url) {
+			// Retrieves the data from the Bookmarklet
+			var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
+			// Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
+			if (bookmarkletLink != book_previous) {
 			
-			if (Ti.App.newpostIsOpen == false) {
-				newPost(bookmarkletLink);
-				book_previous = bookmarkletLink;
+				if (Ti.App.newpostIsOpen == false) {
+					newPost(bookmarkletLink);
+					book_previous = bookmarkletLink;
 				
-			} else {
-				//Alert if the NewPost Screen is open
-				var alertPaste = Titanium.UI.createAlertDialog({
-					title: L('meme_paste_alert_title'),
-					message: String.format(L("meme_paste_alert_message"), bookmarkletLink),
-					buttonNames: [L('btn_alert_CANCEL'),L('btn_alert_YES')],
-					cancel: 0
-				});	
-				alertPaste.show();
+				} else {
+					//Alert if the NewPost Screen is open
+					var alertPaste = Titanium.UI.createAlertDialog({
+						title: L('meme_paste_alert_title'),
+						message: String.format(L("meme_paste_alert_message"), bookmarkletLink),
+						buttonNames: [L('btn_alert_CANCEL'),L('btn_alert_YES')],
+						cancel: 0
+					});	
+					alertPaste.show();
 
-				alertPaste.addEventListener('click',function(e)	{
-					if (e.index == 1){
-						Ti.App.fireEvent("bookmarklet_link", {link: bookmarkletLink});
-						book_previous = bookmarkletLink;
-					}	
-				});
+					alertPaste.addEventListener('click',function(e)	{
+						if (e.index == 1){
+							Ti.App.fireEvent("bookmarklet_link", {link: bookmarkletLink});
+							book_previous = bookmarkletLink;
+						}	
+					});
+				}
 			}
 		}
 	}
-	
 });
 
 Ti.App.addEventListener('pause', function (e){
