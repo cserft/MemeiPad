@@ -7,29 +7,6 @@ Ti.include('lib/analytics.js');
 Ti.API.info("Current Language: " + Ti.Locale.currentLanguage);
 Ti.API.info("App Name: " + Ti.App.getName() + " and App Version: " + Ti.App.getVersion());
 
-// Listeners to retrieve Data from the Custom Handler (memeipad)
-var book_previous; 
-
-Ti.App.addEventListener('resumed', function (e){
-	//Analytics Request
-	doYwaRequest(analytics.APP_STARTED);
-	
-	if (Ti.App.getArguments().url) {
-		// Retrieves the data from the Bookmarklet
-		var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
-		// Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
-		if (bookmarkletLink != book_previous && Ti.App.newpostIsOpen == false) {
-			newPost(bookmarkletLink);
-			book_previous = bookmarkletLink;
-		}
-	}
-	
-});
-
-Ti.App.addEventListener('pause', function (e){
-	// Ti.API.info("App Arguments on Pause: " + JSON.stringify(Ti.App.getArguments()));
-});
-
 // ==================
 // = Global objects =
 // ==================
@@ -264,14 +241,15 @@ var showHeader = function (successCallback) {
 			});
 			
 			var linkMeme = Ti.UI.createLabel({
-			 	color: 			'#7D0670',
-				text: 			L('meme_short_domain') + Ti.App.myMemeInfo.name,
-				textAlign: 		'left',
-				font: 			{fontSize:18, fontWeight:'regular'},
-				top: 			16,
-				left: 			14,
-				height: 		30,
-				width: 			224
+			 	color: 				'#7D0670',
+				text: 				L('meme_short_domain') + Ti.App.myMemeInfo.name,
+				textAlign: 			'left',
+				font: 				{fontSize:18, fontWeight:'regular'},
+				minimumFontSize: 	16,
+				top: 				16,
+				left: 				14,
+				height: 			30,
+				width: 				224
 			});	
 			row1.add(linkMeme);
 
@@ -1240,4 +1218,44 @@ Ti.App.addEventListener('openBrowser', function(e) {
 		winBrowser.open(a);
 	}
 
+});
+
+// =================================
+// = LISTENERS FOR THE BOOKMARKLET =
+// =================================
+
+// Listeners to retrieve Data from the Custom Handler (memeipad)
+var book_previous; 
+
+Ti.App.addEventListener('resumed', function (e){
+	//Analytics Request
+	doYwaRequest(analytics.APP_STARTED);
+	
+	if (Ti.App.getArguments().url) {
+		// Retrieves the data from the Bookmarklet
+		var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
+		// Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
+		if (bookmarkletLink != book_previous && Ti.App.newpostIsOpen == false) {
+			newPost(bookmarkletLink);
+			book_previous = bookmarkletLink;
+		}
+	}
+	
+});
+
+Ti.App.addEventListener('pause', function (e){
+	// Ti.API.info("App Arguments on Pause: " + JSON.stringify(Ti.App.getArguments()));
+});
+
+
+// ==========================
+// = SHAKE TO CLEAN GESTURE =
+// ==========================
+
+// THIS ALLOWS USERS TO CLEAN UP THE NEW POST SCREEN SHAKING THE DEVICE
+Ti.Gesture.addEventListener('shake',function(e)
+{
+	Ti.API.debug("Shake Gesture captured, cleaning up the New Post Forms");
+	Ti.App.fireEvent('shake_clean');
+	
 });
