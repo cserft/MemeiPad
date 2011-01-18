@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
 <id>com.yahoo.meme.ipad</id>
 <name>MemeiPad</name>
-<version>1.0</version>
+<version>1.0.0</version>
 <publisher>Yahoo! Inc.</publisher>
 <url>http://me.me/ipad</url>
 <description>Meme iPad is a client for Yahoo! meme to view and navigate on Yahoo! meme content</description>
