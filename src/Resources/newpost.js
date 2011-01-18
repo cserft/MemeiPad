@@ -456,8 +456,10 @@ var tempPostLabel = Titanium.UI.createLabel({
 	width: 		600,
 	height: 	100,
 	font: 		{fontSize:50, fontFamily:'Helvetica', fontWeight:'bold'},
-	zIndex: 	1
+	zIndex: 	1,
+	visible: 	false
 });
+editView.add(tempPostLabel);
 
 // Upload Progress Bar
 var progressView = Titanium.UI.createView({
@@ -617,13 +619,13 @@ function loadDraft () {
 		BgSearchTextField.add(btn_search_clear);
 	}
 	
-	// Sets the tempLabel
-	if (textArea.value == ''){
-		editView.add(tempPostLabel);
-		tempPostLabel.show();	
-	} else {
-		tempPostLabel.hide();
-	}
+	// // Sets the tempLabel
+	// if (textArea.value == ''){
+	// 	editView.add(tempPostLabel);
+	// 	tempPostLabel.show();	
+	// } else {
+	// 	tempPostLabel.hide();
+	// }
 	
 	if (mediaType != "") {
 		if (mediaType != "file") {
@@ -657,6 +659,11 @@ if (link) {
 if (searchTextField.value != "") {
 	setFlashlightFont(18);
 	BgSearchTextField.add(btn_search_clear);
+}
+
+// Starts Up the Temp Label
+if (textArea.value == '' || textArea.value == undefined || textArea.value == null) {
+	tempPostLabel.show();
 }
 
 // end Draft functions
@@ -735,7 +742,7 @@ searchTextField.addEventListener('change', function(e) {
 	flashlight_text_change_monitor(searchTextField.value);
 	
 	// Controls the Look and Feel of the Font on the Search Box, changing the Fonst Size and the hintText 
-	if (searchTextField.value == "") {
+	if (searchTextField.value == "" || searchTextField.value == undefined || searchTextField.value == null) {
 		// if the user clears the field, then it should show the hintText and reset the font Size
 		setFlashlightFont(13);
 		searchTextField.hintText = L('searchTextField_hint_text');
@@ -783,9 +790,10 @@ tempPostLabel.addEventListener('touchend', function(e) {
 
 //Captures the value on the textArea form and hide hintText
 textArea.addEventListener('change', function(e) {
+	Ti.API.debug("TextArea Debug: " + e.value);
 	
-	if (e.value == ''){
-		editView.add(tempPostLabel);
+	if (textArea.value == '' || textArea.value == undefined || textArea.value == null){
+		// editView.add(tempPostLabel);
 		tempPostLabel.show();	
 	} else {
 		tempPostLabel.hide();
@@ -1039,132 +1047,136 @@ Titanium.App.addEventListener("postClicked", function(e) {
 	
 	Ti.API.info("postClicked init with: \nFlashLight ["+ e.flashlight +"]\nmediaType ["+ e.mediaType +"]\n mediaLink ["+ e.mediaLink +"]");
 	
-	// if (mediaType != "photo" || mediaType ||) {
-	// 	
-	// 	if ( postText == null || postText == "" ) {
-	// 		Ti.UI.createAlertDialog({ 
-	// 			title: L('oops_alert_title'),
-	// 		    message: L('post_message_empty'),
-	// 			buttonNames: [L('btn_alert_OK')]
-	// 		}).show();
-	// 	} else {
-	// 		//Shows the Upload Progress bar
-	// 		showProgressView ('show', L('preparing_to_post_message'));
-	// 		ind.value = 0;
-	// 		btn_post.enabled = false;
-	// 		
-	// 		// Titanium.App.fireEvent("postOnMeme", {
-	// 		// 	message: postText,
-	// 		// 	postType: "text"
-	// 		// });
-	// 	}
-	
-	//Shows the Upload Progress bar
-	showProgressView('show',  L('preparing_to_post_message'));
-	
-//	if (theImage != null && typeof(theImage) == 'object') {
-	if (e.mediaType == "file") {
-		// IF there is a Image to Upload
+	if (mediaType == "" || mediaType == undefined || mediaType == null) {
 		
-		var xhr = Titanium.Network.createHTTPClient();
-		xhr.setTimeout(300000); // timeout to upload is 5 minutes
-		
-		// Listener to cancel post
-		cancelPostButton.addEventListener('click', function(){
-			xhr.abort();
-			ind.value = 0;
-			btn_post.enabled = true;
-			Ti.API.debug("Post canceled");
-			showProgressView('hide', null);
-		});
-
-		xhr.onerror = function(e) {
-			// Hides the Progress bar
-			showProgressView('hide', null);
-			Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
-		};
-
-		xhr.onload = function(e) {
-			// updates the Message in the Progress Bar
-			showProgressView('show', L('publishing_post_meme'));
-
-	 		Ti.API.info('Upload complete!');
-			Ti.API.info('api response was (http status ' + this.status + '): ' + this.responseText);
+		if ( postText == null || postText == "" ) {
+			Ti.UI.createAlertDialog({ 
+				title: L('oops_alert_title'),
+			    message: L('post_message_empty'),
+				buttonNames: [L('btn_alert_OK')]
+			}).show();
 			
-			try {
-				var uploadResult = JSON.parse(this.responseText);
-				
-				if (uploadResult.status == 200) {
-					Titanium.App.fireEvent("postOnMeme", {
-						   postType: "photo",
-						   media_link: uploadResult.imgurl,
-						   message: postText
-					});
-				} else {
-					throw 'Upload error: ' + uploadResult.message;
-				}
-			} catch(exception) {
-				Ti.API.error(exception);
-				showProgressView('hide', null);
-				Titanium.UI.createAlertDialog({
-					title: 'Error',
-					message: 'Error uploading image. Please try again in a few seconds.'
-				}).show();
-				btn_post.enabled = true;
-			}
-		};
-
-		xhr.onsendstream = function(e) {
-			showProgressView('show', L('uploading_file'));
-			ind.value = e.progress;
-			Ti.API.debug('ONSENDSTREAM - PROGRESS: ' + e.progress);
-		};
-
-		// Resizes image before uploading
-		// Max size accepted by Meme is 780x2500 px
-		var new_size = getImageDownsizedSizes(780, 2500, theImage);
-		theImage = theImage.imageAsResized(new_size.width, new_size.height);
-		
-		// Create upload signture
-		var time = parseInt(timestamp()/1000);
-		var signature = hex_hmac_sha1(meme_upload_secret, Ti.App.myMemeInfo.name + ':' + time);
-		
-		// upload it!
-		xhr.open('POST', meme_upload_url);
-		xhr.send({
-			t: time,
-			file: theImage,
-			m: Ti.App.myMemeInfo.name,
-			s: signature
-		});
-	
-	} else if (e.mediaType == "photo") {
-		Titanium.App.fireEvent("postOnMeme", {
-			postType: "photo",
-			media_link: e.mediaLink,
-			message: postText
-		});
-		
-	} else if (e.mediaType == "youtube") {
-		Titanium.App.fireEvent("postOnMeme", {
-			postType: "video",
-			media_link: e.mediaLink,
-			message: postText
-		});
-	} else if (e.mediaType == "vimeo") {
-		Titanium.App.fireEvent("postOnMeme", {
-			postType: "video",
-			media_link: e.mediaLink,
-			message: postText
-		});
-
+			btn_post.enabled = true;
+			
+		} else {
+			//Shows the Upload Progress bar
+			showProgressView('show',  L('preparing_to_post_message'));
+			
+			Titanium.App.fireEvent("postOnMeme", {
+				postType: "text",
+				message: postText
+			});
+		}
 	} else {
-		// Else is Only Text
-		Titanium.App.fireEvent("postOnMeme", {
-			postType: "text",
-			message: postText
-		});
-	}
+		//Shows the Upload Progress bar
+		showProgressView('show',  L('preparing_to_post_message'));
+
+		//	if (theImage != null && typeof(theImage) == 'object') {
+		if (e.mediaType == "file") {
+			// IF there is a Image to Upload
+
+			var xhr = Titanium.Network.createHTTPClient();
+			xhr.setTimeout(300000); // timeout to upload is 5 minutes
+
+			// Listener to cancel post
+			cancelPostButton.addEventListener('click', function(){
+				xhr.abort();
+				ind.value = 0;
+				btn_post.enabled = true;
+				Ti.API.debug("Post canceled");
+				showProgressView('hide', null);
+			});
+
+			xhr.onerror = function(e) {
+				// Hides the Progress bar
+				showProgressView('hide', null);
+				Ti.API.debug("Error when Uploading: " + JSON.stringify(e));
+			};
+
+			xhr.onload = function(e) {
+				// updates the Message in the Progress Bar
+				showProgressView('show', L('publishing_post_meme'));
+
+		 		Ti.API.info('Upload complete!');
+				Ti.API.info('api response was (http status ' + this.status + '): ' + this.responseText);
+
+				try {
+					var uploadResult = JSON.parse(this.responseText);
+
+					if (uploadResult.status == 200) {
+						Titanium.App.fireEvent("postOnMeme", {
+							   postType: "photo",
+							   media_link: uploadResult.imgurl,
+							   message: postText
+						});
+					} else {
+						throw 'Upload error: ' + uploadResult.message;
+					}
+				} catch(exception) {
+					Ti.API.error(exception);
+					showProgressView('hide', null);
+					Titanium.UI.createAlertDialog({
+						title: 'Error',
+						message: 'Error uploading image. Please try again in a few seconds.'
+					}).show();
+					btn_post.enabled = true;
+				}
+			};
+
+			xhr.onsendstream = function(e) {
+				showProgressView('show', L('uploading_file'));
+				ind.value = e.progress;
+				Ti.API.debug('ONSENDSTREAM - PROGRESS: ' + e.progress);
+			};
+
+			// Resizes image before uploading
+			// Max size accepted by Meme is 780x2500 px
+			var new_size = getImageDownsizedSizes(780, 2500, theImage);
+			theImage = theImage.imageAsResized(new_size.width, new_size.height);
+
+			// Create upload signture
+			var time = parseInt(timestamp()/1000);
+			var signature = hex_hmac_sha1(meme_upload_secret, Ti.App.myMemeInfo.name + ':' + time);
+
+			// upload it!
+			xhr.open('POST', meme_upload_url);
+			xhr.send({
+				t: time,
+				file: theImage,
+				m: Ti.App.myMemeInfo.name,
+				s: signature
+			});
+
+		} else if (e.mediaType == "photo") {
+			Titanium.App.fireEvent("postOnMeme", {
+				postType: "photo",
+				media_link: e.mediaLink,
+				message: postText
+			});
+
+		} else if (e.mediaType == "youtube") {
+			Titanium.App.fireEvent("postOnMeme", {
+				postType: "video",
+				media_link: e.mediaLink,
+				message: postText
+			});
+		} else if (e.mediaType == "vimeo") {
+			Titanium.App.fireEvent("postOnMeme", {
+				postType: "video",
+				media_link: e.mediaLink,
+				message: postText
+			});
+
+		} // else {
+		// 			// Else is Only Text
+		// 			Titanium.App.fireEvent("postOnMeme", {
+		// 				postType: "text",
+		// 				message: postText
+		// 			});
+		// 		}	
+		
+	} // end else
+	
 });
 
 Titanium.App.addEventListener("postOnMeme", function(e) {
@@ -1242,4 +1254,26 @@ Ti.App.addEventListener('close_newpost', function(e) {
 	//Closes New Post Window
 	Ti.App.newpostIsOpen = false;
 	win.close({opacity:0,duration:200});
+});
+
+// ========================================
+// = Clean up all Text forms when shaking =
+// ========================================
+
+Ti.App.addEventListener('shake_clean', function(e) {
+	textArea.value = "";
+	editTitleField.value = "";
+	searchTextField.value = "";
+	
+	postText = "";
+	postTitle = "";
+	postBody = "";
+	queryText = "";
+	
+	tempPostLabel.show();
+	BgSearchTextField.remove(btn_search_clear);
+	setFlashlightFont(13);
+	searchTextField.hintText = L('searchTextField_hint_text');
+	
+	Ti.App.fireEvent("mediaRemoved");
 });
