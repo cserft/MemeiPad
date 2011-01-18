@@ -35,10 +35,10 @@
 	<string name="mail_message_subject_feedback">Masukan untuk Mim untuk iPad (ver. %s)</string>
 	<string name="feedback_mail_address">memeipad@yahoo.com</string>
 	<string name="meme_settings_text">Pengaturan</string>
-	<string name="meme_install_bookmarklet_text">Menginstal Safari Bookmarklet</string>
+	<string name="meme_install_bookmarklet_text">Instal Bookmarklet Safari</string>
 	<string name="meme_bookmarklet_url">http://memeapp.net/bookmarklet/</string>
 	<string name="meme_bookmarklet_alert_title">Menginstal Bookmarklet</string>
-	<string name="meme_bookmarklet_alert_message">You will be redirected to Safari to complete the installation of the Bookmarklet. Follow the instructions that appear on that page.</string>
+	<string name="meme_bookmarklet_alert_message">Anda akan diarahkan ke Safari untuk menyelesaikan penginstalan Bookmarklet. Ikuti instruksi yang ada di halaman tersebut.</string>
 	<string name="about_version">versi: </string>
 	<string name="meme_paste_alert_message">Apakah Anda ingin menambahkan konten dari Link berikut di Postingan?\n\n%s</string>
 	<string name="meme_paste_alert_title">Perhatian!</string>
@@ -58,7 +58,7 @@
 	<string name="network_error">Kesalahan Jaringan</string>
 	<string name="network_error_message">Anda harus online agar dapat menggunakan Mim untuk iPad. Silakan cek koneksi jaringan Anda dan coba lagi.</string>
 	<string name="loading_message">Memuat...</string>
-	<string name="memeapp_url">http://me.me/ipad/</string>
+	<string name="memeapp_url">http://mim.ly/ipad/</string>
 	<string name="btn_done_title">Selesai</string>
 	<!-- /app.js -->
 	<!-- dashboard.js-->
@@ -91,7 +91,7 @@
 	<string name="remove_alert_title">Hapus</string>
 	<string name="remove_alert_message">Apa Anda yakin ingin menghapus media ini dari postingan Anda?</string>
 	<string name="publishing_post_meme">Menerbitkan postingan Anda di Mim</string>
-	<string name="prepare_uploading_file">Preparing to upload file</string>
+	<string name="prepare_uploading_file">Bersiap meng-upload file</string>
 	<string name="uploading_file">Meng-upload File...</string>
 	<string name="post_success_message">Postingan Anda berhasil diterbitkan!</string> 
 	<string name="post_error_message">Postingan Anda tidak dapat diterbitkan.</string> 
@@ -131,7 +131,7 @@
 	<string name="path_btn_follow_background_image">images/bg_btn_follow_id.png</string>
 	<string name="path_btn_following_background_image">images/bg_btn_following_id.png</string>
 	<string name="copy_link_text">Salin link</string>
-	<string name="mail_post_text">Mail posting ini</string>
+	<string name="mail_post_text">EMail posting ini</string>
 	<string name="share_with_twitter">Bagi dengan Twitter untuk iPad</string>
 	<string name="share_with_twitter_message">Ini akan membuka Twitter untuk iPad (jika terinstal)</string>
 	<!-- /permalink.js -->
@@ -139,7 +139,7 @@
 	<string name="mail_message_body_source">Sumber: </string>
 	<string name="mail_message_signature">Sent with Meme for iPad</string>
 	<string name="mail_message_subject_default">Sharing an interesting Post</string>
-	<string name="mail_web_link">EMail Link</string>
+	<string name="mail_web_link">Email Link</string>
 	<string name="mail_web_link_text">Berbagi Link: </string>
 	<!-- /Share with Mail -->
 	<!-- EXTRAS -->
