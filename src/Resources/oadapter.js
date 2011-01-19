@@ -45,7 +45,6 @@ var authorizationUI = function() {
 
 		oauthWindow  = null;
 		oauthWebView = null;
-		gCallback    = null;
 		
 		//Analytics Request
 		doYwaRequest(analytics.SIGN_IN);
@@ -76,8 +75,6 @@ var authorizationUI = function() {
 		if (signingIn != true) {
 			
 			btn_signin.enabled = false;
-			
-			gCallback  = pCallback;
 			
 			authWindow = Ti.UI.createWindow({
 				navBarHidden: true
@@ -110,13 +107,16 @@ var authorizationUI = function() {
 	
 			// Activity indicator AJAX
 			var actInd = Ti.UI.createActivityIndicator({
-				top: 250,
+				top: 270,
+				backgroundColor: "black",
+				borderRadius: 4,
 				height: 50,
-				width: 10,
+				width: 50,
 				zIndex: 90,
-				style:Ti.UI.iPhone.ActivityIndicatorStyle.DARK
+				style:Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN,
+				visible: false
 			});
-			authWebView.add(actInd);
+			
 	
 			//Close button
 			var btn_close = Titanium.UI.createButton({
@@ -130,10 +130,23 @@ var authorizationUI = function() {
 			});
 			authView.add(btn_close);
 			
+			authView.add(authWebView);
+			
 	        authWindow.open();
+	
+			authWebView.addEventListener("beforeload", function(e) {
+				// show the ajax 
+				authWebView.add(actInd);
+				actInd.show();
+			});
 		
-	        authWebView.addEventListener('load', lookupVerifier(pCallback));
-	        authView.add(authWebView);
+	        authWebView.addEventListener('load', function(e) {
+				// hides the ajax 
+				actInd.hide();
+				Ti.API.info("pCallback on load event: " + pCallback);
+				lookupVerifier(pCallback)(e);
+			});
+	        
 	
 			// Creating the Open Transition
 			// create first transform to go beyond normal size
