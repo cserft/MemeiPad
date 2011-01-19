@@ -308,8 +308,9 @@ disclaimerLabel2.addEventListener("click", function(e)
 });
 
 // Fucntion that moves the ToolBar with the Keyboard
+var pos;
+
 function moveToolBar(arg) {
-	var pos;
 	if (arg == true && pos != "up") {
 		//Show Keyboard
 		toolBar.animate({bottom: 352, duration: 250});
@@ -854,6 +855,8 @@ editTitleField.addEventListener('blur', function(e) {
 
 btn_post.addEventListener('click', function(e) {
 	//Closes the Keyboard if open
+	moveToolBar(false);
+	
 	Ti.App.fireEvent('hide_keyboard');
 	
 	//merging Post Body + Post Title
