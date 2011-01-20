@@ -16,7 +16,7 @@ var flashlight 		= ""; // var that controls if the post is a Flashlight result (
 
 //RETRIEVING PARAMETERS FROM PREVIOUS WINDOW
 var win1 			= 	win.win1; // Window Original created on app.js
-var link				=	win.link; // Bookmarklet Link
+var link			=	win.link; // Bookmarklet Link
 var clickTimeout 	= 	0; 	// Sets the initial ClickTimeout for Flashlight Button
 var postText 		= 	""; 
 var postTitle 		= 	'';
@@ -1273,23 +1273,37 @@ Ti.App.addEventListener('close_newpost', function(e) {
 // ========================================
 
 Ti.App.addEventListener('shake_clean', function(e) {
-	textArea.value = "";
-	editTitleField.value = "";
-	searchTextField.value = "";
 	
-	postText = "";
-	postTitle = "";
-	postBody = "";
-	queryText = "";
+	//Alert to remove the photo
+	var alertShakeClear = Titanium.UI.createAlertDialog({
+		title: L('remove_alert_title'),
+		message: L('remove_alert_message'),
+		buttonNames: [L('btn_alert_YES'),L('btn_alert_NO')],
+		cancel: 1
+	}).show();
 
-	tempPostLabel.show();
-	BgSearchTextField.remove(btn_search_clear);
-	setFlashlightFont(13);
-	searchTextField.hintText = L('searchTextField_hint_text');
+	alertShakeClear.addEventListener('click',function(e) {
+		if (e.index == 0) {
+			textArea.value = "";
+			editTitleField.value = "";
+			searchTextField.value = "";
+
+			postText = "";
+			postTitle = "";
+			postBody = "";
+			queryText = "";
+
+			tempPostLabel.show();
+			BgSearchTextField.remove(btn_search_clear);
+			setFlashlightFont(13);
+			searchTextField.hintText = L('searchTextField_hint_text');
+
+			Ti.App.fireEvent("mediaRemoved");
+
+			Ti.App.fireEvent("hide_keyboard");
+		}
+	});
 	
-	Ti.App.fireEvent("mediaRemoved");
-	
-	Ti.App.fireEvent("hide_keyboard");
 });
 
 // =======================================
