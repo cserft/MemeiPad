@@ -133,13 +133,17 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		editTitleField.value = items.title;	
 		postTitle = items.title;
 		
-		if (textArea.value != "") {
-			textArea.value += '\n\n' + items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
-			postBody = textArea.value;
-		} else {
-			textArea.value += items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
-			postBody = textArea.value;
+		if (items.meta.content){
+			//verifies if the Link has Meta Content Description
+			if (textArea.value != "") {
+				textArea.value += '\n\n' + items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
+				postBody = textArea.value;
+			} else {
+				textArea.value += items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
+				postBody = textArea.value;
+			}
 		}
+		
 								
 	} else {
 		
