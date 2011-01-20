@@ -1292,8 +1292,8 @@ Ti.App.addEventListener('shake_clean', function(e) {
 	
 	//Alert to remove the photo
 	var alertShakeClear = Titanium.UI.createAlertDialog({
-		title: "Clear Text",
-		message: "Are you sure you want to clear all text in this screen?",
+		title: L('alert_clear_shake_title'),
+		message: L('alert_clear_shake_message'),
 		buttonNames: [L('btn_alert_YES'),L('btn_alert_NO')],
 		cancel: 1
 	});

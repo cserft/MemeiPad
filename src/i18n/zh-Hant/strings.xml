@@ -69,7 +69,7 @@
 	<string name="reloading_message">重新載入中...</string>
 	<string name="welcome_message">歡迎來到meme!</string>
 	<string name="welcome_message2">智能的发帖方式</string>
-	<string name="welcome_description">雅虎的Meme是一個新型博客平臺：優雅、智能而且簡單。\n你可以開始追隨一些我們推薦的博客，或是自己寫一篇博客，只要點擊\"從這裡開始\"按鍵</string>
+	<string name="welcome_description">雅虎的Meme是一個新型博客平臺：優雅、智能而且簡單。\n你可以開始追隨一些我們推薦的博客，或是自己寫一篇博客，只要點擊\"新建帖子\"按鍵</string>
 	<string name="go_dashboard_title">現在你已經追隨了一些博客，看看你的主頁</string>
 	<string name="recommended_label_title">推薦的用戶和內容</string>
 	<!-- app_hightlight.js -->
@@ -100,6 +100,8 @@
 	<string name="flashlight_alert_empty_message">探照灯关键字为空，只要输入任何内容我们就会提供建议</string>
 	<string name="flashlight_no_results">没有找到结果。</string>
 	<string name="add_photo_button_title">添加圖片</string>
+	<string name="alert_clear_shake_title">Clear content</string>
+	<string name="alert_clear_shake_message">Are you sure you want to clear all content in this screen?</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
 	<string name="time_just_now">一會兒</string>

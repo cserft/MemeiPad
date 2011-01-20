@@ -69,7 +69,7 @@
 	<string name="reloading_message">Reloading...</string>
 	<string name="welcome_message">welcome to meme!</string>
 	<string name="welcome_message2">the smart way to post</string>
-	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the \"start posting here\" button</string>
+	<string name="welcome_description">Meme from Yahoo! is a new kind of blogging platform: elegant, smart and simple.\nYou can start by following some of the blogs from our recommended list or creating a new Post, just click in the \"create post\" button</string>
 	<string name="go_dashboard_title">Now that you are following some blogs, check out your feed</string>
 	<string name="recommended_label_title">RECOMMENDED USERS &amp; CONTENT</string>
 	<!-- app_hightlight.js -->
@@ -100,6 +100,8 @@
 	<string name="flashlight_alert_empty_message">The Flashlight is empty, just type something to get suggested content</string>
 	<string name="flashlight_no_results">No results were found.</string>
 	<string name="add_photo_button_title">add photo</string>
+	<string name="alert_clear_shake_title">Clear content</string>
+	<string name="alert_clear_shake_message">Are you sure you want to clear all content in this screen?</string>
 	<!-- /newpost.js -->
 	<!-- commons.js -->
 	<string name="time_just_now">Just now</string>
