@@ -1236,7 +1236,7 @@ Ti.App.addEventListener('resumed', function (e){
 		if (Ti.App.getArguments().url) {
 			// Retrieves the data from the Bookmarklet
 			var bookmarkletLink = Ti.App.getArguments().url.split("memeapp:")[1];
-			// Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
+			Ti.API.info("Arguments URL: BookmarkletLink [" + bookmarkletLink + "], Previous [" + book_previous + "]");
 			if (bookmarkletLink != book_previous) {
 			
 				if (Ti.App.newpostIsOpen == false) {
@@ -1262,6 +1262,9 @@ Ti.App.addEventListener('resumed', function (e){
 				}
 			}
 		}
+	} else {
+		// Not Logged In
+		Ti.API.debug("Not LoggedIn, not going to paste this Link on New Post");
 	}
 });
 

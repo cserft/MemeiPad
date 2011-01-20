@@ -13,6 +13,19 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 	
 	Ti.API.debug('flashlight_text_change_monitor invoked for query = ' + new_monitor_value);
 	
+	// Animation of the lamp blinking
+		lamp_bright.visible = true;
+		var t = Ti.UI.create2DMatrix();
+		t = t.scale(0.8);
+		
+		var a = Titanium.UI.createAnimation();
+		a.transform = t;
+		a.duration = 300;
+		a.autoreverse = true;
+		a.repeat = 1000;
+		lamp_bright.animate(a);
+	// End of the animation Lamp
+	
 	// updates text change monitor value
 	monitor_value = new_monitor_value;
 	
@@ -49,6 +62,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			mediaLink = videoLink;
 			
 			Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
+			
+			lamp_bright.hide();
 	
 		});
 		
@@ -68,6 +83,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			mediaPreview = '<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>';
 			
 			Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
+			
+			lamp_bright.hide();
 	
 		});
 		
@@ -87,6 +104,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			mediaPreview = _data.html;
 			
 			Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
+			
+			lamp_bright.hide();
 		});
 		
 		Ti.API.info("Pasted link Vimeo ID: " + vimeoArray[1]);
@@ -107,6 +126,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 			mediaPreview = '<img src="' + _data.url + '">';
 			
 			Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
+			
+			lamp_bright.hide();
 	
 		});
 		
@@ -123,6 +144,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		
 		Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
 		
+		lamp_bright.hide();
+		
 	
 	} else if (linksArray != null && linksArray != undefined) {
 		
@@ -133,8 +156,10 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		editTitleField.value = items.title;	
 		postTitle = items.title;
 		
-		if (items.meta.content){
+		if (items.meta != undefined){
 			//verifies if the Link has Meta Content Description
+			tempPostLabel.hide();
+			
 			if (textArea.value != "") {
 				textArea.value += '\n\n' + items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
 				postBody = textArea.value;
@@ -142,7 +167,11 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 				textArea.value += items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
 				postBody = textArea.value;
 			}
+		} else {
+			Ti.API.debug("No meta Description");
 		}
+		
+		lamp_bright.hide();
 		
 								
 	} else {
@@ -239,19 +268,6 @@ var flashlight_create = function() {
 		
 		Ti.App.addEventListener('showAwesomeSearch', function (e) {
 			Ti.API.debug("####### Type of search: " + e.searchType);
-			
-			// Animation of the lamp blinking
-				lamp_bright.visible = true;
-				var t = Ti.UI.create2DMatrix();
-				t = t.scale(0.8);
-				
-				var a = Titanium.UI.createAnimation();
-				a.transform = t;
-				a.duration = 300;
-				a.autoreverse = true;
-				a.repeat = 30;
-				lamp_bright.animate(a);
-			// End of the animation Lamp
 
 			var results = [];
 

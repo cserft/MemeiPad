@@ -37,6 +37,15 @@ function setFlashlightFont (size) {
 		searchTextField.font = {fontSize:size, fontFamily:'Georgia', fontStyle:'Italic'};
 }
 
+Ti.App.addEventListener('bookmarklet_link', function(e) {
+	
+	Ti.API.debug("starting Bookmarklet in NewPost, link ["+ e.link + "]");
+	searchTextField.value = e.link;
+	queryText = e.link;
+	flashlight_text_change_monitor(e.link);
+	Ti.API.info("Got an URL: ["+ e.link +"]");
+});
+
 
 // ===============
 // = Header View =
@@ -574,16 +583,23 @@ function saveLocalFile (filename, media, callback){
 
 // Saves Draft
 function saveDraft (title, body, query, type, mediaPreview, mediaLink) {
-	if (type != 'file') {
-		Ti.App.Properties.setList('draft_post', [title, body, query, type, mediaPreview, mediaLink]);
-	} else {
-		saveLocalFile("photo_draft", mediaPreview, function(f){
-			Ti.App.Properties.setList('draft_post', [title, body, query, type, f.name, mediaLink]);
-			Ti.API.debug('Saving Local File Draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] FileName [' + f.name + '] mediaLink ['+ mediaLink +']');
-		});
-	}
 	
-	Ti.API.debug('Saving post draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] mediaPreview [' + mediaPreview + '] mediaLink ['+ mediaLink +']');
+	if (title == "" && body == "" && query == "" && type == "" && mediaPreview == "" && mediaLink == "") {
+		Ti.API.debug('Nothing to Save in Draft');
+		
+	} else {
+		
+		if (type != 'file') {
+			Ti.App.Properties.setList('draft_post', [title, body, query, type, mediaPreview, mediaLink]);
+		} else {
+			saveLocalFile("photo_draft", mediaPreview, function(f){
+				Ti.App.Properties.setList('draft_post', [title, body, query, type, f.name, mediaLink]);
+				Ti.API.debug('Saving Local File Draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] FileName [' + f.name + '] mediaLink ['+ mediaLink +']');
+			});
+		}
+		Ti.API.debug('Saving post draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] mediaPreview [' + mediaPreview + '] mediaLink ['+ mediaLink +']');
+	}
+
 };
 
 // Reads local file
@@ -1276,11 +1292,12 @@ Ti.App.addEventListener('shake_clean', function(e) {
 	
 	//Alert to remove the photo
 	var alertShakeClear = Titanium.UI.createAlertDialog({
-		title: L('remove_alert_title'),
-		message: L('remove_alert_message'),
+		title: "Clear Text",
+		message: "Are you sure you want to clear all text in this screen?",
 		buttonNames: [L('btn_alert_YES'),L('btn_alert_NO')],
 		cancel: 1
-	}).show();
+	});
+	alertShakeClear.show();
 
 	alertShakeClear.addEventListener('click',function(e) {
 		if (e.index == 0) {
@@ -1299,7 +1316,6 @@ Ti.App.addEventListener('shake_clean', function(e) {
 			searchTextField.hintText = L('searchTextField_hint_text');
 
 			Ti.App.fireEvent("mediaRemoved");
-
 			Ti.App.fireEvent("hide_keyboard");
 		}
 	});
@@ -1310,9 +1326,3 @@ Ti.App.addEventListener('shake_clean', function(e) {
 // = triggers the Bookmarklet PAste Link =
 // =======================================
 
-Ti.App.addEventListener('bookmarklet_link', function(e) {
-	searchTextField.value = e.link;
-	queryText = e.link;
-	flashlight_text_change_monitor(searchTextField.value);
-	Ti.API.info("Got an URL: ["+ e.link +"]");
-});
