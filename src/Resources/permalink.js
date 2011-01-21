@@ -135,7 +135,7 @@ var memeInfo = Ti.App.meme.userInfo(_guid, 40, 40);
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
 	color:'#A9379C',
-	text: strip_html_entities(memeInfo.title),
+	text: Encoder.htmlDecode(memeInfo.title),
 	textAlign:'left',
 	font: {
 		fontSize: 18,
