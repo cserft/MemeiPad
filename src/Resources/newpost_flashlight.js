@@ -48,7 +48,7 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 	//Images REGEX
 	var imageArray = new_monitor_value.match(/(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:jpe?g|gif|png))(?:\?([^#]*))?(?:#(.*))?/i);
 	
-	//WEb Pages REGEX
+	//Web Pages REGEX
 	var linksArray = new_monitor_value.match(/(\b(?:(?:https?|ftp|[A-Za-z]+):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$]))(?=[^>]*?(<|$))/i);
 	
 	//Triggers the Paste command or a FlashLight Search flashlight_monitor_start();
@@ -255,7 +255,15 @@ var flashlight_show = function() {
 		flashlight_create();
 	}
 	
-	Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
+	//TESTS IF THIS IS A TWITTER LINK, THEN CALLS THE DAFAULT SEARCH OR THE TWITTER SEARCH
+	var tweetArray = searchTextField.value.match(/^(@[^\s])/i);
+	
+	if (tweetArray != null && tweetArray != undefined) {
+		Ti.App.fireEvent("showAwesomeSearch", {searchType: 3});
+	} else {
+		Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
+	}
+	
 };
 
 var flashlight_create = function() {
