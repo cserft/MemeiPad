@@ -589,13 +589,14 @@ function saveDraft (title, body, query, type, mediaPreview, mediaLink) {
 		
 	} else {
 		
-		if (type != 'file') {
-			Ti.App.Properties.setList('draft_post', [title, body, query, type, mediaPreview, mediaLink]);
-		} else {
+		if (type == 'file') {
 			saveLocalFile("photo_draft", mediaPreview, function(f){
 				Ti.App.Properties.setList('draft_post', [title, body, query, type, f.name, mediaLink]);
 				Ti.API.debug('Saving Local File Draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] FileName [' + f.name + '] mediaLink ['+ mediaLink +']');
 			});
+		
+		} else {
+			Ti.App.Properties.setList('draft_post', [title, body, query, type, mediaPreview, mediaLink]);
 		}
 		Ti.API.debug('Saving post draft on properties: title[' + title + '], body[' + body + '], Flashlight Query [' + query + '], Media Draft type:[' + type + '] mediaPreview [' + mediaPreview + '] mediaLink ['+ mediaLink +']');
 	}
@@ -638,14 +639,15 @@ function loadDraft () {
 	}
 	
 	if (mediaType != "") {
-		if (mediaType != "file") {
-			mediaChosen(true, mediaType, mediaPreview, mediaLink);
-		} else {
+		if (mediaType == "file") {
 			readLocalFile(mediaPreview, function(media){
 				Ti.API.debug("Media File from loadDraft() ["+ media +"]");
 				mediaChosen(false, mediaType, media, mediaLink);
 				
 			});
+			
+		} else {
+			mediaChosen(true, mediaType, mediaPreview, mediaLink);
 		}
 	}
 	
@@ -931,8 +933,10 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 			Ti.API.info(">>> Entered on Flashlight Type:[" + pMediaType + "] Media [" + pMediaPreview + "] MediaLink ["+ pMediaLink +"]");
 			// Create our Webview to render the Video
 			webViewPreview.html = pMediaPreview;
+			webViewPreview.height = 420,
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
+			// Ti.API.debug("WebView Size: " + webViewPreview.size.height);
 			
 			//Saving Draft vars
 			mediaType = pMediaType;
@@ -944,6 +948,7 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 			
 			// Create our Webview to render the Video
 			webViewPreview.html = pMediaPreview;
+			webViewPreview.height = 420,
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
 			
@@ -958,9 +963,36 @@ function mediaChosen (pFlashlight, pMediaType, pMediaPreview, pMediaLink) {
 			
 			// Create our Webview to render the Photo
 			webViewPreview.html = pMediaPreview;
+			webViewPreview.height = 420,
 			viewContainerPhoto.add(webViewPreview);
 			viewContainerPhoto.show();
 			
+			//Saving Draft vars
+			mediaType = pMediaType;
+			mediaPreview = pMediaPreview;
+			
+		} else if (pMediaType == "twitter") {
+			// IS A TWITTER
+			Ti.API.info(">>> Entered on Flashlight Type:[" + pMediaType + "] Media [" + pMediaPreview + "] MediaLink ["+ pMediaLink +"]");
+			
+			// Create our Webview to render the Photo
+			webViewPreview.html = pMediaPreview;
+			webViewPreview.height = 230,
+			viewContainerPhoto.add(webViewPreview);
+			viewContainerPhoto.show();
+			
+			//setting up the Image file to upload
+			webViewPreview.addEventListener('load', function (e) {
+				var oldTempFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, "tweet.png");
+			    if (oldTempFile.exists()) {
+				  Ti.API.debug('Found previous Temp file, deleting it');
+			      oldTempFile.deleteFile();
+			    }
+			    var tempFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, "tweet.png");
+			    tempFile.write(webViewPreview.toImage());
+				theImage = tempFile.read();
+			});
+
 			//Saving Draft vars
 			mediaType = pMediaType;
 			mediaPreview = pMediaPreview;
@@ -1100,7 +1132,7 @@ Titanium.App.addEventListener("postClicked", function(e) {
 		showProgressView('show',  L('preparing_to_post_message'));
 
 		//	if (theImage != null && typeof(theImage) == 'object') {
-		if (e.mediaType == "file") {
+		if (e.mediaType == "file" || e.mediaType == "twitter") {
 			// IF there is a Image to Upload
 
 			var xhr = Titanium.Network.createHTTPClient();

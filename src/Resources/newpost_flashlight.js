@@ -13,19 +13,6 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 	
 	Ti.API.debug('flashlight_text_change_monitor invoked for query = ' + new_monitor_value);
 	
-	// Animation of the lamp blinking
-		lamp_bright.visible = true;
-		var t = Ti.UI.create2DMatrix();
-		t = t.scale(0.8);
-		
-		var a = Titanium.UI.createAnimation();
-		a.transform = t;
-		a.duration = 300;
-		a.autoreverse = true;
-		a.repeat = 1000;
-		lamp_bright.animate(a);
-	// End of the animation Lamp
-	
 	// updates text change monitor value
 	monitor_value = new_monitor_value;
 	
@@ -268,6 +255,19 @@ var flashlight_create = function() {
 		
 		Ti.App.addEventListener('showAwesomeSearch', function (e) {
 			Ti.API.debug("####### Type of search: " + e.searchType);
+			
+			// Animation of the lamp blinking
+				lamp_bright.visible = true;
+				var t = Ti.UI.create2DMatrix();
+				t = t.scale(0.8);
+
+				var a = Titanium.UI.createAnimation();
+				a.transform = t;
+				a.duration = 300;
+				a.autoreverse = true;
+				a.repeat = 1000;
+				lamp_bright.animate(a);
+			// End of the animation Lamp
 
 			var results = [];
 
@@ -526,6 +526,10 @@ var flashlight_create = function() {
 								zIndex: 2,
 								username: '@' + item.from_user,
 								tweet: item.text,
+								timestamp: item.created_at.substr(0,25),
+								app: Encoder.htmlDecode(item.source),
+								// app: item.source,
+								avatar: item.profile_image_url,
 								link: "http://twitter.com/#!/" + item.from_user + "/status/" + item.id_str + '/',
 								type: 'twitter'
 							}));
@@ -626,14 +630,22 @@ var flashlight_create = function() {
 					break;
 				
 				case 'twitter':
+				
+					mediaType = "twitter";
+					mediaPreview = '<style type="text/css">a:link {text-decoration:none; color:#278EB3} .bbpBox {background:url(http://a3.twimg.com/a/1294279085/images/themes/theme1/bg.png) #C0DEED;padding:20px; font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica;} p.bbpTweet{background:#fff;padding:10px 12px 10px 12px;margin:0;min-height:48px;color:#000;font-size:18px !important;line-height:22px;-webkit-border-radius:5px} p.bbpTweet span.metadata{display:block;width:100%;clear:both;margin-top:8px;padding-top:12px;height:40px;border-top:1px solid #fff;border-top:1px solid #e6e6e6} p.bbpTweet span.metadata span.author{line-height:19px; color: #278EB3} p.bbpTweet span.metadata span.author img{float:left;margin:0 7px 0 0px;width:38px;height:38px} p.bbpTweet a:hover{text-decoration:underline}p.bbpTweet span.timestamp{font-size:12px;display:block}</style><div class="bbpBox"><p class="bbpTweet">' + e.source.tweet + '<span class="timestamp">'+ e.source.timestamp + ' via '+ e.source.app + '</span><span class="metadata"><span class="author"><img src="' + e.source.avatar + '" /><strong>' + e.source.username + '</strong></span></span></p></div>';
+					mediaLink = e.source.link;
+					
 					if (textArea.value != "") {
-						textArea.value += '\n\n' + e.source.username + '\n' + e.source.tweet + '\nPermalink: ' + e.source.link;
-						postBody += '\n\n<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '\nPermalink: ' + e.source.link + '</blockquote>';
+						textArea.value += '\n\nPermalink: ' + e.source.link;
+						postBody += '\n\nPermalink: ' + e.source.link;
 					} else {
-						textArea.value += e.source.username + '\n' + e.source.tweet + '\nPermalink: ' + e.source.link;
-						postBody += '<blockquote><strong>' + e.source.username + '</strong>\n' + e.source.tweet + '\nPermalink: ' + e.source.link + '</blockquote>';
+						textArea.value += 'Permalink: ' + e.source.link;
+						postBody += 'Permalink: ' + e.source.link;
 					}
-					textArea.focus();
+					tempPostLabel.hide();
+					
+					Ti.App.fireEvent("mediaChosen", {flashlight: true, mediaType: mediaType, mediaPreview: mediaPreview, mediaLink: mediaLink });
+					
 					break;
 			}
 		
