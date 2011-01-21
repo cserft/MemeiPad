@@ -9,6 +9,26 @@ var monitor_value;
 var last_monitor_value;
 var flashlight_created = false;
 
+// ====================
+// = lightbuld effect =
+// ====================
+
+function LightbuldEffect () {
+	// Animation of the lamp blinking
+		lamp_bright.visible = true;
+		var t = Ti.UI.create2DMatrix();
+		t = t.scale(0.8);
+
+		var a = Titanium.UI.createAnimation();
+		a.transform = t;
+		a.duration = 300;
+		a.autoreverse = true;
+		a.repeat = 1000;
+		lamp_bright.animate(a);
+	// End of the animation Lamp	
+};
+
+
 var flashlight_text_change_monitor = function(new_monitor_value) {
 	
 	Ti.API.debug('flashlight_text_change_monitor invoked for query = ' + new_monitor_value);
@@ -16,7 +36,7 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 	// updates text change monitor value
 	monitor_value = new_monitor_value;
 	
-	// CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR LINK 
+	// CHECKS IF THIS IS A YOUTUBE/VIMEO/FLICKR/IMAGE OR WEBPAGES LINK 
 	// Detects what type of Video link
 	var youtubeVideoArray = new_monitor_value.match(/v=([a-zA-Z0-9_-]{11})/);
 	var youtubeShortArray = new_monitor_value.match(/youtu.be\/([a-zA-Z0-9_-]{11})/);
@@ -33,6 +53,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 	
 	//Triggers the Paste command or a FlashLight Search flashlight_monitor_start();
 	if (youtubeVideoArray != null && youtubeVideoArray != undefined) {
+		
+		LightbuldEffect();
 		
 		getVideoData(new_monitor_value, function(_videoThumb, _data) {
 		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
@@ -56,6 +78,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		
 	} else if (youtubeShortArray != null && youtubeShortArray != undefined) {
 		
+		LightbuldEffect();
+		
 		getVideoData(new_monitor_value, function(_videoThumb, _data) {
 		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
 			editTitleField.value = _data.title;	
@@ -76,6 +100,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		});
 		
 	} else if (vimeoArray != null && vimeoArray != undefined) {
+		
+		LightbuldEffect();
 		
 		getVideoData(new_monitor_value, function(_videoThumb, _data) {
 		//	Ti.API.debug('my video thumb is [' + _videoThumb + ']');
@@ -99,6 +125,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		
 	} else if (flickrArray != null && flickrArray != undefined) {
 		
+		LightbuldEffect();
+		
 		Ti.API.info("Pasted a Flickr Link: " + flickrArray[0]);
 		
 		getVideoData(new_monitor_value, function(_photoThumb, _data) {
@@ -120,6 +148,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		
 	} else if (imageArray != null && imageArray != undefined) {
 		
+		LightbuldEffect();
+		
 		Ti.API.info("Pasted a Image Link: JPG/PNG/GIF: " + imageArray[0]);
 		
 		//Sets the Image to the Image Thumbnail
@@ -135,6 +165,8 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		
 	
 	} else if (linksArray != null && linksArray != undefined) {
+		
+		LightbuldEffect();
 		
 		Ti.API.info("Pasted a Web Link: " + linksArray[0]);
 		
@@ -159,8 +191,7 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		}
 		
 		lamp_bright.hide();
-		
-								
+			
 	} else {
 		
 		flashlight_monitor_start();
@@ -256,18 +287,7 @@ var flashlight_create = function() {
 		Ti.App.addEventListener('showAwesomeSearch', function (e) {
 			Ti.API.debug("####### Type of search: " + e.searchType);
 			
-			// Animation of the lamp blinking
-				lamp_bright.visible = true;
-				var t = Ti.UI.create2DMatrix();
-				t = t.scale(0.8);
-
-				var a = Titanium.UI.createAnimation();
-				a.transform = t;
-				a.duration = 300;
-				a.autoreverse = true;
-				a.repeat = 1000;
-				lamp_bright.animate(a);
-			// End of the animation Lamp
+			LightbuldEffect();
 
 			var results = [];
 
