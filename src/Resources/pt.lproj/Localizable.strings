@@ -1,0 +1,152 @@
+/* app.js */
+"app_name" = "meme para ipad"; /* Limit of 13 characters */
+/* HEADER */
+"path_logo_header" = "images/logo_meme_white_br.png";
+"path_btn_signin_background_image" = "images/btn_signin_top.png";
+"path_btn_signin_title" = "entrar";
+"path_btn_signup_background_image" = "images/btn_signup_br.png";
+"path_btn_back" = "images/btn_back.png";
+"btn_signup_alert" = "Crie sua conta";
+"btn_signup_message" = "A página de criação de conta será aberta no Safari";
+"btn_signup_url" = "http://meme.yahoo.com/confirm";
+"path_create_post_background_image" = "images/btn_create_post_br.png";
+/* ABOUT */
+"btn_signout_title" = "sair";
+"btn_back_title" = "voltar";
+"path_btn_signout_background_image" = "images/btn_signout.png";
+"followers" = "seguidores ";
+"following" = "    seguindo ";
+"about_ATOS" = "Termos Adicionais";
+"about_UTOS" = "Yahoo! Termos de Serviço";
+"about_privacy" = "Privacidade";
+"about_guidelines" = "Regras";
+"about_feedback" = "Mande sugestões";
+"url_atos_html" = "http://meme.yahoo.com/help/atos/?.lang=%s";
+"url_utos_html" = "http://meme.yahoo.com/help/utos/?.lang=%s";
+"url_privacy_html" = "http://meme.yahoo.com/help/privacy/?.lang=%s";
+"url_guidelines_html" = "http://meme.yahoo.com/help/guidelines/";
+"meme_short_domain" = "me.me/";
+"aboutGitLabel_text" = "Meme para iPad no GitHub:\nhttp://memeapp.net/source";
+"memeapp_source_url" = "http://memeapp.net/source";
+"meme_about_text" = "Sobre";
+"mail_message_subject_feedback" = "Meme para iPad - Sugestão (ver. %s)";
+"feedback_mail_address" = "memeipad@yahoo.com";
+"meme_settings_text" = "Configurações";
+"meme_install_bookmarklet_text" = "Instalar Bookmarklet no Safari";
+"meme_bookmarklet_url" = "http://memeapp.net/bookmarklet/";
+"meme_bookmarklet_alert_title" = "Instalar Bookmarklet";
+"meme_bookmarklet_alert_message" = "Você será redirecionado para o Safari para completar a instalação do Bookmarklet. Siga as instruções na página.";
+"about_version" = "versão: ";
+"meme_paste_alert_message" = "Você deseja adicionar o conteúdo do link abaixo no seu Post?\n\n%s";
+"meme_paste_alert_title" = "Atenção!";
+/* GENERIC */
+"open_link_title" = "Abrir Link";
+"success_alert_title" = "Sucesso";
+"error_alert_title" = "Erro";
+"btn_alert_OK" = "OK";
+"btn_alert_YES" = "Sim";
+"btn_alert_NO" = "Não";
+"btn_alert_CANCEL" = "Cancelar";
+"btn_alert_INSTALL" = "Instalar";
+"open_link_message" = "Este link será aberto no Safari";
+"btn_error_refresh_title" = "recarregar";
+"yql_error" = "Erro";
+"error_message_problem" = "Ops, parece que tivemos um problema...";
+"network_error" = "Erro de Rede";
+"network_error_message" = "Você precisa estar online para poder usar o Meme para iPad. Por favor, verifique sua conexão de rede e tente novamente.";
+"loading_message" = "Carregando...";
+"memeapp_url" = "http://me.me/ipad/";
+"btn_done_title" = "ok";
+/* /app.js */
+
+/* dashboard.js */
+"pull_to_reload_text" = "Puxe para recarregar";
+"last_updated_text" = "Última atualização: ";
+"pull_down_to_refresh_text" = "Puxe para recarregar...";
+"release_to_refresh_text" = "Solte para recarregar...";
+"reloading_message" = "Recarregando...";
+"welcome_message" = "bem vindo ao meme!";
+"welcome_message2" = "o jeito inteligente de postar";
+"welcome_description" = "Meme do Yahoo! é um novo tipo de pltaforma de blog elegante, inteligente e simples.\nVocê pode começar seguindo algus dos blogs recomendados ou criando um novo post, clique no botão \"criar post\"";
+"go_dashboard_title" = "Agora que você esta seguindo alguns blogs, dê uma olhada no seu feed";
+"recommended_label_title" = "CONTEÚDO E USUÄRIOS RECOMENDADO";
+
+/* app_hightlight.js */
+"featured_content_text" = "DESTAQUE";
+
+/* newpost.js */
+"searchTextField_hint_text" = "Cole links do YouTube ou Vimeo, ou faça uma busca para ilustrar seu post";
+"popover_flashlight_title" = "Sugestão de Conteúdo";
+"path_btn_post_top_background_image" = "images/btn_post_top.png";
+"btn_post_top_title" = "postar";
+"editTitleField_hint_text" = "adicione um título";
+"tempPostLabel_text" = "escreva aqui seu post";
+"disclaimer_copyright_guidelines" = "Não viole direitos autorais e/ou envie conteúdo adulto. Na dúvida, veja as Regras da Comunidade.";
+"disclaimer_yahoo_updates" = "Seu post será compartilhado via Yahoo! Atualizações.";
+"guidelines_url" = "http://meme.yahoo.com/help/guidelines/";
+"settings_url" = "http://profiles.yahoo.com/settings/updates";
+"oops_alert_title" = "Oops...";
+"post_message_empty" = "Seu post esta vazio, escreva alguma coisa antes de postar";
+"preparing_to_post_message" = "Preparando para postar...";
+"remove_alert_title" = "Remover";
+"remove_alert_message" = "Você tem certeza que deseja retirar esta mídia do seu post?";
+"publishing_post_meme" = "Publicando seu post no Meme";
+"prepare_uploading_file" = "Preparando para subir arquivo";
+"uploading_file" = "Enviando arquivo...";
+"post_success_message" = "Seu post foi publicado com sucesso!"; 
+"post_error_message" = "Seu post não pode ser publicado"; 
+"post_error_7meg_message" = "Seu post não pode ser publicado, Por favor verifique o tamanho da imagem, ela deve ter menos de 7MB.";
+"flashlight_alert_empty_title" = "Flashlight";
+"flashlight_alert_empty_message" = "O campo Flashlight esta vazio, digite alguma coisa para buscar sugestões de conteúdo";
+"flashlight_no_results" = "Nenhum resultado foi encontrado.";
+"add_photo_button_title" = "incluir foto";
+"alert_clear_shake_title" = "Apagar Conteúdo";
+"alert_clear_shake_message" = "Tem certeza que você deseja pagar todo o conteúdo desta tela?";
+/* /newpost.js */
+
+/* commons.js */
+"time_just_now" = "poucos segundos";
+"time_1_minute" = "1 minuto";
+"time_minutes" = "minutos";
+"time_1_hour" = "1 hora";
+"time_hours" = "horas";
+"time_1_day" = "1 dia";
+"time_days" = "dias";
+"time_1_week" = "1 semana";
+"time_weeks" = "semanas";
+"time_1_month" = "1 mês";
+"time_months" = "meses";
+"time_1_year" = "1 ano";
+"time_years" = "anos";
+"time_1_century" = "1 século";
+"time_centuries" = " Séculos";
+"time_ago" = "";
+/* /commons.js */
+
+/* permalink.js */
+"posted" = " postado há "; 
+"path_btn_send_commentbackground_image" = "images/btn_send_comment.png";
+"btn_send_comment_title" = "comentar";
+"repostCommentField_hint_text" = "adicione seu comentário"; 
+"delete_alert_title" = "Apagar Post";  
+"delete_alert_message" = "Você tem certeza de que deseja apagar este Post?";
+"report_abuse_alert_title" = "Denúncia de Abuso";  
+"report_abuse_alert_message" = "A página de Denúncia de Abuso será aberta no Safari.";
+"path_btn_follow_background_image" = "images/bg_btn_follow_pt.png";
+"path_btn_following_background_image" = "images/bg_btn_following_pt.png";
+"copy_link_text" = "Copiar Link";
+"mail_post_text" = "Enviar este Post por e-mail";
+"share_with_twitter" = "Compartilhar com Twitter for iPad";
+"share_with_twitter_message" = "Isso abrirá o Twitter for IPad (se estiver instalado)";
+/* /permalink.js */
+
+/* Share with Mail */
+"mail_message_body_source" = "Fonte: ";
+"mail_message_signature" = "Enviado com Meme for iPad";
+"mail_message_subject_default" = "Compartilhando um post interessante";
+"mail_web_link" = "Enviar link por e-mail";
+"mail_web_link_text" = "Compartilhando Link: ";
+/* /Share with Mail */
+
+/* EXTRAS */
+"format_test" = "My name is %s";
