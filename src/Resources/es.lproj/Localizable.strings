@@ -49,7 +49,7 @@
 "btn_alert_CANCEL" = "Cancelar";
 "btn_alert_INSTALL" = "Instalar";
 "open_link_message" = "La página se abrirá en Safari";
-"btn_error_refresh_title" = "recargar";
+"btn_error_refresh_title" = "Recargar";
 "yql_error" = "Error";
 "error_message_problem" = "Uy, algo anda mal...";
 "network_error" = "Error de conexión";

@@ -172,22 +172,24 @@ var flashlight_text_change_monitor = function(new_monitor_value) {
 		
 		var items = Ti.App.meme.flashlightLinkWeb(linksArray[0]);
 		
-		editTitleField.value = items.title;	
-		postTitle = items.title;
-		
-		if (items.meta != undefined){
-			//verifies if the Link has Meta Content Description
-			tempPostLabel.hide();
-			
-			if (textArea.value != "") {
-				textArea.value += '\n\n' + items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
-				postBody = textArea.value;
+		if (items != null) {
+			editTitleField.value = items.title;	
+			postTitle = items.title;
+
+			if (items.meta != undefined){
+				//verifies if the Link has Meta Content Description
+				tempPostLabel.hide();
+
+				if (textArea.value != "") {
+					textArea.value += '\n\n' + items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
+					postBody = textArea.value;
+				} else {
+					textArea.value += items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
+					postBody = textArea.value;
+				}
 			} else {
-				textArea.value += items.meta.content + "\n\n" + L('mail_message_body_source') + linksArray[0];
-				postBody = textArea.value;
+				Ti.API.debug("No meta Description");
 			}
-		} else {
-			Ti.API.debug("No meta Description");
 		}
 		
 		lamp_bright.hide();
