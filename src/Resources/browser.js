@@ -13,6 +13,9 @@ var clickTimeoutSharePopover = 0; // variable to protect against multiple clicks
 var currentHref; // holds the Current URL displayed in the Browser
 var currentTitle; // holds the Current WebPage Title
 
+//hides the Keyboard if opened
+Ti.App.fireEvent('hide_keyboard');
+
 // ============================
 // = BULDING BROWSER LAYOUT =
 // ============================
