@@ -261,7 +261,7 @@ var flashlight_show = function() {
 	var tweetArray = searchTextField.value.match(/^(@[^\s])/i);
 	
 	if (tweetArray != null && tweetArray != undefined) {
-		Ti.App.fireEvent("showAwesomeSearch", {searchType: 3});
+		Ti.App.fireEvent("showAwesomeSearch", {searchType: 3, subquery: "timeline"});
 	} else {
 		Ti.App.fireEvent("showAwesomeSearch", {searchType: 0});
 	}
@@ -505,17 +505,39 @@ var flashlight_create = function() {
 				
 				case 3: // Twitter Search
 					Ti.API.info("####### Twitter Search ");
-					var items = Ti.App.meme.flashlightTweets(queryText);
+					
+					// Decides if it will perform a Twitter Search or a Timeline show for the @username
+				
+					
+					if (e.subquery == "timeline") {
+						Ti.API.debug("Flashlight Twitter Timeline for: " + queryText);
+						var items = Ti.App.meme.flashlightTwitterTimeline(queryText);
+					} else {
+						Ti.API.debug("Flashlight Twitter Search for: " + queryText);
+						var items = Ti.App.meme.flashlightTweets(queryText);
+					}				
 					
 					if (items) {
+						var screenName, avatar_url, status_id;
+						
 						//Loop to present the Search Results from the Web
 						for (var c=0 ; c < items.length ; c++) {
 							var item = items[c];
+							
+							if (e.subquery == "timeline") {
+								screenName = item.user.screen_name;
+								avatar_url = item.user.profile_image_url;
+								status_id = item.id;
+							} else {
+								screenName = item.from_user;
+								avatar_url = item.profile_image_url;
+								status_id = item.id_str;
+							}
 
 							var row = Ti.UI.createTableViewRow({height:78});
 
 							var avatar = Ti.UI.createImageView({
-								image : item.profile_image_url,
+								image : avatar_url,
 								backgroundColor: 'black',
 								height:48,
 								width:48,
@@ -527,7 +549,7 @@ var flashlight_create = function() {
 							row.add(avatar);
 
 							var username = Ti.UI.createLabel({
-								text: '@' + item.from_user,
+								text: '@' + screenName,
 								color: '#863486',
 								width: 250,
 								height:15,
@@ -554,13 +576,13 @@ var flashlight_create = function() {
 								height: 78,
 								width: 310,
 								zIndex: 2,
-								username: '@' + item.from_user,
+								username: '@' + screenName,
 								tweet: item.text,
 								timestamp: item.created_at.substr(0,25),
 								app: Encoder.htmlDecode(item.source),
 								// app: item.source,
-								avatar: item.profile_image_url,
-								link: "http://twitter.com/#!/" + item.from_user + "/status/" + item.id_str + '/',
+								avatar: avatar_url,
+								link: "http://twitter.com/#!/" + screenName + "/status/" + status_id + '/',
 								type: 'twitter'
 							}));
 

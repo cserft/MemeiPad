@@ -16,7 +16,7 @@ var Meme = function() {
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
 		featuredPosts, dashboardPosts, isFollowing, follow, unfollow, 
 		createComment, repost, isReposted, userInfo, userSearch, userFeatured, flashlightPhotos, 
-		flashlightVideos, flashlightWeb, flashlightLinkWeb, flashlightTweets;
+		flashlightVideos, flashlightWeb, flashlightLinkWeb, flashlightTweets, flashlightTwitterTimeline;
 		
 	// private functions
 	var getYql, cacheGet, cachePut, loginRequired, throwYqlError, createPost, 
@@ -275,6 +275,22 @@ var Meme = function() {
 		cachedYqlQuery(params, successCallback, errorCallback);
 		return items;
 	};
+	
+	flashlightTwitterTimeline = function(query) {
+		var params = {
+			cacheKey: 'flashlight:twitterTimeline:' + query,
+			yqlQuery: 'SELECT * FROM twitter.user.timeline(30) WHERE screen_name="' + query + '"'
+		};
+		var items;
+		var successCallback = function(results) {
+			items = results.statuses.status;
+		};
+		var errorCallback = function() {
+			ìtems = null;
+		};
+		cachedYqlQuery(params, successCallback, errorCallback);
+		return items;
+	};
 
 	// =====================
 	// = Private functions =
@@ -401,6 +417,7 @@ var Meme = function() {
 		flashlightVideos: flashlightVideos, 
 		flashlightWeb: flashlightWeb, 
 		flashlightLinkWeb: flashlightLinkWeb,
-		flashlightTweets: flashlightTweets
+		flashlightTweets: flashlightTweets,
+		flashlightTwitterTimeline: flashlightTwitterTimeline
 	});	
 };
