@@ -102,8 +102,8 @@
   <string name="flashlight_alert_empty_message">Flashlight kosong, ketik sesuatu untuk mendapatkan konten usulan</string>
   <string name="flashlight_no_results">Hasil tidak ditemukan.</string>
   <string name="add_photo_button_title">tambah foto</string>
-  <string name="alert_clear_shake_title">Clear content</string> /* TODO!!!!! -->
-  <string name="alert_clear_shake_message">Are you sure you want to clear all content in this screen?</string> /* TODO!!!!! -->
+  <string name="alert_clear_shake_title">Clear content</string> <!-- TODO!!!!! -->
+  <string name="alert_clear_shake_message">Are you sure you want to clear all content in this screen?</string> <!-- TODO!!!!! -->
  <!--/newpost.js -->
 
  <!--commons.js -->

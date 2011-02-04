@@ -102,8 +102,8 @@
   <string name="flashlight_alert_empty_message">探照灯关键字为空，只要输入任何内容我们就会提供建议</string>
   <string name="flashlight_no_results">没有找到结果。</string>
   <string name="add_photo_button_title">添加圖片</string>
-  <string name="alert_clear_shake_title">Clear content</string> /* TODO!!!!! -->
-  <string name="alert_clear_shake_message">Are you sure you want to clear all content in this screen?</string> /* TODO!!!!! -->
+  <string name="alert_clear_shake_title">Clear content</string> <!-- TODO!!!!! -->
+  <string name="alert_clear_shake_message">Are you sure you want to clear all content in this screen?</string> <!-- TODO!!!!! -->
  <!--/newpost.js -->
 
  <!--commons.js -->

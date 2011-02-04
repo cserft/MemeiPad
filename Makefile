@@ -1,9 +1,15 @@
 DEV_PATH=/Users/gc/Projetos/MemeiPad/
 PROD_PATH=/Users/gc/Projetos/iwasay/etc/MemeiPad/trunk/
 
-clean:
+clean: clean-languages
 	@rm -rf ${DEV_PATH}/src/build/iphone/*
-	@echo "Cleaned src/build/iphone/*"
+	@echo "Deleted: src/build/iphone/*"
 
-publish:
+clean-languages:
+	@bash ./bin/i18n.sh clean
+
+languages:
+	@bash ./bin/i18n.sh
+
+publish: clean languages
 	cp -prvf ${DEV_PATH}/src/build/iphone/* ${PROD_PATH}
