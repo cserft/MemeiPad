@@ -12,4 +12,4 @@ languages:
 	@bash ./bin/i18n.sh
 
 publish: clean languages
-	cp -prvf ${DEV_PATH}/src/build/iphone/* ${PROD_PATH}
+	@cp -prvf ${DEV_PATH}/src/* ${PROD_PATH}
