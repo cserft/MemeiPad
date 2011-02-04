@@ -1,5 +1,5 @@
 /* app.js */
-"app_name" = "meme para ipad"; /* Limit of 13 characters */
+"app_name" = "Yahoo! Meme"; /* Limit of 13 characters */
 /* HEADER */
 "path_logo_header" = "images/logo_meme_white_es.png";
 "path_btn_signin_background_image" = "images/btn_signin_top.png";
