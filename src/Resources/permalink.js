@@ -11,26 +11,49 @@ var _guid = win.pGuid;
 var _pubId = win.pPubId;
 var clickTimeoutViewPopoverUser = 0;
 
+//Retrieves Post info
 var post = Ti.App.meme.getPost(_guid, _pubId);
+
+//Retrieves the Post owner Info
+var memeInfo = Ti.App.meme.userInfo(_guid, 40, 40);
 
 // ============================
 // = BULDING PERMALINK LAYOUT =
 // ============================
 var whiteBox = Ti.UI.createView({
-	backgroundColor:'white',
-	width:  		'100%',
-	height: 		'100%',
-	zIndex: 	0
+	backgroundColor: 	'black',
+	width:  			'100%',
+	height: 			'100%',
+	zIndex: 			0
 });
 win.add(whiteBox);
 
+// Create our Theme Background WebView
+
+var themeBg;
+if (memeInfo.bgimage == undefined) {
+	themeBg = 'images/bg.png';
+} else {
+	themeBg = memeInfo.bgimage.content;
+} 
+
+var themeBackgroundWebView = Ti.UI.createWebView({
+        html: 				"<html><head></head><body background = '" + themeBg + "'> </body></html>",
+		top: 				0,
+        left: 				0,
+		width: 				'100%',
+		height: 			'100%',
+		zIndex: 			1
+});
+whiteBox.add(themeBackgroundWebView);
+
 var btn_close = Titanium.UI.createButton({
 	backgroundImage: 	'images/btn_close.png',
-	top: 				22,
-	left: 				960,
+	top: 				32,
+	left: 				955,
 	width: 				36,
 	height: 			36,
-	zIndex: 			3
+	zIndex: 			4
 });
 win.add(btn_close);
 
@@ -40,26 +63,28 @@ btn_close.addEventListener("click", function(e)
 	t3 = t3.scale(0);
 	win.close({transform:t3,duration:200});
 	whiteBox.remove(postWebView);
-	Ti.App.permalinkIsOpened = false;
-    // allows for other Permalinks to Open
 	
+	// allows for other Permalinks to Open
+	Ti.App.permalinkIsOpened = false;
 });
+
+
 
 // =============================================
 // = DEFINITION OF LAYOUT TYPE IN THE WEB VIEW =
 // =============================================
 
-var	innerMedia;
-var innerCaption;
+var	innerMedia, innerCaption;
 
 // Create our Webview to render the Post's content
 var postWebView = Ti.UI.createWebView({
-        html: '',
-		top:0,
-		width: '100%',
-		height: 683,
-        left:0,
-        loading: true
+        html: 		'',
+		top: 		50,
+	    left: 		50,
+		width: 		924,
+		height: 	550,
+        loading: 	true,
+		zIndex: 	3
 });
 whiteBox.add(postWebView);
 
@@ -72,16 +97,6 @@ var actAjax = Ti.UI.createActivityIndicator({
 	style: 			Ti.UI.iPhone.ActivityIndicatorStyle.DARK
 });
 whiteBox.add(actAjax);
-
-//Border from the WebView to the User Information bottom bar
-var border = Ti.UI.createView({
-	backgroundColor:'#EBEBEB',
-	height:1,
-	bottom:65,
-	width: '100%',
-	zIndex: 4
-});
-whiteBox.add(border);
 
 var getPostHtml = function(innerMedia, innerCaption) {
 	// "(" & word & ")(?=[^>]*?<)"  // does not replace word inside Tags <>
@@ -127,10 +142,27 @@ postWebView.addEventListener('load', function(){
 	actAjax.hide({opacity:0,duration:200});
 });
 
-// ====================================
-// = OWNER GUID INFORMATION RETRIEVAL =
-// ====================================
-var memeInfo = Ti.App.meme.userInfo(_guid, 40, 40);
+//FOOTER
+
+var footerView = Ti.UI.createView({
+	backgroundColor: 	'white',
+	left: 				50,
+	height: 			67,
+	bottom: 			81,
+	width: 				924,
+	zIndex: 			4
+});
+whiteBox.add(footerView);
+
+//Border from the WebView to the User Information bottom bar
+var border = Ti.UI.createView({
+	backgroundColor: 	'#EBEBEB',
+	height: 			1,
+	top: 				0,
+	width: 				'100%',
+	zIndex: 			1
+});
+footerView.add(border);
 
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
@@ -154,17 +186,15 @@ var width_btn_avatar = parseInt(guidNameLabel.text.length * 15);
 // User Post Owner View (Avatar + Label + time of the post Label)
 var guidView = Titanium.UI.createView({
 	backgroundColor: 	'transparent',
-	backgroundLeftCap: 		15,
-	// backgroundRightCap: 	134,
-	backgroundTopCap: 		15,
-	// backgroundBottomCap: 	55,
+	backgroundLeftCap: 	15,
+	backgroundTopCap: 	15,
 	bottom: 			4,
 	left: 				10,
 	width: 				(width_btn_avatar <= 220) ? 220 : width_btn_avatar, //440
 	height: 			60,
 	zIndex: 			2
 });
-whiteBox.add(guidView);
+footerView.add(guidView);
 
 // Users Post Owner Avatar
 var guidAvatar = Titanium.UI.createImageView({
@@ -202,7 +232,6 @@ var postUpdatedTimeLabel = Titanium.UI.createLabel({
 guidView.add(postUpdatedTimeLabel);
 
 guidView.addEventListener('touchend', function()	{
-	
 	guidView.backgroundImage = '';
 });
 
@@ -391,7 +420,7 @@ var btn_repost = Titanium.UI.createView({
 	opacity: 1,
 	zIndex: 4
 });
-whiteBox.add(btn_repost);
+footerView.add(btn_repost);
 
 // Already Reposted Icon
 var icon_btn_repost = Titanium.UI.createImageView({
@@ -433,13 +462,13 @@ var repostCountLabel = Titanium.UI.createLabel({
 		fontWeight: 'regular'
 	},
 	bottom: 21,
-	left:939,
-	width:100,
+	right: 10,
+	width: 70,
 	height:29,
 	zIndex: 5
 });
 
-whiteBox.add(repostCountLabel);
+footerView.add(repostCountLabel);
 
 // Button to share Post
 var btn_share = Titanium.UI.createButton({
@@ -451,7 +480,7 @@ var btn_share = Titanium.UI.createButton({
 	opacity: 			1,
 	zIndex: 			1
 });
-whiteBox.add(btn_share);
+footerView.add(btn_share);
 
 //BTN Share popover
 
@@ -757,17 +786,17 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 	// When not loggedIn, disables the Repost Button and adds the Report Abuse button
 	btn_repost.opacity = 0.7;	
 	btn_repost.touchEnabled = false;
-	whiteBox.add(btn_report_abuse);
+	footerView.add(btn_report_abuse);
 	
 } else {
 	
 	// 1) Delete Button is displayed only when the user is the owner of the post
 	if (_guid == Ti.App.myMemeInfo.guid) {
-		whiteBox.add(btn_delete);
+		footerView.add(btn_delete);
 	
 	// 2) Report abuse is displayed when user is NOT owner of the post
 	} else {
-		whiteBox.add(btn_report_abuse);
+		footerView.add(btn_report_abuse);
 	}
 	
 	// 3) Repost button will be enabled only for posts that were not reposted yet
