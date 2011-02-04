@@ -23,7 +23,6 @@ run:
 	@echo "Building with Titanium..."
 	@mkdir -p src/build/iphone/
 	@${TI_BUILD} run ./src/ ${IPHONE_SDK_VERSION} ${APP_ID} ${APP_NAME} ${APP_DEVICE}
-	@echo "Done."
 
 titanium:
 	@echo "TODO"
