@@ -13,4 +13,8 @@ APP_NAME="MemeiPad"
 APP_DEVICE="ipad"
 PYTHONPATH="${TI_IPHONE_DIR}:${PROJECT_ROOT}/bin"
 
+# execute builder directly
+# bash -c "${TI_BUILD} run ${PROJECT_ROOT}/src/ ${IPHONE_SDK_VERSION} ${APP_ID} ${APP_NAME} ${APP_DEVICE}"
+
+# execute builder through titanium_hook
 PYTHONPATH=${PYTHONPATH} ${TI_BUILD_HOOK} run ${PROJECT_ROOT}/src/ ${IPHONE_SDK_VERSION} ${APP_ID} ${APP_NAME} ${APP_DEVICE}
