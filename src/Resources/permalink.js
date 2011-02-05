@@ -499,7 +499,23 @@ if (parseInt(post.repost_count) == 0) {
 	var repost_countInt = parseInt(post.repost_count);
 }
 
+var repostCountLabel = Titanium.UI.createLabel({
+	color:'#666',
+	text: repost_countInt,
+	textAlign:'left',
+	font: {
+		fontSize:21,
+		fontFamily:'Helvetica',
+		fontWeight: 'regular'
+	},
+	bottom: 21,
+	right: 10,
+	width: 70,
+	height:29,
+	zIndex: 5
+});
 
+footerView.add(repostCountLabel);
 
 // Button to share Post
 var btn_share = Titanium.UI.createButton({
