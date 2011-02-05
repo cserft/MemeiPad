@@ -418,7 +418,41 @@ guidView.addEventListener('click', function(e) {
 	},500);
 
 });
+Ti.API.debug("AppID>>>>>>>>>>>>>>>>>> : " + post.appid);
 
+if (post.appid != undefined) {
+	
+	//App name of the application
+	var iconApp = Titanium.UI.createImageView({
+		image: 'images/icon_app.png',
+		top:27,
+		left:320,
+		width:15,
+		height:15,
+		zIndex:2
+	});
+	footerView.add(iconApp);
+
+	// Label for the Application
+	// post
+
+	var appName = Titanium.UI.createLabel({
+		color:'#666',
+		text: 'using ' + post.appid,
+		textAlign:'left',
+		font: {
+			fontSize:12,
+			fontFamily:'Helvetica',
+			fontWeight: 'regular'
+		},
+		bottom: 21,
+		left: 340,
+		width: 200,
+		height:21,
+		zIndex: 5
+	});
+	footerView.add(appName);
+}
 
 // ===========================
 // = REPOST BUTTON AND COUNT =
@@ -465,23 +499,7 @@ if (parseInt(post.repost_count) == 0) {
 	var repost_countInt = parseInt(post.repost_count);
 }
 
-var repostCountLabel = Titanium.UI.createLabel({
-	color:'#666',
-	text: repost_countInt,
-	textAlign:'left',
-	font: {
-		fontSize:21,
-		fontFamily:'Helvetica',
-		fontWeight: 'regular'
-	},
-	bottom: 21,
-	right: 10,
-	width: 70,
-	height:29,
-	zIndex: 5
-});
 
-footerView.add(repostCountLabel);
 
 // Button to share Post
 var btn_share = Titanium.UI.createButton({
