@@ -420,39 +420,44 @@ guidView.addEventListener('click', function(e) {
 });
 Ti.API.debug("AppID>>>>>>>>>>>>>>>>>> : " + post.appid);
 
-if (post.appid != undefined) {
+//Retrieves AppInfo
+if (post.appid != undefined || post.appid != null) {
 	
-	//App name of the application
-	var iconApp = Titanium.UI.createImageView({
-		image: 'images/icon_app.png',
-		top:27,
-		left:320,
-		width:15,
-		height:15,
-		zIndex:2
-	});
-	footerView.add(iconApp);
+	Ti.App.meme.appInfo(post.appid, function (appInfo) {
+		
+		//App name of the application
+		var iconApp = Titanium.UI.createImageView({
+			image: 'images/icon_app.png',
+			top:27,
+			left:320,
+			width:15,
+			height:15,
+			zIndex:2
+		});
+		footerView.add(iconApp);
 
-	// Label for the Application
-	// post
+		// Label for the Application
+		// post
 
-	var appName = Titanium.UI.createLabel({
-		color:'#666',
-		text: 'using ' + post.appid,
-		textAlign:'left',
-		font: {
-			fontSize:12,
-			fontFamily:'Helvetica',
-			fontWeight: 'regular'
-		},
-		bottom: 21,
-		left: 340,
-		width: 200,
-		height:21,
-		zIndex: 5
+		var appName = Titanium.UI.createLabel({
+			color:'#666',
+			text: 'using ' + appInfo.name,
+			textAlign:'left',
+			font: {
+				fontSize:12,
+				fontFamily:'Helvetica',
+				fontWeight: 'regular'
+			},
+			bottom: 21,
+			left: 340,
+			width: 200,
+			height:21,
+			zIndex: 5
+		});
+		footerView.add(appName);
 	});
-	footerView.add(appName);
 }
+
 
 // ===========================
 // = REPOST BUTTON AND COUNT =
