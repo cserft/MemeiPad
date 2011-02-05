@@ -41,6 +41,7 @@ var themeBackgroundWebView = Ti.UI.createWebView({
         html: 				"<html><head></head><body background = '" + themeBg + "'> </body></html>",
 		top: 				0,
         left: 				0,
+		touchEnabled: 		false,
 		width: 				'100%',
 		height: 			'100%',
 		zIndex: 			1
@@ -157,14 +158,14 @@ whiteBox.add(footerView);
 // REPOST ADD COMMENT VIEWS
 var whiteShadow = Titanium.UI.createView({
 	backgroundImage: 	'images/white_gradient_shadow.png',
-	bottom: 			0,
-	left: 				0, 
+	bottom: 			148,
+	left: 				50, 
 	width: 				924,
 	height: 			20,
-	zIndex: 			3,
+	zIndex: 			5,
 	opacity: 			1
 });
-postWebView.add(whiteShadow);
+whiteBox.add(whiteShadow);
 
 
 //Border from the WebView to the User Information bottom bar
@@ -179,31 +180,29 @@ footerView.add(border);
 
 //Guid Name / Title
 var guidNameLabel = Titanium.UI.createLabel({
-	color:'#A9379C',
-	text: Encoder.htmlDecode(memeInfo.title),
-	textAlign:'left',
+	color: 				'#A9379C',
+	text: 				Encoder.htmlDecode(memeInfo.title),
+	textAlign: 			'left',
+	minimumFontSize: 	15,
 	font: {
-		fontSize: 18,
-		fontFamily:'Helvetica',
-		fontWeight: 'bold'
+		fontSize:  		18,
+		fontFamily: 	'Helvetica',
+		fontWeight: 	'bold'
 	},
-	top: 5,
-	left: 56,
-	width: 400,
-	height: 29,
-	zIndex: 2
+	top: 				5,
+	left: 				56,
+	width: 				240,
+	height: 			29,
+	zIndex: 			2
 });
-
-var width_btn_avatar = parseInt(guidNameLabel.text.length * 15);
 
 // User Post Owner View (Avatar + Label + time of the post Label)
 var guidView = Titanium.UI.createView({
-	backgroundColor: 	'transparent',
 	backgroundLeftCap: 	15,
 	backgroundTopCap: 	15,
 	bottom: 			4,
 	left: 				10,
-	width: 				(width_btn_avatar <= 220) ? 220 : width_btn_avatar, //440
+	width: 				300,
 	height: 			60,
 	zIndex: 			2
 });
@@ -427,32 +426,32 @@ if (post.appid != undefined || post.appid != null) {
 		
 		//App name of the application
 		var iconApp = Titanium.UI.createImageView({
-			image: 'images/icon_app.png',
-			top:27,
-			left:320,
-			width:15,
-			height:15,
-			zIndex:2
+			image: 		'images/icon_app.png',
+			top: 		27,
+			left: 		320,
+			width: 		15,
+			height: 	15,
+			zIndex: 	2
 		});
 		footerView.add(iconApp);
 
 		// Label for the Application
-		// post
-
 		var appName = Titanium.UI.createLabel({
-			color:'#666',
-			text: 'using ' + appInfo.name,
-			textAlign:'left',
+			color: 					'#666',
+			// backgroundColor: 		'red',
+			text:  					'using ' + appInfo.name,
+			textAlign: 				'left',
+			minimumFontSize: 		11,
 			font: {
-				fontSize:12,
-				fontFamily:'Helvetica',
-				fontWeight: 'regular'
+				fontSize: 			12,
+				fontFamily: 		'Helvetica',
+				fontWeight: 		'bold'
 			},
-			bottom: 21,
-			left: 340,
-			width: 200,
-			height:21,
-			zIndex: 5
+			bottom: 				21,
+			left: 					340,
+			width: 					170,
+			height: 				21,
+			zIndex: 				2
 		});
 		footerView.add(appName);
 	});
@@ -505,29 +504,71 @@ if (parseInt(post.repost_count) == 0) {
 }
 
 var repostCountLabel = Titanium.UI.createLabel({
-	color:'#666',
-	text: repost_countInt,
-	textAlign:'left',
+	color: 				'#666',
+	text: 				repost_countInt,
+	textAlign: 			'left',
 	font: {
-		fontSize:21,
-		fontFamily:'Helvetica',
-		fontWeight: 'regular'
+		fontSize: 		21,
+		fontFamily: 	'Helvetica',
+		fontWeight: 	'regular'
 	},
-	bottom: 21,
-	right: 10,
-	width: 70,
-	height:29,
-	zIndex: 5
+	bottom: 			21,
+	right: 				10,
+	width: 				70,
+	height: 			29,
+	zIndex: 			5
 });
 
 footerView.add(repostCountLabel);
+
+//Button for comments
+var btn_comments = Titanium.UI.createView({
+	backgroundImage: 	'images/btn_comments.png',
+	width: 				150,
+	height: 			65,
+	bottom: 			1,
+	right: 				149,
+	opacity: 			1,
+	zIndex: 			4
+});
+footerView.add(btn_comments);
+
+//TODO IF ZERO COMMENTS
+var commentCountLabel = Titanium.UI.createLabel({
+	color: 				'#666',
+	text: 				"3000",
+	textAlign: 			'left',
+	font: {
+		fontSize: 		21,
+		fontFamily: 	'Helvetica',
+		fontWeight: 	'regular'
+	},
+	right: 				10,
+	width: 				70,
+	height: 			29,
+	zIndex: 			5
+});
+btn_comments.add(commentCountLabel);
+
+//Comments Listener
+btn_comments.addEventListener('click', function(e) {
+	// Click visual Feedback
+	btn_comments.opacity = 0.7;
+});
+
+// Repost bck to normal
+btn_comments.addEventListener('touchend', function(e) {
+	// Click visual Feedback
+	btn_comments.opacity = 1;
+});
+
 
 // Button to share Post
 var btn_share = Titanium.UI.createButton({
 	backgroundImage: 	'images/btn_fwd2.png',
 	width: 				34,
 	height: 			28,
-	right: 				215,
+	right: 				370,
 	bottom: 			20,
 	opacity: 			1,
 	zIndex: 			1
@@ -819,7 +860,7 @@ var btn_report_abuse = Titanium.UI.createButton({
 	width:27,
 	height:27,
 	bottom: 20,
-	right: 165,
+	right: 320,
 	zIndex: 1
 });
 
@@ -828,8 +869,8 @@ var btn_delete = Titanium.UI.createButton({
 	backgroundImage:'images/btn_trash.png',
 	width:25,
 	height:29,
-	bottom: 20,
-	right: 165,
+	bottom: 18,
+	right: 320,
 	zIndex: 1
 });
 
