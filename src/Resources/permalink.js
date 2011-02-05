@@ -154,6 +154,19 @@ var footerView = Ti.UI.createView({
 });
 whiteBox.add(footerView);
 
+// REPOST ADD COMMENT VIEWS
+var whiteShadow = Titanium.UI.createView({
+	backgroundImage: 	'images/white_gradient_shadow.png',
+	bottom: 			0,
+	left: 				0, 
+	width: 				924,
+	height: 			20,
+	zIndex: 			3,
+	opacity: 			1
+});
+postWebView.add(whiteShadow);
+
+
 //Border from the WebView to the User Information bottom bar
 var border = Ti.UI.createView({
 	backgroundColor: 	'#EBEBEB',
@@ -412,13 +425,13 @@ guidView.addEventListener('click', function(e) {
 // ===========================
 
 var btn_repost = Titanium.UI.createView({
-	backgroundImage:'images/btn_repost2.png',
-	width:150,
-	height:65,
-	bottom: 1,
-	right: 0,
-	opacity: 1,
-	zIndex: 4
+	backgroundImage: 	'images/btn_repost2.png',
+	width: 				150,
+	height: 			65,
+	bottom: 			1,
+	right: 				0,
+	opacity: 			1,
+	zIndex: 			4
 });
 footerView.add(btn_repost);
 
@@ -824,10 +837,10 @@ if (! Ti.App.oAuthAdapter.isLoggedIn()) {
 // REPOST ADD COMMENT VIEWS
 var repost_comment_view = Titanium.UI.createView({
 	backgroundImage: 	'images/bg_btn_repost_comment.png',
-	bottom: 			1,
+	bottom: 			0,
 	left: 				0, 
-	width: 				1024,
-	height: 			65,
+	width: 				776,
+	height: 			66,
 	zIndex: 			3,
 	opacity: 			0
 });
@@ -859,7 +872,7 @@ var btn_send_comment = Titanium.UI.createButton({
 	width: 				125,
 	height: 			34,
 	top: 				16,
-	left: 				688,
+	left: 				570,
 	zIndex: 			1
 });
 repost_comment_view.add(btn_send_comment);
@@ -870,7 +883,7 @@ var btn_close_comment = Titanium.UI.createButton({
 	width: 				25,
 	height: 			25,
 	top: 				20,
-	left: 				825,
+	right: 				35,
 	zIndex: 			1
 });
 repost_comment_view.add(btn_close_comment);
@@ -881,7 +894,7 @@ repost_comment_view.add(btn_close_comment);
 // BTN to close the Comment form
 btn_close_comment.addEventListener('click', function(e) {
 	repost_comment_view.animate({opacity:0, duration: 300}, function(){
-			whiteBox.remove(repost_comment_view);
+			footerView.remove(repost_comment_view);
 	});
 });
 
@@ -940,7 +953,7 @@ btn_repost.addEventListener('click', function(e) {
 			repostCountLabel.text = repost_countInt += 1;
 			
 			// Add Comment Box after Reposting
-			whiteBox.add(repost_comment_view);
+			footerView.add(repost_comment_view);
 			repost_comment_view.animate({opacity:1, duration: 300});
 			
 		},2000);
@@ -969,7 +982,7 @@ btn_send_comment.addEventListener("click", function(e) {
 				
 				//Hides Comment Box
 				repost_comment_view.animate({opacity:0, duration: 300}, function(){
-						whiteBox.remove(repost_comment_view);
+						footerView.remove(repost_comment_view);
 				});
 
 			},2000);
@@ -981,7 +994,7 @@ btn_send_comment.addEventListener("click", function(e) {
 	} else {
 		//Hides Comment Box
 		repost_comment_view.animate({opacity:0, duration: 300}, function(){
-				whiteBox.remove(repost_comment_view);
+				footerView.remove(repost_comment_view);
 		});
 	}
 });
