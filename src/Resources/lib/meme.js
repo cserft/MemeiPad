@@ -16,7 +16,7 @@ var Meme = function() {
 	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
 		featuredPosts, dashboardPosts, isFollowing, follow, unfollow, 
 		createComment, repost, isReposted, userInfo, userSearch, userFeatured, flashlightPhotos, 
-		flashlightVideos, flashlightWeb, flashlightLinkWeb, flashlightTweets, flashlightTwitterTimeline;
+		flashlightVideos, flashlightWeb, flashlightLinkWeb, flashlightTweets, flashlightTwitterTimeline, appInfo;
 		
 	// private functions
 	var getYql, cacheGet, cachePut, loginRequired, throwYqlError, createPost, 
@@ -291,6 +291,27 @@ var Meme = function() {
 		cachedYqlQuery(params, successCallback, errorCallback);
 		return items;
 	};
+	
+	appInfo = function(appId, callback) {
+		var params = {
+			cacheKey: 'appInfo:' + appId,
+			cacheSeconds: 86400, // 24 hours
+			yqlQuery: 'SELECT * FROM appdb.application WHERE appid="' + appId + '"'
+		};
+		var appInfo;
+		
+		cachedYqlQuery(params, function(results) {
+			appInfo = results.application;
+		});
+		
+		if (!callback) {
+			Ti.API.info("No Callback Called");
+			return appInfo;
+		} else {
+			Ti.API.info("Callback Called");
+			return callback(appInfo);
+		}
+	};
 
 	// =====================
 	// = Private functions =
@@ -418,6 +439,7 @@ var Meme = function() {
 		flashlightWeb: flashlightWeb, 
 		flashlightLinkWeb: flashlightLinkWeb,
 		flashlightTweets: flashlightTweets,
-		flashlightTwitterTimeline: flashlightTwitterTimeline
+		flashlightTwitterTimeline: flashlightTwitterTimeline,
+		appInfo: appInfo
 	});	
 };
