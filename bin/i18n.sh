@@ -3,13 +3,13 @@
 # This script transforms i18n files from Titanium format (XML)
 # to Xcode format (Localizable.strings)
 
-SRCROOT="/Users/gc/Projetos/MemeiPad"
+PROJECT_ROOT=${PROJECT_ROOT:-../}
 LANGUAGES=( en es id pt zh-Hant )
 IFS=$'\n' # set line separator to \n
 
 for language in ${LANGUAGES[@]}; do
-	IN="${SRCROOT}/src/i18n/${language}/strings.xml"
-	OUT="${SRCROOT}/src/Resources/${language}.lproj/Localizable.strings"
+	IN="${PROJECT_ROOT}/src/i18n/${language}/strings.xml"
+	OUT="${PROJECT_ROOT}/src/Resources/${language}.lproj/Localizable.strings"
 
 	# delete old language files
 	rm -rf $OUT
