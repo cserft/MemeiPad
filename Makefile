@@ -16,9 +16,13 @@ run:
 	@mkdir -p ${PROJECT_ROOT}/src/build/iphone/
 	@PROJECT_ROOT=${PROJECT_ROOT} bash ${PROJECT_ROOT}/bin/titanium.sh
 
+# APP BUILD WITHOUT OPENING SIMULATOR
 titanium:
 	@echo "TODO"
 
+# DOWNLOAD SVN
+# CHECKIN FILES
+# UPLOAD
 publish: clean languages titanium
 	#@cp -prvf ${PROJECT_ROOT}/src/* ${SVN_DIR}
 
