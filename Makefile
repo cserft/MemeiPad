@@ -11,10 +11,17 @@ clean-languages:
 languages:
 	@PROJECT_ROOT=${PROJECT_ROOT} bash ${PROJECT_ROOT}/bin/i18n.sh
 
-run:
+launch-titanium:
 	@echo "Building with Titanium..."
 	@mkdir -p ${PROJECT_ROOT}/src/build/iphone/
 	@PROJECT_ROOT=${PROJECT_ROOT} bash ${PROJECT_ROOT}/bin/titanium.sh
+
+test:
+	@echo "var testsEnabled = true;" > ${PROJECT_ROOT}/src/Resources/test/enabled.js
+	@make launch-titanium
+run:
+	@echo "var testsEnabled = false;" > ${PROJECT_ROOT}/src/Resources/test/enabled.js
+	@make launch-titanium
 
 # APP BUILD WITHOUT OPENING SIMULATOR
 titanium:

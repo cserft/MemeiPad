@@ -15,7 +15,6 @@ Ti.API.info("App Name: " + Ti.App.getName() + " and App Version: " + Ti.App.getV
 // indicates if app is in development or production
 // used to disable cache, analytics, etc
 Ti.App.development = false; // WARNING: remove this before put in production :)
-Ti.App.runTests = false;
 
 Ti.App.myMemeInfo = null;
 
@@ -1260,7 +1259,11 @@ Bookmarklet.check(function(bookmarkletLink) {
 //Analytics Request
 doYwaRequest(analytics.APP_STARTED);
 
-if (Ti.App.runTests) {
+// ======================
+// = Test suite startup =
+// ======================
+Ti.include('./test/enabled.js')
+if (testsEnabled) {
 	winDashboard.addEventListener('open', function(e) {
 		Titanium.UI.createWindow({
 		    url: 'test/tests.js', 
