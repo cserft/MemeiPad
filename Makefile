@@ -31,6 +31,11 @@ build:
 # TODO: download SVN first, then checkin files, then upload
 # TODO: patch main.m to put correct TI_APPLICATION_RESOURCE_DIR
 publish: languages
+	@echo "Deleting destination files..."
+	@for FILE in `find $(SVN_DIR)/* | grep -v .svn`;\
+	do\
+		if [ -f $$FILE ]; then rm -rf $$FILE; fi;\
+	done
 	@echo "Copying root files..."
 	@cp -prf ${PROJECT_ROOT}/src/CHANGELOG.txt ${SVN_DIR}
 	@cp -prf ${PROJECT_ROOT}/src/Info.plist ${SVN_DIR}
@@ -46,7 +51,7 @@ publish: languages
 	@cp -prf ${PROJECT_ROOT}/src/Resources/*.png ${SVN_DIR}/Resources/
 	@echo "Copying Languages..."
 	@cp -prf ${PROJECT_ROOT}/src/Resources/*.lproj ${SVN_DIR}/Resources/
-	@echo "Disabling in destination..."
+	@echo "Disabling tests in destination..."
 	@mkdir -p ${SVN_DIR}/Resources/test/
 	@echo "" > ${SVN_DIR}/Resources/test/enabled.js
 	@echo "Copying fonts..."
@@ -61,15 +66,15 @@ publish: languages
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/lib ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/Resources ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/Info.plist ${SVN_DIR}/build/iphone/
-	#@cp -prf ${PROJECT_ROOT}/src/build/iphone/main.m ${SVN_DIR}/build/iphone/
+	@cp -prf ${PROJECT_ROOT}/src/build/iphone/main.m ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/MemeiPad_Prefix.pch ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/module.xcconfig ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/project.xcconfig ${SVN_DIR}/build/iphone/
-	@echo "**************************************************'
-	@echo "Please remember that the following file:'
-	@echo "- '${PROJECT_ROOT}/src/build/iphone/MemeiPad.xcodeproj/project.pbxproj'
-	@echo "Needs to be published manually (to avoid SVN conflicts).'
-	@echo "**************************************************'
+	@echo "**************************************************"
+	@echo "Please remember that the following file:"
+	@echo "- '${PROJECT_ROOT}/src/build/iphone/MemeiPad.xcodeproj/project.pbxproj'"
+	@echo "Needs to be published manually (to avoid SVN conflicts)."
+	@echo "**************************************************"
 	@echo "Done."
 
 log:
