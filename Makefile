@@ -42,13 +42,11 @@ svn-checkin:
 	@SVN_DIR=${SVN_DIR} bash ${PROJECT_ROOT}/bin/svn_checkin.sh
 
 svn-commit:
-	@rm -f ${TMP_DIR}/svncommitmsg
 	@echo "Commiting changes to SVN..."
 	@echo ">>> Please type your commit message (press Ctrl+D to finish):"
 	@svn ci -m "`python -c "import sys; data = sys.stdin.read(); print data;"`"
 
 # TODO: clean and build Titanium first (target 'build')
-# TODO: download SVN first, then checkin files, then upload
 # TODO: patch main.m to put correct TI_APPLICATION_RESOURCE_DIR
 publish: svn-checkout languages
 	@echo "Deleting destination files..."
