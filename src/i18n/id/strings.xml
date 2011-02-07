@@ -140,6 +140,8 @@
   <string name="mail_post_text">EMail posting ini</string>
   <string name="share_with_twitter">Bagi dengan Twitter untuk iPad</string>
   <string name="share_with_twitter_message">Ini akan membuka Twitter untuk iPad (jika terinstal)</string>
+  <string name="comment_alert_empty_title">Comment</string>
+  <string name="comment_alert_empty_message">Write something before you hit the save comment button. </string>
  <!--/permalink.js -->
 
  <!--Share with Mail -->
