@@ -24,7 +24,8 @@ var analytics = {
 	EMAIL_OPEN: 21,
 	FEEDBACK_MAIL_SENT: 22,
 	BROWSER_VIEW: 23,
-	ADD_COMMENT: 24
+	ADD_COMMENT: 24,
+	VIEW_COMMENTS_PERMALINK: 25
 };
 
 var doYwaRequest = function(pAction) {
