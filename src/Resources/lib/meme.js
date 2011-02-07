@@ -13,7 +13,7 @@ Usage:
 // TODO: inject cache, oadapter, etc.
 var Meme = function() {	
 	// public functions
-	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost,
+	var createTextPost, createPhotoPost, createVideoPost, deletePost, getPost, getComments,
 		featuredPosts, dashboardPosts, isFollowing, follow, unfollow, 
 		createComment, repost, isReposted, userInfo, userSearch, userFeatured, flashlightPhotos, 
 		flashlightVideos, flashlightWeb, flashlightLinkWeb, flashlightTweets, flashlightTwitterTimeline, appInfo;
@@ -50,6 +50,31 @@ var Meme = function() {
 			post = results.post;
 		});
 		return post;
+	};
+	
+	getComments = function(guid, pubid, pOffset, pNumItems) {
+		var offset = 0;
+		var numItems = 10;
+		
+		if (pOffset) {
+			offset = pOffset;
+		}
+		
+		if (pNumItems) {
+			numItems = pNumItems;
+		}
+		
+		var params = {
+			cacheKey: 'comments:' + guid + ':' + pubid,
+			cacheSeconds: 7200, // 24 hours
+			yqlQuery: 'SELECT * FROM meme.comments('+ offset +','+ numItems +') WHERE owner_guid="' + guid + '" and pubid="' + pubid + '"',
+			node: 'query'
+		};
+		var query;
+		cachedYqlQuery(params, function(pQuery) {
+			query = pQuery;
+		});
+		return query;
 	};
 	
 	featuredPosts = function(thumbWidth, thumbHeight, callback) {
@@ -388,22 +413,41 @@ var Meme = function() {
 		if (params.cacheSeconds) {
 			cacheSeconds = params.cacheSeconds;
 		}
-		
+
 		var items = cacheGet(params.cacheKey);
 		
 		// if didn't find items in cache, go fetch them on YQL
 		if (!items) {
 			var yqlResponse = getYql().query(params.yqlQuery);
-
-			if (!yqlResponse.query.results) {
-				if (errorCallback) {
-					errorCallback();
-				} else {
-					throwYqlError();
+			
+			// checks if it is query what we want as return
+			if (params.node == 'query') {
+				if (!yqlResponse.query) {
+					if (errorCallback) {
+						errorCallback();
+					} else {
+						throwYqlError();
+					}
+				}
+				
+			// If not node == query then get the results node
+			} else {
+				if (!yqlResponse.query.results) {
+					if (errorCallback) {
+						errorCallback();
+					} else {
+						throwYqlError();
+					}
 				}
 			}
 
+			//TODO: cache query node.
 			items = yqlResponse.query.results;
+			
+			if (params.node == 'query') {
+				items = yqlResponse.query;
+			}
+
 			
 			// cache valid results only
 			if (items) {
@@ -423,6 +467,7 @@ var Meme = function() {
 		createVideoPost: createVideoPost,
 		deletePost: deletePost,
 		getPost: getPost,
+		getComments: getComments,
 		featuredPosts: featuredPosts,
 		dashboardPosts: dashboardPosts,
 		isFollowing: isFollowing,
