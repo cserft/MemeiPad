@@ -24,9 +24,11 @@ run:
 	@echo "" > ${PROJECT_ROOT}/src/Resources/test/enabled.js
 	@make launch-titanium
 
-# APP BUILD WITHOUT OPENING SIMULATOR
-build:
-	@echo "TODO"
+build-verification:
+	@if [ "`find ${PROJECT_ROOT}/src/build/iphone/ -type f | wc -l | sed 's/ //g'`" == "0" ]; then\
+		echo "[ERROR] Please execute \"make run\" and run the application on simulator before publishing, so the compiled files can be generated.";\
+		exit 1;\
+	fi
 
 svn-verification:
 	@if [ "${SVN_USER}" == "" ]; then\
@@ -54,9 +56,8 @@ svn-commit: svn-verification
 	@rm -rf ${SVN_DIR}
 	@echo "Done."
 
-# TODO: clean and build Titanium first (target 'build')
 # TODO: patch main.m to put correct TI_APPLICATION_RESOURCE_DIR
-publish: svn-checkout languages
+publish: build-verification svn-checkout languages
 	@echo "Deleting destination files..."
 	@for FILE in `find ${SVN_DIR} | grep -v .svn | grep -v MemeiPad.xcodeproj | grep -v Entitlements.plist`;\
 	do\
