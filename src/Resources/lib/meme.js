@@ -54,7 +54,7 @@ var Meme = function() {
 	
 	getComments = function(guid, pubid, pOffset, pNumItems) {
 		var offset = 0;
-		var numItems = 10;
+		var numItems = 110;
 		
 		if (pOffset) {
 			offset = pOffset;
