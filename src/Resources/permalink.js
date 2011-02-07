@@ -13,6 +13,9 @@ var clickTimeoutViewPopoverUser = 0;
 
 //Retrieves Post info
 var post = Ti.App.meme.getPost(_guid, _pubId);
+var comments = Ti.App.meme.getComments(_guid, _pubId);
+
+Ti.API.debug("Comments Query JSON: " + JSON.stringify(comments));
 
 //Retrieves the Post owner Info
 var memeInfo = Ti.App.meme.userInfo(_guid, 40, 40);
@@ -533,10 +536,16 @@ var btn_comments = Titanium.UI.createView({
 });
 footerView.add(btn_comments);
 
+if (comments == undefined) {
+	var commentCount = 0;
+} else {
+	var commentCount = comments.count;
+}
+
 //TODO IF ZERO COMMENTS
 var commentCountLabel = Titanium.UI.createLabel({
 	color: 				'#666',
-	text: 				"3000",
+	text: 				commentCount,
 	textAlign: 			'left',
 	font: {
 		fontSize: 		21,
