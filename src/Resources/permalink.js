@@ -586,6 +586,17 @@ btn_comments.add(commentCountLabel);
 // adds the Comments View
 whiteBox.add(commentView);
 
+var line_comments_open = Titanium.UI.createView({
+	backgroundImage: 	'images/line_comments_open.png',
+	width: 				924,
+	height: 			1,
+	bottom: 			0,
+	right: 				0,
+	opacity: 			1,
+	zIndex: 			2
+});
+footerView.add(line_comments_open);
+
 //BTN Comments TOGGLE Listener
 btn_comments.addEventListener('touchstart', function(e) {
 	// Click visual Feedback
@@ -596,7 +607,7 @@ btn_comments.addEventListener('touchstart', function(e) {
 		footerView.animate({bottom: 631, duration: 300}, function(e){
 				whiteShadow.hide();
 		});
-		commentView.animate({height: 555, bottom: 81, duration: 300}, function(e){
+		commentView.animate({height: 550, bottom: 81, duration: 300}, function(e){
 			commentBoxView.animate({opacity: 1, delay: 200, duration: 200});
 		});
 		toggleCommentsOpen = true;

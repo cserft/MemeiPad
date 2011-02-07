@@ -7,14 +7,14 @@ var commentView = Titanium.UI.createView({
 	bottom: 			81,
 	left: 				50,
 	width: 				924,
-	height: 			1, //555,
+	height: 			1, //550,
 	zIndex: 			10,
 	visible: 			true
 });
 
 var commentBoxView = Titanium.UI.createView({
 	backgroundImage: 	'images/bg_comment_field_permalink.png',
-	top: 				55,
+	top: 				30,
 	left: 				53,
 	width: 				811,
 	height: 			80,
@@ -31,7 +31,7 @@ var commentField = Titanium.UI.createTextField({
 	color: 			'#666',
 	textAlign: 		'left',
 	font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
-	width: 			560,
+	width: 			580,
 	height: 		44,
 	top: 			18,
 	left: 			50,
@@ -52,8 +52,8 @@ var btn_send_comment2 = Titanium.UI.createButton({
 	font: 				{fontSize:14, fontFamily:'Helvetica', fontWeight:'bold'},
 	width: 				125,
 	height: 			34,
-	top: 				19,
-	left: 				659,
+	top: 				23,
+	left: 				662,
 	zIndex: 			1
 });
 commentBoxView.add(btn_send_comment2);
