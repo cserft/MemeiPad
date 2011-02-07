@@ -10,3 +10,4 @@ src/Resources/es.lproj/Localizable.strings
 src/Resources/id.lproj/Localizable.strings
 src/Resources/pt.lproj/Localizable.strings
 src/Resources/zh-Hant.lproj/Localizable.strings
+src/Resources/test/enabled.js

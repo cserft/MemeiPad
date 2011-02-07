@@ -1262,8 +1262,8 @@ doYwaRequest(analytics.APP_STARTED);
 // ======================
 // = Test suite startup =
 // ======================
-Ti.include('./test/enabled.js')
-if (testsEnabled) {
+Ti.include('./test/enabled.js');
+if ((typeof testsEnabled != 'undefined') && (testsEnabled)) {
 	winDashboard.addEventListener('open', function(e) {
 		Titanium.UI.createWindow({
 		    url: 'test/tests.js', 

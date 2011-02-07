@@ -20,7 +20,7 @@ test:
 	@echo "var testsEnabled = true;" > ${PROJECT_ROOT}/src/Resources/test/enabled.js
 	@make launch-titanium
 run:
-	@echo "var testsEnabled = false;" > ${PROJECT_ROOT}/src/Resources/test/enabled.js
+	@echo "" > ${PROJECT_ROOT}/src/Resources/test/enabled.js
 	@make launch-titanium
 
 # APP BUILD WITHOUT OPENING SIMULATOR
