@@ -140,6 +140,8 @@
   <string name="mail_post_text">郵寄這篇帖子</string>
   <string name="share_with_twitter">在iPad的Twitter上分享</string>
   <string name="share_with_twitter_message">這將打開iPad上的Twitter（如果安裝過</string>
+  <string name="comment_alert_empty_title">Comment</string>
+  <string name="comment_alert_empty_message">Write something before you hit the save comment button.</string>
  <!--/permalink.js -->
 
  <!--Share with Mail -->
