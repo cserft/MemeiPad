@@ -583,30 +583,34 @@ var commentCountLabel = Titanium.UI.createLabel({
 });
 btn_comments.add(commentCountLabel);
 
+// adds the Comments View
+whiteBox.add(commentView);
+
 //BTN Comments TOGGLE Listener
 btn_comments.addEventListener('touchstart', function(e) {
 	// Click visual Feedback
 	btn_comments.opacity = 0.7;
 	
 	if (toggleCommentsOpen == false) {
-		whiteBox.add(commentView);
-		whiteBox.remove(whiteShadow);
-		footerView.animate({bottom: 640, duration: 300}, function(e){
+		//Open
+		footerView.animate({bottom: 631, duration: 300}, function(e){
+				whiteShadow.hide();
 		});
-		commentView.animate({opacity: 1, duration: 400});
-		postWebView.animate({opacity: 0, duration: 300});
+		commentView.animate({height: 555, bottom: 81, duration: 300}, function(e){
+			commentBoxView.animate({opacity: 1, delay: 200, duration: 200});
+		});
 		toggleCommentsOpen = true;
 		
 	} else {
+		//Close
+		commentBoxView.animate({opacity: 0, duration: 100});
 		footerView.animate({bottom: 81, duration: 300}, function(e){
+				whiteShadow.show();
 		});
-		commentView.animate({opacity: 0, height: 1, duration: 300});
-		whiteBox.remove(commentView);
-		whiteBox.add(whiteShadow);
-		postWebView.animate({opacity: 1, delay: 100, duration: 300});
+		commentView.animate({height: 1, duration: 300}, function(e){
+		});
 		toggleCommentsOpen = false;
 	}
-	
 });
 
 // Repost bck to normal

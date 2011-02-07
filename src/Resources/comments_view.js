@@ -4,11 +4,11 @@
 
 var commentView = Titanium.UI.createView({
 	backgroundColor: 	'white',
-	top: 				108,
+	bottom: 			81,
 	left: 				50,
 	width: 				924,
-	height: 			560,
-	zIndex: 			3,
+	height: 			1, //555,
+	zIndex: 			10,
 	visible: 			true
 });
 
@@ -18,7 +18,9 @@ var commentBoxView = Titanium.UI.createView({
 	left: 				53,
 	width: 				811,
 	height: 			80,
-	zIndex: 			6
+	zIndex: 			2,
+	opacity: 			0,
+	visible: 			true
 });
 commentView.add(commentBoxView);
 
