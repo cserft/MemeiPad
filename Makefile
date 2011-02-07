@@ -1,6 +1,7 @@
 export PROJECT_ROOT=$(shell pwd)
 export SVN_USER=gchapie
-export SVN_DIR=$(PROJECT_ROOT)/tmp/MemeiPad_trunk/
+export TMP_DIR=$(PROJECT_ROOT)/tmp/
+export SVN_DIR=$(TMP_DIR)/MemeiPad_trunk/
 
 clean: clean-languages
 	@rm -rf ${PROJECT_ROOT}/src/build/iphone/*
@@ -28,7 +29,7 @@ run:
 build:
 	@echo "TODO"
 
-svn-co:
+svn-checkout:
 	@echo "Downloading project from SVN..."
 	@echo "SVN_USER: ${SVN_USER}"
 	@echo "SVN_DIR: ${SVN_DIR}"
@@ -36,10 +37,20 @@ svn-co:
 	@mkdir -p ${SVN_DIR}
 	@svn co svn+ssh://${SVN_USER}@svn.corp.yahoo.com/yahoo/brickhouse/iwasay/etc/MemeiPad/trunk ${SVN_DIR}
 
-# TODO: clean and build Titanium first (tarket 'build')
+svn-checkin:
+	@echo "Checking in files on SVN..."
+	@SVN_DIR=${SVN_DIR} bash ${PROJECT_ROOT}/bin/svn_checkin.sh
+
+svn-commit:
+	@rm -f ${TMP_DIR}/svncommitmsg
+	@echo "Commiting changes to SVN..."
+	@echo ">>> Please type your commit message (press Ctrl+D to finish):"
+	@svn ci -m "`python -c "import sys; data = sys.stdin.read(); print data;"`"
+
+# TODO: clean and build Titanium first (target 'build')
 # TODO: download SVN first, then checkin files, then upload
 # TODO: patch main.m to put correct TI_APPLICATION_RESOURCE_DIR
-publish: svn-co languages
+publish: svn-checkout languages
 	@echo "Deleting destination files..."
 	@for FILE in `find ${SVN_DIR} | grep -v .svn | grep -v MemeiPad.xcodeproj | grep -v Entitlements.plist`;\
 	do\
@@ -85,6 +96,8 @@ publish: svn-co languages
 	@echo "Needs to be published manually (to avoid SVN conflicts)."
 	@echo "**************************************************"
 	@echo "Done."
+	@make svn-checkin
+	@make svn-commit
 
 log:
 	@tail -n100 -f ${PROJECT_ROOT}/src/build/iphone/build/build.log
