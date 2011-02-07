@@ -90,47 +90,68 @@ notFoundRow.add(notFoundTitle);
 
 var results = [];
 
+var addUserInfo = function(comments) {
+	var guids = [];
+	for (var i=0; i < comments.length; i++) {
+		guids.push(comments[i].guid);
+	};
+	Ti.API.info('guids to query are: ' + guids);
+	var usersInfo = Ti.App.meme.userInfo(guids, 40, 40, true);
+	if (typeof usersInfo.length == 'undefined') {
+		usersInfo = [usersInfo];
+	}
+	for (var i=0; i < comments.length; i++) {
+		comments[i].userInfo = usersInfo[i];
+	}
+	return comments;
+};
+
 // Comments Array
 function getComments(comments) {
 	var commentItems = comments.results.comment;
 	
-	Ti.API.debug("Comments Query JSON: " + JSON.stringify(comments.results.comment) + "\nLength: [" + comments.count + "]");
+	if (typeof commentItems.length == 'undefined') {
+		commentItems = [commentItems];
+	}
+	
+	commentItems = addUserInfo(commentItems);
+	
+	//Ti.API.debug("Comments Query JSON: " + JSON.stringify(commentItems) + "\nLength: [" + commentItems.length + "]");
 
 	// coments loop
 	if (commentItems) {
-		//Loop to present the Search Results from the Web
-		for (var c=0 ; c < comments.count ; c++) {
+		for (var c=0 ; c < commentItems.length ; c++) {
 			var item = commentItems[c];
 			
-			Ti.API.debug("Comments ITEM loop JSON: " + JSON.stringify(item));
+			//Ti.API.debug("Comments ITEM loop JSON: " + JSON.stringify(item));
 			
 			var row = Ti.UI.createTableViewRow({height:112});
 			row.animationStyle = Titanium.UI.iPhone.RowAnimationStyle.FADE;
 			row.className = "comment";
 
-			// var avatar = Ti.UI.createImageView({
-			// 	image : avatar_url,
-			// 	backgroundColor: 'black',
-			// 	height:48,
-			// 	width:48,
-			// 	top:10,
-			// 	left:10,
-			// 	defaultImage:'images/default_img_avatar.png'
-			// });
-			// 
-			// row.add(avatar); images/quote_innerhtml.png
+			var avatar = Ti.UI.createImageView({
+				image: item.userInfo.avatar_url.thumb,
+				backgroundColor: 'black',
+				height:40,
+				width:40,
+				top:10,
+				left:10,
+				defaultImage:'images/default_img_avatar.png'
+			});
+			
+			row.add(avatar);
 
-			// var username = Ti.UI.createLabel({
-			// 	text: '@' + screenName,
-			// 	color: '#863486',
-			// 	width: 250,
-			// 	height:15,
-			// 	top: 8,
-			// 	left:67,
-			// 	textAlign:'left',
-			// 	font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
-			// });
-			// row.add(username);
+			var username = Ti.UI.createLabel({
+				text: item.userInfo.name,
+				color: '#863486',
+				width: 250,
+				height:15,
+				top: 8,
+				left:67,
+				textAlign:'left',
+				font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
+			});
+			row.add(username);
 			
 			var quote_icon = Ti.UI.createImageView({
 				image : 		'images/quote_innerhtml.png',

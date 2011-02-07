@@ -157,17 +157,27 @@ var Meme = function() {
 	};
 	
 	userInfo = function(guid, thumbWidth, thumbHeight, cache) {
-		if (guid == 'me') {
-			loginRequired();
-		}
-		var queryGuid = (guid == 'me') ? guid : '"' + guid + '"';
-		var params = {
-			cacheKey: 'userInfo:' + guid,
-			cacheSeconds: 86400, // 24 hours
-			yqlQuery: 'SELECT * FROM meme.info where owner_guid=' + queryGuid + ' | meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')'
-		};
-		var userInfo;
+		var queryGuid, where;
 		
+		if (typeof guid == 'string') {
+			if (guid == 'me') {
+				loginRequired();
+			}
+			
+			queryGuid = (guid == 'me') ? guid : '"' + guid + '"';
+			where = 'where owner_guid=' + queryGuid;
+		} else {
+			queryGuid = '"' + guid.join('","') + '"';
+			where = 'where owner_guid IN (' + queryGuid + ')';
+		}
+		
+		var params = {
+			cacheKey: 'userInfo:' + queryGuid,
+			cacheSeconds: 86400, // 24 hours
+			yqlQuery: 'SELECT * FROM meme.info ' + where + ' | meme.functions.thumbs(width=' + thumbWidth + ',height=' + thumbHeight + ')'
+		};
+		
+		var userInfo;
 		if (cache) {
 			cachedYqlQuery(params, function(results) {
 				userInfo = results.meme;
