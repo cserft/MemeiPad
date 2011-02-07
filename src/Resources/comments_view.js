@@ -59,37 +59,11 @@ var btn_send_comment2 = Titanium.UI.createButton({
 });
 commentBoxView.add(btn_send_comment2);
 
-// Send COMMENT
-btn_send_comment2.addEventListener("click", function(e) {
-	if (commentField.value != '') {
-		var ok = Ti.App.meme.createComment(_guid, _pubId, commentField.value);
-		
-		//removes the label to add the animation
-		btn_send_comment2.title = "saving...";
-		
-		if (ok) {
-			//Analytics Request
-			doYwaRequest(analytics.ADD_COMMENT);
-			
-			setTimeout(function()
-			{
-				btn_send_comment2.title = "done!";
-				commentField.value = "";
-				btn_send_comment2.title = L('btn_send_comment_title');
-				commentField.blur();
-
-			},2000);
-
-		} else {
-			Ti.API.info("Error while saving Commenting");	
-		}
-	} else {
-		Ti.UI.createAlertDialog({
-			title: L('comment_alert_empty_title'),
-			message: L('comment_alert_empty_message')
-		}).show();
-	}
-});
+if (!Ti.App.oAuthAdapter.isLoggedIn()) {
+	btn_send_comment2.enabled = false;
+	commentField.enabled = false;
+	commentField.hintText = L('comment_field_hint_text');
+}
 
 // Comments Tableview
 
@@ -108,7 +82,7 @@ var commentsTableView = Ti.UI.createTableView({
 // row for results not found
 var notFoundRow = Ti.UI.createTableViewRow({height:112});
 var notFoundTitle = Ti.UI.createLabel({
-	text: L('flashlight_no_results'),
+	text: L('zero_comments_text'),
 	color: '#999',
 	bottom: 0,
 	height:50,
@@ -214,6 +188,17 @@ function getComments(comments) {
 				font: 			{fontSize:12,fontFamily:'Helvetica',fontWeight:'regular'},
 			});
 			row.add(commentTime);
+			
+			var line = Titanium.UI.createView({
+				backgroundColor: 	'#E0E0E0',
+				width: 				924,
+				height: 			1,
+				bottom: 			0,
+				right: 				0,
+				opacity: 			1,
+				zIndex: 			2
+			});
+			row.add(line);
 
 			results[c] = row;
 		}
@@ -231,74 +216,34 @@ function getComments(comments) {
 }
 
 
+// Send COMMENT
+btn_send_comment2.addEventListener("click", function(e) {
+	if (commentField.value != '') {
+		var ok = Ti.App.meme.createComment(_guid, _pubId, commentField.value);
+		
+		//removes the label to add the animation
+		btn_send_comment2.title = L('btn_send_comment_title_2');
+		
+		if (ok) {
+			//Analytics Request
+			doYwaRequest(analytics.ADD_COMMENT);
+			
+			setTimeout(function()
+			{
+				btn_send_comment2.title = L('btn_done_title');
+				commentField.value = "";
+				btn_send_comment2.title = L('btn_send_comment_title');
+				commentField.blur();
 
+			},2000);
 
-// Query Comments
-// SELECT guid FROM meme.comments(100) WHERE owner_guid='U3SFNJ3PEDHICFGXZ7X7CKAQJQ' and pubid='Ue6IZbS'
-
-//Meme Info
-// SELECT * FROM meme.info WHERE owner_guid in (SELECT guid FROM meme.comments(110) WHERE owner_guid='U3SFNJ3PEDHICFGXZ7X7CKAQJQ' and pubid='Ue6IZbS')
-// SELECT * FROM meme.info WHERE owner_guid in ('U3SFNJ3PEDHICFGXZ7X7CKAQJQ', 'U3SFNJ3PEDHICFGXZ7X7CKAQJQ', 'U3SFNJ3PEDHICFGXZ7X7CKAQJQ')
-
-// 
-// // Loading more comments as it scrolls
-// var navActInd = Titanium.UI.createActivityIndicator();
-// 
-// var updating = false;
-// var loadingRow = Ti.UI.createTableViewRow({title:"Loading..."});
-// 
-// function beginUpdate()
-// {
-// 	updating = true;
-// 	navActInd.show();
-// 
-// 	tableView.appendRow(loadingRow);
-// 
-// 	// just mock out the reload
-// 	setTimeout(endUpdate,2000);
-// }
-// 
-// function endUpdate()
-// {
-// 	updating = false;
-// 
-// 	tableView.deleteRow(lastRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.BOTTOM});
-// 
-// 	// simulate loading
-// 	for (var c=lastRow;c<lastRow+10;c++)
-// 	{
-// 		tableView.appendRow({title:"Row "+(c+1)},{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.TOP});
-// 	}
-// 	lastRow += 10;
-// 
-// 	// just scroll down a bit to the new rows to bring them into view
-// 	tableView.scrollToIndex(lastRow-9,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.BOTTOM});
-// 
-// 	navActInd.hide();
-// }
-// 
-// var lastDistance = 0; // calculate location to determine direction
-// 
-// commentsTableView.addEventListener('scroll',function(e)
-// {
-// 	var offset = e.contentOffset.y;
-// 	var height = e.size.height;
-// 	var total = offset + height;
-// 	var theEnd = e.contentSize.height;
-// 	var distance = theEnd - total;
-// 
-// 	// going down is the only time we dynamically load,
-// 	// going up we can safely ignore -- note here that
-// 	// the values will be negative so we do the opposite
-// 	if (distance < lastDistance)
-// 	{
-// 		// adjust the % of rows scrolled before we decide to start fetching
-// 		var nearEnd = theEnd * .75;
-// 
-// 		if (!updating && (total >= nearEnd))
-// 		{
-// 			beginUpdate();
-// 		}
-// 	}
-// 	lastDistance = distance;
-// });
+		} else {
+			Ti.API.info("Error while saving Commenting");	
+		}
+	} else {
+		Ti.UI.createAlertDialog({
+			title: L('comment_alert_empty_title'),
+			message: L('comment_alert_empty_message')
+		}).show();
+	}
+});

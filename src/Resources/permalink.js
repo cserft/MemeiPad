@@ -611,10 +611,8 @@ btn_comments.addEventListener('touchstart', function(e) {
 		commentView.animate({height: 550, bottom: 81, duration: 300}, function(e){
 			commentBoxView.animate({opacity: 1, delay: 200, duration: 200}, function(e) {
 				commentsTableView.animate({opacity: 1});
-				// Ti.App.activitySmall.show();
 				Ti.App.fireEvent('show_indicator', {message: "", color: "black", size: 100});
 				getComments(comments);
-				// showIndicator(e.message, e.color, e.size, e.top, e.left);
 			});
 		});
 		toggleCommentsOpen = true;
@@ -632,7 +630,6 @@ btn_comments.addEventListener('touchstart', function(e) {
 		commentView.animate({height: 1, duration: 300}, function(e){
 		});
 		toggleCommentsOpen = false;
-		// Ti.App.activitySmall.hide();
 		Ti.App.fireEvent('hide_indicator');
 	}
 });
@@ -1136,7 +1133,7 @@ btn_send_comment.addEventListener("click", function(e) {
 		var ok = Ti.App.meme.createComment(_guid, _pubId, repostCommentField.value);
 		
 		//removes the label to add the animation
-		btn_send_comment.title = "saving...";
+		btn_send_comment.title = L('btn_send_comment_title_2');
 		
 		if (ok) {
 			//Analytics Request
@@ -1144,7 +1141,7 @@ btn_send_comment.addEventListener("click", function(e) {
 			
 			setTimeout(function()
 			{
-				btn_send_comment.title = "done!";
+				btn_send_comment.title = L('btn_done_title');
 				
 				//Hides Comment Box
 				repost_comment_view.animate({opacity:0, duration: 300}, function(){
