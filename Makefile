@@ -1,6 +1,6 @@
 export PROJECT_ROOT=$(shell pwd)
 export SVN_USER=gchapie
-export SVN_DIR=$(PROJECT_ROOT)/tmp/svn/
+export SVN_DIR=$(PROJECT_ROOT)/tmp/MemeiPad_trunk/
 
 clean: clean-languages
 	@rm -rf ${PROJECT_ROOT}/src/build/iphone/*
