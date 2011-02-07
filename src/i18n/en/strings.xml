@@ -141,7 +141,10 @@
   <string name="share_with_twitter">Share with Twitter for iPad</string>
   <string name="share_with_twitter_message">This will open Twitter for iPad (if installed)</string>
   <string name="comment_alert_empty_title">Comment</string>
-  <string name="comment_alert_empty_message">Write something before you hit the save comment button. </string>
+  <string name="comment_alert_empty_message">Write something before you hit the save comment button.</string>
+  <string name="comment_field_hint_text">You need to Sign In to add comments.</string>
+  <string name="zero_comments_text">Be the first to comment</string>saving...
+  <string name="btn_send_comment_title_2">saving...</string>
   <!-- /permalink.js -->
 
   <!-- Share with Mail -->
