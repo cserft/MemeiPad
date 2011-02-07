@@ -2,6 +2,7 @@ Ti.include('./lib/jsunity-0.6.js');
 
 // Add all test suites...
 Ti.include('./test_cache.js');
+Ti.include('./test_commons.js');
 
 var testsWebView = Ti.UI.createWebView({
 	html: 	'',
@@ -25,7 +26,6 @@ var updateTestResults = function(message) {
 	} else {
 		testResults += message + '<br>';
 	}
-	Ti.API.warn(testResults);
 	testsWebView.html = testResultsBegin + testResults + testResultsEnd;
 };
 
@@ -33,4 +33,8 @@ jsUnity.log = function(message) {
 	updateTestResults(message);
 };
 
-jsUnity.run(CacheTestSuite);
+jsUnity.error = function(message) {
+	Ti.API.error(message);
+};
+
+jsUnity.run(CacheTestSuite, CommonsTestSuite);
