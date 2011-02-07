@@ -17,8 +17,6 @@ var toggleCommentsOpen = false;
 var post = Ti.App.meme.getPost(_guid, _pubId);
 var comments = Ti.App.meme.getComments(_guid, _pubId);
 
-Ti.API.debug("Comments Query JSON: " + JSON.stringify(comments));
-
 //Retrieves the Post owner Info
 var memeInfo = Ti.App.meme.userInfo(_guid, 40, 40);
 
@@ -608,13 +606,17 @@ btn_comments.addEventListener('touchstart', function(e) {
 				whiteShadow.hide();
 		});
 		commentView.animate({height: 550, bottom: 81, duration: 300}, function(e){
-			commentBoxView.animate({opacity: 1, delay: 200, duration: 200});
+			commentBoxView.animate({opacity: 1, delay: 200, duration: 200}, function(e) {
+				commentsTableView.animate({opacity: 1});
+				getComments(comments);
+			});
 		});
 		toggleCommentsOpen = true;
 		
 	} else {
 		//Close
 		commentBoxView.animate({opacity: 0, duration: 100});
+		commentsTableView.animate({opacity: 0, duration: 100});
 		footerView.animate({bottom: 81, duration: 300}, function(e){
 				whiteShadow.show();
 		});

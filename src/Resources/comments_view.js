@@ -2,6 +2,8 @@
 // = presents the comments view from a given permalink =
 // =====================================================
 
+Ti.include('lib/commons.js');
+
 var commentView = Titanium.UI.createView({
 	backgroundColor: 	'white',
 	bottom: 			81,
@@ -15,7 +17,6 @@ var commentView = Titanium.UI.createView({
 var commentBoxView = Titanium.UI.createView({
 	backgroundImage: 	'images/bg_comment_field_permalink.png',
 	top: 				30,
-	left: 				53,
 	width: 				811,
 	height: 			80,
 	zIndex: 			2,
@@ -58,3 +59,190 @@ var btn_send_comment2 = Titanium.UI.createButton({
 });
 commentBoxView.add(btn_send_comment2);
 
+// Comments Tableview
+// var data = [];
+// var lastRow = 10;
+
+var commentsTableView = Ti.UI.createTableView({
+	backgroundColor: 	'transparent',
+	top: 				125,
+	height: 			400,
+	width: 				810,
+	separatorColor: 	'#CCC',
+	selectionStyle: 	'none',
+	style: 				0, //Ti.UI.iPhone.TableViewStyle.PLAIN
+	opacity: 			1
+});
+
+// row for results not found
+var notFoundRow = Ti.UI.createTableViewRow({height:112});
+var notFoundTitle = Ti.UI.createLabel({
+	text: L('flashlight_no_results'),
+	color: '#863486',
+	backgroundColor: 'red',
+	height:50,
+	width: 192,	
+	textAlign:'center',
+	font:{fontSize:20, fontFamily:'Helvetica', fontWeight:'regular'}
+});
+notFoundRow.add(notFoundTitle);
+
+
+var results = [];
+
+// Comments Array
+function getComments(comments) {
+	var commentItems = comments.results.comment;
+	
+	Ti.API.debug("Comments Query JSON: " + JSON.stringify(comments.results.comment) + "\nLength: [" + comments.count + "]");
+
+	// coments loop
+	if (commentItems) {
+		//Loop to present the Search Results from the Web
+		for (var c=0 ; c < comments.count ; c++) {
+			var item = commentItems[c];
+			
+			Ti.API.debug("Comments ITEM loop JSON: " + JSON.stringify(item));
+			
+			var row = Ti.UI.createTableViewRow({height:112});
+			row.animationStyle = Titanium.UI.iPhone.RowAnimationStyle.FADE;
+			row.className = "comment";
+
+			// var avatar = Ti.UI.createImageView({
+			// 	image : avatar_url,
+			// 	backgroundColor: 'black',
+			// 	height:48,
+			// 	width:48,
+			// 	top:10,
+			// 	left:10,
+			// 	defaultImage:'images/default_img_avatar.png'
+			// });
+			// 
+			// row.add(avatar); images/quote_innerhtml.png
+
+			// var username = Ti.UI.createLabel({
+			// 	text: '@' + screenName,
+			// 	color: '#863486',
+			// 	width: 250,
+			// 	height:15,
+			// 	top: 8,
+			// 	left:67,
+			// 	textAlign:'left',
+			// 	font:{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
+			// });
+			// row.add(username);
+			
+			var quote_icon = Ti.UI.createImageView({
+				image : 		'images/quote_innerhtml.png',
+				height: 		14,
+				width: 			16,
+				top: 			24,
+				left: 			60
+			});
+			row.add(quote_icon); 
+
+			var commentTxt = Ti.UI.createLabel({
+				// backgroundColor: 	'red',
+				text: 			strip_html_entities(item.comment),
+				color: 			'#333',
+				height: 		52,
+				width: 			620,
+				top: 			26,
+				left: 			86,
+				textAlign: 		'left',
+				font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
+			});
+			row.add(commentTxt);
+			
+			var commentTime = Ti.UI.createLabel({
+				// backgroundColor: 	'yellow',
+				text: 			humane_date(item.timestamp),
+				color: 			'#999',
+				height: 		23,
+				width: 			150,
+				top: 			68,
+				left: 			220,
+				textAlign: 		'left',
+				font: 			{fontSize:12,fontFamily:'Helvetica',fontWeight:'regular'},
+			});
+			row.add(commentTime);
+
+			results[c] = row;
+		}	
+	} else {
+		results[0] = notFoundRow;
+	}
+	
+	commentsTableView.data = results;
+	commentView.add(commentsTableView);	
+}
+
+// Query Comments
+// SELECT guid FROM meme.comments(100) WHERE owner_guid='U3SFNJ3PEDHICFGXZ7X7CKAQJQ' and pubid='Ue6IZbS'
+
+//Meme Info
+// SELECT * FROM meme.info WHERE owner_guid in (SELECT guid FROM meme.comments(110) WHERE owner_guid='U3SFNJ3PEDHICFGXZ7X7CKAQJQ' and pubid='Ue6IZbS')
+// SELECT * FROM meme.info WHERE owner_guid in ('U3SFNJ3PEDHICFGXZ7X7CKAQJQ', 'U3SFNJ3PEDHICFGXZ7X7CKAQJQ', 'U3SFNJ3PEDHICFGXZ7X7CKAQJQ')
+
+// 
+// // Loading more comments as it scrolls
+// var navActInd = Titanium.UI.createActivityIndicator();
+// 
+// var updating = false;
+// var loadingRow = Ti.UI.createTableViewRow({title:"Loading..."});
+// 
+// function beginUpdate()
+// {
+// 	updating = true;
+// 	navActInd.show();
+// 
+// 	tableView.appendRow(loadingRow);
+// 
+// 	// just mock out the reload
+// 	setTimeout(endUpdate,2000);
+// }
+// 
+// function endUpdate()
+// {
+// 	updating = false;
+// 
+// 	tableView.deleteRow(lastRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.BOTTOM});
+// 
+// 	// simulate loading
+// 	for (var c=lastRow;c<lastRow+10;c++)
+// 	{
+// 		tableView.appendRow({title:"Row "+(c+1)},{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.TOP});
+// 	}
+// 	lastRow += 10;
+// 
+// 	// just scroll down a bit to the new rows to bring them into view
+// 	tableView.scrollToIndex(lastRow-9,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.BOTTOM});
+// 
+// 	navActInd.hide();
+// }
+// 
+// var lastDistance = 0; // calculate location to determine direction
+// 
+// commentsTableView.addEventListener('scroll',function(e)
+// {
+// 	var offset = e.contentOffset.y;
+// 	var height = e.size.height;
+// 	var total = offset + height;
+// 	var theEnd = e.contentSize.height;
+// 	var distance = theEnd - total;
+// 
+// 	// going down is the only time we dynamically load,
+// 	// going up we can safely ignore -- note here that
+// 	// the values will be negative so we do the opposite
+// 	if (distance < lastDistance)
+// 	{
+// 		// adjust the % of rows scrolled before we decide to start fetching
+// 		var nearEnd = theEnd * .75;
+// 
+// 		if (!updating && (total >= nearEnd))
+// 		{
+// 			beginUpdate();
+// 		}
+// 	}
+// 	lastDistance = distance;
+// });
