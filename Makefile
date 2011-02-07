@@ -1,5 +1,4 @@
 export PROJECT_ROOT=$(shell pwd)
-export SVN_USER=gchapie
 export TMP_DIR=$(PROJECT_ROOT)/tmp/
 export SVN_DIR=$(TMP_DIR)/MemeiPad_trunk/
 
@@ -29,7 +28,14 @@ run:
 build:
 	@echo "TODO"
 
-svn-checkout:
+svn-verification:
+	@if [ "${SVN_USER}" == "" ]; then\
+		echo "[ERROR] SVN_USER env variable is required for this make target";\
+		echo "Please use: \"SVN_USER=gchapie make [target]\"";\
+		exit 1;\
+	fi
+
+svn-checkout: svn-verification
 	@echo "Downloading project from SVN..."
 	@echo "SVN_USER: ${SVN_USER}"
 	@echo "SVN_DIR: ${SVN_DIR}"
@@ -37,11 +43,11 @@ svn-checkout:
 	@mkdir -p ${SVN_DIR}
 	@svn co svn+ssh://${SVN_USER}@svn.corp.yahoo.com/yahoo/brickhouse/iwasay/etc/MemeiPad/trunk ${SVN_DIR}
 
-svn-checkin:
+svn-checkin: svn-verification
 	@echo "Checking in files on SVN..."
 	@SVN_DIR=${SVN_DIR} bash ${PROJECT_ROOT}/bin/svn_checkin.sh
 
-svn-commit:
+svn-commit: svn-verification
 	@echo "Commiting changes to SVN..."
 	@echo ">>> Please type your commit message (press Ctrl+D __ONLY ONCE__ and wait to finish):"
 	@svn ci -m "`python -c "import sys; data = sys.stdin.read(); print data;"`" ${SVN_DIR}
