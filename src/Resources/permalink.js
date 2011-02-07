@@ -1,5 +1,6 @@
 Ti.include('lib/commons.js');
 Ti.include('lib/analytics.js');
+Ti.include('comments_view.js');
 
 //Analytics Request
 doYwaRequest(analytics.PERMALINK_VIEW);
@@ -10,6 +11,7 @@ var win = Ti.UI.currentWindow;
 var _guid = win.pGuid;
 var _pubId = win.pPubId;
 var clickTimeoutViewPopoverUser = 0;
+var toggleCommentsOpen = false;
 
 //Retrieves Post info
 var post = Ti.App.meme.getPost(_guid, _pubId);
@@ -41,15 +43,32 @@ if (memeInfo.bgimage == undefined) {
 } 
 
 var themeBackgroundWebView = Ti.UI.createWebView({
-        html: 				"<html><head></head><body background = '" + themeBg + "'> </body></html>",
-		top: 				0,
-        left: 				0,
-		touchEnabled: 		false,
-		width: 				'100%',
-		height: 			'100%',
-		zIndex: 			1
+	backgroundColor: 	'black',
+    html: 				"<html><head></head><body background = '" + themeBg + "' style = '-webkit-transition-property: background; -webkit-transition-duration: 300ms; -webkit-transition-timing-function: ease-in; -webkit-transition-delay: 100ms;'> </body></html>",
+	top: 				0,
+    left: 				0,
+	touchEnabled: 		false,
+	loading: 			true,
+	width: 				'100%',
+	height: 			'100%',
+	opacity: 			1,
+	zIndex: 			1
 });
 whiteBox.add(themeBackgroundWebView);
+
+// DropShadow behind the Post box
+var dropShadowView = Ti.UI.createView({
+	backgroundImage: 	'images/drop_shadow_postbox.png',
+	top: 				30,
+	left: 				30,
+	backgroundLeftCap: 	33,
+	backgroundTopCap: 	33,
+	width:  			965,
+	height: 			660,
+	opacity: 			0.7,
+	zIndex: 			2
+});
+whiteBox.add(dropShadowView);
 
 var btn_close = Titanium.UI.createButton({
 	backgroundImage: 	'images/btn_close.png',
@@ -263,13 +282,18 @@ guidView.addEventListener('click', function(e) {
 		
 		if (Ti.App.myMemeInfo && (Ti.App.myMemeInfo.guid != memeInfo.guid)) {
 
-			var popover = Ti.UI.iPad.createPopover({
+			var popoverGuid = Ti.UI.iPad.createPopover({
 				width:330,
 				height:100,
 				backgroundColor: 'white',
-				navBarHidden: true,
-				arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN
+				navBarHidden: true
 			});
+			
+			if (toggleCommentsOpen == false) {
+				popoverGuid.arrowDirection = Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN;
+			} else {
+				popoverGuid.arrowDirection = Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP;
+			}
 
 			var main = Ti.UI.createWindow({
 				top: 0,
@@ -280,7 +304,7 @@ guidView.addEventListener('click', function(e) {
 				navBarHidden: true
 			});
 
-			popover.add(main);
+			popoverGuid.add(main);
 			
 			guidAvatar.add(Ti.App.activitySmall);
 
@@ -308,7 +332,7 @@ guidView.addEventListener('click', function(e) {
 			row1.add(linkMeme);
 
 			linkMeme.addEventListener("click", function(e) {		
-				popover.hide();
+				popoverGuid.hide();
 				Ti.App.fireEvent('openBrowser', {
 					url: memeInfo.url
 				});
@@ -345,7 +369,7 @@ guidView.addEventListener('click', function(e) {
 					height: 	20,
 					width: 		20
 				});
-				popover.add(activity);
+				popoverGuid.add(activity);
 
 				activity.show();
 
@@ -411,7 +435,7 @@ guidView.addEventListener('click', function(e) {
 			});
 			main.add(guidTableView);
 
-			popover.show({
+			popoverGuid.show({
 				view:     guidAvatar,
 				animated: true
 			});
@@ -559,10 +583,30 @@ var commentCountLabel = Titanium.UI.createLabel({
 });
 btn_comments.add(commentCountLabel);
 
-//Comments Listener
-btn_comments.addEventListener('click', function(e) {
+//BTN Comments TOGGLE Listener
+btn_comments.addEventListener('touchstart', function(e) {
 	// Click visual Feedback
 	btn_comments.opacity = 0.7;
+	
+	if (toggleCommentsOpen == false) {
+		whiteBox.add(commentView);
+		whiteBox.remove(whiteShadow);
+		footerView.animate({bottom: 640, duration: 300}, function(e){
+		});
+		commentView.animate({opacity: 1, duration: 400});
+		postWebView.animate({opacity: 0, duration: 300});
+		toggleCommentsOpen = true;
+		
+	} else {
+		footerView.animate({bottom: 81, duration: 300}, function(e){
+		});
+		commentView.animate({opacity: 0, height: 1, duration: 300});
+		whiteBox.remove(commentView);
+		whiteBox.add(whiteShadow);
+		postWebView.animate({opacity: 1, delay: 100, duration: 300});
+		toggleCommentsOpen = false;
+	}
+	
 });
 
 // Repost bck to normal
@@ -593,13 +637,18 @@ btn_share.addEventListener('touchstart', function(e) {
 	
 	clickTimeoutViewPopoverUser = setTimeout(function() {	
 
-		var popover = Ti.UI.iPad.createPopover({
+		var popoverShare = Ti.UI.iPad.createPopover({
 			width:330,
 			height:180,
 			backgroundColor: 'white',
-			navBarHidden: true,
-			arrowDirection:Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN
+			navBarHidden: true
 		});
+		
+		if (toggleCommentsOpen == false) {
+			popoverShare.arrowDirection = Ti.UI.iPad.POPOVER_ARROW_DIRECTION_DOWN;
+		} else {
+			popoverShare.arrowDirection = Ti.UI.iPad.POPOVER_ARROW_DIRECTION_UP;
+		}
 
 		var main = Ti.UI.createWindow({
 			top: 0,
@@ -610,7 +659,7 @@ btn_share.addEventListener('touchstart', function(e) {
 			navBarHidden: true
 		});
 
-		popover.add(main);
+		popoverShare.add(main);
 
 		// BUILDING THE TABLE VIEW
 		var data = [];
@@ -754,7 +803,7 @@ btn_share.addEventListener('touchstart', function(e) {
 				Ti.App.fireEvent('openBrowser', {
 					url: post.url
 				});			
-				popover.hide();
+				popoverShare.hide();
 			}
 			// If Clicked on Line 2 - Then copy link to Clipboard
 			else if (e.index == 1) {
@@ -762,7 +811,7 @@ btn_share.addEventListener('touchstart', function(e) {
 				doYwaRequest(analytics.COPY_LINK);
 				
 				Ti.UI.Clipboard.setText(post.url);
-				popover.hide();
+				popoverShare.hide();
 			}
 			
 			// If Clicked on Line 3 - Then open Mail Dialog
@@ -832,7 +881,7 @@ btn_share.addEventListener('touchstart', function(e) {
 			        });
 			        emailDialog.open();
 
-					popover.hide();
+					popoverShare.hide();
 					
 				});
 
@@ -849,11 +898,11 @@ btn_share.addEventListener('touchstart', function(e) {
 					title: 		L('share_with_twitter'),
 					message: 	L('share_with_twitter_message')
 				});
-				popover.hide();
+				popoverShare.hide();
 			}
 		}); // end TableView Listener
 
-		popover.show({
+		popoverShare.show({
 			view:     btn_share,
 			animated: true
 		});
