@@ -118,7 +118,7 @@ Ti.App.activitySmall = Ti.UI.createActivityIndicator({
 	height: 			35,
 	borderRadius: 		5,
 	opacity: 			0.8,
-	zIndex: 			2
+	zIndex: 			15
 });
 
 // ==========================

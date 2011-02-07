@@ -3,6 +3,7 @@
 // =====================================================
 
 Ti.include('lib/commons.js');
+Ti.include('lib/analytics.js');
 
 var commentView = Titanium.UI.createView({
 	backgroundColor: 	'white',
@@ -20,8 +21,7 @@ var commentBoxView = Titanium.UI.createView({
 	width: 				811,
 	height: 			80,
 	zIndex: 			2,
-	opacity: 			0,
-	visible: 			true
+	opacity: 			0
 });
 commentView.add(commentBoxView);
 
@@ -74,10 +74,9 @@ btn_send_comment2.addEventListener("click", function(e) {
 			setTimeout(function()
 			{
 				btn_send_comment2.title = "done!";
-				
-			// Close Keyboard
-			// Empty commentField
-			// Set btn_send_comment2.title to original string
+				commentField.value = "";
+				btn_send_comment2.title = L('btn_send_comment_title');
+				commentField.blur();
 
 			},2000);
 
@@ -99,7 +98,8 @@ var commentsTableView = Ti.UI.createTableView({
 	top: 				125,
 	height: 			400,
 	width: 				810,
-	separatorColor: 	'#CCC',
+	separatorStyle: 	Ti.UI.iPhone.TableViewSeparatorStyle.NONE,
+	// separatorColor: 	'#CCC',
 	selectionStyle: 	'none',
 	style: 				0, //Ti.UI.iPhone.TableViewStyle.PLAIN
 	opacity: 			1
@@ -109,17 +109,14 @@ var commentsTableView = Ti.UI.createTableView({
 var notFoundRow = Ti.UI.createTableViewRow({height:112});
 var notFoundTitle = Ti.UI.createLabel({
 	text: L('flashlight_no_results'),
-	color: '#863486',
-	backgroundColor: 'red',
+	color: '#999',
+	bottom: 0,
 	height:50,
-	width: 192,	
+	width: 800,	
 	textAlign:'center',
 	font:{fontSize:20, fontFamily:'Helvetica', fontWeight:'regular'}
 });
 notFoundRow.add(notFoundTitle);
-
-
-var results = [];
 
 var addUserInfo = function(comments) {
 	var guids = [];
@@ -139,23 +136,22 @@ var addUserInfo = function(comments) {
 
 // Comments Array
 function getComments(comments) {
-	var commentItems = comments.results.comment;
+	var results = [];
 	
-	if (typeof commentItems.length == 'undefined') {
-		commentItems = [commentItems];
-	}
-	
-	commentItems = addUserInfo(commentItems);
-	
-	//Ti.API.debug("Comments Query JSON: " + JSON.stringify(commentItems) + "\nLength: [" + commentItems.length + "]");
+	if (comments.results) {
+		var commentItems = comments.results.comment;
 
-	// coments loop
-	if (commentItems) {
+		if (typeof commentItems.length == 'undefined') {
+			commentItems = [commentItems];
+		}
+
+		commentItems = addUserInfo(commentItems);
+
 		for (var c=0 ; c < commentItems.length ; c++) {
 			var item = commentItems[c];
-			
+
 			//Ti.API.debug("Comments ITEM loop JSON: " + JSON.stringify(item));
-			
+
 			var row = Ti.UI.createTableViewRow({height:112});
 			row.animationStyle = Titanium.UI.iPhone.RowAnimationStyle.FADE;
 			row.className = "comment";
@@ -169,7 +165,7 @@ function getComments(comments) {
 				defaultImage:'images/default_img_avatar.png'
 			});
 			row.add(avatar);
-			
+
 			var quote_icon = Ti.UI.createImageView({
 				image : 		'images/quote_innerhtml.png',
 				height: 		14,
@@ -190,9 +186,9 @@ function getComments(comments) {
 				font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
 			});
 			row.add(commentTxt);
-			
+
 			var title_width = item.userInfo.title.length * 7;
-			
+
 			var username = Ti.UI.createLabel({
 				text: 					item.userInfo.title,
 				// backgroundColor: 		'red',
@@ -205,7 +201,7 @@ function getComments(comments) {
 				font: 					{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
 			});
 			row.add(username);
-			
+
 			var commentTime = Ti.UI.createLabel({
 				// backgroundColor: 	'yellow',
 				text: 			humane_date(item.timestamp),
@@ -220,14 +216,22 @@ function getComments(comments) {
 			row.add(commentTime);
 
 			results[c] = row;
-		}	
+		}
+		
 	} else {
 		results[0] = notFoundRow;
 	}
 	
 	commentsTableView.data = results;
-	commentView.add(commentsTableView);	
+	commentView.add(commentsTableView);
+	
+	setTimeout(function() {
+		Ti.App.fireEvent('hide_indicator');
+	}, 1000);
 }
+
+
+
 
 // Query Comments
 // SELECT guid FROM meme.comments(100) WHERE owner_guid='U3SFNJ3PEDHICFGXZ7X7CKAQJQ' and pubid='Ue6IZbS'

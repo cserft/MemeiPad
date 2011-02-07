@@ -87,6 +87,8 @@ btn_close.addEventListener("click", function(e)
 	
 	// allows for other Permalinks to Open
 	Ti.App.permalinkIsOpened = false;
+	
+	Ti.App.fireEvent('hide_indicator');
 });
 
 
@@ -115,6 +117,7 @@ var actAjax = Ti.UI.createActivityIndicator({
 	message: 		'',
 	zIndex: 		90,
 	visible: 		false,
+	zIndex: 		15,
 	style: 			Ti.UI.iPhone.ActivityIndicatorStyle.DARK
 });
 whiteBox.add(actAjax);
@@ -608,10 +611,16 @@ btn_comments.addEventListener('touchstart', function(e) {
 		commentView.animate({height: 550, bottom: 81, duration: 300}, function(e){
 			commentBoxView.animate({opacity: 1, delay: 200, duration: 200}, function(e) {
 				commentsTableView.animate({opacity: 1});
+				// Ti.App.activitySmall.show();
+				Ti.App.fireEvent('show_indicator', {message: "", color: "black", size: 100});
 				getComments(comments);
+				// showIndicator(e.message, e.color, e.size, e.top, e.left);
 			});
 		});
 		toggleCommentsOpen = true;
+		
+		//analytics call
+		doYwaRequest(analytics.COMMENTS_PERMALINK_OPEN);
 		
 	} else {
 		//Close
@@ -623,6 +632,8 @@ btn_comments.addEventListener('touchstart', function(e) {
 		commentView.animate({height: 1, duration: 300}, function(e){
 		});
 		toggleCommentsOpen = false;
+		// Ti.App.activitySmall.hide();
+		Ti.App.fireEvent('hide_indicator');
 	}
 });
 
