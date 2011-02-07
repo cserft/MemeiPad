@@ -1,5 +1,6 @@
-PROJECT_ROOT=`pwd`
-SVN_DIR=/Users/gc/Projetos/iwasay/etc/MemeiPad/trunk/
+export PROJECT_ROOT=$(shell pwd)
+export SVN_USER=gchapie
+export SVN_DIR=$(PROJECT_ROOT)/tmp/svn/
 
 clean: clean-languages
 	@rm -rf ${PROJECT_ROOT}/src/build/iphone/*
@@ -27,12 +28,20 @@ run:
 build:
 	@echo "TODO"
 
+svn-co:
+	@echo "Downloading project from SVN..."
+	@echo "SVN_USER: ${SVN_USER}"
+	@echo "SVN_DIR: ${SVN_DIR}"
+	@rm -rf ${SVN_DIR}
+	@mkdir -p ${SVN_DIR}
+	@svn co svn+ssh://${SVN_USER}@svn.corp.yahoo.com/yahoo/brickhouse/iwasay/etc/MemeiPad/trunk ${SVN_DIR}
+
 # TODO: clean and build Titanium first (tarket 'build')
 # TODO: download SVN first, then checkin files, then upload
 # TODO: patch main.m to put correct TI_APPLICATION_RESOURCE_DIR
-publish: languages
+publish: svn-co languages
 	@echo "Deleting destination files..."
-	@for FILE in `find $(SVN_DIR)/* | grep -v .svn`;\
+	@for FILE in `find ${SVN_DIR} | grep -v .svn | grep -v MemeiPad.xcodeproj | grep -v Entitlements.plist`;\
 	do\
 		if [ -f $$FILE ]; then rm -rf $$FILE; fi;\
 	done
@@ -66,7 +75,7 @@ publish: languages
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/lib ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/Resources ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/Info.plist ${SVN_DIR}/build/iphone/
-	@cp -prf ${PROJECT_ROOT}/src/build/iphone/main.m ${SVN_DIR}/build/iphone/
+	@#cp -prf ${PROJECT_ROOT}/src/build/iphone/main.m ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/MemeiPad_Prefix.pch ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/module.xcconfig ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/project.xcconfig ${SVN_DIR}/build/iphone/
