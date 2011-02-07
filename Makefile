@@ -43,8 +43,10 @@ svn-checkin:
 
 svn-commit:
 	@echo "Commiting changes to SVN..."
-	@echo ">>> Please type your commit message (press Ctrl+D to finish):"
-	@svn ci -m "`python -c "import sys; data = sys.stdin.read(); print data;"`"
+	@echo ">>> Please type your commit message (press Ctrl+D __ONLY ONCE__ and wait to finish):"
+	@svn ci -m "`python -c "import sys; data = sys.stdin.read(); print data;"`" ${SVN_DIR}
+	@rm -rf ${SVN_DIR}
+	@echo "Done."
 
 # TODO: clean and build Titanium first (target 'build')
 # TODO: patch main.m to put correct TI_APPLICATION_RESOURCE_DIR
