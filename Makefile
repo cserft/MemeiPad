@@ -4,6 +4,7 @@ export SVN_DIR=$(TMP_DIR)/MemeiPad_trunk/
 
 clean: clean-languages
 	@rm -rf ${PROJECT_ROOT}/src/build/iphone/*
+	@mkdir -p ${PROJECT_ROOT}/src/build/iphone/
 	@echo "Deleted: ${PROJECT_ROOT}/src/build/iphone/*"
 
 clean-languages:
