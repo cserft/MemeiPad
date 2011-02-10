@@ -227,13 +227,91 @@ btn_send_comment2.addEventListener("click", function(e) {
 		if (ok) {
 			//Analytics Request
 			doYwaRequest(analytics.ADD_COMMENT);
+			var comment_temp = commentField.value;
+			commentField.blur();
 			
 			setTimeout(function()
 			{
 				btn_send_comment2.title = L('btn_done_title');
 				commentField.value = "";
 				btn_send_comment2.title = L('btn_send_comment_title');
-				commentField.blur();
+				
+				//Adds Line in the TableView with Comments with the recent Comment
+				var row = Ti.UI.createTableViewRow({height:112});
+				row.animationStyle = Titanium.UI.iPhone.RowAnimationStyle.FADE;
+				row.className = "comment";
+				
+				var avatar = Ti.UI.createImageView({
+					image: Ti.App.myMemeInfo.avatar_url.thumb,
+					height: 40,
+					width: 40,
+					top: 24,
+					left: 13,
+					defaultImage:'images/default_img_avatar.png'
+				});
+				row.add(avatar);
+
+				var quote_icon = Ti.UI.createImageView({
+					image : 		'images/quote_innerhtml.png',
+					height: 		14,
+					width: 			16,
+					top: 			24,
+					left: 			62
+				});
+				row.add(quote_icon); 
+
+				var commentTxt = Ti.UI.createLabel({
+					text: 			comment_temp,
+					color: 			'#333',
+					height: 		52,
+					width: 			620,
+					top: 			26,
+					left: 			88,
+					textAlign: 		'left',
+					font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
+				});
+				row.add(commentTxt);
+
+				var title_width = Ti.App.myMemeInfo.title.length * 7;
+
+				var username = Ti.UI.createLabel({
+					text: 					Ti.App.myMemeInfo.title,
+					color: 					'#863486',
+					width: 					title_width,
+					height: 				23,
+					top: 					68,
+					left: 					88,
+					textAlign: 				'left',
+					font: 					{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
+				});
+				row.add(username);
+				
+				var ts = new Date().getTime();
+
+				var commentTime = Ti.UI.createLabel({
+					text: 			humane_date(ts),
+					color: 			'#999',
+					height: 		23,
+					width: 			150,
+					top: 			68,
+					left: 			username.left + title_width + 10,
+					textAlign: 		'left',
+					font: 			{fontSize:12,fontFamily:'Helvetica',fontWeight:'regular'},
+				});
+				row.add(commentTime);
+
+				var line = Titanium.UI.createView({
+					backgroundColor: 	'#E0E0E0',
+					width: 				924,
+					height: 			1,
+					bottom: 			0,
+					right: 				0,
+					opacity: 			1,
+					zIndex: 			2
+				});
+				row.add(line);
+				
+				commentsTableView.insertRowBefore(0,row);
 
 			},2000);
 
