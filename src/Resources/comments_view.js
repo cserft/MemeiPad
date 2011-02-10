@@ -92,6 +92,8 @@ var notFoundTitle = Ti.UI.createLabel({
 });
 notFoundRow.add(notFoundTitle);
 
+var nocomments;
+
 var addUserInfo = function(comments) {
 	var guids = [];
 	for (var i=0; i < comments.length; i++) {
@@ -127,7 +129,7 @@ function getComments(comments) {
 			//Ti.API.debug("Comments ITEM loop JSON: " + JSON.stringify(item));
 
 			var row = Ti.UI.createTableViewRow({height:112});
-			row.animationStyle = Titanium.UI.iPhone.RowAnimationStyle.FADE;
+			row.animationStyle = Titanium.UI.iPhone.RowAnimationStyle.DOWN;
 			row.className = "comment";
 
 			var avatar = Ti.UI.createImageView({
@@ -205,6 +207,7 @@ function getComments(comments) {
 		
 	} else {
 		results[0] = notFoundRow;
+		nocomments = true;
 	}
 	
 	commentsTableView.data = results;
@@ -238,7 +241,7 @@ btn_send_comment2.addEventListener("click", function(e) {
 				
 				//Adds Line in the TableView with Comments with the recent Comment
 				var row = Ti.UI.createTableViewRow({height:112});
-				row.animationStyle = Titanium.UI.iPhone.RowAnimationStyle.FADE;
+				row.animationStyle = Titanium.UI.iPhone.RowAnimationStyle.DOWN;
 				row.className = "comment";
 				
 				var avatar = Ti.UI.createImageView({
@@ -311,7 +314,16 @@ btn_send_comment2.addEventListener("click", function(e) {
 				});
 				row.add(line);
 				
-				commentsTableView.insertRowBefore(0,row);
+				function insertRow(callback) {
+					commentsTableView.insertRowBefore(0,row);
+					callback();
+				};
+				
+				insertRow(function () {
+					if (nocomments == true) {
+						commentsTableView.deleteRow(1, {animationStyle:Titanium.UI.iPhone.RowAnimationStyle.FADE});
+					}
+				});
 
 			},2000);
 
