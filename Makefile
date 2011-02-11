@@ -135,7 +135,8 @@ mim: check-no-changes-on-git clean
 	@mv -v ${PROJECT_ROOT}/src/Info_mim.plist ${PROJECT_ROOT}/src/Info.plist
 	@mv -v ${PROJECT_ROOT}/src/manifest_mim ${PROJECT_ROOT}/src/manifest
 	@mv -v ${PROJECT_ROOT}/src/tiapp_mim.xml ${PROJECT_ROOT}/src/tiapp.xml
-	@echo "Done. Go ahead and run it!"
+	@echo "\"Berhasil\" :)"
+	@echo "* Don't forget to run the application before publishing it."
 
 log:
 	@tail -n100 -f ${PROJECT_ROOT}/src/build/iphone/build/build.log
