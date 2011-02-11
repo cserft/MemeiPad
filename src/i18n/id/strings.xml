@@ -140,11 +140,11 @@
   <string name="mail_post_text">EMail posting ini</string>
   <string name="share_with_twitter">Bagi dengan Twitter untuk iPad</string>
   <string name="share_with_twitter_message">Ini akan membuka Twitter untuk iPad (jika terinstal)</string>
-  <string name="comment_alert_empty_title">Comment</string>
+  <string name="comment_alert_empty_title">Komentar</string>
   <string name="comment_alert_empty_message">Write something before you hit the save comment button. </string>
-  <string name="comment_field_hint_text">You need to Sign In to add comments.</string>
-  <string name="zero_comments_text">Be the first to comment</string>saving...
-  <string name="btn_send_comment_title_2">saving...</string>
+  <string name="comment_field_hint_text">Sign in ke komentar di sini</string>
+  <string name="zero_comments_text">Jadilah yang pertama komentar</string>saving...
+  <string name="btn_send_comment_title_2">penghematan...</string>
  <!--/permalink.js -->
 
  <!--Share with Mail -->

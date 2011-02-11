@@ -566,6 +566,7 @@ if (comments == undefined) {
 } else {
 	var commentCount = comments.count;
 }
+commentCount = parseInt(commentCount);
 
 //TODO IF ZERO COMMENTS
 var commentCountLabel = Titanium.UI.createLabel({
