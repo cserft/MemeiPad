@@ -129,7 +129,7 @@ mim: check-no-changes-on-git clean
 	@echo "Replace Meme files for Mim files..."
 	@mv ${PROJECT_ROOT}/src/Info_mim.plist ${PROJECT_ROOT}/src/Info.plist
 	@mv ${PROJECT_ROOT}/src/manifest_mim ${PROJECT_ROOT}/src/manifest
-	@mv ${PROJECT_ROOT}/tiapp_mim.xml ${PROJECT_ROOT}/tiapp.xml
+	@mv ${PROJECT_ROOT}/src/tiapp_mim.xml ${PROJECT_ROOT}/src/tiapp.xml
 	@echo "Done. Go ahead and run it!"
 
 log:
