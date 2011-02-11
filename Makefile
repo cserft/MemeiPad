@@ -110,7 +110,10 @@ publish: build-verification
 	@make svn-checkin
 	@make svn-commit
 
-mim:
+check-no-changes-on-git:
+	@echo TODO
+
+mim: check-no-changes-on-git clean
 	@echo "Deleting uneeded languages..."
 	@rm -rf ${PROJECT_ROOT}/src/i18n/en
 	@rm -rf ${PROJECT_ROOT}/src/i18n/es
@@ -121,9 +124,6 @@ mim:
 	@rm -rf ${PROJECT_ROOT}/src/Resources/pt.lproj
 	@rm -rf ${PROJECT_ROOT}/src/Resources/zh-Hant.lproj
 	@echo "Replace Meme for Mim..."
-	@cat ${PROJECT_ROOT}/src/Info.plist | sed -e "s/Yahoo! Meme/Yahoo! Mim/g" | sed -e "s/com.yahoo.meme.ipad/com.yahoo.mim.ipad/g" > ${PROJECT_ROOT}/src/Info.plist
-	@echo "Publish"
-	@echo "Git reset"
 	@echo "Done."
 
 log:
