@@ -322,6 +322,7 @@ btn_send_comment2.addEventListener("click", function(e) {
 				insertRow(function () {
 					if (nocomments == true) {
 						commentsTableView.deleteRow(1, {animationStyle:Titanium.UI.iPhone.RowAnimationStyle.FADE});
+						nocomments == false;
 					}
 				});
 
