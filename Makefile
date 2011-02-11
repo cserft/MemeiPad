@@ -118,18 +118,18 @@ check-no-changes-on-git:
 
 mim: check-no-changes-on-git clean
 	@echo "Deleting uneeded languages..."
-	@rm -rf ${PROJECT_ROOT}/src/i18n/en
-	@rm -rf ${PROJECT_ROOT}/src/i18n/es
-	@rm -rf ${PROJECT_ROOT}/src/i18n/pt
-	@rm -rf ${PROJECT_ROOT}/src/i18n/zh-Hant
-	@rm -rf ${PROJECT_ROOT}/src/Resources/en.lproj
-	@rm -rf ${PROJECT_ROOT}/src/Resources/es.lproj
-	@rm -rf ${PROJECT_ROOT}/src/Resources/pt.lproj
-	@rm -rf ${PROJECT_ROOT}/src/Resources/zh-Hant.lproj
+	@rm -rvf ${PROJECT_ROOT}/src/i18n/en
+	@rm -rvf ${PROJECT_ROOT}/src/i18n/es
+	@rm -rvf ${PROJECT_ROOT}/src/i18n/pt
+	@rm -rvf ${PROJECT_ROOT}/src/i18n/zh-Hant
+	@rm -rvf ${PROJECT_ROOT}/src/Resources/en.lproj
+	@rm -rvf ${PROJECT_ROOT}/src/Resources/es.lproj
+	@rm -rvf ${PROJECT_ROOT}/src/Resources/pt.lproj
+	@rm -rvf ${PROJECT_ROOT}/src/Resources/zh-Hant.lproj
 	@echo "Replace Meme files for Mim files..."
-	@mv ${PROJECT_ROOT}/src/Info_mim.plist ${PROJECT_ROOT}/src/Info.plist
-	@mv ${PROJECT_ROOT}/src/manifest_mim ${PROJECT_ROOT}/src/manifest
-	@mv ${PROJECT_ROOT}/src/tiapp_mim.xml ${PROJECT_ROOT}/src/tiapp.xml
+	@mv -v ${PROJECT_ROOT}/src/Info_mim.plist ${PROJECT_ROOT}/src/Info.plist
+	@mv -v ${PROJECT_ROOT}/src/manifest_mim ${PROJECT_ROOT}/src/manifest
+	@mv -v ${PROJECT_ROOT}/src/tiapp_mim.xml ${PROJECT_ROOT}/src/tiapp.xml
 	@echo "Done. Go ahead and run it!"
 
 log:
