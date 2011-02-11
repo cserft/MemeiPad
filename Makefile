@@ -120,7 +120,8 @@ mim:
 	@rm -rf ${PROJECT_ROOT}/src/Resources/es.lproj
 	@rm -rf ${PROJECT_ROOT}/src/Resources/pt.lproj
 	@rm -rf ${PROJECT_ROOT}/src/Resources/zh-Hant.lproj
-	@echo "Replace Meme for Mim"
+	@echo "Replace Meme for Mim..."
+	@cat ${PROJECT_ROOT}/src/Info.plist | sed -e "s/Yahoo! Meme/Yahoo! Mim/g" | sed -e "s/com.yahoo.meme.ipad/com.yahoo.mim.ipad/g" > ${PROJECT_ROOT}/src/Info.plist
 	@echo "Publish"
 	@echo "Git reset"
 	@echo "Done."
