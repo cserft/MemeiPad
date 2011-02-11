@@ -111,7 +111,10 @@ publish: build-verification
 	@make svn-commit
 
 check-no-changes-on-git:
-	@echo TODO
+	@if [ "`git st | grep -v '#'`" != "nothing to commit (working directory clean)" ]; then\
+		echo "[ERROR] There are uncommitted changes in your repository. Please commit files and try again.";\
+		exit 1;\
+	fi
 
 mim: check-no-changes-on-git clean
 	@echo "Deleting uneeded languages..."
