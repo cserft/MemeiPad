@@ -143,7 +143,7 @@
   <string name="comment_alert_empty_title">Komentar</string>
   <string name="comment_alert_empty_message">Write something before you hit the save comment button. </string>
   <string name="comment_field_hint_text">Sign in ke komentar di sini</string>
-  <string name="zero_comments_text">Jadilah yang pertama komentar</string>saving...
+  <string name="zero_comments_text">Jadilah yang pertama komentar</string>
   <string name="btn_send_comment_title_2">penghematan...</string>
  <!--/permalink.js -->
 
