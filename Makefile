@@ -1,6 +1,5 @@
 export PROJECT_ROOT=$(shell pwd)
 export TMP_DIR=$(PROJECT_ROOT)/tmp/
-export PROJECT_NAME=MemeiPad
 export SVN_DIR=$(TMP_DIR)/$(PROJECT_NAME)_trunk/
 
 clean: clean-languages
@@ -39,6 +38,15 @@ svn-verification:
 		exit 1;\
 	fi
 
+project-name-verification:
+	@if [ "${PROJECT_NAME}" != "MemeiPad" ] && [ "${PROJECT_NAME}" != "MimiPad" ]; then\
+		echo "[ERROR] PROJECT_NAME env variable is required for this make target";\
+		echo "Please use one of the following:";\
+		echo "- \"PROJECT_NAME=MemeiPad ... make [target]\"";\
+		echo "- \"PROJECT_NAME=MimiPad ... make [target]\"";\
+		exit 1;\
+	fi
+
 svn-checkout: svn-verification
 	@echo "Downloading project from SVN..."
 	@echo "SVN_USER: ${SVN_USER}"
@@ -59,7 +67,8 @@ svn-commit: svn-verification
 	@echo "Done."
 
 # TODO: patch main.m to put correct TI_APPLICATION_RESOURCE_DIR
-publish-meme: build-verification
+publish: project-name-verification build-verification
+	@echo "Start publishing project: ${PROJECT_NAME}"
 	@make svn-checkout
 	@make languages
 	@echo "Deleting destination files..."
@@ -109,11 +118,6 @@ publish-meme: build-verification
 	@echo "Done."
 	@make svn-checkin
 	@make svn-commit
-
-publish-mim:
-	@export PROJECT_NAME=MimiPad
-	@export SVN_DIR=$(TMP_DIR)/$(PROJECT_NAME)_trunk/
-	@make publish-meme
 
 check-no-changes-on-git:
 	@if [ "`git st | grep -v '#'`" != "nothing to commit (working directory clean)" ]; then\
