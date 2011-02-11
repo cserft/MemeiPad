@@ -123,8 +123,11 @@ mim: check-no-changes-on-git clean
 	@rm -rf ${PROJECT_ROOT}/src/Resources/es.lproj
 	@rm -rf ${PROJECT_ROOT}/src/Resources/pt.lproj
 	@rm -rf ${PROJECT_ROOT}/src/Resources/zh-Hant.lproj
-	@echo "Replace Meme for Mim..."
-	@echo "Done."
+	@echo "Replace Meme files for Mim files..."
+	@mv ${PROJECT_ROOT}/src/Info_mim.plist ${PROJECT_ROOT}/src/Info.plist
+	@mv ${PROJECT_ROOT}/src/manifest_mim ${PROJECT_ROOT}/src/manifest
+	@mv ${PROJECT_ROOT}/tiapp_mim.xml ${PROJECT_ROOT}/tiapp.xml
+	@echo "Done. Go ahead and run it!"
 
 log:
 	@tail -n100 -f ${PROJECT_ROOT}/src/build/iphone/build/build.log
