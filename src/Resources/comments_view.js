@@ -5,6 +5,8 @@
 Ti.include('lib/commons.js');
 Ti.include('lib/analytics.js');
 
+var nocomments;
+
 var commentView = Titanium.UI.createView({
 	backgroundColor: 	'white',
 	bottom: 			81,
@@ -91,8 +93,6 @@ var notFoundTitle = Ti.UI.createLabel({
 	font:{fontSize:20, fontFamily:'Helvetica', fontWeight:'regular'}
 });
 notFoundRow.add(notFoundTitle);
-
-var nocomments;
 
 var addUserInfo = function(comments) {
 	var guids = [];
