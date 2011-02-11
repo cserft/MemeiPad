@@ -1,6 +1,7 @@
 export PROJECT_ROOT=$(shell pwd)
 export TMP_DIR=$(PROJECT_ROOT)/tmp/
-export SVN_DIR=$(TMP_DIR)/MemeiPad_trunk/
+export PROJECT_NAME=MemeiPad
+export SVN_DIR=$(TMP_DIR)/$(PROJECT_NAME)_trunk/
 
 clean: clean-languages
 	@rm -rf ${PROJECT_ROOT}/src/build/iphone/*
@@ -44,7 +45,7 @@ svn-checkout: svn-verification
 	@echo "SVN_DIR: ${SVN_DIR}"
 	@rm -rf ${SVN_DIR}
 	@mkdir -p ${SVN_DIR}
-	@svn co svn+ssh://${SVN_USER}@svn.corp.yahoo.com/yahoo/brickhouse/iwasay/etc/MemeiPad/trunk ${SVN_DIR}
+	@svn co svn+ssh://${SVN_USER}@svn.corp.yahoo.com/yahoo/brickhouse/iwasay/etc/${PROJECT_NAME}/trunk ${SVN_DIR}
 
 svn-checkin: svn-verification
 	@echo "Checking in files on SVN..."
@@ -58,9 +59,11 @@ svn-commit: svn-verification
 	@echo "Done."
 
 # TODO: patch main.m to put correct TI_APPLICATION_RESOURCE_DIR
-publish: build-verification svn-checkout languages
+publish: build-verification
+	@make svn-checkout
+	@make languages
 	@echo "Deleting destination files..."
-	@for FILE in `find ${SVN_DIR} | grep -v .svn | grep -v MemeiPad.xcodeproj | grep -v Entitlements.plist`;\
+	@for FILE in `find ${SVN_DIR} | grep -v .svn | grep -v ${PROJECT_NAME}.xcodeproj | grep -v Entitlements.plist`;\
 	do\
 		if [ -f $$FILE ]; then rm -rf $$FILE; fi;\
 	done
@@ -95,17 +98,32 @@ publish: build-verification svn-checkout languages
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/Resources ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/Info.plist ${SVN_DIR}/build/iphone/
 	@#cp -prf ${PROJECT_ROOT}/src/build/iphone/main.m ${SVN_DIR}/build/iphone/
-	@cp -prf ${PROJECT_ROOT}/src/build/iphone/MemeiPad_Prefix.pch ${SVN_DIR}/build/iphone/
+	@cp -prf ${PROJECT_ROOT}/src/build/iphone/${PROJECT_NAME}_Prefix.pch ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/module.xcconfig ${SVN_DIR}/build/iphone/
 	@cp -prf ${PROJECT_ROOT}/src/build/iphone/project.xcconfig ${SVN_DIR}/build/iphone/
 	@echo "**************************************************"
 	@echo "Please remember that the following file:"
-	@echo "- '${PROJECT_ROOT}/src/build/iphone/MemeiPad.xcodeproj/project.pbxproj'"
+	@echo "- '${PROJECT_ROOT}/src/build/iphone/${PROJECT_NAME}.xcodeproj/project.pbxproj'"
 	@echo "Needs to be published manually (to avoid SVN conflicts)."
 	@echo "**************************************************"
 	@echo "Done."
 	@make svn-checkin
 	@make svn-commit
+
+mim:
+	@echo "Deleting uneeded languages..."
+	@rm -rf ${PROJECT_ROOT}/src/i18n/en
+	@rm -rf ${PROJECT_ROOT}/src/i18n/es
+	@rm -rf ${PROJECT_ROOT}/src/i18n/pt
+	@rm -rf ${PROJECT_ROOT}/src/i18n/zh-Hant
+	@rm -rf ${PROJECT_ROOT}/src/Resources/en.lproj
+	@rm -rf ${PROJECT_ROOT}/src/Resources/es.lproj
+	@rm -rf ${PROJECT_ROOT}/src/Resources/pt.lproj
+	@rm -rf ${PROJECT_ROOT}/src/Resources/zh-Hant.lproj
+	@echo "Replace Meme for Mim"
+	@echo "Publish"
+	@echo "Git reset"
+	@echo "Done."
 
 log:
 	@tail -n100 -f ${PROJECT_ROOT}/src/build/iphone/build/build.log

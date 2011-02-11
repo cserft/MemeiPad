@@ -7,8 +7,8 @@ TI_DIR="/Library/Application\ Support/Titanium"
 TI_ASSETS_DIR="${TI_DIR}/mobilesdk/osx/${TI_SDK_VERSION}"
 TI_IPHONE_DIR="${TI_ASSETS_DIR}/iphone"
 TI_BUILD="${TI_IPHONE_DIR}/builder.py"
-APP_ID="com.yahoo.meme.ipad"
-APP_NAME="MemeiPad"
+APP_ID=${APP_ID:-"com.yahoo.meme.ipad"}
+APP_NAME=${APP_NAME:-"MemeiPad"}
 APP_DEVICE="ipad"
 
 bash -c "${TI_BUILD} run ${PROJECT_ROOT}/src/ ${IPHONE_SDK_VERSION} ${APP_ID} ${APP_NAME} ${APP_DEVICE}" \
