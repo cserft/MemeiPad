@@ -585,6 +585,11 @@ var commentCountLabel = Titanium.UI.createLabel({
 });
 btn_comments.add(commentCountLabel);
 
+Ti.App.addEventListener('incrementCommentCount', function (e){
+	commentCount++;
+	commentCountLabel.text = commentCount;
+});
+
 // adds the Comments View
 whiteBox.add(commentView);
 
