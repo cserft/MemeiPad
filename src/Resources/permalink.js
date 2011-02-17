@@ -1020,7 +1020,7 @@ var repostCommentField = Titanium.UI.createTextField({
 	color: 			'#666',
 	textAlign: 		'left',
 	font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
-	width: 			580,
+	width: 			500,
 	height: 		38,
 	top: 			15,
 	left: 			52,
