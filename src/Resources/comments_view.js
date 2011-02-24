@@ -150,11 +150,28 @@ function getComments(comments) {
 				left: 			62
 			});
 			row.add(quote_icon); 
+			
+			//defining the number of comment lines
+			var commentNumLines = item.comment.length/77;
+			// Ti.API.debug("Num lines Comments: " + commentNumLines);
+			var linesCount = parseInt((item.comment.length - 1) / 77 + 1);
+			// Ti.API.debug("Num lines Count: " + linesCount);
+			var commentTextHeight;
+			
+			if (commentNumLines <= 1 ) {
+				commentTextHeight = 20;
+			} else {
+				commentTextHeight = 20*linesCount;
+				if (commentTextHeight >= 52) {
+					commentTextHeight = 52;
+				}
+			}
 
 			var commentTxt = Ti.UI.createLabel({
+				// backgroundColor: 'red',
 				text: 			strip_html_entities(item.comment),
 				color: 			'#333',
-				height: 		52,
+				height: 		commentTextHeight,
 				width: 			620,
 				top: 			26,
 				left: 			88,
@@ -171,7 +188,7 @@ function getComments(comments) {
 				color: 					'#863486',
 				width: 					title_width,
 				height: 				23,
-				top: 					68,
+				top: 					commentTxt.height + 25,
 				left: 					88,
 				textAlign: 				'left',
 				font: 					{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
@@ -184,7 +201,7 @@ function getComments(comments) {
 				color: 			'#999',
 				height: 		23,
 				width: 			150,
-				top: 			68,
+				top: 			commentTxt.height + 25,
 				left: 			username.left + title_width + 10,
 				textAlign: 		'left',
 				font: 			{fontSize:12,fontFamily:'Helvetica',fontWeight:'regular'},
@@ -262,11 +279,27 @@ btn_send_comment2.addEventListener("click", function(e) {
 					left: 			62
 				});
 				row.add(quote_icon); 
+				
+				//defining the number of comment lines
+				var commentNumLines = comment_temp.length/77;
+				// Ti.API.debug("Num lines Comments: " + commentNumLines);
+				var linesCount = parseInt((comment_temp.length - 1) / 77 + 1);
+				// Ti.API.debug("Num lines Count: " + linesCount);
+				var commentTextHeight;
+
+				if (commentNumLines <= 1 ) {
+					commentTextHeight = 20;
+				} else {
+					commentTextHeight = 20*linesCount;
+					if (commentTextHeight >= 52) {
+						commentTextHeight = 52;
+					}
+				}
 
 				var commentTxt = Ti.UI.createLabel({
 					text: 			comment_temp,
 					color: 			'#333',
-					height: 		52,
+					height: 		commentTextHeight,
 					width: 			620,
 					top: 			26,
 					left: 			88,
@@ -282,7 +315,7 @@ btn_send_comment2.addEventListener("click", function(e) {
 					color: 					'#863486',
 					width: 					title_width,
 					height: 				23,
-					top: 					68,
+					top: 					commentTxt.height + 25,
 					left: 					88,
 					textAlign: 				'left',
 					font: 					{fontSize:12, fontFamily:'Helvetica', fontWeight:'bold'}
@@ -296,7 +329,7 @@ btn_send_comment2.addEventListener("click", function(e) {
 					color: 			'#999',
 					height: 		23,
 					width: 			150,
-					top: 			68,
+					top: 			commentTxt.height + 25,
 					left: 			username.left + title_width + 10,
 					textAlign: 		'left',
 					font: 			{fontSize:12,fontFamily:'Helvetica',fontWeight:'regular'},
@@ -316,6 +349,7 @@ btn_send_comment2.addEventListener("click", function(e) {
 				
 				function insertRow(callback) {
 					commentsTableView.insertRowBefore(0,row);
+					Ti.App.fireEvent('incrementCommentCount');
 					callback();
 				};
 				

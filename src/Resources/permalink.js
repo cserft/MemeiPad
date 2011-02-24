@@ -585,6 +585,11 @@ var commentCountLabel = Titanium.UI.createLabel({
 });
 btn_comments.add(commentCountLabel);
 
+Ti.App.addEventListener('incrementCommentCount', function (e){
+	commentCount++;
+	commentCountLabel.text = commentCount;
+});
+
 // adds the Comments View
 whiteBox.add(commentView);
 
@@ -1015,7 +1020,7 @@ var repostCommentField = Titanium.UI.createTextField({
 	color: 			'#666',
 	textAlign: 		'left',
 	font: 			{fontSize:14,fontFamily:'Georgia', fontStyle:'italic'},
-	width: 			580,
+	width: 			500,
 	height: 		38,
 	top: 			15,
 	left: 			52,
