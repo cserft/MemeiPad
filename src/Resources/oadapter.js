@@ -199,7 +199,7 @@ var OAuthAdapter = function(pService, authorize) {
 	
 	var serviceRequest = function(pUrl, pParameters, accessor) {
 		pParameters.push( ["oauth_consumer_key", consumerKey ] );
-		pParameters.push( ["oauth_signature_method", "HMAC-SHA1"] ); 
+		pParameters.push( ["oauth_signature_method", signatureMethod] ); 
 		
 		var message = { action: pUrl,
 					    method: "POST",
