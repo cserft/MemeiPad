@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
 <id>com.yahoo.mim.ipad</id>
 <name>MimiPad</name>
-<version>1.0.0</version>
+<version>1.0.1</version>
 <publisher>Yahoo! Inc.</publisher>
 <url>http://mim.ly/help/about</url>
 <description>Mim for iPad is a client for Yahoo! Mim blogging platform.</description>
