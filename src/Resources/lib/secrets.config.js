@@ -9,7 +9,6 @@ var get_request_token_url = "https://api.login.yahoo.com/oauth/v2/get_request_to
 var get_token_url = "https://api.login.yahoo.com/oauth/v2/get_token";
 var request_auth_url = "https://api.login.yahoo.com/oauth/v2/request_auth";
 var yql_base_url = "http://query.yahooapis.com/v1/yql";
-// var yql_base_url = "http://bitforest.org/oauth-test.php";
 
 // Parameters for the YQL call
 var yql_params = [];
@@ -26,3 +25,5 @@ Ti.API.info("secrets.js Included");
 
 // Backend key
 var meme_be_secret = "INTERNAL-KEY-FOR-UPLOAD";
+var meme_upload_url = "INTERNAL-MEME-URL";
+var meme_upload_secret = "INTERNAL-KEY-FOR-UPLOAD";
