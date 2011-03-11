@@ -140,7 +140,9 @@ mim: check-no-changes-on-git clean
 	@mv -v ${PROJECT_ROOT}/src/manifest_mim ${PROJECT_ROOT}/src/manifest
 	@mv -v ${PROJECT_ROOT}/src/tiapp_mim.xml ${PROJECT_ROOT}/src/tiapp.xml
 	@echo "Replace CFBundleName..."
-	@cat ${PROJECT_ROOT}/src/Resources/id.lproj/InfoPlist.strings | sed -e "s/MemeiPad/MimiPad/g" > ${PROJECT_ROOT}/src/Resources/id.lproj/InfoPlist.strings
+	@mv ${PROJECT_ROOT}/src/Resources/id.lproj/InfoPlist.strings ${PROJECT_ROOT}/src/Resources/id.lproj/InfoPlist.strings.old
+	@cat ${PROJECT_ROOT}/src/Resources/id.lproj/InfoPlist.strings.old | sed -e "s/MemeiPad/MimiPad/g" > ${PROJECT_ROOT}/src/Resources/id.lproj/InfoPlist.strings
+	@rm -rf ${PROJECT_ROOT}/src/Resources/id.lproj/InfoPlist.strings.old
 	@echo "\"Berhasil\" :)"
 	@echo "* Don't forget to run the application before publishing it."
 
