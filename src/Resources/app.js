@@ -14,7 +14,7 @@ Ti.API.info("App Name: " + Ti.App.getName() + " and App Version: " + Ti.App.getV
 
 // indicates if app is in development or production
 // used to disable cache, analytics, etc
-Ti.App.development = true; // WARNING: remove this before put in production :)
+Ti.App.development = false; // WARNING: change development to FALSE before releasing the app :)
 
 Ti.App.myMemeInfo = null;
 
