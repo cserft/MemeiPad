@@ -139,6 +139,8 @@ mim: check-no-changes-on-git clean
 	@mv -v ${PROJECT_ROOT}/src/Info_mim.plist ${PROJECT_ROOT}/src/Info.plist
 	@mv -v ${PROJECT_ROOT}/src/manifest_mim ${PROJECT_ROOT}/src/manifest
 	@mv -v ${PROJECT_ROOT}/src/tiapp_mim.xml ${PROJECT_ROOT}/src/tiapp.xml
+	@echo "Replace CFBundleName..."
+	@cat ${PROJECT_ROOT}/src/Resources/id.lproj/InfoPlist.strings | sed -e "s/MemeiPad/MimiPad/g" > ${PROJECT_ROOT}/src/Resources/id.lproj/InfoPlist.strings
 	@echo "\"Berhasil\" :)"
 	@echo "* Don't forget to run the application before publishing it."
 
